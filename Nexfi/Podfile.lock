@@ -1,0 +1,28 @@
+PODS:
+  - CocoaLumberjack (2.2.0):
+    - CocoaLumberjack/Default (= 2.2.0)
+    - CocoaLumberjack/Extensions (= 2.2.0)
+  - CocoaLumberjack/Core (2.2.0)
+  - CocoaLumberjack/Default (2.2.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.2.0):
+    - CocoaLumberjack/Default
+  - FMDB (2.6.2):
+    - FMDB/standard (= 2.6.2)
+  - FMDB/standard (2.6.2)
+  - MSWeakTimer (1.1.0)
+  - ProtocolBuffers (1.9.9)
+
+DEPENDENCIES:
+  - CocoaLumberjack (= 2.2.0)
+  - FMDB (~> 2.6.2)
+  - MSWeakTimer (= 1.1.0)
+  - ProtocolBuffers (= 1.9.9)
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
+  FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
+  MSWeakTimer: 9426150f933b80ed3acf3f6d228e4b61f0e303c8
+  ProtocolBuffers: 18c1d7d0c651d3c878e6fcc8ab8ab1c679b457b1
+
+COCOAPODS: 0.39.0

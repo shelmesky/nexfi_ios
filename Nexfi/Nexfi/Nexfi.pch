@@ -1,0 +1,17 @@
+//
+//  Nexify.pch
+//  Nexify
+//
+//  Created by fyc on 16/4/1.
+//  Copyright © 2016年 FuYaChen. All rights reserved.
+//
+
+#ifndef Nexify_pch
+#define Nexify_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "YBKeyBoardInputBar.h"
+#import "Header.h"
+#endif /* Nexify_pch */
