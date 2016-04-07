@@ -7,9 +7,19 @@
 //
 
 #import "NexfiUtil.h"
-
+#import "SelfVC.h"
+#import "NeighbourVC.h"
+#import "NexfiNavigationController.h"
+#import "UserInfoVC.h"
 @implementation NexfiUtil
-
+static NexfiUtil *_util;
++ (instancetype)shareUtil{
+    static dispatch_once_t once;
+    dispatch_once(&once, ^{
+        _util = [[NexfiUtil alloc]init];
+    });
+    return _util;
+}
 /**
  *@日期格式转换函数
  *date所要转化的日期 输入date格式为"yyyyMMddHHmmss"
@@ -53,6 +63,45 @@
     NSString *str = [outputFormatter stringFromDate:inputDate];
     return str;
 }
+#pragma mark -布局tabbar
+- (void)layOutTheApp
+{
+    UITabBarController *tabbar = [[UITabBarController alloc] init];
+    //设定Tabbar的点击后的颜色 #ffa055
+    [[UITabBar appearance] setTintColor:RGBACOLOR(248, 64, 28, 1)];
+    // [[UITabBar appearance] setBackgroundColor:[UIColor colorWithHexString:@"#373737"]];
+//    [[UITabBar appearance] setBackgroundImage:[ConFunc createImageWithColor:RGBACOLOR(251, 251, 251, 1)
+//                                                                       size:CGSizeMake(SCREEN_SIZE.width,SCREEN_SIZE.height)]];//设置背景，修改颜色是没有用的
+    
+    //设定Tabbar的颜色
+    [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
+    NexfiNavigationController *neighbouVC = [self newNavigationControllerForClass:[NeighbourVC class]
+                                                                            title:@"附近"
+                                                                        itemImage:@"btn-shouye"
+                                                                    selectedImage:@"btn-shouye1"];
+    NexfiNavigationController *selfVC = [self newNavigationControllerForClass:[SelfVC class]
+                                                                        title:@"我的"
+                                                                    itemImage:@"btn-账本2"
+                                                                selectedImage:@"btn-账本1"];
+    
+    
+    tabbar.viewControllers = @[neighbouVC,selfVC];
+    UIWindow *window = [UIApplication sharedApplication].windows[0];
+    window.rootViewController = tabbar;
+}
+- (NexfiNavigationController *)newNavigationControllerForClass:(Class)controllerClass
+                                                         title:(NSString *)title
+                                                     itemImage:(NSString *)itemImage
+                                                 selectedImage:(NSString *)selectedImage
+{
+    UIViewController *viewController = [[controllerClass alloc] init];
+    NexfiNavigationController *theNavigationController = [[NexfiNavigationController alloc]
+                                                          initWithRootViewController:viewController];
+    theNavigationController.tabBarItem.title = title;
+    theNavigationController.tabBarItem.selectedImage = [[UIImage imageNamed:selectedImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    theNavigationController.tabBarItem.image = [[UIImage imageNamed:itemImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    return theNavigationController;
+}
 +(NSDictionary*)getObjectData:(id)obj
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -92,7 +141,7 @@
 }
 +(id)getObjectInternal:(id)obj
 {
-    if([obj isKindOfClass:[NSString class]]||[obj isKindOfClass:[NSNumber class]]|| [obj isKindOfClass:[NSNull class]])
+    if([obj isKindOfClass:[NSString class]]||[obj isKindOfClass:[NSNumber class]]|| [obj isKindOfClass:[NSNull class]]||[obj isKindOfClass:[NSData class]]||[UIImage class])
     {
         return obj;
     }
@@ -120,5 +169,66 @@
     return [self getObjectData:obj];
     
 }
++ (NSString*) uuid {
+    
+    CFUUIDRef puuid = CFUUIDCreate( nil );
+    CFStringRef uuidString = CFUUIDCreateString( nil, puuid );
+    NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
+    CFRelease(puuid);
+    CFRelease(uuidString);
 
+//        return [result autorelease];
+    return result;
+}
+- (NSString *)pathForTemporaryFileWithPrefix:(NSString *)prefix
+
+{
+    
+    NSString * result;
+    
+    CFUUIDRef uuid;
+    
+    CFStringRef uuidStr;
+    
+    uuid = CFUUIDCreate(NULL);
+    
+    assert(uuid != NULL);
+    
+    uuidStr = CFUUIDCreateString(NULL, uuid);
+    
+    assert(uuidStr != NULL);
+    
+    result = [NSTemporaryDirectory()stringByAppendingPathComponent:[NSString stringWithFormat:@"%@-%@", prefix, uuidStr]];
+    
+    assert(result != nil);
+    
+    CFRelease(uuidStr);
+    
+    CFRelease(uuid);
+    
+    return result;
+    
+}
+- (void)configureTabVC{
+    NexfiNavigationController *neighbouVC = [self newNavigationControllerForClass:[NeighbourVC class]
+                                                                            title:@"附近"
+                                                                        itemImage:@"btn-shouye"
+                                                                    selectedImage:@"btn-shouye1"];
+    NexfiNavigationController *selfVC = [self newNavigationControllerForClass:[SelfVC class]
+                                                                        title:@"我的"
+                                                                    itemImage:@"btn-账本2"
+                                                                selectedImage:@"btn-账本1"];
+    UITabBarController *tabbar = [[UITabBarController alloc] init];
+    
+    
+    
+    [[UITabBar appearance]setBarTintColor:[UIColor whiteColor]];
+    // 字体颜色 选中
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName:[UIFont fontWithName:@"HelveticaNeue-Bold" size:12.0F], NSForegroundColorAttributeName : [UIColor blueColor]} forState:UIControlStateSelected];
+    
+    tabbar.viewControllers = @[neighbouVC,selfVC];
+    UIWindow *window = [UIApplication sharedApplication].windows[0];
+    window.rootViewController = tabbar;
+    
+}
 @end

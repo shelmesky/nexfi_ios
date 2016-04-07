@@ -13,6 +13,8 @@
 #import "StringHelper.h"
 #import "ConFunc.h"
 #import "UserModel.h"
+#import "HudTool.h"
+#import "NexfiUtil.h"
 #import "UserManager.h"
 //#import "CoreJPush.h"
 #define UmengAppKey @"55eea2a767e58e4d04001045"

@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSData *userHead;//
 @property (nonatomic, retain) NSString *age;
 @property (nonatomic, retain) NSString *birthday;
+@property (nonatomic, retain) NSString *headImg;
 
 - (id)initWithaDic:(NSDictionary *)aDic;
 

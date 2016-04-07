@@ -13,7 +13,8 @@
 - (id)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         UIImageView *headImg = [[UIImageView alloc]initWithFrame:frame];
-        headImg.image = [UIImage imageNamed:@"bg-xxxx@2x"];
+//        headImg.image = [UIImage imageNamed:@"bg-xxxx@2x"];
+        headImg.backgroundColor = [UIColor colorWithRed:75/255.0 green:75/255.0 blue:75/255.0 alpha:1];
         headImg.clipsToBounds = YES;
         headImg.userInteractionEnabled = YES;
         headImg.contentMode = UIViewContentModeScaleAspectFill;

@@ -45,9 +45,7 @@
     _headView = [[NFHeadView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
     _headView.exclusiveTouch = YES;
     _headView.delegate = self;
-    if ([[UserManager shareManager]getUser]) {
-        _headView.userImg.image = [UIImage imageWithData:[[UserManager shareManager]getUser].userHead];
-    }
+
     
     self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height) style:UITableViewStyleGrouped];
     self.userInfoTable.delegate = self;
@@ -62,6 +60,9 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
+    if ([[UserManager shareManager]getUser]) {
+        _headView.userImg.image = [UIImage imageWithData:[[UserManager shareManager]getUser].userHead];
+    }
     [super viewWillAppear:animated];
 }
 #pragma mark - table
@@ -69,15 +70,19 @@
     return 48;
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return self.data.count;
+    if (section == 0) {
+        return self.data.count;
+    }
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row != 0){
+    if (indexPath.section == 0){
         FCPersonCell *cells =  [tableView dequeueReusableCellWithIdentifier:@"FCPersonCell"];
         if (!cells) {
             cells =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonCell" owner:self options:nil] objectAtIndex:0];
             cells.selectionStyle = UITableViewCellSelectionStyleNone;
+
         }
         
         cells.pTitle.text = _data[indexPath.row];
@@ -85,6 +90,23 @@
         
         return cells;
     }
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"orginalCell"];
+    if (!cell) {
+        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"orginalCell"];
+    }
+    for (UIView *v in cell.contentView.subviews) {
+        [v removeFromSuperview];
+    }
+    UIButton *go = [UIButton buttonWithType:UIButtonTypeSystem];
+    go.bounds = CGRectMake(0, 0, 230, 30);
+    go.center = CGPointMake(SCREEN_SIZE.width/2, 24);
+//    go.clipsToBounds = YES;
+//    go.layer.cornerRadius = 10;
+    [go setTitle:@"去看看" forState:UIControlStateNormal];
+//    go.backgroundColor = [UIColor redColor];
+    [go setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [cell.contentView addSubview:go];
+    /*
     FCPersonHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FCPersonHeadCell"];
     if (!cell) {
         cell =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonHeadCell" owner:self options:nil] objectAtIndex:0];
@@ -97,56 +119,69 @@
     if (user.userHead) {
         cell.pHead.image = [UIImage imageWithData:user.userHead];
     }
+     */
 
     
     return cell;
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    switch (indexPath.row) {
-//        case 0://头像
-//        {
-//            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
-//            sheet.tag = indexPath.row;
-//            [sheet showInView:self.view];
-//            
-//            break;
-//        }
-        case 0://昵称
-        {
-            FCCongureInfoVC *vc = [[FCCongureInfoVC alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
-            
-            break;
-        }
-        case 1://年龄
-        {
-            FCConfigureDateVC *vc = [[FCConfigureDateVC alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
-            break;
-        }
-        case 2://性别
-        {
-            UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改性别" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"男",@"女", nil];
-            sheet.tag = indexPath.row;
-            [sheet showInView:self.view];
-            break;
-        }
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0://昵称
+            {
+                FCCongureInfoVC *vc = [[FCCongureInfoVC alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                
+                break;
+            }
+            case 1://年龄
+            {
+                FCConfigureDateVC *vc = [[FCConfigureDateVC alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 2://性别
+            {
+                UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改性别" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"男",@"女", nil];
+                sheet.tag = indexPath.row;
+                [sheet showInView:self.view];
+                break;
+            }
             default:
-            break;
+                break;
+        }
+
+    }else{
+        UserModel *user = [[UserManager shareManager]getUser];
+        if (!user.userHead) {
+            [HudTool showErrorHudWithText:@"请设置头像" inView:self.view duration:1];
+        }else if (!user.userName){
+            [HudTool showErrorHudWithText:@"请设置昵称" inView:self.view duration:1];
+        }else if (!user.age){
+            [HudTool showErrorHudWithText:@"请设置年龄" inView:self.view duration:1];
+        }else if(!user.sex){
+            [HudTool showErrorHudWithText:@"请设置性别" inView:self.view duration:1];
+        }else{
+            user.userId = [NexfiUtil uuid];
+            [[UserManager shareManager]loginSuccessWithUser:user];
+            [[NexfiUtil shareUtil] layOutTheApp];
+        }
     }
 }
+
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.1;
 }
-
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
+    return 2;
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section{
     if (section == 0) {
         return 0.1;
     }
-    return 3;
+    return 50;
 }
 #pragma mark - image
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
@@ -181,7 +216,7 @@
         }
     }
     
-    else if (actionSheet.tag == 3){
+    else if (actionSheet.tag == 2){
         if (buttonIndex == 2) {
             return;
         }
@@ -193,7 +228,7 @@
             user.sex = gender;
             [[UserManager shareManager]loginSuccessWithUser:user];
             
-            NSIndexPath *indexpath = [NSIndexPath indexPathForRow:3 inSection:0];
+            NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
             FCPersonCell *cell = [self.userInfoTable cellForRowAtIndexPath:indexpath];
             cell.user = user;
         });

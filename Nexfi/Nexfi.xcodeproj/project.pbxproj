@@ -143,6 +143,15 @@
 		0E5493C61CB4E0EE00DE40E8 /* wode02.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493C21CB4E0EE00DE40E8 /* wode02.png */; };
 		0E5493CA1CB4E1DC00DE40E8 /* UserInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5493C81CB4E1DC00DE40E8 /* UserInfoVC.m */; };
 		0E5493CB1CB4E1DC00DE40E8 /* UserInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493C91CB4E1DC00DE40E8 /* UserInfoVC.xib */; };
+		0E80884C1CB6058A0046DE0F /* HudTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E80884B1CB6058A0046DE0F /* HudTool.m */; };
+		0E8088511CB60D460046DE0F /* btn-账本1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884D1CB60D460046DE0F /* btn-账本1@2x.png */; };
+		0E8088521CB60D460046DE0F /* btn-账本2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884E1CB60D460046DE0F /* btn-账本2@2x.png */; };
+		0E8088531CB60D460046DE0F /* btn-shouye1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884F1CB60D460046DE0F /* btn-shouye1@2x.png */; };
+		0E8088541CB60D460046DE0F /* btn-shouye@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E8088501CB60D460046DE0F /* btn-shouye@2x.png */; };
+		0E8088581CB6165D0046DE0F /* NFNearbyUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E8088561CB6165D0046DE0F /* NFNearbyUserCell.m */; };
+		0E8088591CB6165D0046DE0F /* NFNearbyUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E8088571CB6165D0046DE0F /* NFNearbyUserCell.xib */; };
+		0E80885B1CB66C1E0046DE0F /* 054@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80885A1CB66C1E0046DE0F /* 054@2x.png */; };
+		0E80885D1CB66C270046DE0F /* 057@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80885C1CB66C270046DE0F /* 057@2x.png */; };
 		0EBAE9441CB3824000361D18 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9431CB3824000361D18 /* main.m */; };
 		0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9461CB3824000361D18 /* AppDelegate.m */; };
 		0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9491CB3824000361D18 /* ViewController.m */; };
@@ -738,6 +747,17 @@
 		0E5493C71CB4E1DC00DE40E8 /* UserInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserInfoVC.h; path = ../../../UserInfoVC.h; sourceTree = "<group>"; };
 		0E5493C81CB4E1DC00DE40E8 /* UserInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserInfoVC.m; path = ../../../UserInfoVC.m; sourceTree = "<group>"; };
 		0E5493C91CB4E1DC00DE40E8 /* UserInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = UserInfoVC.xib; path = ../../../UserInfoVC.xib; sourceTree = "<group>"; };
+		0E80884A1CB6058A0046DE0F /* HudTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HudTool.h; sourceTree = "<group>"; };
+		0E80884B1CB6058A0046DE0F /* HudTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HudTool.m; sourceTree = "<group>"; };
+		0E80884D1CB60D460046DE0F /* btn-账本1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-账本1@2x.png"; sourceTree = "<group>"; };
+		0E80884E1CB60D460046DE0F /* btn-账本2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-账本2@2x.png"; sourceTree = "<group>"; };
+		0E80884F1CB60D460046DE0F /* btn-shouye1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-shouye1@2x.png"; sourceTree = "<group>"; };
+		0E8088501CB60D460046DE0F /* btn-shouye@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-shouye@2x.png"; sourceTree = "<group>"; };
+		0E8088551CB6165D0046DE0F /* NFNearbyUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFNearbyUserCell.h; sourceTree = "<group>"; };
+		0E8088561CB6165D0046DE0F /* NFNearbyUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFNearbyUserCell.m; sourceTree = "<group>"; };
+		0E8088571CB6165D0046DE0F /* NFNearbyUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFNearbyUserCell.xib; sourceTree = "<group>"; };
+		0E80885A1CB66C1E0046DE0F /* 054@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "054@2x.png"; sourceTree = "<group>"; };
+		0E80885C1CB66C270046DE0F /* 057@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "057@2x.png"; sourceTree = "<group>"; };
 		0EBAE93F1CB3824000361D18 /* Nexfi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nexfi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBAE9431CB3824000361D18 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EBAE9451CB3824000361D18 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1420,6 +1440,9 @@
 		0E5492F21CB3A5BC00DE40E8 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				0E8088551CB6165D0046DE0F /* NFNearbyUserCell.h */,
+				0E8088561CB6165D0046DE0F /* NFNearbyUserCell.m */,
+				0E8088571CB6165D0046DE0F /* NFNearbyUserCell.xib */,
 				0E5492F61CB3A64100DE40E8 /* emojl */,
 				0E5492F31CB3A5E000DE40E8 /* FCMsgCell.h */,
 				0E5492F41CB3A5E000DE40E8 /* FCMsgCell.m */,
@@ -1620,8 +1643,14 @@
 		0E5493BE1CB4E0EE00DE40E8 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0E80885C1CB66C270046DE0F /* 057@2x.png */,
+				0E80885A1CB66C1E0046DE0F /* 054@2x.png */,
 				0EE1C4341CB552ED00A135C3 /* 102@2x.png */,
 				0EE1C41D1CB5166100A135C3 /* bg-xxxx@2x.png */,
+				0E80884D1CB60D460046DE0F /* btn-账本1@2x.png */,
+				0E80884E1CB60D460046DE0F /* btn-账本2@2x.png */,
+				0E80884F1CB60D460046DE0F /* btn-shouye1@2x.png */,
+				0E8088501CB60D460046DE0F /* btn-shouye@2x.png */,
 				0EE1C3FF1CB5162900A135C3 /* img_head_01@2x.png */,
 				0EE1C4001CB5162900A135C3 /* img_head_02@2x.png */,
 				0EE1C4011CB5162900A135C3 /* img_head_03@2x.png */,
@@ -1735,6 +1764,8 @@
 		0EBAE9801CB3835500361D18 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0E80884A1CB6058A0046DE0F /* HudTool.h */,
+				0E80884B1CB6058A0046DE0F /* HudTool.m */,
 				0EE1C41F1CB516BC00A135C3 /* UIView_extra.h */,
 				0EE1C4201CB516BC00A135C3 /* UIView_extra.m */,
 				0E5493A61CB4CC5D00DE40E8 /* ConFunc */,
@@ -2386,6 +2417,7 @@
 				0EBAECA71CB3839400361D18 /* icon_messages_more_pic_write@3x.png in Resources */,
 				0EBAEC1E1CB3839400361D18 /* lxh_leifeng.gif in Resources */,
 				0EBAEC301CB3839400361D18 /* lxh_qiaoqiao.png in Resources */,
+				0E80885B1CB66C1E0046DE0F /* 054@2x.png in Resources */,
 				0EBAEC2D1CB3839400361D18 /* lxh_pili.png in Resources */,
 				0EBAEC541CB3839400361D18 /* lxh_youyali.png in Resources */,
 				0EBAEC3E1CB3839400361D18 /* lxh_toule.gif in Resources */,
@@ -2416,6 +2448,7 @@
 				0EBAEB9D1CB3839400361D18 /* d_landelini@2x.png in Resources */,
 				0EBAEC6B1CB3839400361D18 /* messages_icon_empty_status@2x.png in Resources */,
 				0EBAEC781CB3839400361D18 /* YBKeyboardEmoj.plist in Resources */,
+				0E80885D1CB66C270046DE0F /* 057@2x.png in Resources */,
 				0E54936F1CB3A64100DE40E8 /* write_face_39.png in Resources */,
 				0EBAEC5B1CB3839400361D18 /* lxh_zaokuangzheng@2x.png in Resources */,
 				0E5493C61CB4E0EE00DE40E8 /* wode02.png in Resources */,
@@ -2512,10 +2545,12 @@
 				0EBAEC2A1CB3839400361D18 /* lxh_oye@2x.png in Resources */,
 				0EBAEBD91CB3839400361D18 /* o_lvsidai@2x.png in Resources */,
 				0EBAEBAE1CB3839400361D18 /* d_travel@2x.png in Resources */,
+				0E8088521CB60D460046DE0F /* btn-账本2@2x.png in Resources */,
 				0EBAEC421CB3839400361D18 /* lxh_tuijian.png in Resources */,
 				0EBAEB881CB3839400361D18 /* d_chanzui@2x.png in Resources */,
 				0EBAEC461CB3839400361D18 /* lxh_xianghumobai@2x.png in Resources */,
 				0E54936E1CB3A64100DE40E8 /* write_face_38.png in Resources */,
+				0E8088531CB60D460046DE0F /* btn-shouye1@2x.png in Resources */,
 				0EE1C4121CB5162900A135C3 /* img_head_05@2x.png in Resources */,
 				0EBAEBBC1CB3839400361D18 /* d_zhutou@2x.png in Resources */,
 				0E5493651CB3A64100DE40E8 /* write_face_3.png in Resources */,
@@ -2523,6 +2558,7 @@
 				0EBAEBEE1CB3839400361D18 /* lxh_bengkui.gif in Resources */,
 				0E54935B1CB3A64100DE40E8 /* write_face_20.png in Resources */,
 				0EBAEBD21CB3839400361D18 /* o_dangao@2x.png in Resources */,
+				0E8088511CB60D460046DE0F /* btn-账本1@2x.png in Resources */,
 				0EBAEC891CB3839400361D18 /* icon_messages_more_call_p.png in Resources */,
 				0EBAEBBF1CB3839400361D18 /* f_geili@2x.png in Resources */,
 				0E5493661CB3A64100DE40E8 /* write_face_30.png in Resources */,
@@ -2560,6 +2596,7 @@
 				0E5493691CB3A64100DE40E8 /* write_face_33.png in Resources */,
 				0EBAEB9B1CB3839400361D18 /* d_ku@2x.png in Resources */,
 				0EBAEC4B1CB3839400361D18 /* lxh_xiaohaha.png in Resources */,
+				0E8088541CB60D460046DE0F /* btn-shouye@2x.png in Resources */,
 				0EBAEBF41CB3839400361D18 /* lxh_buhaoyisi.gif in Resources */,
 				0EBAEBDA1CB3839400361D18 /* o_weibo@2x.png in Resources */,
 				0EBAEBA21CB3839400361D18 /* d_numa@2x.png in Resources */,
@@ -2688,6 +2725,7 @@
 				0EBAEC2E1CB3839400361D18 /* lxh_pili@2x.png in Resources */,
 				0EBAEC8C1CB3839400361D18 /* icon_messages_more_callpng.png in Resources */,
 				0EBAEC991CB3839400361D18 /* icon_messages_more_pic.png in Resources */,
+				0E8088591CB6165D0046DE0F /* NFNearbyUserCell.xib in Resources */,
 				0EBAEC471CB3839400361D18 /* lxh_xiangyixiang.gif in Resources */,
 				0EBAEBC71CB3839400361D18 /* h_buyao@2x.png in Resources */,
 				0E5493491CB3A64100DE40E8 /* write_face_04.png in Resources */,
@@ -2846,6 +2884,7 @@
 				0EBAECB41CB3839400361D18 /* YBKeyboardMoreFunctionView.m in Sources */,
 				0EBAEC841CB3839400361D18 /* YBKeyboardEmojView.m in Sources */,
 				0E5493A51CB4C9E700DE40E8 /* NexfiNavigationController.m in Sources */,
+				0E80884C1CB6058A0046DE0F /* HudTool.m in Sources */,
 				0E5493841CB3A64100DE40E8 /* JXImageView.m in Sources */,
 				0EBAEC681CB3839400361D18 /* NSObject+MJProperty.m in Sources */,
 				0E5492E61CB3997100DE40E8 /* UDAggTransport.m in Sources */,
@@ -2928,6 +2967,7 @@
 				0EBAEC811CB3839400361D18 /* YBKeyboardEmojOptionCell.m in Sources */,
 				0EBAEC861CB3839400361D18 /* YBKeyboardInputBarButton.m in Sources */,
 				0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */,
+				0E8088581CB6165D0046DE0F /* NFNearbyUserCell.m in Sources */,
 				0E5492E31CB3997100DE40E8 /* UDFrameCache.m in Sources */,
 				0E5492D01CB3997100DE40E8 /* UDWifiReach.m in Sources */,
 				0EBAEC801CB3839400361D18 /* YBKeyboardEmojOption.m in Sources */,

@@ -8,21 +8,29 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="FCHeadAddCollectionCell">
-            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZSc-gw-v6i">
-                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZSc-gw-v6i">
+                        <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
                         <state key="normal" title="Button"/>
                     </button>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="ZSc-gw-v6i" secondAttribute="trailing" id="PiJ-wI-6br"/>
+                <constraint firstItem="ZSc-gw-v6i" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="SKp-k5-5VY"/>
+                <constraint firstAttribute="bottom" secondItem="ZSc-gw-v6i" secondAttribute="bottom" id="iAx-rK-za3"/>
+                <constraint firstItem="ZSc-gw-v6i" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qIK-pL-cgM"/>
+            </constraints>
+            <size key="customSize" width="70" height="70"/>
             <connections>
                 <outlet property="addTribe" destination="ZSc-gw-v6i" id="pt6-up-Rwx"/>
             </connections>
+            <point key="canvasLocation" x="234" y="177"/>
         </collectionViewCell>
     </objects>
 </document>

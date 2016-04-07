@@ -5,7 +5,10 @@
 //  Created by fyc on 16/3/28.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
+#import "MTLJSONAdapter.h"
+#import "UserModel.h"
+#import "NexfiUtil.h"
+#import "UserManager.h"
 #import "Node.h"
 #import "DDLog.h"
 #import "UDLink.h"
@@ -67,9 +70,38 @@
     }
 
 }
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type{
+    
+    UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
+        NSData *data;
+        if (type == requestUserInfo) {//请求用户信息
+            NSDictionary *userDic = @{@"sendUserInfo":@"1"};
+            data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
+        }else{//发送用户信息
+            UserModel *user = [[UserManager shareManager]getUser];
+            if (user.userHead) {
+                user.headImg = [[NSString alloc]initWithData:user.userHead encoding:NSUTF8StringEncoding];
+            }
+            user.userHead = nil;
+            NSDictionary *userDic = [NexfiUtil getObjectData:user];
+            data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
+        }
+        return data;
+        
+    }];
+    
+    return result;
+}
 #pragma -mark UDTransportDelegate
 - (void)transport:(id<UDTransport>)transport linkConnected:(id<UDLink>)link{
     [self.links addObject:link];
+    
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [link sendData:[self sendMsgWithMessageType:requestUserInfo]];
+
+//    });
+    
+    
     self.peersCount += 1;
 //    [self.controller updatePeerCount];
     self.controller.title = [NSString stringWithFormat:@"%d",self.peersCount];
@@ -86,7 +118,14 @@
 }
 - (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"text" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    if (dic[@"sendUserInfo"]) {//对方要求我发送用户信息
+        [link sendData:[self sendMsgWithMessageType:sendUserInfo]];
+    }else if(dic[@"userId"]){//用户信息
+        NSLog(@"userDic===%@====%@",dic,dic[@"userName"]);
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    }else{//普通聊天
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"text" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    }
 }
 
 @end

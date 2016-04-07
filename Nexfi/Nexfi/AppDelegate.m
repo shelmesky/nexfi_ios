@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import "ViewController.h"
 #import "SqlManager.h"
-
+#import "NeighbourVC.h"
 @interface AppDelegate ()
 
 @end
@@ -23,9 +23,11 @@
     //创建数据库
     [[SqlManager shareInstance]creatTable];
     
-//    ViewController *v = [[ViewController alloc]init];
+//    NeighbourVC *v = [[NeighbourVC alloc]init];
 //    UINavigationController *nav =[[ UINavigationController alloc]initWithRootViewController:v];
-//    
+////
+//    self.window.rootViewController = nav;
+    
     UIDevice *myDevice = [UIDevice currentDevice];
     
     NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];

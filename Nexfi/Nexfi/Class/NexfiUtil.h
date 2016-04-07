@@ -24,4 +24,9 @@
 
 +(void)print:(id)obj;
 
++ (NSString*) uuid ;
++ (instancetype)shareUtil;
+//布局tabbar
+- (void)layOutTheApp;
+- (void)configureTabVC;
 @end

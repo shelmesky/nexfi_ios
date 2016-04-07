@@ -17,6 +17,8 @@
         self.sex = aDic[@"sex"];
         self.userHead = aDic[@"userHead"];
         self.age = aDic[@"age"];
+        self.birthday = aDic[@"birthday"];
+        self.headImg = aDic[@"headImg"];
     }
     return self;
 }
