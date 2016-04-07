@@ -13,6 +13,7 @@
 #import "SelfVC.h"
 #import "NeighbourVC.h"
 #import "NexfiNavigationController.h"
+#import "UserInfoVC.h"
 @interface ViewController ()
 
 @property (nonatomic, strong) UIWindow *window;
@@ -28,6 +29,11 @@
     self.window = [UIApplication sharedApplication].windows[0];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
+    UserModel *user = [[UserManager shareManager]getUser];
+    if (!user) {
+        UserModel *user = [[UserModel alloc]init];
+        [[UserManager shareManager]loginSuccessWithUser:user];
+    }
 
     /*
      判断是否自动登录
@@ -50,7 +56,11 @@
     }
 }
 - (void)loginAction{
-    
+    UserInfoVC *vc = [[UserInfoVC alloc]init];
+    NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
+//    nav.navigationBarHidden = YES;
+    UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
+    window.rootViewController = nav;
 }
 #pragma mark -布局tabbar
 - (void)layOutTheApp

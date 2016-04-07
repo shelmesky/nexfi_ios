@@ -13,7 +13,9 @@
 @property (nonatomic, retain) NSString *userId;//
 @property (nonatomic, retain) NSString *userName;//
 @property (nonatomic, retain) NSString *sex;//
-@property (nonatomic, retain) NSString *userHead;//
+@property (nonatomic, retain) NSData *userHead;//
+@property (nonatomic, retain) NSString *age;
+@property (nonatomic, retain) NSString *birthday;
 
 - (id)initWithaDic:(NSDictionary *)aDic;
 

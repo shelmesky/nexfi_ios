@@ -23,9 +23,9 @@
     //创建数据库
     [[SqlManager shareInstance]creatTable];
     
-    ViewController *v = [[ViewController alloc]init];
-    UINavigationController *nav =[[ UINavigationController alloc]initWithRootViewController:v];
-    
+//    ViewController *v = [[ViewController alloc]init];
+//    UINavigationController *nav =[[ UINavigationController alloc]initWithRootViewController:v];
+//    
     UIDevice *myDevice = [UIDevice currentDevice];
     
     NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
@@ -42,7 +42,7 @@
     NSLog(@"hehehaha==%@",myDevice.name);//DEBCE83D-C25A-44ED-B9BD-FA4CAA1E439A
 
     
-    self.window.rootViewController = nav;
+//    self.window.rootViewController = nav;
     
     return YES;
 }
