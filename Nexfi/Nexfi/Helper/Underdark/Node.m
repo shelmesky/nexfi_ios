@@ -74,18 +74,20 @@
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         NSData *data;
-        if (type == requestUserInfo) {//请求用户信息
-            NSLog(@"linkNode ==== %lld",link.nodeId);
-            NSDictionary *userDic = @{@"sendUserInfo":@"1"};
+        if (type == eMessageType_requestUserInfo) {//请求用户信息
+            NSDictionary *userDic = @{@"messageType":[NSString stringWithFormat:@"%ld",eMessageType_requestUserInfo]};
             data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
-        }else{//发送用户信息
+            
+            
+        }else if(type == eMessageType_SendUserInfo){//发送用户信息
             UserModel *user = [[UserManager shareManager]getUser];
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-            NSLog(@"linkNode ==== %lld",link.nodeId);
 
             NSDictionary *userDic = [NexfiUtil getObjectData:user];
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:userDic];
+            [usersDic setObject:[NSString stringWithFormat:@"%ld",eMessageType_SendUserInfo] forKey:@"messageType"];
 
-            data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
+            data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
             
         }
@@ -100,7 +102,7 @@
     [self.links addObject:link];
     
 //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [link sendData:[self sendMsgWithMessageType:requestUserInfo WithConnectedLink:link]];
+        [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo WithConnectedLink:link]];
 
 //    });
     
@@ -144,16 +146,31 @@
 }
 - (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
-    if (dic[@"sendUserInfo"]) {//对方要求我发送用户信息
-        [link sendData:[self sendMsgWithMessageType:sendUserInfo WithConnectedLink:link]];
-    }else if(!dic[@"content"]){//用户信息
-        NSLog(@"linkNodeshou ==== %lld",link.nodeId);
-
-        NSLog(@"userDic===%@====%@",dic,dic[@"userName"]);
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
-    }else{//单聊
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    switch ([dic[@"messageType"] intValue]) {
+        case eMessageType_requestUserInfo:
+        {
+            [link sendData:[self sendMsgWithMessageType:eMessageType_SendUserInfo WithConnectedLink:link]];
+            break;
+        }
+        case eMessageType_SendUserInfo:
+        {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            break;
+        }
+        case eMessageType_SingleChat:
+        {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            break;
+        }
+        case eMessageType_AllUserChat:
+        {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"allUser" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            break;
+        }
+        default:
+            break;
     }
+
 }
 
 @end

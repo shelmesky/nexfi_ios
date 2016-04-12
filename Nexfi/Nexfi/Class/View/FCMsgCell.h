@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "Message.h"
+#import "TribeMessage.h"
+#import "PersonMessage.h"
 @class JXEmoji;
 @class JXImageView;
 //头像大小

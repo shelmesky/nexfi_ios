@@ -10,7 +10,7 @@
 #import "UserModel.h"
 #import "BaseVC.h"
 
-@interface ChatInfoVC : BaseVC
+@interface NFSingleChatInfoVC : BaseVC
 
 @property (nonatomic, retain)UserModel *to_user;
 @property (nonatomic ,strong)id<UDLink>link;

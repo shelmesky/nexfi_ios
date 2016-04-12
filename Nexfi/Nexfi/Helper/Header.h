@@ -19,6 +19,9 @@
 #import "NSDataEx.h"
 #import "SqlManager.h"
 #import "UIColor+Hex.h"
+
+#import "Message.h"
+
 //#import "CoreJPush.h"
 #define UmengAppKey @"55eea2a767e58e4d04001045"
 
@@ -36,26 +39,7 @@
 
 #define RGBACOLOR(r,g,b,a)   [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
-/*!
- @enum
- @brief 聊天类型
- @constant eMessageBodyType_Text 文本类型
- @constant eMessageBodyType_Image 图片类型
- @constant eMessageBodyType_Video 视频类型
- @constant eMessageBodyType_Location 位置类型
- @constant eMessageBodyType_Voice 语音类型
- @constant eMessageBodyType_File 文件类型
- @constant eMessageBodyType_Command 命令类型
- */
-typedef NS_ENUM(NSInteger, MessageBodyType) {
-    eMessageBodyType_Text = 1,
-    eMessageBodyType_Image,
-    eMessageBodyType_Video,
-    eMessageBodyType_Location,
-    eMessageBodyType_Voice,
-    eMessageBodyType_File,
-    eMessageBodyType_Command
-};
+
 
 //判断iphone 4s
 #define isIphone4s ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone && [[UIScreen mainScreen] bounds].size.height < 481.0f)

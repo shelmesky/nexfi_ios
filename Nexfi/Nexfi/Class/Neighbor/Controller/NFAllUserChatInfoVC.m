@@ -1,18 +1,22 @@
 //
-//  ChatInfoVC.m
-//  Nexify
+//  NFAllUserChatInfoVC.m
+//  Nexfi
 //
-//  Created by fyc on 16/4/5.
+//  Created by fyc on 16/4/12.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
+
+#import "NFAllUserChatInfoVC.h"
 #import "Photo.h"
 #import "FCMsgCell.h"
+#import "TribeMessage.h"
 #import "UnderdarkUtil.h"
-#import "ChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 #import "NexfiUtil.h"
 #import "Message.h"
 #import "NFChatCacheFileUtil.h"
-@interface ChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
+
+@interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     UITableView * _tableView;
     
@@ -29,7 +33,7 @@
 }
 @end
 
-@implementation ChatInfoVC
+@implementation NFAllUserChatInfoVC
 
 -(void)viewWillAppear:(BOOL)animated{
     [self refresh:nil];
@@ -38,18 +42,18 @@
 {
     [super viewDidLoad];
     
-    [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
-
+//    [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
+    [self setBaseVCAttributesWith:@"群聊" left:nil right:nil WithInVC:self];
     
     self.automaticallyAdjustsScrollViewInsets=NO;
     
     _textArray=[[NSMutableArray alloc]init];
-
+    
     _pool = [[NSMutableArray alloc]init];
     
     
-//    [[UnderdarkUtil share].node start];
-
+    //    [[UnderdarkUtil share].node start];
+    
     
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-44) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -90,8 +94,7 @@
     
     //获取历史数据
     [self showHistoryMsg];
-    //清除该用户的未读消息
-    [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditing) name:UITextViewTextDidBeginEditingNotification object:nil];
@@ -110,16 +113,16 @@
                                                object:nil];
     
     //检测是否接收到数据
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
-
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"allUser" object:nil];
+    
     
 }
 - (void)showHistoryMsg{
     //别人发我，我发别人都要取出来
-    NSArray *historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    NSArray *historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
     
     
-    for (Message *msg in historyMsgs) {
+    for (TribeMessage *msg in historyMsgs) {
         NSLog(@"====%@",msg.timestamp);
         [self showTableMsg:msg];
     }
@@ -139,7 +142,7 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Message *msg=[_textArray objectAtIndex:indexPath.row];
+    TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
     //    NSLog(@"msg0=%d",msg.retainCount);
     NSString * identifier= [NSString stringWithFormat:@"friendCell_%d_%ld",_refreshCount,indexPath.row];
     FCMsgCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
@@ -163,7 +166,7 @@
         }
         else
         {
-            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:self.to_user.headImgStr];
+            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:msg.senderFaceImageStr];
             [cell setHeadImage:[UIImage imageWithData:imgData]];
         }
     }
@@ -171,53 +174,53 @@
     return cell;
 }
 -(void)onSelect:(UIView*)sender{
-//    [self hideKeyboard];
-//    
-//    int n = sender.tag;
-//    Message *msg=[_array objectAtIndex:n];
-//    
-//    switch ([msg.fileType intValue]) {
-//        case kWCMessageTypeImage:{
-//            
-//            
-//            //NSMutableArray * msgarr = [[FMDBUtil sharedInstance] getChatImageHistory:]
-//            
-//            JXImageView* iv = [[JXImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//            iv.contentMode = UIViewContentModeCenter;
-//            
-//            if([[msg sender] isEqualToString:[NSString stringWithFormat:@"%@",self.userModel.id]])
-//            {
-//                //UIImage * img = [UIImage imageNamed:msg.content];
-//                iv.image    = [UIImage imageWithContentsOfFile:msg.content] ;//[UIImage imageNamed:[msg file]];
-//            }
-//            else{
-//                NSURL* url = [NSURL URLWithString:msg.content];
-//                NSData *data = [NSData dataWithContentsOfURL:url];
-//                iv.image    = [UIImage imageWithData:data];//[UIImage imageNamed:[msg file]];'
-//            }
-//            iv.delegate = self;
-//            iv.didTouch = @selector(onSelectImage:);
-//            iv.userInteractionEnabled = YES;
-//            [g_App.window addSubview:iv];
-//            iv.hidden   = NO;
-//            break;
-//        }
-//        case kWCMessageTypeVoice:{
-//            _lastIndex = n;
-//            [self recordPlay:msg];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-//    msg = nil;
+    //    [self hideKeyboard];
+    //
+    //    int n = sender.tag;
+    //    Message *msg=[_array objectAtIndex:n];
+    //
+    //    switch ([msg.fileType intValue]) {
+    //        case kWCMessageTypeImage:{
+    //
+    //
+    //            //NSMutableArray * msgarr = [[FMDBUtil sharedInstance] getChatImageHistory:]
+    //
+    //            JXImageView* iv = [[JXImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    //            iv.contentMode = UIViewContentModeCenter;
+    //
+    //            if([[msg sender] isEqualToString:[NSString stringWithFormat:@"%@",self.userModel.id]])
+    //            {
+    //                //UIImage * img = [UIImage imageNamed:msg.content];
+    //                iv.image    = [UIImage imageWithContentsOfFile:msg.content] ;//[UIImage imageNamed:[msg file]];
+    //            }
+    //            else{
+    //                NSURL* url = [NSURL URLWithString:msg.content];
+    //                NSData *data = [NSData dataWithContentsOfURL:url];
+    //                iv.image    = [UIImage imageWithData:data];//[UIImage imageNamed:[msg file]];'
+    //            }
+    //            iv.delegate = self;
+    //            iv.didTouch = @selector(onSelectImage:);
+    //            iv.userInteractionEnabled = YES;
+    //            [g_App.window addSubview:iv];
+    //            iv.hidden   = NO;
+    //            break;
+    //        }
+    //        case kWCMessageTypeVoice:{
+    //            _lastIndex = n;
+    //            [self recordPlay:msg];
+    //            break;
+    //        }
+    //        default:
+    //            break;
+    //    }
+    //    msg = nil;
 }
 
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Message *msg=[_textArray objectAtIndex:indexPath.row];
-    int n = [msg.fileType intValue];
+    TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
+    int n = msg.fileType ;
     if(n == eMessageBodyType_Image)
         return 66+70;
     else
@@ -227,18 +230,18 @@
             if( n == eMessageBodyType_File)
                 return 80;
             else{
-
-                CGRect rect = [[_textArray[indexPath.row]content] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
-                 NSStringDrawingUsesDeviceMetrics|
-                 NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
+                
+                CGRect rect = [[_textArray[indexPath.row]tContent] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+                               NSStringDrawingUsesDeviceMetrics|
+                               NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
                 if (rect.size.height < 60) {
                     return 60;
                 }
                 return rect.size.height + 20 + 50;
             }
-
+    
 }
--(void)refresh:(Message*)msg
+-(void)refresh:(TribeMessage*)msg
 {
     [_inputText setInputView:nil];
     [_inputText resignFirstResponder];
@@ -283,9 +286,9 @@
     [self sendClickWithMsgType:eMessageBodyType_Text];
     
     
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[UIImage imageNamed:@"102"]]];
-
-
+    //    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[UIImage imageNamed:@"102"]]];
+    
+    
     return YES;
 }
 
@@ -306,16 +309,19 @@
 - (void)getText:(NSNotification *)notify{
     NSDictionary *text = notify.userInfo[@"text"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
-    NSLog(@"haha====%@",text[@"content"]);
-    Message *msg = [[Message alloc]initWithaDic:text];
+    TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
     msg.nodeId = nodeId;
-    if (msg.fileType.intValue != eMessageBodyType_Text && msg.file) {
-        msg.content = msg.file;
+    if (msg.fileType != eMessageBodyType_Text && msg.file) {
+        msg.tContent = msg.file;
     }
+    msg.isRead = @"1";
+    UserModel *user = [[UserModel alloc]init];
+    user.userId = msg.sender;
+    user.userName = msg.senderNickName;
+    user.headImgStr = msg.senderFaceImageStr;
     //保存聊天记录
-    [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
+    [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
     //增加未读消息数量
-    [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
     
     [self showTableMsg:msg];
     
@@ -328,12 +334,7 @@
     for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
         self.link = [[UnderdarkUtil share].node.links objectAtIndex:i];
         
-        NSLog(@"link====%lld===toUerNodeId====%@",self.link.nodeId,self.to_user.nodeId);
-        
-        //单聊找到跟对方连接的link
-        if ([[NSString stringWithFormat:@"%lld",self.link.nodeId] isEqualToString:self.to_user.nodeId]) {
-            [self.link sendData:frameData];
-        }
+        [self.link sendData:frameData];
     }
     
 }
@@ -342,26 +343,27 @@
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         
-//                NSData *newData = [@"nihaoa" dataUsingEncoding:NSUTF8StringEncoding];
+        //                NSData *newData = [@"nihaoa" dataUsingEncoding:NSUTF8StringEncoding];
         
         
         
         NSData *newData;
-        Message *msg = [[Message alloc]init];
+        TribeMessage *msg = [[TribeMessage alloc]init];
         NSString *deviceUDID = [NexfiUtil uuid];
-
+        
         switch (type) {
             case eMessageBodyType_Text:
             {
-                msg.content = data;
+                msg.tContent = data;
                 msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.sender = [[UserManager shareManager]getUser].userId;
-                msg.receiver = self.to_user.userId;
-                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Text];
+                msg.fileType = eMessageBodyType_Text;
                 msg.msgId = deviceUDID;
                 msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
                 msg.senderNickName = [[UserManager shareManager]getUser].userName;
                 msg.durational = @"";
+                msg.isRead = [NSString stringWithFormat:@"0"];
+                
                 break;
             }
             case eMessageBodyType_Image:
@@ -372,54 +374,58 @@
                 NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                 [picData writeToFile:fullPath atomically:YES];
                 
-                msg.content = fullPath;
-                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
+                msg.tContent = fullPath;
                 msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.sender = [[UserManager shareManager]getUser].userId;
-                msg.receiver = self.to_user.userId;
-                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
+                msg.fileType = eMessageBodyType_Image;
                 msg.msgId = deviceUDID;
                 msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
                 msg.senderNickName = [[UserManager shareManager]getUser].userName;
                 msg.durational = @"";
                 msg.file = [picData base64Encoding];
+                msg.isRead = [NSString stringWithFormat:@"0"];
+
                 
                 break;
             }
             case eMessageBodyType_File:
             {
                 
-//                newData = UIImageJPEGRepresentation(data, 0.5);
-//                msg.file = newData;
-//                msg.timestamp = [self getDate];
-//                msg.sender = @"1";
-//                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
-//                msg.msgId = deviceUDID;
+                //                newData = UIImageJPEGRepresentation(data, 0.5);
+                //                msg.file = newData;
+                //                msg.timestamp = [self getDate];
+                //                msg.sender = @"1";
+                //                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
+                //                msg.msgId = deviceUDID;
                 
                 break;
             }
             default:
                 break;
         }
+        
+        msg.messageType = eMessageType_AllUserChat;
+
+        
         NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
         //刷新表
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showTableMsg:msg];
-
+            
         });
         //插入数据库
         
-        [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
-         
-         
+        [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
+        
+        
         return newData;
         
     }];
     
     return result;
 }
--(void)showTableMsg:(Message *) msg
+-(void)showTableMsg:(TribeMessage *) msg
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     [_textArray addObject:msg];
@@ -429,7 +435,7 @@
     [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
     //[_tableView endUpdates];
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-   [_tableView reloadData];
+    [_tableView reloadData];
 }
 //点击发送按钮调用的方法
 -(void)sendClickWithMsgType:(MessageBodyType)type
@@ -441,10 +447,10 @@
     }
     
     [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:_inputText.text]];
-
+    
     //刷新表
     
-        //点击发送过后输入框变为空
+    //点击发送过后输入框变为空
     _inputText.text=@"";
     
     
@@ -463,7 +469,7 @@
     NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardF = [aValue CGRectValue];
     _tableView.frame = CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - keyboardF.size.height - 40);
-
+    
 }
 //当键退出时调用
 - (void)keyboardWillHide:(NSNotification *)aNotification{
@@ -479,7 +485,7 @@
     
     NSDictionary *userInfo = noti.userInfo;
     //动画时间
-//    double duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    //    double duration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     //键盘高度
     CGRect keyboardF = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
@@ -496,6 +502,8 @@
     NSLog(@"%@", strDate);
     return strDate;
 }
+
+
 
 /*
 #pragma mark - Navigation

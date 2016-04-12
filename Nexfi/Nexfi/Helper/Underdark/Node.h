@@ -12,19 +12,9 @@
 #import "Underdark.h"
 #import "UDTransport.h"
 #import "ViewController.h"
-#import "ChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 #import "NeighbourVC.h"
-/*!
- @enum
- @brief 请求类型
- @constant requestUserInfo 请求用户信息类型
- @constant sendUserInfo 发送用户信息类型
 
- */
-typedef NS_ENUM(NSInteger, MessageType) {
-    requestUserInfo = 1,
-    sendUserInfo = 2,
-};
 
 @interface Node : NSObject<UDTransportDelegate>
 

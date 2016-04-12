@@ -1,14 +1,14 @@
 //
-//  TribeMessage.m
+//  Message.m
 //  Nexfi
 //
-//  Created by fyc on 16/4/12.
+//  Created by fyc on 16/4/5.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 
-#import "TribeMessage.h"
+#import "Message.h"
 
-@implementation TribeMessage
+@implementation PersonMessage
 
 - (id)initWithaDic:(NSDictionary *)aDic{
     if (self = [super init]) {
@@ -23,10 +23,9 @@
         self.nodeId = aDic[@"nodeId"];
         self.durational = aDic[@"durational"];
         self.file = aDic[@"file"];
-        self.groupId = aDic[@"groupId"] ;
-        self.isRead = aDic[@"isRead"] ;
-        self.tContent = aDic[@"tContent"];
-        
+        self.receiver = aDic[@"receiver"] ;
+        self.pContent = aDic[@"pContent"];
+
     }
     return self;
 }

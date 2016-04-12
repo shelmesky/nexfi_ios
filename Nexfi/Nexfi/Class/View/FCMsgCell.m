@@ -66,6 +66,7 @@
 //    LoginUserModel *loginUserModel = [LOGIN_USER loginUserModel];
 //    UserModel *userModel = loginUserModel.userModel;
 //
+    NSLog(@"send===%@   use==%@",msg.sender,[[UserManager shareManager]getUser].userId);
     
     return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
     
@@ -78,9 +79,20 @@
 }
 -(void)setMsg:(Message *)aMessage
 {
-    msg = aMessage;
-    if([aMessage.fileType intValue] == eMessageBodyType_Text)
-        _messageConent.text = aMessage.content;
+    NSString *content ;
+    if ([aMessage isKindOfClass:[PersonMessage class]]) {
+        PersonMessage *pMsg = (PersonMessage *)aMessage;
+        content = pMsg.pContent;
+        msg = pMsg;
+    }else if ([aMessage isKindOfClass:[TribeMessage class]]){
+        TribeMessage *tMsg = (TribeMessage *)aMessage;
+        content = tMsg.tContent;
+        msg = tMsg;
+    }
+    if(aMessage.fileType  == eMessageBodyType_Text)
+        _messageConent.text = content;
+    
+    
     
 }
 
@@ -167,14 +179,28 @@
     BOOL isMe=[self isMeSend];
 //    CGSize textSize = _messageConent.frame.size;
 
-    CGRect textSize = [self.msg.content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+    NSString *content ;
+    NSString *durational;
+    PersonMessage *pMsg;
+    TribeMessage *tMsg;
+    if ([msg isKindOfClass:[PersonMessage class]]) {
+        pMsg = (PersonMessage *)msg;
+        content = pMsg.pContent;
+        durational = pMsg.durational;
+    }else if ([msg isKindOfClass:[TribeMessage class]]){
+        tMsg = (TribeMessage *)msg;
+        content = tMsg.tContent;
+        durational = tMsg.durational;
+    }
+    
+    CGRect textSize = [content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                    NSStringDrawingUsesDeviceMetrics|
                    NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-    NSString* s;
+    NSString* usersId;
     
     
     if(isMe){
-        s = [msg sender];//msg.fromUserId;
+        usersId = [msg sender];//msg.fromUserId;
         [_userHead setFrame:CGRectMake(SCREEN_SIZE.width-INSETS-HEAD_SIZE, 5, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"SenderTextNodeBkg"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"SenderTextNodeBkgHL"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
@@ -182,7 +208,7 @@
         _timeLabel.frame = CGRectMake(160, 0, 100, 8);
         _timeLabel.textAlignment = NSTextAlignmentRight;
     }else{
-        s = [msg receiver];//msg.toUserId;
+        usersId = [msg sender];//msg.toUserId;
         [_userHead setFrame:CGRectMake(INSETS, 5, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"ReceiverTextNodeBkg"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"ReceiverTextNodeBkgHL"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
@@ -203,7 +229,7 @@
     float bubbleWidth;
     float bubbleHeight;
     
-    if([msg.fileType intValue]==eMessageBodyType_Text){
+    if(msg.fileType ==eMessageBodyType_Text){
         if(isMe){
             
             bubbleX = SCREEN_SIZE.width - INSETS*2 - HEAD_SIZE - textSize.size.width - 30;
@@ -231,7 +257,7 @@
     
     
     _messageConent.hidden = NO;
-    if([msg.fileType intValue]==eMessageBodyType_Image){
+    if(msg.fileType ==eMessageBodyType_Image){
         
         if(isMe)
         {
@@ -242,7 +268,7 @@
             [_chatImage setHidden:NO];
             _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
             _chatImage.frame = CGRectMake(10, 5, 80, 80);
-            [self setChatImage:[UIImage imageWithContentsOfFile:msg.content]];
+            [self setChatImage:[UIImage imageWithContentsOfFile:content]];
         }
         else
         {
@@ -253,14 +279,14 @@
             [_chatImage setHidden:NO];
             _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
             _chatImage.frame = CGRectMake(15, 5, 80, 80);
-            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.content];
+            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:content];
             _chatImage.image = [UIImage imageWithData:imageData];
         }
 
     }
     
     
-    if([msg.fileType intValue]==eMessageBodyType_Voice){
+    if(msg.fileType ==eMessageBodyType_Voice){
         float w = (320-HEAD_SIZE-INSETS*2-50)/30;
         w = 50+w*3;//[msg.timeLen intValue];
         if(w<50)
@@ -272,7 +298,7 @@
         iv.image =  [UIImage imageNamed:@"VoiceNodePlaying@2x.png"];
         
         UILabel* p = [[UILabel alloc] init];
-        p.text = [NSString stringWithFormat:@"%d''",[msg.durational intValue]];
+        p.text = [NSString stringWithFormat:@"%d''",[durational intValue]];
         p.backgroundColor = [UIColor clearColor];
         p.textColor = [UIColor grayColor];
         p.font = [UIFont systemFontOfSize:11];

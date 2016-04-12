@@ -5,7 +5,6 @@
 //  Created by fyc on 16/4/6.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-#import "TribeMessage.h"
 #import "SqlManager.h"
 #import "FMDatabaseQueue.h"
 @implementation SqlManager
@@ -98,13 +97,13 @@ static SqlManager *_share = nil;
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
         
-        [dic setObject:[[UserManager shareManager] getUser].userId forKey:@"userId"];
+        [dic setObject:user.userId forKey:@"userId"];
         [dic setObject:user.headImgStr forKey:@"headImgStr"];
         [dic setObject:user.userName forKey:@"userName"];
         [dic setObject:message.timestamp forKey:@"send_time"];
-        [dic setObject:message.content forKey:@"msg_text"];
+        [dic setObject:message.tContent forKey:@"msg_text"];
         [dic setObject:message.msgId forKey:@"msg_id"];
-        [dic setObject:message.fileType forKey:@"filetype"];
+        [dic setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
         [dic setObject:message.durational forKey:@"durational"];
         [dic setObject:message.isRead forKey:@"isRead"];
         
@@ -120,13 +119,13 @@ static SqlManager *_share = nil;
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
         
-        [dic setObject:[[UserManager shareManager] getUser].userId forKey:@"userId"];
+        [dic setObject:user.userId forKey:@"userId"];
         [dic setObject:user.headImgStr forKey:@"headImgStr"];
         [dic setObject:user.userName forKey:@"userName"];
         [dic setObject:message.timestamp forKey:@"send_time"];
-        [dic setObject:message.content forKey:@"msg_text"];
+        [dic setObject:message.tContent forKey:@"msg_text"];
         [dic setObject:message.msgId forKey:@"msg_id"];
-        [dic setObject:message.fileType forKey:@"filetype"];
+        [dic setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
         [dic setObject:message.durational forKey:@"durational"];
         [dic setObject:groupId forKey:@"groupId"];
         [dic setObject:message.isRead forKey:@"isRead"];
@@ -138,7 +137,7 @@ static SqlManager *_share = nil;
     
 }
 #pragma -mark 插入某人－》某人数据
-- (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(Message *)message{
+- (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(PersonMessage *)message{
     if (message == nil)
     {
         return;
@@ -163,10 +162,10 @@ static SqlManager *_share = nil;
             
         }
         [dict setObject:message.msgId forKey:@"msg_id"];
-        [dict setObject:message.content forKey:@"msg_text"];
+        [dict setObject:message.pContent forKey:@"msg_text"];
         [dict setObject:message.timestamp forKey:@"send_time"];
         [dict setObject:message.durational forKey:@"durational"];
-        [dict setObject:message.fileType forKey:@"filetype"];
+        [dict setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
         
         
         [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational)" withParameterDictionary:dict];
@@ -184,7 +183,7 @@ static SqlManager *_share = nil;
     }
 }
 #pragma -mark 更新用户数据
-- (void)update_chat_to_user:(UserModel *)toUser WithMsg:(Message *)message{
+- (void)update_chat_to_user:(UserModel *)toUser WithMsg:(PersonMessage *)message{
     
     if (message == nil)
     {
@@ -212,12 +211,12 @@ static SqlManager *_share = nil;
         
         [dict setObject:message.timestamp forKey:@"send_time"];
         
-        if([message.fileType intValue]== eMessageBodyType_Voice){
+        if(message.fileType == eMessageBodyType_Voice){
             [dict setObject:@"[语音]" forKey:@"lastmsg"];
-        }else if ([message.fileType intValue]==eMessageBodyType_Image){
+        }else if (message.fileType ==eMessageBodyType_Image){
             [dict setObject:@"[图片]" forKey:@"lastmsg"];
         }else{
-            [dict setObject:message.content forKey:@"lastmsg"];
+            [dict setObject:message.pContent forKey:@"lastmsg"];
         }
         
         if (count == 0) {
@@ -230,6 +229,22 @@ static SqlManager *_share = nil;
         }
         
 
+    }
+}
+#pragma -mark 清空群组未读消息
+- (void)clearMsgOfGroup:(NSString *)groupId{
+    if ([db open]) {
+        if ([db executeUpdate:@"update nexfi_group_chat set isRead = 1 where groupId=?",groupId]) {
+            NSLog(@"清空群组消息成功");
+        }
+    }
+}
+#pragma -mark 清空总群未读消息
+- (void)clearMsgOfAllUser{
+    if ([db open]) {
+        if ([db executeUpdate:@"update nexfi_allUser_chat set isRead = 1"]) {
+            NSLog(@"清空总群消息成功");
+        }
     }
 }
 #pragma -mark 增加未读消息
@@ -252,7 +267,6 @@ static SqlManager *_share = nil;
         //[db close];
         
     }
-    
 }
 #pragma -mark 删除联系人的聊天记录
 -(void)deleteTalk:(NSString *)user_id
@@ -302,9 +316,9 @@ static SqlManager *_share = nil;
             message.senderFaceImageStr = [rs stringForColumn:@"headImgStr"];
             message.senderNickName = [rs stringForColumn:@"userName"];
             message.timestamp = [rs stringForColumn:@"send_time"];
-            message.content = [rs stringForColumn:@"msg_text"];
+            message.tContent = [rs stringForColumn:@"msg_text"];
             message.msgId = [rs stringForColumn:@"msg_id"];
-            message.fileType = [rs stringForColumn:@"filetype"];
+            message.fileType = [[rs stringForColumn:@"filetype"] intValue];
             message.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
             message.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
             
@@ -316,7 +330,7 @@ static SqlManager *_share = nil;
     
     return chatList;
 }
-#pragma -mark 查询总群聊的历史纪录
+#pragma -mark 查询群聊的历史纪录
 - (NSMutableArray *)getGroupChatListWithNum:(NSInteger)num WithGroupId:(NSString *)groupId{
     
     NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
@@ -340,9 +354,9 @@ static SqlManager *_share = nil;
             message.senderFaceImageStr = [rs stringForColumn:@"headImgStr"];
             message.senderNickName = [rs stringForColumn:@"userName"];
             message.timestamp = [rs stringForColumn:@"send_time"];
-            message.content = [rs stringForColumn:@"msg_text"];
+            message.tContent = [rs stringForColumn:@"msg_text"];
             message.msgId = [rs stringForColumn:@"msg_id"];
-            message.fileType = [rs stringForColumn:@"filetype"];
+            message.fileType = [[rs stringForColumn:@"filetype"] intValue];
             message.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
             message.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
             message.groupId = [rs stringForColumn:@"groupId"];
@@ -376,19 +390,19 @@ static SqlManager *_share = nil;
         
         //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select count(*) from letmedo_chat"]];
         
-        Message * msg;
+        PersonMessage * msg;
         while ([rs next]){
             NSLog(@"dad");
             
-            msg = [[Message alloc] init];
+            msg = [[PersonMessage alloc] init];
             msg.sender = [rs stringForColumn:@"from_user_id"];
             msg.receiver = [rs stringForColumn:@"to_user_id"];
             
-            msg.content = [rs stringForColumn:@"msg_text"];
+            msg.pContent = [rs stringForColumn:@"msg_text"];
             msg.timestamp = [rs stringForColumn:@"send_time"];
             
             msg.durational = [rs stringForColumn:@"durational"];
-            msg.fileType = [rs stringForColumn:@"filetype"];
+            msg.fileType = [[rs stringForColumn:@"filetype"] intValue];
             [recordArray addObject: msg];
         }
         [rs close];

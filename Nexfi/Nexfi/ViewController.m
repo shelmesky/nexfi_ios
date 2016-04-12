@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "ChatVC.h"
-#import "ChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 #import "UserManager.h"
 #import "SelfVC.h"
 #import "NeighbourVC.h"
@@ -59,7 +59,7 @@
 
 
 - (void)pushToChat:(id)sender{
-    ChatInfoVC *vc = [[ChatInfoVC alloc]init];
+    NFSingleChatInfoVC *vc = [[NFSingleChatInfoVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)didReceiveMemoryWarning {

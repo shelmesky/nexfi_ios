@@ -107,7 +107,7 @@ static NexfiUtil *_util;
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     unsigned int propsCount;
-    
+
     objc_property_t *props = class_copyPropertyList([obj class], &propsCount);
     
     for(int i = 0;i < propsCount; i++)

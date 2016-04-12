@@ -50,7 +50,7 @@
 		0E5492EB1CB3997100DE40E8 /* UDAsyncUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492BE1CB3997100DE40E8 /* UDAsyncUtils.m */; };
 		0E5492EC1CB3997100DE40E8 /* UDConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492C01CB3997100DE40E8 /* UDConfig.m */; };
 		0E5492ED1CB3997100DE40E8 /* UDRunLoopThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492C21CB3997100DE40E8 /* UDRunLoopThread.m */; };
-		0E5492F11CB39BE400DE40E8 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492F01CB39BE400DE40E8 /* Message.m */; };
+		0E5492F11CB39BE400DE40E8 /* PersonMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492F01CB39BE400DE40E8 /* PersonMessage.m */; };
 		0E5492F51CB3A5E000DE40E8 /* FCMsgCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492F41CB3A5E000DE40E8 /* FCMsgCell.m */; };
 		0E5493451CB3A64100DE40E8 /* emojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E5492F81CB3A64100DE40E8 /* emojiViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		0E5493461CB3A64100DE40E8 /* write_face_01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5492FA1CB3A64100DE40E8 /* write_face_01.png */; };
@@ -156,6 +156,11 @@
 		0E9E757D1CB7982100EE2272 /* NFChatCacheFileUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E757C1CB7982100EE2272 /* NFChatCacheFileUtil.m */; };
 		0E9E75801CBC982F00EE2272 /* UIColor+Hex.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E757F1CBC982F00EE2272 /* UIColor+Hex.m */; };
 		0E9E75831CBCA89000EE2272 /* TribeMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75821CBCA89000EE2272 /* TribeMessage.m */; };
+		0E9E75871CBCCB3200EE2272 /* NFAllUserChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75851CBCCB3200EE2272 /* NFAllUserChatInfoVC.m */; };
+		0E9E75881CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E75861CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib */; };
+		0E9E758C1CBCCB6900EE2272 /* NFTribeChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E758A1CBCCB6900EE2272 /* NFTribeChatInfoVC.m */; };
+		0E9E758D1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */; };
+		0E9E75901CBCDE8100EE2272 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E758F1CBCDE8100EE2272 /* Message.m */; };
 		0EBAE9441CB3824000361D18 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9431CB3824000361D18 /* main.m */; };
 		0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9461CB3824000361D18 /* AppDelegate.m */; };
 		0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9491CB3824000361D18 /* ViewController.m */; };
@@ -164,8 +169,8 @@
 		0EBAE9521CB3824000361D18 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE9501CB3824000361D18 /* LaunchScreen.storyboard */; };
 		0EBAE95D1CB3824000361D18 /* NexfiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE95C1CB3824000361D18 /* NexfiTests.m */; };
 		0EBAE9681CB3824000361D18 /* NexfiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9671CB3824000361D18 /* NexfiUITests.m */; };
-		0EBAE97C1CB3830F00361D18 /* ChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9771CB3830F00361D18 /* ChatInfoVC.m */; };
-		0EBAE97D1CB3830F00361D18 /* ChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE9781CB3830F00361D18 /* ChatInfoVC.xib */; };
+		0EBAE97C1CB3830F00361D18 /* NFSingleChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9771CB3830F00361D18 /* NFSingleChatInfoVC.m */; };
+		0EBAE97D1CB3830F00361D18 /* NFSingleChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE9781CB3830F00361D18 /* NFSingleChatInfoVC.xib */; };
 		0EBAE97E1CB3830F00361D18 /* ChatVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE97A1CB3830F00361D18 /* ChatVC.m */; };
 		0EBAE97F1CB3830F00361D18 /* ChatVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE97B1CB3830F00361D18 /* ChatVC.xib */; };
 		0EBAEB821CB3839400361D18 /* d_aini@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAEA1C1CB3839400361D18 /* d_aini@2x.png */; };
@@ -636,8 +641,8 @@
 		0E5492C01CB3997100DE40E8 /* UDConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDConfig.m; sourceTree = "<group>"; };
 		0E5492C11CB3997100DE40E8 /* UDRunLoopThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDRunLoopThread.h; sourceTree = "<group>"; };
 		0E5492C21CB3997100DE40E8 /* UDRunLoopThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDRunLoopThread.m; sourceTree = "<group>"; };
-		0E5492EF1CB39BE400DE40E8 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		0E5492F01CB39BE400DE40E8 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		0E5492EF1CB39BE400DE40E8 /* PersonMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonMessage.h; sourceTree = "<group>"; };
+		0E5492F01CB39BE400DE40E8 /* PersonMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonMessage.m; sourceTree = "<group>"; };
 		0E5492F31CB3A5E000DE40E8 /* FCMsgCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCMsgCell.h; sourceTree = "<group>"; };
 		0E5492F41CB3A5E000DE40E8 /* FCMsgCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCMsgCell.m; sourceTree = "<group>"; };
 		0E5492F71CB3A64100DE40E8 /* emojiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = emojiViewController.h; sourceTree = "<group>"; };
@@ -770,6 +775,14 @@
 		0E9E757F1CBC982F00EE2272 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
 		0E9E75811CBCA89000EE2272 /* TribeMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TribeMessage.h; sourceTree = "<group>"; };
 		0E9E75821CBCA89000EE2272 /* TribeMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TribeMessage.m; sourceTree = "<group>"; };
+		0E9E75841CBCCB3200EE2272 /* NFAllUserChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAllUserChatInfoVC.h; sourceTree = "<group>"; };
+		0E9E75851CBCCB3200EE2272 /* NFAllUserChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAllUserChatInfoVC.m; sourceTree = "<group>"; };
+		0E9E75861CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFAllUserChatInfoVC.xib; sourceTree = "<group>"; };
+		0E9E75891CBCCB6900EE2272 /* NFTribeChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFTribeChatInfoVC.h; sourceTree = "<group>"; };
+		0E9E758A1CBCCB6900EE2272 /* NFTribeChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFTribeChatInfoVC.m; sourceTree = "<group>"; };
+		0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFTribeChatInfoVC.xib; sourceTree = "<group>"; };
+		0E9E758E1CBCDE8100EE2272 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		0E9E758F1CBCDE8100EE2272 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		0EBAE93F1CB3824000361D18 /* Nexfi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nexfi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBAE9431CB3824000361D18 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EBAE9451CB3824000361D18 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -786,9 +799,9 @@
 		0EBAE9631CB3824000361D18 /* NexfiUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NexfiUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBAE9671CB3824000361D18 /* NexfiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NexfiUITests.m; sourceTree = "<group>"; };
 		0EBAE9691CB3824000361D18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0EBAE9761CB3830F00361D18 /* ChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatInfoVC.h; path = ../../../ChatInfoVC.h; sourceTree = "<group>"; };
-		0EBAE9771CB3830F00361D18 /* ChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatInfoVC.m; path = ../../../ChatInfoVC.m; sourceTree = "<group>"; };
-		0EBAE9781CB3830F00361D18 /* ChatInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChatInfoVC.xib; path = ../../../ChatInfoVC.xib; sourceTree = "<group>"; };
+		0EBAE9761CB3830F00361D18 /* NFSingleChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NFSingleChatInfoVC.h; path = ../../../NFSingleChatInfoVC.h; sourceTree = "<group>"; };
+		0EBAE9771CB3830F00361D18 /* NFSingleChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NFSingleChatInfoVC.m; path = ../../../NFSingleChatInfoVC.m; sourceTree = "<group>"; };
+		0EBAE9781CB3830F00361D18 /* NFSingleChatInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = NFSingleChatInfoVC.xib; path = ../../../NFSingleChatInfoVC.xib; sourceTree = "<group>"; };
 		0EBAE9791CB3830F00361D18 /* ChatVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ChatVC.h; path = ../../../ChatVC.h; sourceTree = "<group>"; };
 		0EBAE97A1CB3830F00361D18 /* ChatVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ChatVC.m; path = ../../../ChatVC.m; sourceTree = "<group>"; };
 		0EBAE97B1CB3830F00361D18 /* ChatVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ChatVC.xib; path = ../../../ChatVC.xib; sourceTree = "<group>"; };
@@ -1440,8 +1453,10 @@
 		0E5492EE1CB39BD700DE40E8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0E5492EF1CB39BE400DE40E8 /* Message.h */,
-				0E5492F01CB39BE400DE40E8 /* Message.m */,
+				0E5492EF1CB39BE400DE40E8 /* PersonMessage.h */,
+				0E5492F01CB39BE400DE40E8 /* PersonMessage.m */,
+				0E9E758E1CBCDE8100EE2272 /* Message.h */,
+				0E9E758F1CBCDE8100EE2272 /* Message.m */,
 				0E9E75811CBCA89000EE2272 /* TribeMessage.h */,
 				0E9E75821CBCA89000EE2272 /* TribeMessage.m */,
 				0E54939D1CB4C07600DE40E8 /* UserModel.h */,
@@ -1601,9 +1616,15 @@
 		0E5493AC1CB4DE0000DE40E8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				0EBAE9761CB3830F00361D18 /* ChatInfoVC.h */,
-				0EBAE9771CB3830F00361D18 /* ChatInfoVC.m */,
-				0EBAE9781CB3830F00361D18 /* ChatInfoVC.xib */,
+				0EBAE9761CB3830F00361D18 /* NFSingleChatInfoVC.h */,
+				0EBAE9771CB3830F00361D18 /* NFSingleChatInfoVC.m */,
+				0EBAE9781CB3830F00361D18 /* NFSingleChatInfoVC.xib */,
+				0E9E75841CBCCB3200EE2272 /* NFAllUserChatInfoVC.h */,
+				0E9E75851CBCCB3200EE2272 /* NFAllUserChatInfoVC.m */,
+				0E9E75861CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib */,
+				0E9E75891CBCCB6900EE2272 /* NFTribeChatInfoVC.h */,
+				0E9E758A1CBCCB6900EE2272 /* NFTribeChatInfoVC.m */,
+				0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */,
 				0EBAE9791CB3830F00361D18 /* ChatVC.h */,
 				0EBAE97A1CB3830F00361D18 /* ChatVC.m */,
 				0EBAE97B1CB3830F00361D18 /* ChatVC.xib */,
@@ -2459,13 +2480,14 @@
 				0EBAEC531CB3839400361D18 /* lxh_youyali.gif in Resources */,
 				0EE1C4161CB5162900A135C3 /* img_head_09@2x.png in Resources */,
 				0EE1C4351CB552ED00A135C3 /* 102@2x.png in Resources */,
-				0EBAE97D1CB3830F00361D18 /* ChatInfoVC.xib in Resources */,
+				0EBAE97D1CB3830F00361D18 /* NFSingleChatInfoVC.xib in Resources */,
 				0EBAEB931CB3839400361D18 /* d_han@2x.png in Resources */,
 				0EBAEBE41CB3839400361D18 /* w_xiayu@2x.png in Resources */,
 				0EBAEB991CB3839400361D18 /* d_keai@2x.png in Resources */,
 				0EE1C4141CB5162900A135C3 /* img_head_07@2x.png in Resources */,
 				0E5493561CB3A64100DE40E8 /* write_face_16.png in Resources */,
 				0EBAEB9D1CB3839400361D18 /* d_landelini@2x.png in Resources */,
+				0E9E75881CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib in Resources */,
 				0EBAEC6B1CB3839400361D18 /* messages_icon_empty_status@2x.png in Resources */,
 				0EBAEC781CB3839400361D18 /* YBKeyboardEmoj.plist in Resources */,
 				0E80885D1CB66C270046DE0F /* 057@2x.png in Resources */,
@@ -2627,6 +2649,7 @@
 				0EBAECA41CB3839400361D18 /* icon_messages_more_pic_voice_p@3x.png in Resources */,
 				0EBAEC2F1CB3839400361D18 /* lxh_qiaoqiao.gif in Resources */,
 				0EBAEC981CB3839400361D18 /* icon_messages_more_location_p@3x.png in Resources */,
+				0E9E758D1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib in Resources */,
 				0EBAEBCE1CB3839400361D18 /* h_ye@2x.png in Resources */,
 				0E5493681CB3A64100DE40E8 /* write_face_32.png in Resources */,
 				0EBAEBC31CB3839400361D18 /* f_shenma@2x.png in Resources */,
@@ -2940,14 +2963,14 @@
 				0E5492E91CB3997100DE40E8 /* UnderdarkUtil.m in Sources */,
 				0EBAEC7F1CB3839400361D18 /* YBKeyboardEmojModel.m in Sources */,
 				0E5492C61CB3997100DE40E8 /* UDNsdBrowser.m in Sources */,
-				0E5492F11CB39BE400DE40E8 /* Message.m in Sources */,
+				0E5492F11CB39BE400DE40E8 /* PersonMessage.m in Sources */,
 				0E5492D61CB3997100DE40E8 /* Node.m in Sources */,
 				0E5493861CB3A64100DE40E8 /* JXSelectImageView.m in Sources */,
 				0E5492E51CB3997100DE40E8 /* UDAggLink.m in Sources */,
 				0E5492DD1CB3997100DE40E8 /* UDUtil.m in Sources */,
 				0E5492EB1CB3997100DE40E8 /* UDAsyncUtils.m in Sources */,
 				0E5493811CB3A64100DE40E8 /* FaceViewController.m in Sources */,
-				0EBAE97C1CB3830F00361D18 /* ChatInfoVC.m in Sources */,
+				0EBAE97C1CB3830F00361D18 /* NFSingleChatInfoVC.m in Sources */,
 				0E8088601CB670C00046DE0F /* NSDataEx.m in Sources */,
 				0EBAEC7B1CB3839400361D18 /* YBKeyboardEmojiPageControl.m in Sources */,
 				0E5492D71CB3997100DE40E8 /* Packets.pb.m in Sources */,
@@ -2956,6 +2979,7 @@
 				0E5493B71CB4DFF800DE40E8 /* NeighbourVC.m in Sources */,
 				0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */,
 				0E5492CE1CB3997100DE40E8 /* UDBonjourServer.m in Sources */,
+				0E9E75871CBCCB3200EE2272 /* NFAllUserChatInfoVC.m in Sources */,
 				0EBAEC651CB3839400361D18 /* MJType.m in Sources */,
 				0EBAECB51CB3839400361D18 /* YBKeyboardText.m in Sources */,
 				0E5492DA1CB3997100DE40E8 /* UDTimeExtender.m in Sources */,
@@ -3006,7 +3030,9 @@
 				0EBAEC831CB3839400361D18 /* YBKeyboardEmojSet.m in Sources */,
 				0EBAECBB1CB3839400361D18 /* YBKeyboardVoiceView.m in Sources */,
 				0EBAECB21CB3839400361D18 /* YBkeyboardMoreFunctionButton.m in Sources */,
+				0E9E75901CBCDE8100EE2272 /* Message.m in Sources */,
 				0EE1C3FA1CB4F7A300A135C3 /* FCCongureInfoVC.m in Sources */,
+				0E9E758C1CBCCB6900EE2272 /* NFTribeChatInfoVC.m in Sources */,
 				0EBAEC7C1CB3839400361D18 /* YBKeyboardEmojiPopView.m in Sources */,
 				0EBAE9441CB3824000361D18 /* main.m in Sources */,
 			);

@@ -6,9 +6,10 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 #import "UnderdarkUtil.h"
-#import "ChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 #import "NFNearbyUserCell.h"
 #import "NeighbourVC.h"
+#import "NFAllUserChatInfoVC.h"
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
 
@@ -33,7 +34,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    [self setBaseVCAttributesWith:@"附近的人" left:nil right:nil WithInVC:self];
+    [self setBaseVCAttributesWith:@"附近的人" left:nil right:@"群聊" WithInVC:self];
     
 
     
@@ -64,7 +65,11 @@
     NSDictionary *text = notify.userInfo[@"text"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
     NSLog(@"haha====%@",text[@"content"]);
-    Message *msg = [[Message alloc]initWithaDic:text];
+//    if ([text[@"messageType"]
+//        intValue] == eMessageType_SingleChat) {
+//        <#statements#>
+//    }
+    PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
     
     UserModel *user = [[UserModel alloc]init];
     user.headImgStr = msg.senderFaceImageStr;
@@ -104,7 +109,7 @@
 #pragma -mark 私聊
 - (void)nearbyUserCellDidClickChatButtonForIndexPath:(NSIndexPath *)indexPath{
     UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
-    ChatInfoVC *chat = [[ChatInfoVC alloc]init];
+    NFSingleChatInfoVC *chat = [[NFSingleChatInfoVC alloc]init];
     chat.to_user = to_user;
     [self.navigationController pushViewController:chat animated:YES];
 }
@@ -132,6 +137,10 @@
     UserModel *user = self.handleByUsers[indexPath.row];
     cell.user = user;
     return cell;
+}
+- (void)RightBarBtnClick:(id)sender{
+    NFAllUserChatInfoVC *allUserVC = [[NFAllUserChatInfoVC alloc]init];
+    [self.navigationController pushViewController:allUserVC animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
