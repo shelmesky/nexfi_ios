@@ -21,7 +21,7 @@
         [self addSubview:headImg];
         
         //图标
-        self.userImg = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"img_head_01@2x"]];
+        self.userImg = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"img_head_01"]];
         self.userImg.bounds = CGRectMake(0, 0, 90, 90);
         self.userImg.userInteractionEnabled = YES;
         self.userImg.clipsToBounds = YES;

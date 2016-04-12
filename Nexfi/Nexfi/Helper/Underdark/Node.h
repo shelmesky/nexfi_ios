@@ -13,7 +13,7 @@
 #import "UDTransport.h"
 #import "ViewController.h"
 #import "ChatInfoVC.h"
-
+#import "NeighbourVC.h"
 /*!
  @enum
  @brief 请求类型
@@ -28,7 +28,8 @@ typedef NS_ENUM(NSInteger, MessageType) {
 
 @interface Node : NSObject<UDTransportDelegate>
 
-@property (nonatomic,strong)ChatInfoVC *controller;
+@property (nonatomic, strong)NSString *usersId;
+@property (nonatomic,strong)NeighbourVC *neighbourVc;
 @property (nonatomic ,strong)id<UDTransport>transport;
 @property (nonatomic, assign)int peersCount;
 @property (nonatomic, assign)int framesCount;

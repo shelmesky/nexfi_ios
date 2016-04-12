@@ -15,10 +15,13 @@
         self.userId = aDic[@"userId"];
         self.userName = aDic[@"userName"];
         self.sex = aDic[@"sex"];
-        self.userHead = aDic[@"userHead"];
+//        self.userHead = aDic[@"userHead"];
         self.age = aDic[@"age"];
         self.birthday = aDic[@"birthday"];
-        self.headImg = aDic[@"headImg"];
+//        self.headImg = aDic[@"headImg"];
+        self.headImgStr = aDic[@"headImgStr"];
+        self.nodeId = aDic[@"nodeId"];
+
     }
     return self;
 }
@@ -28,9 +31,12 @@
         self.userId = [aDecoder decodeObjectForKey:@"userId"];
         self.userName = [aDecoder decodeObjectForKey:@"userName"];
         self.sex = [aDecoder decodeObjectForKey:@"sex"];
-        self.userHead = [aDecoder decodeObjectForKey:@"userHead"];
+//        self.userHead = [aDecoder decodeObjectForKey:@"userHead"];
         self.birthday = [aDecoder decodeObjectForKey:@"birthday"];
         self.age = [aDecoder decodeObjectForKey:@"age"];
+        self.headImgStr = [aDecoder decodeObjectForKey:@"headImgStr"];
+        self.nodeId = [aDecoder decodeObjectForKey:@"nodeId"];
+//        self.headImg = [aDecoder decodeObjectForKey:@"headImg"];
 
     }
     return self;
@@ -40,13 +46,18 @@
     [aCoder encodeObject:self.userName forKey:@"userName"];
     [aCoder encodeObject:self.sex forKey:@"sex"];
     [aCoder encodeObject:self.birthday forKey:@"birthday"];
-    [aCoder encodeObject:self.userHead forKey:@"userHead"];
+//    [aCoder encodeObject:self.userHead forKey:@"userHead"];
     [aCoder encodeObject:self.age forKey:@"age"];
     [aCoder encodeObject:self.userId forKey:@"userId"];
+    [aCoder encodeObject:self.headImgStr forKey:@"headImgStr"];
+    [aCoder encodeObject:self.nodeId forKey:@"nodeId"];
+//    [aCoder encodeObject:self.headImg forKey:@"headImg"];
+
+
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"id：%@,昵称：%@,性别：%@,生日：%@,年龄：%@",self.userId,self.userName,self.sex,self.birthday,self.age];
+    return [NSString stringWithFormat:@"id：%@,昵称：%@,性别：%@,生日：%@,年龄：%@ 图片: %@",self.userId,self.userName,self.sex,self.birthday,self.age,self.headImgStr];
 }
 
 @end

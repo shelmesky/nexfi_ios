@@ -37,13 +37,9 @@
      判断是否自动登录
      */
     [self isAutoLogin];
+
+
     
-    UIButton *b = [UIButton buttonWithType:UIButtonTypeCustom];
-    b.frame =CGRectMake(100, 100, 50, 50);
-    [b setTitle:@"跳去聊天" forState:UIControlStateNormal];
-    b.backgroundColor = [UIColor blueColor];
-    [b addTarget:self action:@selector(pushToChat:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:b];
 }
 - (void)isAutoLogin{
     NSString *userId = [[UserManager shareManager]getUser].userId;

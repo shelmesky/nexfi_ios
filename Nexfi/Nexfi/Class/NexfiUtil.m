@@ -141,7 +141,7 @@ static NexfiUtil *_util;
 }
 +(id)getObjectInternal:(id)obj
 {
-    if([obj isKindOfClass:[NSString class]]||[obj isKindOfClass:[NSNumber class]]|| [obj isKindOfClass:[NSNull class]]||[obj isKindOfClass:[NSData class]]||[UIImage class])
+    if([obj isKindOfClass:[NSString class]]||[obj isKindOfClass:[NSNumber class]]|| [obj isKindOfClass:[NSNull class]]||[obj isKindOfClass:[NSData class]]||[obj isKindOfClass:[UIImage class]]||[obj isKindOfClass:[NSObject class]])
     {
         return obj;
     }

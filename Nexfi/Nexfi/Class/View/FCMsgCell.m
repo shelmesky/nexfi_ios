@@ -5,7 +5,7 @@
 //  Created by fyc on 16/4/5.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
+#import "UIImageView+WebCache.h"
 #import "FCMsgCell.h"
 #import "JXEmoji.h"
 #import "SCGIFImageView.h"
@@ -32,8 +32,9 @@
         _messageConent.userInteractionEnabled = NO;
         _messageConent.numberOfLines = 0;
         _messageConent.lineBreakMode = NSLineBreakByWordWrapping;
-        _messageConent.font = [UIFont systemFontOfSize:10];
+        _messageConent.font = [UIFont systemFontOfSize:15];
         _messageConent.offset = -12;
+//        _messageConent.textAlignment = NSTextAlignmentCenter;
         
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _timeLabel.backgroundColor = [UIColor clearColor];
@@ -43,8 +44,8 @@
         [self.contentView addSubview:_bubbleBg];
         [self.contentView addSubview:_userHead];
 //        [self.contentView addSubview:_headMask];
-        [self.contentView addSubview:_messageConent];
-        [self.contentView addSubview:_chatImage];
+        [_bubbleBg addSubview:_messageConent];
+        [_bubbleBg addSubview:_chatImage];
         [self.contentView addSubview:_timeLabel];
         
         _messageConent.hidden = YES;
@@ -64,9 +65,10 @@
     //return [[msg sender] isEqualToString:[[NSUserDefaults standardUserDefaults]stringForKey:kMY_USER_ID]];
 //    LoginUserModel *loginUserModel = [LOGIN_USER loginUserModel];
 //    UserModel *userModel = loginUserModel.userModel;
-//    
-//    return [[msg sender] isEqualToString:[NSString stringWithFormat:@"%@",userModel.id]];
-    return YES;
+//
+    
+    return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
+    
 }
 
 -(void)layoutSubviews
@@ -167,7 +169,7 @@
 
     CGRect textSize = [self.msg.content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                    NSStringDrawingUsesDeviceMetrics|
-                   NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:10.0],NSFontAttributeName, nil] context:0];
+                   NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
     NSString* s;
     
     
@@ -196,51 +198,65 @@
     [f setDateFormat:@"MM-dd HH:mm"];
     _timeLabel.text = [msg timestamp];//[f stringFromDate:[msg timestamp]];
     
+    float bubbleY;
+    float bubbleX;
+    float bubbleWidth;
+    float bubbleHeight;
+    
     if([msg.fileType intValue]==eMessageBodyType_Text){
         if(isMe){
-            [_messageConent setHidden:NO];
-            //_messageConent.textColor =[UIColor whiteColor];
-            [_messageConent setFrame:CGRectMake(SCREEN_SIZE.width-INSETS*2-HEAD_SIZE-textSize.size.width-15, (self.contentView.frame.size.height-textSize.size.height)/2, textSize.size.width, textSize.size.height)];
-            _bubbleBg.frame=CGRectMake(_messageConent.frame.origin.x-15, _messageConent.frame.origin.y-12, textSize.size.width+30, textSize.size.height+30);
+            
+            bubbleX = SCREEN_SIZE.width - INSETS*2 - HEAD_SIZE - textSize.size.width - 30;
+            bubbleY = 10;
+            bubbleWidth = textSize.size.width + 40;
+            bubbleHeight = textSize.size.height + 40;
+            
+            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
+            _messageConent.frame = CGRectMake(15, 12, textSize.size.width+10, textSize.size.height + 10);
+//            _messageConent.textAlignment = NSTextAlignmentRight;
+            
         }else
         {
-            [_messageConent setHidden:NO];
-            [_messageConent setFrame:CGRectMake(2*INSETS+HEAD_SIZE+15, (self.contentView.frame.size.height-textSize.size.height)/2, textSize.size.width, textSize.size.height)];
-            _bubbleBg.frame=CGRectMake(_messageConent.frame.origin.x-15, _messageConent.frame.origin.y-12, textSize.size.width+30, textSize.size.height+30);
+
+            bubbleX = 2*INSETS+HEAD_SIZE;
+            bubbleY = 10;
+            bubbleWidth = textSize.size.width + 40;
+            bubbleHeight = textSize.size.height + 40;
+            
+            _bubbleBg.frame=CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
+            _messageConent.frame = CGRectMake(15, 12, textSize.size.width+ 10, textSize.size.height + 10);
+//            _messageConent.textAlignment = NSTextAlignmentLeft;
         }
     }
     
     
+    _messageConent.hidden = NO;
     if([msg.fileType intValue]==eMessageBodyType_Image){
+        
         if(isMe)
         {
+            bubbleX = SCREEN_SIZE.width - INSETS*2 -HEAD_SIZE - 100;
+            bubbleY = 15;
+            bubbleWidth = 105;
+            bubbleHeight = 100;
             [_chatImage setHidden:NO];
-            [_chatImage setFrame:CGRectMake(SCREEN_SIZE.width-INSETS*2-HEAD_SIZE-90, INSETS*2, 80, 80)];
-            _bubbleBg.frame=CGRectMake(_chatImage.frame.origin.x-10, INSETS, 100+5, 100+5);
-            
-            //UIImage * img = [UIImage imageNamed:msg.content];
-            //[self setChatImage:img];
-            UIImage *img = [UIImage imageWithData:msg.file];
-//            [self setChatImage:[[UIImage alloc] initWithContentsOfFile:msg.content]];
-            [self setChatImage:img];
+            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
+            _chatImage.frame = CGRectMake(10, 5, 80, 80);
+            [self setChatImage:[UIImage imageWithContentsOfFile:msg.content]];
         }
         else
         {
+            bubbleX = 2*INSETS+HEAD_SIZE;
+            bubbleY = 15;
+            bubbleWidth = 105;
+            bubbleHeight = 100;
             [_chatImage setHidden:NO];
-            [_chatImage setFrame:CGRectMake(2*INSETS+HEAD_SIZE+15, INSETS*2,80,80)];
-            _bubbleBg.frame=CGRectMake(_chatImage.frame.origin.x-15, INSETS, 100+5, 100+5);
-            
-            //[self setChatImage:[UIImage imageWithData:[msg file]]];
-//            NSURL* url = [NSURL URLWithString:msg.content];
-            // NSData *data = [NSData dataWithContentsOfURL:url];
-            //[self setChatImage:[UIImage imageWithData:data]];
-            
-//            [self setChatImageWithURL:url];
-            UIImage *img = [UIImage imageWithData:msg.file];
-            [self setChatImage:img];
-            //[self setChatImage:[UIImage imageWithData:data]];
+            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
+            _chatImage.frame = CGRectMake(15, 5, 80, 80);
+            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.content];
+            _chatImage.image = [UIImage imageWithData:imageData];
         }
-        //[self setChatImage:[UIImage imageWithData:[msg file]]];
+
     }
     
     

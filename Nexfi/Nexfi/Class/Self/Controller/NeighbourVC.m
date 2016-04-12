@@ -6,15 +6,12 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 #import "UnderdarkUtil.h"
-
+#import "ChatInfoVC.h"
 #import "NFNearbyUserCell.h"
 #import "NeighbourVC.h"
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
 
-@property (nonatomic,strong) UITableView *usersTable;
-@property (nonatomic,strong) NSMutableArray *nearbyUsers;
-@property (nonatomic,strong) NSMutableArray *handleByUsers;
 
 
 @end
@@ -35,9 +32,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-//    [UnderdarkUtil share].node.controller = self;
+
+    [self setBaseVCAttributesWith:@"附近的人" left:nil right:nil WithInVC:self];
+    
+
     
     [[UnderdarkUtil share].node start];
+    [UnderdarkUtil share].node.neighbourVc = self;
     
 
     
@@ -47,38 +48,65 @@
     self.usersTable.delegate = self;
     self.usersTable.dataSource = self;
     self.usersTable.rowHeight = 60;
+    self.usersTable.backgroundColor = [UIColor colorWithHexString:@"#eeeeee"];
     [self.view addSubview:self.usersTable];
     
     [self.usersTable registerNib:[UINib nibWithNibName:@"NFNearbyUserCell" bundle:nil] forCellReuseIdentifier:@"NFNearbyUserCell"];
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
     
+    //检测是否接收到数据
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"text" object:nil];
+    
+}
+#pragma -mark 获取接收到的数据
+- (void)getText:(NSNotification *)notify{
+    NSDictionary *text = notify.userInfo[@"text"];
+    NSString *nodeId = notify.userInfo[@"nodeId"];
+    NSLog(@"haha====%@",text[@"content"]);
+    Message *msg = [[Message alloc]initWithaDic:text];
+    
+    UserModel *user = [[UserModel alloc]init];
+    user.headImgStr = msg.senderFaceImageStr;
+    user.userName = msg.senderNickName;
+    user.userId = msg.sender;
+    
+    //保存聊天记录
+    [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
+    //增加未读消息数量
+    [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
+    
 }
 #pragma -mark NSNotification 用户信息更新
 - (void)refreshTable:(NSNotification *)notify{
     NSDictionary *userDic = notify.userInfo[@"user"];
+    NSString *nodeId = notify.userInfo[@"nodeId"];
+    NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic];
+    [user removeObjectForKey:@"nodeId"];
+    [user setObject:nodeId forKey:@"nodeId"];
     //过滤多余的用户信息
-    if (self.nearbyUsers.count == 0) {
-        [self.nearbyUsers addObject:userDic];
-    }else{
-        for (NSDictionary *dic in self.nearbyUsers) {
-            if (![userDic isEqualToDictionary:dic]) {
-                [self.nearbyUsers addObject:userDic];
-            }
-        }
-    }
+    
+    UserModel *users = [[UserModel alloc]initWithaDic:user];
 
     
-    [self handleNearByUsers];
-    
-}
-- (void)handleNearByUsers{
-    for (NSDictionary *dic in self.nearbyUsers) {
-        UserModel *user = [[UserModel alloc]initWithaDic:dic];
-        [self.handleByUsers addObject:user];
+    if (self.handleByUsers.count == 0) {
+        [self.handleByUsers addObject:users];
+    }else{
+        if (![self.handleByUsers containsObject:users]) {
+            [self.handleByUsers addObject:users];
+        }
     }
     
     [self.usersTable reloadData];
+    
+    
+}
+#pragma -mark 私聊
+- (void)nearbyUserCellDidClickChatButtonForIndexPath:(NSIndexPath *)indexPath{
+    UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
+    ChatInfoVC *chat = [[ChatInfoVC alloc]init];
+    chat.to_user = to_user;
+    [self.navigationController pushViewController:chat animated:YES];
 }
 #pragma mark - table
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

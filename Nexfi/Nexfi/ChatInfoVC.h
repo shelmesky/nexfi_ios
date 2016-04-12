@@ -7,10 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserModel.h"
+#import "BaseVC.h"
 
+@interface ChatInfoVC : BaseVC
 
-
-@interface ChatInfoVC : UIViewController
+@property (nonatomic, retain)UserModel *to_user;
+@property (nonatomic ,strong)id<UDLink>link;
 
 
 @end

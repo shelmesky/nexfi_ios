@@ -16,6 +16,9 @@
 #import "HudTool.h"
 #import "NexfiUtil.h"
 #import "UserManager.h"
+#import "NSDataEx.h"
+#import "SqlManager.h"
+#import "UIColor+Hex.h"
 //#import "CoreJPush.h"
 #define UmengAppKey @"55eea2a767e58e4d04001045"
 

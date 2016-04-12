@@ -33,16 +33,11 @@
 
 - (void)setUser:(UserModel *)user{
     _user = user;
-    if (user.headImg) {
+    if (user.headImgStr) {
         
-//        self.headImageView.image = [UIImage imageWithData:(NSData *)user.headImg];
-        NSLog(@"---===%@",(NSData *)user.headImg);
-        user.userHead = [user.headImg dataUsingEncoding:NSUTF8StringEncoding];
-        user.headImg = nil;
-        [[UserManager shareManager]loginSuccessWithUser:user];
+        NSData *data = [[NSData alloc]initWithBase64EncodedString:user.headImgStr];
+        self.headImageView.image = [UIImage imageWithData:data];
         
-    }else if (user.userHead){
-        self.headImageView.image = [UIImage imageWithData:user.userHead];
     }else{
         self.headImageView.image = [UIImage imageNamed:@"img_head_01"];
     }

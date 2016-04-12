@@ -5,9 +5,14 @@
 //  Created by fyc on 16/4/6.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
+#import "BaseVC.h"
 #import <UIKit/UIKit.h>
 
-@interface NeighbourVC : UIViewController
+@interface NeighbourVC : BaseVC
+
+@property (nonatomic,strong) UITableView *usersTable;
+@property (nonatomic,strong) NSMutableArray *nearbyUsers;
+@property (nonatomic,strong) NSMutableArray *handleByUsers;
+
 
 @end

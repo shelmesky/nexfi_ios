@@ -5,11 +5,13 @@
 //  Created by fyc on 16/4/5.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
+#import "Photo.h"
 #import "FCMsgCell.h"
 #import "UnderdarkUtil.h"
 #import "ChatInfoVC.h"
 #import "NexfiUtil.h"
 #import "Message.h"
+#import "NFChatCacheFileUtil.h"
 @interface ChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     UITableView * _tableView;
@@ -28,6 +30,7 @@
 @end
 
 @implementation ChatInfoVC
+
 -(void)viewWillAppear:(BOOL)animated{
     [self refresh:nil];
 }
@@ -35,21 +38,18 @@
 {
     [super viewDidLoad];
     
-    self.title=@"lala";
+    [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
+
+    
     self.automaticallyAdjustsScrollViewInsets=NO;
     
     _textArray=[[NSMutableArray alloc]init];
-    
+
     _pool = [[NSMutableArray alloc]init];
     
-    [UnderdarkUtil share].node.controller = self;
     
-    [[UnderdarkUtil share].node start];
+//    [[UnderdarkUtil share].node start];
 
-
-//    UIImageView * bgImageView =[[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg.jpg"]];
-//    bgImageView.frame=CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 44);
-//    [self.view addSubview:bgImageView];
     
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-44) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -88,6 +88,11 @@
     sendBtn.layer.cornerRadius=5;
     [_bottomImageView addSubview:sendBtn];
     
+    //获取历史数据
+    [self showHistoryMsg];
+    //清除该用户的未读消息
+    [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditing) name:UITextViewTextDidBeginEditingNotification object:nil];
     
@@ -105,9 +110,19 @@
                                                object:nil];
     
     //检测是否接收到数据
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"text" object:nil];
-//        [[NSNotificationCenter defaultCenter]postNotificationName:@"text" object:nil userInfo:@{@"text":text,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
+
     
+}
+- (void)showHistoryMsg{
+    //别人发我，我发别人都要取出来
+    NSArray *historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    
+    
+    for (Message *msg in historyMsgs) {
+        NSLog(@"====%@",msg.timestamp);
+        [self showTableMsg:msg];
+    }
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法
@@ -142,24 +157,14 @@
         
         if([cell isMeSend])
         {
-//            NSString * imgurl = [ALBUM_PREFIX stringByAppendingString:self.userModel.faceImge];
-//            NSURL * url = [NSURL URLWithString:imgurl];
-//            [cell setHeadImageWithURL:url];
-            [cell setHeadImage:[UIImage imageNamed:@"3"]];
+            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
+            [cell setHeadImage:[UIImage imageWithData:imgData]];
             
         }
         else
         {
-//            if(self.chatFriend !=nil) {
-//                NSString * imgurl = [ALBUM_PREFIX stringByAppendingString:self.chatFriend.user_face];
-//                NSURL * url = [NSURL URLWithString:imgurl];
-//                [cell setHeadImageWithURL:url];
-                [cell setHeadImage:[UIImage imageNamed:@"myChat"]];
-
-//            }
-            
-            //[cell setHeadImage:[UIImage imageWithData:data]];
-            //[cell setHeadImage:[UIImage imageNamed:[msg senderFaceImage]]];
+            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:self.to_user.headImgStr];
+            [cell setHeadImage:[UIImage imageWithData:imgData]];
         }
     }
     
@@ -225,11 +230,11 @@
 
                 CGRect rect = [[_textArray[indexPath.row]content] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                  NSStringDrawingUsesDeviceMetrics|
-                 NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:10.0],NSFontAttributeName, nil] context:0];
+                 NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
                 if (rect.size.height < 60) {
                     return 60;
                 }
-                return rect.size.height + 40;
+                return rect.size.height + 20 + 50;
             }
 
 }
@@ -271,37 +276,16 @@
         [array removeObjectAtIndex:i];
     }
 }
-#pragma mark --textField
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    //让下面的输入框上去的效果
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    [UIView setAnimationCurve:7];
-    _bottomImageView.frame=CGRectMake(0, 480-216-44, 320, 44);
-    _tableView.frame=CGRectMake(0, 64, 320, 480-64-216-44);
-    [UIView commitAnimations];
-    
-    //输入框里有值才能使气泡上去
-    if (_textArray.count>=1)
-    {
-        //cell滑动到最后一行
-        NSIndexPath * indexPath =[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0];
-        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    }
-    
-}
-
 //点键盘右下角会调用的方法
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //键盘右下角点击的时候也会调用发送的方法
     [self sendClickWithMsgType:eMessageBodyType_Text];
-//    if (_textArray.count>=1)
-//    {
-//        NSIndexPath * indexPath =[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0];
-//        [_tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-//    }
+    
+    
+//    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[UIImage imageNamed:@"102"]]];
+
+
     return YES;
 }
 
@@ -324,11 +308,36 @@
     NSString *nodeId = notify.userInfo[@"nodeId"];
     NSLog(@"haha====%@",text[@"content"]);
     Message *msg = [[Message alloc]initWithaDic:text];
-//    [_textArray addObject:msg];
+    msg.nodeId = nodeId;
+    if (msg.fileType.intValue != eMessageBodyType_Text && msg.file) {
+        msg.content = msg.file;
+    }
+    //保存聊天记录
+    [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
+    //增加未读消息数量
+    [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
+    
     [self showTableMsg:msg];
     
 }
 #pragma -mark 调用发送数据接口
+- (void)broadcastFrame:(id<UDSource>)frameData{
+    if ([UnderdarkUtil share].node.links.count == 0) {
+        return;
+    }
+    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
+        self.link = [[UnderdarkUtil share].node.links objectAtIndex:i];
+        
+        NSLog(@"link====%lld===toUerNodeId====%@",self.link.nodeId,self.to_user.nodeId);
+        
+        //单聊找到跟对方连接的link
+        if ([[NSString stringWithFormat:@"%lld",self.link.nodeId] isEqualToString:self.to_user.nodeId]) {
+            [self.link sendData:frameData];
+        }
+    }
+    
+}
+#pragma -mark 获取发送的数据
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
@@ -339,27 +348,41 @@
         
         NSData *newData;
         Message *msg = [[Message alloc]init];
-        UIDevice *myDevice = [UIDevice currentDevice];
-        NSString *deviceUDID = [myDevice.identifierForVendor UUIDString];
+        NSString *deviceUDID = [NexfiUtil uuid];
 
         switch (type) {
             case eMessageBodyType_Text:
             {
                 msg.content = data;
-                msg.timestamp = [self getDate];
-                msg.sender = @"1";
+                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                msg.sender = [[UserManager shareManager]getUser].userId;
+                msg.receiver = self.to_user.userId;
                 msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Text];
                 msg.msgId = deviceUDID;
+                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
+                msg.senderNickName = [[UserManager shareManager]getUser].userName;
+                msg.durational = @"";
                 break;
             }
             case eMessageBodyType_Image:
             {
-                newData = UIImageJPEGRepresentation(data, 0.5);
-                msg.file = newData;
-                msg.timestamp = [self getDate];
-                msg.sender = @"1";
+                //缓存到本地图片
+                NSData *picData = [Photo image2Data:data];
+                NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:1];
+                NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+                [picData writeToFile:fullPath atomically:YES];
+                
+                msg.content = fullPath;
+                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
+                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                msg.sender = [[UserManager shareManager]getUser].userId;
+                msg.receiver = self.to_user.userId;
                 msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
                 msg.msgId = deviceUDID;
+                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
+                msg.senderNickName = [[UserManager shareManager]getUser].userName;
+                msg.durational = @"";
+                msg.file = [picData base64Encoding];
                 
                 break;
             }
@@ -381,9 +404,13 @@
         NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
         //刷新表
-        [self showTableMsg:msg];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTableMsg:msg];
+
+        });
         //插入数据库
         
+        [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
          
          
         return newData;
@@ -398,11 +425,11 @@
     [_textArray addObject:msg];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
     [indexPaths addObject:indexPath];
-    [_tableView beginUpdates];
+    //[_tableView beginUpdates];
     [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-    [_tableView endUpdates];
+    //[_tableView endUpdates];
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    [_tableView reloadData];
+   [_tableView reloadData];
 }
 //点击发送按钮调用的方法
 -(void)sendClickWithMsgType:(MessageBodyType)type
@@ -413,7 +440,7 @@
         return;
     }
     
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:type withSendData:_inputText.text]];
+    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:_inputText.text]];
 
     //刷新表
     
@@ -461,7 +488,7 @@
     
 }
 #pragma -mark 获取当前时间
--(NSString *)getDate
+-(NSString *)getDateWithFormatter:(NSString *)formatter
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
@@ -469,6 +496,7 @@
     NSLog(@"%@", strDate);
     return strDate;
 }
+
 /*
 #pragma mark - Navigation
 

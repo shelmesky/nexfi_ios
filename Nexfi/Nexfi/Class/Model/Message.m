@@ -17,7 +17,7 @@
         self.receiver = aDic[@"receiver"];
         self.sender = aDic[@"sender"];
         self.senderNickName = aDic[@"senderNickName"];
-        self.senderFaceImage = aDic[@"senderFaceImage"];
+        self.senderFaceImageStr = aDic[@"senderFaceImageStr"];
         
         self.fileType = aDic[@"fileType"];
         self.mid = aDic[@"mid"];
@@ -25,6 +25,8 @@
         self.title = aDic[@"title"];
         self.content = aDic[@"content"];
         self.file = aDic[@"file"];
+        
+        self.nodeId = aDic[@"nodeId"];
 
     }
     return self;

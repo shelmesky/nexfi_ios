@@ -70,21 +70,24 @@
     }
 
 }
-- (id<UDSource>)sendMsgWithMessageType:(MessageType)type{
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type WithConnectedLink:(id<UDLink>)link{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         NSData *data;
         if (type == requestUserInfo) {//请求用户信息
+            NSLog(@"linkNode ==== %lld",link.nodeId);
             NSDictionary *userDic = @{@"sendUserInfo":@"1"};
             data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
         }else{//发送用户信息
             UserModel *user = [[UserManager shareManager]getUser];
-            if (user.userHead) {
-                user.headImg = [[NSString alloc]initWithData:user.userHead encoding:NSUTF8StringEncoding];
-            }
-            user.userHead = nil;
+            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+            NSLog(@"linkNode ==== %lld",link.nodeId);
+
             NSDictionary *userDic = [NexfiUtil getObjectData:user];
+
             data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
+            
+            
         }
         return data;
         
@@ -97,14 +100,14 @@
     [self.links addObject:link];
     
 //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [link sendData:[self sendMsgWithMessageType:requestUserInfo]];
+        [link sendData:[self sendMsgWithMessageType:requestUserInfo WithConnectedLink:link]];
 
 //    });
     
     
     self.peersCount += 1;
 //    [self.controller updatePeerCount];
-    self.controller.title = [NSString stringWithFormat:@"%d",self.peersCount];
+//    self.controller.title = [NSString stringWithFormat:@"%d",self.peersCount];
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
     
@@ -113,18 +116,43 @@
     }
     
     self.peersCount -= 1;
+    NSLog(@"dislinkNode ==== %lld",link.nodeId);
+
+    if (self.neighbourVc.handleByUsers.count == 0) {
+        return;
+    }
+
+    [self.neighbourVc.handleByUsers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        UserModel *user = obj;
+        if ([user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",link.nodeId]]) {
+            BOOL stop = YES;;
+            if (stop == YES) {
+                [self.neighbourVc.handleByUsers removeObject:user];
+                
+            }
+            
+            [self.neighbourVc.usersTable reloadData];
+            
+        }
+
+    }];
+        
+
+
 //    [self.controller updatePeerCount];
     
 }
 - (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
     if (dic[@"sendUserInfo"]) {//对方要求我发送用户信息
-        [link sendData:[self sendMsgWithMessageType:sendUserInfo]];
-    }else if(dic[@"userId"]){//用户信息
+        [link sendData:[self sendMsgWithMessageType:sendUserInfo WithConnectedLink:link]];
+    }else if(!dic[@"content"]){//用户信息
+        NSLog(@"linkNodeshou ==== %lld",link.nodeId);
+
         NSLog(@"userDic===%@====%@",dic,dic[@"userName"]);
         [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
-    }else{//普通聊天
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"text" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+    }else{//单聊
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
     }
 }
 

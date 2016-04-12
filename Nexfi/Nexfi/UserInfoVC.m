@@ -15,7 +15,7 @@
 #import "FCTabHeadView.h"
 #import "NFHeadView.h"
 #import "NFHeadVC.h"
-@interface UserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,FCTabHeadViewDelegate>
+@interface UserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 
 @property (nonatomic, strong)UITableView *userInfoTable;
 @property (nonatomic, strong)NSArray *data;
@@ -44,7 +44,6 @@
     
     _headView = [[NFHeadView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
     _headView.exclusiveTouch = YES;
-    _headView.delegate = self;
 
     
     self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height) style:UITableViewStyleGrouped];
@@ -61,7 +60,8 @@
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
     if ([[UserManager shareManager]getUser]) {
-        _headView.userImg.image = [UIImage imageWithData:[[UserManager shareManager]getUser].userHead];
+        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
+        _headView.userImg.image = [UIImage imageWithData:data];
     }
     [super viewWillAppear:animated];
 }
@@ -154,7 +154,7 @@
 
     }else{
         UserModel *user = [[UserManager shareManager]getUser];
-        if (!user.userHead) {
+        if (!user.headImgStr) {
             [HudTool showErrorHudWithText:@"请设置头像" inView:self.view duration:1];
         }else if (!user.userName){
             [HudTool showErrorHudWithText:@"请设置昵称" inView:self.view duration:1];
@@ -187,14 +187,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];
     
-    UserModel *user = [[UserManager shareManager]getUser];
-    user.userHead = UIImageJPEGRepresentation(image, 1);
-    NSLog(@"   %@",user.userHead);
-    [[UserManager shareManager]loginSuccessWithUser:user];
-    
-//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//    FCPersonHeadCell *cell = [self.userInfoTable cellForRowAtIndexPath:indexPath];
-//    cell.pHead.image = image;
+
     _headView.userImg.image = image;
     
     [picker dismissViewControllerAnimated:YES completion:nil];

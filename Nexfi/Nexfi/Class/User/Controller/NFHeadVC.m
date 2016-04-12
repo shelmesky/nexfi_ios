@@ -169,8 +169,9 @@
     FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
     
     UserModel *user = [[UserManager shareManager]getUser];
-    user.userHead = UIImageJPEGRepresentation(cell.headImg.image, 1);
-    NSLog(@"   %@",user.userHead);
+    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
+//    user.headImg = cell.headImg.image;
+    user.headImgStr = [data base64Encoding];
     [[UserManager shareManager]loginSuccessWithUser:user];
     
     [self.navigationController popViewControllerAnimated:YES];
