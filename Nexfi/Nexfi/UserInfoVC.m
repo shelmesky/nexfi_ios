@@ -44,7 +44,7 @@
     
     _headView = [[NFHeadView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
     _headView.exclusiveTouch = YES;
-
+    _headView.delegate = self;
     
     self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height) style:UITableViewStyleGrouped];
     self.userInfoTable.delegate = self;

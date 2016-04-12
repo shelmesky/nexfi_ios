@@ -30,6 +30,8 @@
     BOOL _isChangedKeyBoard;
     NSMutableArray *_pool;
     int _refreshCount;
+    
+    BOOL sendOnce;
 }
 @end
 
@@ -410,10 +412,15 @@
         NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
         //刷新表
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showTableMsg:msg];
-            
-        });
+        if (sendOnce == YES) {
+            sendOnce = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showTableMsg:msg];
+                
+                
+            });
+        }
+
         //插入数据库
         
         [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
@@ -445,7 +452,7 @@
     {
         return;
     }
-    
+    sendOnce = YES;
     [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:_inputText.text]];
     
     //刷新表
