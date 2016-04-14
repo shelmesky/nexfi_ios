@@ -14,12 +14,14 @@
 #import "ViewController.h"
 #import "NFSingleChatInfoVC.h"
 #import "NeighbourVC.h"
-
+#import "NFAllUserChatInfoVC.h"
 
 @interface Node : NSObject<UDTransportDelegate>
 
 @property (nonatomic, strong)NSString *usersId;
 @property (nonatomic,strong)NeighbourVC *neighbourVc;
+@property (nonatomic,strong)NFAllUserChatInfoVC *allUserChatVC;
+
 @property (nonatomic ,strong)id<UDTransport>transport;
 @property (nonatomic, assign)int peersCount;
 @property (nonatomic, assign)int framesCount;

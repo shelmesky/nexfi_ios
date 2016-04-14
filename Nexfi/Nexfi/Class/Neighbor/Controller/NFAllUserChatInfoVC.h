@@ -11,5 +11,7 @@
 @interface NFAllUserChatInfoVC : BaseVC
 
 @property (nonatomic ,strong)id<UDLink>link;
+@property (nonatomic, strong)NSString *peersCount;
 
+- (void)updatePeersCount:(NSString *)peersCount;
 @end

@@ -66,7 +66,6 @@
 //    LoginUserModel *loginUserModel = [LOGIN_USER loginUserModel];
 //    UserModel *userModel = loginUserModel.userModel;
 //
-    NSLog(@"send===%@   use==%@",msg.sender,[[UserManager shareManager]getUser].userId);
     
     return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
     
@@ -205,19 +204,21 @@
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"SenderTextNodeBkg"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"SenderTextNodeBkgHL"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
         
-        _timeLabel.frame = CGRectMake(160, 0, 100, 8);
-        _timeLabel.textAlignment = NSTextAlignmentRight;
+//        _timeLabel.frame = CGRectMake(160, 0, 100, 8);
+//        _timeLabel.textAlignment = NSTextAlignmentRight;
     }else{
         usersId = [msg sender];//msg.toUserId;
         [_userHead setFrame:CGRectMake(INSETS, 5, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"ReceiverTextNodeBkg"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"ReceiverTextNodeBkgHL"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
         
-        _timeLabel.frame = CGRectMake(80, 0, 100, 8);
-        _timeLabel.textAlignment = NSTextAlignmentLeft;
+//        _timeLabel.frame = CGRectMake(80, 0, 100, 8);
+//        _timeLabel.textAlignment = NSTextAlignmentLeft;
     }
-    
-    //[self setHeadImage:[UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:s]]]];
+    _timeLabel.bounds = CGRectMake(0, 0, 100, 8);
+    _timeLabel.center = CGPointMake(SCREEN_SIZE.width/2, 4);
+    _timeLabel.textAlignment = NSTextAlignmentCenter;
+
     _headMask.frame=CGRectMake(_userHead.frame.origin.x-3, _userHead.frame.origin.y-1, HEAD_SIZE+6, HEAD_SIZE+6);
     
     NSDateFormatter* f=[[NSDateFormatter alloc]init];
@@ -266,9 +267,14 @@
             bubbleWidth = 105;
             bubbleHeight = 100;
             [_chatImage setHidden:NO];
-            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
-            _chatImage.frame = CGRectMake(10, 5, 80, 80);
-            [self setChatImage:[UIImage imageWithContentsOfFile:content]];
+               NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            _chatImage.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],content]];
+            if (_chatImage.image) {
+                _chatImage.frame = CGRectMake(10, 5, 80, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width);
+                
+                _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width + 20);
+            }
+
         }
         else
         {
@@ -277,10 +283,18 @@
             bubbleWidth = 105;
             bubbleHeight = 100;
             [_chatImage setHidden:NO];
-            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
-            _chatImage.frame = CGRectMake(15, 5, 80, 80);
+
             NSData *imageData = [[NSData alloc]initWithBase64EncodedString:content];
             _chatImage.image = [UIImage imageWithData:imageData];
+            
+
+            
+            _chatImage.frame = CGRectMake(15, 5, 80, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width);
+
+            _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width + 20);
+
+            
+
         }
 
     }
@@ -310,7 +324,7 @@
             _bubbleBg.frame=CGRectMake(320-w-HEAD_SIZE-INSETS*2, 15, w, 45);
             iv.frame = CGRectMake(_bubbleBg.frame.size.width-35, 10, 19, 19);
             p.frame = CGRectMake(_bubbleBg.frame.origin.x-50, 30, 50, 15);
-            p.textAlignment = UITextAlignmentRight;
+            p.textAlignment = NSTextAlignmentRight;
         }
         else{
             iv.image =  [UIImage imageNamed:@"voice_from_default.png"];

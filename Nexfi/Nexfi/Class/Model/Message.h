@@ -11,6 +11,9 @@
  @constant eMessageType_SingleChat 单聊
  @constant eMessageType_AllUserChat 所有人
  @constant eMessageType_GroupChat 群聊
+ @constant eMessageType_SendUserInfo 发送用户信息
+ @constant eMessageType_requestUserInfo 请求用户信息
+
  */
 typedef NS_ENUM(NSInteger, MessageType) {
     eMessageType_SingleChat = 1,
@@ -19,6 +22,15 @@ typedef NS_ENUM(NSInteger, MessageType) {
     eMessageType_SendUserInfo = 4,
     eMessageType_requestUserInfo = 5
 
+};
+
+/**
+ *  消息发送状态,自己发送的消息时有
+ */
+typedef NS_ENUM(NSUInteger, FNMessageSendState){
+    eMessageSendSuccess = 0 /**< 消息发送成功 */,
+    eMessageSendStateSending, /**< 消息发送中 */
+    eMessageSendFail /**< 消息发送失败 */,
 };
 
 /*!

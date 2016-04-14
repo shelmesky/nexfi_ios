@@ -15,5 +15,6 @@
 @property (nonatomic, retain)UserModel *to_user;
 @property (nonatomic ,strong)id<UDLink>link;
 
+@property (nonatomic ,retain) NSString *peesCount;
 
 @end

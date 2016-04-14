@@ -10,6 +10,8 @@
 #import "ViewController.h"
 #import "SqlManager.h"
 #import "NeighbourVC.h"
+#import "NFAllUserChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 @interface AppDelegate ()
 
 @end
@@ -22,6 +24,16 @@
     NSLog(@"home===%@",NSHomeDirectory());
     //创建数据库
     [[SqlManager shareInstance]creatTable];
+    
+    [IQKeyboardManager sharedManager].enable = YES;
+//    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;
+    [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;
+    [IQKeyboardManager sharedManager].shouldToolbarUsesTextFieldTintColor = YES;
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+    [[IQKeyboardManager sharedManager] disableToolbarInViewControllerClass:[NFAllUserChatInfoVC class]];
+
+
+
     
 //    NeighbourVC *v = [[NeighbourVC alloc]init];
 //    UINavigationController *nav =[[ UINavigationController alloc]initWithRootViewController:v];
@@ -43,7 +55,7 @@
 //    }
     NSLog(@"hehehaha==%@",myDevice.name);//DEBCE83D-C25A-44ED-B9BD-FA4CAA1E439A
 
-    
+
 //    self.window.rootViewController = nav;
     
     return YES;

@@ -1,4 +1,4 @@
-platform :ios, ‘7.0’
+platform :ios, ‘8.0’
 
 pod 'FMDB', '~> 2.6.2'
 pod 'ProtocolBuffers', '1.9.9' # From https://github.com/alexeyxo/protobuf-objc
@@ -7,3 +7,5 @@ pod ‘CocoaLumberjack’, ‘2.2.0’
 pod 'JGProgressHUD', '~> 1.3.1'
 pod 'SDWebImage', '~> 3.7.5'
 pod 'Mantle', '~> 2.0.6'
+pod 'XMChatBar', '~> 1.3.0'
+pod 'IQKeyboardManager', '~> 4.0.1'

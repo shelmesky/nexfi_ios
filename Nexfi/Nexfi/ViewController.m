@@ -37,9 +37,12 @@
      判断是否自动登录
      */
     [self isAutoLogin];
-
-
     
+
+}
+- (void)clicks:(id)sender{
+    ChatVC *vc = [[ChatVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)isAutoLogin{
     NSString *userId = [[UserManager shareManager]getUser].userId;

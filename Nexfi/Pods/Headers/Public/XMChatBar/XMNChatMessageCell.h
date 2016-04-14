@@ -1,0 +1,1 @@
+../../../XMChatBar/XMChatBar/Views/XMNChatMessageCell/XMNChatMessageCell.h

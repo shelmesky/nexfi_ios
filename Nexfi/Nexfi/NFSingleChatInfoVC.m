@@ -12,6 +12,9 @@
 #import "NexfiUtil.h"
 #import "Message.h"
 #import "NFChatCacheFileUtil.h"
+
+
+
 @interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate>
 {
     UITableView * _tableView;
@@ -26,7 +29,13 @@
     BOOL _isChangedKeyBoard;
     NSMutableArray *_pool;
     int _refreshCount;
+    
+    BOOL sendOnce;
+
 }
+@property (strong, nonatomic) XMChatBar *chatBar;
+@property (nonatomic,strong) UITableView *tableView;
+
 @end
 
 @implementation NFSingleChatInfoVC
@@ -40,8 +49,6 @@
     
     [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
 
-    
-    self.automaticallyAdjustsScrollViewInsets=NO;
     
     _textArray=[[NSMutableArray alloc]init];
 
@@ -60,54 +67,15 @@
     //为了让下面的图片显示出来，把背景颜色置为cleanColor
     _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
+    [self.view addSubview:self.chatBar];
+
     
-    _bottomImageView=[[UIImageView alloc]initWithFrame:CGRectMake(0, SCREEN_SIZE.height - 44, SCREEN_SIZE.width, 44)];
-    _bottomImageView.image=[UIImage imageNamed:@"3.png"];
-    _bottomImageView.userInteractionEnabled=YES;
-    [self.view addSubview:_bottomImageView];
-    
-    
-    //输入框
-    _inputText=[[UITextField alloc]initWithFrame:CGRectMake(10, 7, 200, 30)];
-    _inputText.borderStyle=UITextBorderStyleRoundedRect;
-    //textField输入框右侧有一个X号，点击可以删除输入框里的内容
-    _inputText.clearButtonMode=UITextFieldViewModeAlways;
-    //把return键换为send键
-    _inputText.returnKeyType=UIReturnKeySend;
-    _inputText.delegate=self;
-    [_bottomImageView addSubview:_inputText];
-    
-    //发送button
-    UIButton * sendBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [sendBtn setTitle:@"发送" forState:UIControlStateNormal];
-    sendBtn.backgroundColor=[UIColor blueColor];
-    [sendBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [sendBtn addTarget:self action:@selector(sendClickWithMsgType:) forControlEvents:UIControlEventTouchUpInside];
-    sendBtn.frame=CGRectMake(250, 7, 60, 30);
-    sendBtn.clipsToBounds=YES;
-    sendBtn.layer.cornerRadius=5;
-    [_bottomImageView addSubview:sendBtn];
     
     //获取历史数据
     [self showHistoryMsg];
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beginEditing) name:UITextViewTextDidBeginEditingNotification object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(endEditing) name:UITextViewTextDidEndEditingNotification object:nil];
-    //增加监听，当键盘出现或改变时收出消息
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    //增加监听，当键退出时收出消息
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
+
     
     //检测是否接收到数据
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
@@ -120,7 +88,6 @@
     
     
     for (PersonMessage *msg in historyMsgs) {
-        NSLog(@"====%@",msg.timestamp);
         [self showTableMsg:msg];
     }
 }
@@ -129,7 +96,6 @@
 -(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     //当我们拖动table的时候，调用让键盘下去的方法
-    [self inputTextFieldDown];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -171,46 +137,7 @@
     return cell;
 }
 -(void)onSelect:(UIView*)sender{
-//    [self hideKeyboard];
-//    
-//    int n = sender.tag;
-//    Message *msg=[_array objectAtIndex:n];
-//    
-//    switch ([msg.fileType intValue]) {
-//        case kWCMessageTypeImage:{
-//            
-//            
-//            //NSMutableArray * msgarr = [[FMDBUtil sharedInstance] getChatImageHistory:]
-//            
-//            JXImageView* iv = [[JXImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-//            iv.contentMode = UIViewContentModeCenter;
-//            
-//            if([[msg sender] isEqualToString:[NSString stringWithFormat:@"%@",self.userModel.id]])
-//            {
-//                //UIImage * img = [UIImage imageNamed:msg.content];
-//                iv.image    = [UIImage imageWithContentsOfFile:msg.content] ;//[UIImage imageNamed:[msg file]];
-//            }
-//            else{
-//                NSURL* url = [NSURL URLWithString:msg.content];
-//                NSData *data = [NSData dataWithContentsOfURL:url];
-//                iv.image    = [UIImage imageWithData:data];//[UIImage imageNamed:[msg file]];'
-//            }
-//            iv.delegate = self;
-//            iv.didTouch = @selector(onSelectImage:);
-//            iv.userInteractionEnabled = YES;
-//            [g_App.window addSubview:iv];
-//            iv.hidden   = NO;
-//            break;
-//        }
-//        case kWCMessageTypeVoice:{
-//            _lastIndex = n;
-//            [self recordPlay:msg];
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-//    msg = nil;
+
 }
 
 //每行的高度
@@ -218,30 +145,42 @@
 {
     PersonMessage *msg=[_textArray objectAtIndex:indexPath.row];
     int n = msg.fileType ;
-    if(n == eMessageBodyType_Image)
-        return 66+70;
-    else
-        if( n == eMessageBodyType_Voice)
-            return 66;
-        else
-            if( n == eMessageBodyType_File)
-                return 80;
-            else{
-
-                CGRect rect = [[_textArray[indexPath.row]pContent] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
-                 NSStringDrawingUsesDeviceMetrics|
-                 NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-                if (rect.size.height < 60) {
-                    return 60;
-                }
-                return rect.size.height + 20 + 50;
+    if (n == eMessageBodyType_Image) {
+        if ([self isMeSend:msg]) {
+            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.pContent]];
+            if (image) {
+                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                return imageHeight + 20 + 25;
             }
+            return 110;
+            
+        }else{
+            NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.pContent];
+            UIImage *image = [UIImage imageWithData:data];
+            if (image) {
+                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                return imageHeight + 20 + 25;
+            }
+            return 110;
+        }
+    }else if (n == eMessageBodyType_Voice){
+        return 66;
 
+    }else if (n == eMessageBodyType_File){
+        return 80;
+    }else{
+        CGRect rect = [[_textArray[indexPath.row]pContent] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+                       NSStringDrawingUsesDeviceMetrics|
+                       NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
+        if (rect.size.height < 60) {
+            return 60;
+        }
+        return rect.size.height + 20 + 50;
+    }
 }
 -(void)refresh:(PersonMessage*)msg
 {
-    [_inputText setInputView:nil];
-    [_inputText resignFirstResponder];
     BOOL b=YES;
     if(msg == nil){
         if(_textArray==nil){
@@ -276,37 +215,16 @@
         [array removeObjectAtIndex:i];
     }
 }
-//点键盘右下角会调用的方法
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    //键盘右下角点击的时候也会调用发送的方法
-    [self sendClickWithMsgType:eMessageBodyType_Text];
+-(BOOL)isMeSend:(Message *)msg{
     
+    return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
     
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[UIImage imageNamed:@"102"]]];
-
-
-    return YES;
-}
-
-//让输入框下去的方法
--(void)inputTextFieldDown
-{
-    
-    [_inputText resignFirstResponder];
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    [UIView setAnimationCurve:7];
-    _bottomImageView.frame=CGRectMake(0, SCREEN_SIZE.height - 44, SCREEN_SIZE.width, 44);
-    _tableView.frame=CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64-44);
-    _isChangedKeyBoard=NO;
-    [UIView commitAnimations];
 }
 #pragma -mark 获取接收到的数据
 - (void)getText:(NSNotification *)notify{
     NSDictionary *text = notify.userInfo[@"text"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
-    NSLog(@"haha====%@",text[@"content"]);
+    
     PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
     msg.nodeId = nodeId;
     if (msg.fileType != eMessageBodyType_Text && msg.file) {
@@ -366,11 +284,16 @@
             {
                 //缓存到本地图片
                 NSData *picData = [Photo image2Data:data];
-                NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:1];
+                NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
+                NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
+                NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+                
+                
+                
                 NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                 [picData writeToFile:fullPath atomically:YES];
                 
-                msg.pContent = fullPath;
+                msg.pContent = imgPath;
                 msg.fileType = eMessageBodyType_Image;
                 msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.sender = [[UserManager shareManager]getUser].userId;
@@ -429,26 +352,7 @@
     [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
     //[_tableView endUpdates];
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-   [_tableView reloadData];
-}
-//点击发送按钮调用的方法
--(void)sendClickWithMsgType:(MessageBodyType)type
-{
-    //限制输入框中的值为空的时候不能发送
-    if ([_inputText.text isEqualToString:@""])
-    {
-        return;
-    }
-    
-    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:_inputText.text]];
-
-    //刷新表
-    
-        //点击发送过后输入框变为空
-    _inputText.text=@"";
-    
-    
-    
+//   [_tableView reloadData];
 }
 
 #pragma mark --改变键盘变成中文
@@ -495,6 +399,64 @@
     NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
     NSLog(@"%@", strDate);
     return strDate;
+}
+- (XMChatBar *)chatBar {
+    if (!_chatBar) {
+        _chatBar = [[XMChatBar alloc] initWithFrame:CGRectMake(0, SCREEN_SIZE.height - kMinHeight - (self.navigationController.navigationBar.isTranslucent ? 0 : 64), SCREEN_SIZE.width, kMinHeight)];
+        [_chatBar setSuperViewHeight:SCREEN_SIZE.height - (self.navigationController.navigationBar.isTranslucent ? 0 : 64)];
+        _chatBar.delegate = self;
+    }
+    return _chatBar;
+}
+
+#pragma mark - XMChatBarDelegate
+
+- (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
+    
+    //    NSMutableDictionary *textMessageDict = [NSMutableDictionary dictionary];
+    //    textMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeText);
+    //    textMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
+    //    textMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
+    //    textMessageDict[kXMNMessageConfigurationTextKey] = message;
+    //    textMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
+    //    textMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
+    //    [self addMessage:textMessageDict];
+    
+    sendOnce = YES;
+    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message]];
+}
+
+- (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
+    
+    
+}
+
+- (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
+    
+    sendOnce = YES;
+    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
+    
+}
+
+- (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{
+    //    NSMutableDictionary *locationMessageDict = [NSMutableDictionary dictionary];
+    //    locationMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeLocation);
+    //    locationMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
+    //    locationMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
+    //    locationMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
+    //    locationMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
+    //    locationMessageDict[kXMNMessageConfigurationLocationKey]=locationText;
+    //    [self addMessage:locationMessageDict];
+    
+}
+
+- (void)chatBarFrameDidChange:(XMChatBar *)chatBar frame:(CGRect)frame{
+    if (frame.origin.y == self.tableView.frame.size.height) {
+        return;
+    }
+    [UIView animateWithDuration:.3f animations:^{
+        [self.tableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, frame.origin.y)];
+    } completion:nil];
 }
 
 /*

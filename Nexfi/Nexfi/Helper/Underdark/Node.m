@@ -30,6 +30,7 @@
         }
         
         _nodeId = buf;
+        
 
         
         NSMutableArray *transportKinds = [[NSMutableArray alloc]initWithCapacity:0];
@@ -108,8 +109,10 @@
     
     
     self.peersCount += 1;
-//    [self.controller updatePeerCount];
-//    self.controller.title = [NSString stringWithFormat:@"%d",self.peersCount];
+    self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
+    if (self.allUserChatVC) {
+        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+    }
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
     
@@ -118,8 +121,12 @@
     }
     
     self.peersCount -= 1;
-    NSLog(@"dislinkNode ==== %lld",link.nodeId);
-
+    
+    self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
+    if (self.allUserChatVC) {
+        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+    }
+    
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
     }
@@ -138,11 +145,7 @@
         }
 
     }];
-        
-
-
-//    [self.controller updatePeerCount];
-    
+            
 }
 - (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];

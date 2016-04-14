@@ -161,6 +161,7 @@
 		0E9E758C1CBCCB6900EE2272 /* NFTribeChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E758A1CBCCB6900EE2272 /* NFTribeChatInfoVC.m */; };
 		0E9E758D1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */; };
 		0E9E75901CBCDE8100EE2272 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E758F1CBCDE8100EE2272 /* Message.m */; };
+		0E9E75931CBE15F800EE2272 /* NFPeersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75921CBE15F800EE2272 /* NFPeersView.m */; };
 		0EBAE9441CB3824000361D18 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9431CB3824000361D18 /* main.m */; };
 		0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9461CB3824000361D18 /* AppDelegate.m */; };
 		0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9491CB3824000361D18 /* ViewController.m */; };
@@ -783,6 +784,8 @@
 		0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFTribeChatInfoVC.xib; sourceTree = "<group>"; };
 		0E9E758E1CBCDE8100EE2272 /* Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		0E9E758F1CBCDE8100EE2272 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		0E9E75911CBE15F800EE2272 /* NFPeersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFPeersView.h; sourceTree = "<group>"; };
+		0E9E75921CBE15F800EE2272 /* NFPeersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFPeersView.m; sourceTree = "<group>"; };
 		0EBAE93F1CB3824000361D18 /* Nexfi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nexfi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBAE9431CB3824000361D18 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EBAE9451CB3824000361D18 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1477,6 +1480,8 @@
 				0E5492F41CB3A5E000DE40E8 /* FCMsgCell.m */,
 				0E5493891CB3A66100DE40E8 /* Photo.h */,
 				0E54938A1CB3A66100DE40E8 /* Photo.m */,
+				0E9E75911CBE15F800EE2272 /* NFPeersView.h */,
+				0E9E75921CBE15F800EE2272 /* NFPeersView.m */,
 			);
 			name = View;
 			path = ../View;
@@ -2918,6 +2923,7 @@
 				0E5492D21CB3997100DE40E8 /* UDByteBuf.m in Sources */,
 				0E5493CA1CB4E1DC00DE40E8 /* UserInfoVC.m in Sources */,
 				0EE1C42A1CB5175200A135C3 /* FCHeadAddCollectionCell.m in Sources */,
+				0E9E75931CBE15F800EE2272 /* NFPeersView.m in Sources */,
 				0E5492C71CB3997100DE40E8 /* UDNsdChannel.m in Sources */,
 				0E5492CC1CB3997100DE40E8 /* UDBonjourBrowser.m in Sources */,
 				0E5492D11CB3997100DE40E8 /* UDBuffer.m in Sources */,
@@ -3178,13 +3184,15 @@
 			baseConfigurationReference = BB99C2D7709B8608003F2070 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nanjing Tai Chuan Information Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ulife.uhouse123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ulife.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
@@ -3196,14 +3204,15 @@
 			baseConfigurationReference = 8C46A9998135D78B6AC18670 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Nanjing Tai Chuan Information Technology Co., Ltd.";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Nanjing Tai Chuan Information Technology Co., Ltd.";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ulife.uhouse123;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ulife.1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";

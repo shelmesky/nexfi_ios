@@ -20,6 +20,10 @@
 #import "SqlManager.h"
 #import "UIColor+Hex.h"
 
+#import "IQKeyboardManager.h"
+
+#import "XMNChat.h"
+
 #import "Message.h"
 
 //#import "CoreJPush.h"

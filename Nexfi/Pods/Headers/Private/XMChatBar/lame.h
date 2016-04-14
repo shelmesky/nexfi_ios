@@ -1,0 +1,1 @@
+../../../XMChatBar/XMChatBar/Vendors/VoiceLib/lame.h

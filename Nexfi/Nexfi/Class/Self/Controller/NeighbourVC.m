@@ -57,20 +57,19 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
     
     //检测是否接收到数据
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"text" object:nil];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
     
 }
 #pragma -mark 获取接收到的数据
 - (void)getText:(NSNotification *)notify{
     NSDictionary *text = notify.userInfo[@"text"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
-    NSLog(@"haha====%@",text[@"content"]);
-//    if ([text[@"messageType"]
-//        intValue] == eMessageType_SingleChat) {
-//        <#statements#>
-//    }
+
     PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
-    
+    msg.nodeId = nodeId;
+    if (msg.fileType != eMessageBodyType_Text && msg.file) {
+        msg.pContent = msg.file;
+    }
     UserModel *user = [[UserModel alloc]init];
     user.headImgStr = msg.senderFaceImageStr;
     user.userName = msg.senderNickName;
@@ -80,6 +79,7 @@
     [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
     //增加未读消息数量
     [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
+    
     
 }
 #pragma -mark NSNotification 用户信息更新
@@ -140,6 +140,7 @@
 }
 - (void)RightBarBtnClick:(id)sender{
     NFAllUserChatInfoVC *allUserVC = [[NFAllUserChatInfoVC alloc]init];
+    allUserVC.peersCount = self.peesCount;
     [self.navigationController pushViewController:allUserVC animated:YES];
 }
 - (void)didReceiveMemoryWarning {

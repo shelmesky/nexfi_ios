@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/XMChatBar" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/CocoaLumberjack" "${PODS_ROOT}/Headers/Public/FMDB" "${PODS_ROOT}/Headers/Public/IQKeyboardManager" "${PODS_ROOT}/Headers/Public/JGProgressHUD" "${PODS_ROOT}/Headers/Public/MSWeakTimer" "${PODS_ROOT}/Headers/Public/Mantle" "${PODS_ROOT}/Headers/Public/Masonry" "${PODS_ROOT}/Headers/Public/ProtocolBuffers" "${PODS_ROOT}/Headers/Public/SDWebImage" "${PODS_ROOT}/Headers/Public/XMChatBar"
+LIBRARY_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/XMChatBar/XMChatBar/Vendors/VoiceLib"
+OTHER_LDFLAGS = -l"mp3lame" -framework "Foundation" -framework "MapKit" -framework "UIKit"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES

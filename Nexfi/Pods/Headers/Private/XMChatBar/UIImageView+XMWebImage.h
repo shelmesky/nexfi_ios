@@ -1,0 +1,1 @@
+../../../XMChatBar/XMChatBar/Categories/UIImageView+XMWebImage.h

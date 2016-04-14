@@ -14,5 +14,7 @@
 @property (nonatomic,strong) NSMutableArray *nearbyUsers;
 @property (nonatomic,strong) NSMutableArray *handleByUsers;
 
+@property (nonatomic ,retain) NSString *peesCount;
+
 
 @end
