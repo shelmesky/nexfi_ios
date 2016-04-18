@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 @protocol NFHeadViewDelegate <NSObject>
 
-- (void)refeshHeightOfHeadView:(CGFloat)height; //刷新collection的高度
-- (void)addTribeClicks:(id)sender;  //加入群聊
+//- (void)refeshHeightOfHeadView:(CGFloat)height; //刷新collection的高度
+//- (void)addTribeClicks:(id)sender;  //加入群聊
 - (void)imgClick:(id)sender;  //点击图片
 
 @end

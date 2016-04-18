@@ -5,6 +5,7 @@
 //  Created by fyc on 16/4/5.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
+#import "Message.h"
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
@@ -29,4 +30,6 @@
 //布局tabbar
 - (void)layOutTheApp;
 - (void)configureTabVC;
+
++(BOOL)isMeSend:(Message *)msg;
 @end

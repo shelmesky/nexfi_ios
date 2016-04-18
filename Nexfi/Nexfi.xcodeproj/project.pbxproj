@@ -162,6 +162,14 @@
 		0E9E758D1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */; };
 		0E9E75901CBCDE8100EE2272 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E758F1CBCDE8100EE2272 /* Message.m */; };
 		0E9E75931CBE15F800EE2272 /* NFPeersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75921CBE15F800EE2272 /* NFPeersView.m */; };
+		0E9E75981CBF3BBD00EE2272 /* FNSendImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75971CBF3BBD00EE2272 /* FNSendImageView.m */; };
+		0E9E759D1CBF7B0400EE2272 /* 041@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E759C1CBF7B0400EE2272 /* 041@2x.png */; };
+		0E9E75A11CBF7B8100EE2272 /* NFTribeInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E759F1CBF7B8100EE2272 /* NFTribeInfoVC.m */; };
+		0E9E75A21CBF7B8100EE2272 /* NFTribeInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E75A01CBF7B8100EE2272 /* NFTribeInfoVC.xib */; };
+		0E9E75A61CBF7CAA00EE2272 /* NFTribeInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75A41CBF7CAA00EE2272 /* NFTribeInfoCell.m */; };
+		0E9E75A71CBF7CAA00EE2272 /* NFTribeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E75A51CBF7CAA00EE2272 /* NFTribeInfoCell.xib */; };
+		0E9E75AB1CC3BDC200EE2272 /* OtherInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E75A91CC3BDC200EE2272 /* OtherInfoVC.m */; };
+		0E9E75AC1CC3BDC200EE2272 /* OtherInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E75AA1CC3BDC200EE2272 /* OtherInfoVC.xib */; };
 		0EBAE9441CB3824000361D18 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9431CB3824000361D18 /* main.m */; };
 		0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9461CB3824000361D18 /* AppDelegate.m */; };
 		0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9491CB3824000361D18 /* ViewController.m */; };
@@ -588,12 +596,12 @@
 		0E5492821CB3997100DE40E8 /* UDCompositeBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDCompositeBuffer.m; sourceTree = "<group>"; };
 		0E5492831CB3997100DE40E8 /* UDDataBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDDataBuffer.h; sourceTree = "<group>"; };
 		0E5492841CB3997100DE40E8 /* UDDataBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDDataBuffer.m; sourceTree = "<group>"; };
-		0E5492851CB3997100DE40E8 /* Frames.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Frames.pb.h; sourceTree = "<group>"; };
-		0E5492861CB3997100DE40E8 /* Frames.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Frames.pb.m; sourceTree = "<group>"; };
+		0E5492851CB3997100DE40E8 /* Frames.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Frames.pb.h; path = ../Frames.pb.h; sourceTree = "<group>"; };
+		0E5492861CB3997100DE40E8 /* Frames.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Frames.pb.m; path = ../Frames.pb.m; sourceTree = "<group>"; };
 		0E5492871CB3997100DE40E8 /* Node.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Node.h; sourceTree = "<group>"; };
 		0E5492881CB3997100DE40E8 /* Node.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Node.m; sourceTree = "<group>"; };
-		0E5492891CB3997100DE40E8 /* Packets.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Packets.pb.h; sourceTree = "<group>"; };
-		0E54928A1CB3997100DE40E8 /* Packets.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Packets.pb.m; sourceTree = "<group>"; };
+		0E5492891CB3997100DE40E8 /* Packets.pb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Packets.pb.h; path = ../Packets.pb.h; sourceTree = "<group>"; };
+		0E54928A1CB3997100DE40E8 /* Packets.pb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Packets.pb.m; path = ../Packets.pb.m; sourceTree = "<group>"; };
 		0E54928D1CB3997100DE40E8 /* UDLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDLink.h; sourceTree = "<group>"; };
 		0E54928E1CB3997100DE40E8 /* UDLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDLogger.h; sourceTree = "<group>"; };
 		0E5492901CB3997100DE40E8 /* UDLazySource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDLazySource.h; sourceTree = "<group>"; };
@@ -786,6 +794,18 @@
 		0E9E758F1CBCDE8100EE2272 /* Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		0E9E75911CBE15F800EE2272 /* NFPeersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFPeersView.h; sourceTree = "<group>"; };
 		0E9E75921CBE15F800EE2272 /* NFPeersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFPeersView.m; sourceTree = "<group>"; };
+		0E9E75961CBF3BBD00EE2272 /* FNSendImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNSendImageView.h; sourceTree = "<group>"; };
+		0E9E75971CBF3BBD00EE2272 /* FNSendImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSendImageView.m; sourceTree = "<group>"; };
+		0E9E759C1CBF7B0400EE2272 /* 041@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "041@2x.png"; sourceTree = "<group>"; };
+		0E9E759E1CBF7B8100EE2272 /* NFTribeInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFTribeInfoVC.h; sourceTree = "<group>"; };
+		0E9E759F1CBF7B8100EE2272 /* NFTribeInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFTribeInfoVC.m; sourceTree = "<group>"; };
+		0E9E75A01CBF7B8100EE2272 /* NFTribeInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFTribeInfoVC.xib; sourceTree = "<group>"; };
+		0E9E75A31CBF7CAA00EE2272 /* NFTribeInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFTribeInfoCell.h; sourceTree = "<group>"; };
+		0E9E75A41CBF7CAA00EE2272 /* NFTribeInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFTribeInfoCell.m; sourceTree = "<group>"; };
+		0E9E75A51CBF7CAA00EE2272 /* NFTribeInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFTribeInfoCell.xib; sourceTree = "<group>"; };
+		0E9E75A81CC3BDC200EE2272 /* OtherInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OtherInfoVC.h; sourceTree = "<group>"; };
+		0E9E75A91CC3BDC200EE2272 /* OtherInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OtherInfoVC.m; sourceTree = "<group>"; };
+		0E9E75AA1CC3BDC200EE2272 /* OtherInfoVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherInfoVC.xib; sourceTree = "<group>"; };
 		0EBAE93F1CB3824000361D18 /* Nexfi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Nexfi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EBAE9431CB3824000361D18 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		0EBAE9451CB3824000361D18 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -1246,12 +1266,8 @@
 			children = (
 				0E5492581CB3997100DE40E8 /* Adapter */,
 				0E54927C1CB3997100DE40E8 /* Buffer */,
-				0E5492851CB3997100DE40E8 /* Frames.pb.h */,
-				0E5492861CB3997100DE40E8 /* Frames.pb.m */,
 				0E5492871CB3997100DE40E8 /* Node.h */,
 				0E5492881CB3997100DE40E8 /* Node.m */,
-				0E5492891CB3997100DE40E8 /* Packets.pb.h */,
-				0E54928A1CB3997100DE40E8 /* Packets.pb.m */,
 				0E54928B1CB3997100DE40E8 /* Protobuf */,
 				0E54928C1CB3997100DE40E8 /* Public */,
 				0E54929E1CB3997100DE40E8 /* Router */,
@@ -1353,6 +1369,10 @@
 		0E54928B1CB3997100DE40E8 /* Protobuf */ = {
 			isa = PBXGroup;
 			children = (
+				0E5492851CB3997100DE40E8 /* Frames.pb.h */,
+				0E5492861CB3997100DE40E8 /* Frames.pb.m */,
+				0E5492891CB3997100DE40E8 /* Packets.pb.h */,
+				0E54928A1CB3997100DE40E8 /* Packets.pb.m */,
 			);
 			path = Protobuf;
 			sourceTree = "<group>";
@@ -1482,6 +1502,11 @@
 				0E54938A1CB3A66100DE40E8 /* Photo.m */,
 				0E9E75911CBE15F800EE2272 /* NFPeersView.h */,
 				0E9E75921CBE15F800EE2272 /* NFPeersView.m */,
+				0E9E75961CBF3BBD00EE2272 /* FNSendImageView.h */,
+				0E9E75971CBF3BBD00EE2272 /* FNSendImageView.m */,
+				0E9E75A31CBF7CAA00EE2272 /* NFTribeInfoCell.h */,
+				0E9E75A41CBF7CAA00EE2272 /* NFTribeInfoCell.m */,
+				0E9E75A51CBF7CAA00EE2272 /* NFTribeInfoCell.xib */,
 			);
 			name = View;
 			path = ../View;
@@ -1627,9 +1652,15 @@
 				0E9E75841CBCCB3200EE2272 /* NFAllUserChatInfoVC.h */,
 				0E9E75851CBCCB3200EE2272 /* NFAllUserChatInfoVC.m */,
 				0E9E75861CBCCB3200EE2272 /* NFAllUserChatInfoVC.xib */,
+				0E9E759E1CBF7B8100EE2272 /* NFTribeInfoVC.h */,
+				0E9E759F1CBF7B8100EE2272 /* NFTribeInfoVC.m */,
+				0E9E75A01CBF7B8100EE2272 /* NFTribeInfoVC.xib */,
 				0E9E75891CBCCB6900EE2272 /* NFTribeChatInfoVC.h */,
 				0E9E758A1CBCCB6900EE2272 /* NFTribeChatInfoVC.m */,
 				0E9E758B1CBCCB6900EE2272 /* NFTribeChatInfoVC.xib */,
+				0E9E75A81CC3BDC200EE2272 /* OtherInfoVC.h */,
+				0E9E75A91CC3BDC200EE2272 /* OtherInfoVC.m */,
+				0E9E75AA1CC3BDC200EE2272 /* OtherInfoVC.xib */,
 				0EBAE9791CB3830F00361D18 /* ChatVC.h */,
 				0EBAE97A1CB3830F00361D18 /* ChatVC.m */,
 				0EBAE97B1CB3830F00361D18 /* ChatVC.xib */,
@@ -1685,6 +1716,7 @@
 		0E5493BE1CB4E0EE00DE40E8 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0E9E759C1CBF7B0400EE2272 /* 041@2x.png */,
 				0E80885C1CB66C270046DE0F /* 057@2x.png */,
 				0E80885A1CB66C1E0046DE0F /* 054@2x.png */,
 				0EE1C4341CB552ED00A135C3 /* 102@2x.png */,
@@ -2513,6 +2545,7 @@
 				0EE1C41B1CB5162900A135C3 /* img_head_14@2x.png in Resources */,
 				0EBAEB961CB3839400361D18 /* d_heng@2x.png in Resources */,
 				0EBAEB9A1CB3839400361D18 /* d_kelian@2x.png in Resources */,
+				0E9E759D1CBF7B0400EE2272 /* 041@2x.png in Resources */,
 				0E5493461CB3A64100DE40E8 /* write_face_01.png in Resources */,
 				0EBAEBDD1CB3839400361D18 /* o_zhaoxiangji@2x.png in Resources */,
 				0E5493601CB3A64100DE40E8 /* write_face_25.png in Resources */,
@@ -2547,6 +2580,7 @@
 				0E5493551CB3A64100DE40E8 /* write_face_15.png in Resources */,
 				0EBAEB921CB3839400361D18 /* d_haixiu@2x.png in Resources */,
 				0E5493581CB3A64100DE40E8 /* write_face_18.png in Resources */,
+				0E9E75A71CBF7CAA00EE2272 /* NFTribeInfoCell.xib in Resources */,
 				0EBAEBC01CB3839400361D18 /* f_hufen@2x.png in Resources */,
 				0E5493B81CB4DFF800DE40E8 /* NeighbourVC.xib in Resources */,
 				0EBAEC591CB3839400361D18 /* lxh_zaokuangzheng.gif in Resources */,
@@ -2695,6 +2729,7 @@
 				0EBAEC161CB3839400361D18 /* lxh_juhan.png in Resources */,
 				0EBAEC411CB3839400361D18 /* lxh_tuijian.gif in Resources */,
 				0EBAEC711CB3839400361D18 /* sms_keyboard@2x.png in Resources */,
+				0E9E75A21CBF7B8100EE2272 /* NFTribeInfoVC.xib in Resources */,
 				0E5493481CB3A64100DE40E8 /* write_face_03.png in Resources */,
 				0E5493511CB3A64100DE40E8 /* write_face_11.png in Resources */,
 				0EBAE97F1CB3830F00361D18 /* ChatVC.xib in Resources */,
@@ -2799,6 +2834,7 @@
 				0EE1C3ED1CB4F38A00A135C3 /* FCPersonHeadCell.xib in Resources */,
 				0E54936C1CB3A64100DE40E8 /* write_face_36.png in Resources */,
 				0EBAEC051CB3839400361D18 /* lxh_haobang@2x.png in Resources */,
+				0E9E75AC1CC3BDC200EE2272 /* OtherInfoVC.xib in Resources */,
 				0EBAEB981CB3839400361D18 /* d_jiyan@2x.png in Resources */,
 				0EBAED5A1CB3874D00361D18 /* otherChat.png in Resources */,
 				0EBAEB971CB3839400361D18 /* d_huaxin@2x.png in Resources */,
@@ -2951,6 +2987,7 @@
 				0E5493B31CB4DF5700DE40E8 /* BaseVC.m in Sources */,
 				0E5493981CB3BE6D00DE40E8 /* StringHelper.m in Sources */,
 				0E5493A21CB4C7E800DE40E8 /* UserManager.m in Sources */,
+				0E9E75981CBF3BBD00EE2272 /* FNSendImageView.m in Sources */,
 				0E5493831CB3A64100DE40E8 /* JXEmoji.m in Sources */,
 				0E5492DB1CB3997100DE40E8 /* UDTransport.m in Sources */,
 				0E5493BC1CB4E03100DE40E8 /* SelfVC.m in Sources */,
@@ -2981,6 +3018,7 @@
 				0EBAEC7B1CB3839400361D18 /* YBKeyboardEmojiPageControl.m in Sources */,
 				0E5492D71CB3997100DE40E8 /* Packets.pb.m in Sources */,
 				0EE1C4211CB516BC00A135C3 /* UIView_extra.m in Sources */,
+				0E9E75A11CBF7B8100EE2272 /* NFTribeInfoVC.m in Sources */,
 				0EE1C3EC1CB4F38A00A135C3 /* FCPersonHeadCell.m in Sources */,
 				0E5493B71CB4DFF800DE40E8 /* NeighbourVC.m in Sources */,
 				0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */,
@@ -2988,11 +3026,13 @@
 				0E9E75871CBCCB3200EE2272 /* NFAllUserChatInfoVC.m in Sources */,
 				0EBAEC651CB3839400361D18 /* MJType.m in Sources */,
 				0EBAECB51CB3839400361D18 /* YBKeyboardText.m in Sources */,
+				0E9E75A61CBF7CAA00EE2272 /* NFTribeInfoCell.m in Sources */,
 				0E5492DA1CB3997100DE40E8 /* UDTimeExtender.m in Sources */,
 				0E5492C91CB3997100DE40E8 /* UDNsdService.m in Sources */,
 				0EBAEC661CB3839400361D18 /* NSObject+MJCoding.m in Sources */,
 				0E5492E41CB3997100DE40E8 /* UDFrameData.m in Sources */,
 				0E54938B1CB3A66100DE40E8 /* Photo.m in Sources */,
+				0E9E75AB1CC3BDC200EE2272 /* OtherInfoVC.m in Sources */,
 				0EBAECB61CB3839400361D18 /* YBKeyboardTextView.m in Sources */,
 				0EBAEC691CB3839400361D18 /* NSString+MJExtension.m in Sources */,
 				0EBAEC821CB3839400361D18 /* YBKeyboardEmojOptionView.m in Sources */,

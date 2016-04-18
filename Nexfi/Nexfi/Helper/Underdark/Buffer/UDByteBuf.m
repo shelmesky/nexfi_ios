@@ -97,9 +97,11 @@
 - (nonnull NSData*) readBytes:(NSUInteger)length
 {
 	NSAssert(length <= self.readableBytes, @"length > readableBytes");
-	
+
 	NSData* result = [_data subdataWithRange:NSMakeRange(_readerIndex, length)];
 	_readerIndex += length;
+    
+
 	
 	return result;
 }

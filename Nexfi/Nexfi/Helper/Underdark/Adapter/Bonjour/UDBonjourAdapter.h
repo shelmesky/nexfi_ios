@@ -56,6 +56,9 @@
 - (void) channelTerminated:(nonnull UDBonjourChannel*)channel;
 
 - (void) channelCanSendMore:(nonnull UDBonjourChannel*)channel;
+
+- (void) channel:(nonnull UDBonjourChannel *)channel fail:(NSString *)fail;
+- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData WithProgress:(float)progress;
 - (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData;
 
 @end

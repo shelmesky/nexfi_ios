@@ -5,6 +5,15 @@
 //  Created by fyc on 16/4/12.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
+
+/**
+ *  消息发送状态,自己发送的消息时有
+ */
+typedef NS_ENUM(NSUInteger, FNMessageSendState){
+    FNMessageSendSuccess = 0 /**< 消息发送成功 */,
+    FNMessageSendStateSending, /**< 消息发送中 */
+    FNMessageSendFail /**< 消息发送失败 */,
+};
 /*!
  @enum
  @brief 聊天类型
@@ -24,14 +33,7 @@ typedef NS_ENUM(NSInteger, MessageType) {
 
 };
 
-/**
- *  消息发送状态,自己发送的消息时有
- */
-typedef NS_ENUM(NSUInteger, FNMessageSendState){
-    eMessageSendSuccess = 0 /**< 消息发送成功 */,
-    eMessageSendStateSending, /**< 消息发送中 */
-    eMessageSendFail /**< 消息发送失败 */,
-};
+
 
 /*!
  @enum

@@ -374,13 +374,25 @@
 	});
 }
 
-- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData
+- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData WithProgress:(float)progress
 {
 	// Transport queue.
 	
 	sldispatch_async(self.queue, ^{
-		[self->_delegate adapter:self channel:channel didReceiveFrame:frameData];
+		[self->_delegate adapter:self channel:channel didReceiveFrame:frameData WithProgress:progress];
 	});
 }
+- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData{
+    sldispatch_async(self.queue, ^{
+        [self->_delegate adapter:self channel:channel didReceiveFrame:frameData];
+    });
+}
 
+- (void) channel:(nonnull UDBonjourChannel *)channel fail:(NSString *)fail{
+    
+    sldispatch_async(self.queue, ^{
+        [self->_delegate adapter:self channel:channel fail:fail];
+    });
+    
+}
 @end

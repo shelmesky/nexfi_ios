@@ -12,7 +12,7 @@
 
 @interface UDOutputItem : NSObject
 
-@property (nonatomic, readonly, nullable) NSData* data;
+@property (nonatomic, nullable) NSData* data;
 @property (nonatomic, readonly, nullable) UDFrameData* frameData;
 
 @property (nonatomic, readonly, getter=isEnding) bool isEnding;

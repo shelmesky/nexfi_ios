@@ -10,9 +10,9 @@
 #import "NFNearbyUserCell.h"
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
+#import "OtherInfoVC.h"
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
-
 
 
 @end
@@ -124,7 +124,12 @@
     }
     return 3;
 }
-
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    UserModel *user = [self.handleByUsers objectAtIndex:indexPath.row];
+    OtherInfoVC *otherVc= [[OtherInfoVC alloc]init];
+    otherVc.user = user;
+    [self.navigationController pushViewController:otherVc animated:YES];
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.handleByUsers.count;
 }

@@ -109,10 +109,11 @@
     
     
     self.peersCount += 1;
+    
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
-    if (self.allUserChatVC) {
-        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-    }
+//    if (self.allUserChatVC) {
+//        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+//    }
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
     
@@ -123,9 +124,9 @@
     self.peersCount -= 1;
     
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
-    if (self.allUserChatVC) {
-        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-    }
+//    if (self.allUserChatVC) {
+//        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+//    }
     
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
@@ -147,7 +148,7 @@
     }];
             
 }
-- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
+- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData WithProgress:(float)progress{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
     switch ([dic[@"messageType"] intValue]) {
         case eMessageType_requestUserInfo:
@@ -175,5 +176,10 @@
     }
 
 }
-
+- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link fail:(NSString*)fail{
+    
+}
+- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
+    
+}
 @end

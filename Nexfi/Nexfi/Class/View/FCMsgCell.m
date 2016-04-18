@@ -54,6 +54,9 @@
         
         [_chatImage setBackgroundColor:[UIColor redColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
+        
+        [self.contentView addSubview:self.messageSendStateIV];
+
 //        [_headMask setImage:[[UIImage imageNamed:@"UserHeaderImageBox"]stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
 //        [_userHead setImage:[UIImage imageNamed:@"default_portrait_chat.png"]];
         
@@ -70,7 +73,19 @@
     return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
-
+- (void)setMessageSendState:(FNMessageSendState)messageSendState{
+    _messageSendState = messageSendState;
+    if (![self isMeSend]) {
+        self.messageSendStateIV.hidden = YES;
+    }
+    self.messageSendStateIV.messageSendState = messageSendState;
+}
+- (FNSendImageView *)messageSendStateIV{
+    if (!_messageSendStateIV) {
+        _messageSendStateIV = [[FNSendImageView alloc]init];
+    }
+    return _messageSendStateIV;
+}
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -339,6 +354,8 @@
         
         [self.contentView addSubview:p];
         [_bubbleBg addSubview:iv];
+        
+
 #ifdef IS_TEST_VERSION
         [self updateIsRead:true];//[msg.isRead boolValue]];
 #endif
@@ -356,6 +373,12 @@
 //        [self.contentView addSubview:iv];
 //        [iv release];
 //    }
+    
+    if ([self isMeSend]) {
+        self.messageSendStateIV.frame = CGRectMake(_bubbleBg.frame.origin.x - 20, _bubbleBg.center.y - 10, 10, 10);
+    }
+
+    
 }
 
 - (void)awakeFromNib {

@@ -14,9 +14,6 @@
     [DDLog log:asynchronous message:message level:(DDLogLevel)level flag:(DDLogFlag)flag context:context file:file function:function line:line tag:tag];
     NSString *nmessage = message;
     
-//    if (<#condition#>) {
-//        <#statements#>
-//    }
     
     NSLog(@"message====%@",message);
     

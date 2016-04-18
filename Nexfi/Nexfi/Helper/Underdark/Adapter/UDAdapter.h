@@ -23,7 +23,9 @@
 - (void) adapter:(id<UDAdapter>)adapter channelConnected:(id<UDChannel>)channel;
 - (void) adapter:(id<UDAdapter>)adapter channelDisconnected:(id<UDChannel>)channel;
 - (void) adapter:(id<UDAdapter>)adapter channelCanSendMore:(id<UDChannel>)channel;
+- (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel didReceiveFrame:(NSData*)frameData WithProgress:(float)progress;
 - (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel didReceiveFrame:(NSData*)frameData;
+- (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel fail:(NSString*)fail;
 
 @end
 

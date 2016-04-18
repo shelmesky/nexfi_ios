@@ -25,6 +25,7 @@
 @property (nonatomic, readonly) int64_t nodeId;
 @property (nonatomic, readonly) bool slowLink;
 @property (nonatomic, readonly) int16_t priority;
+@property (nonatomic, assign)NSUInteger readIndex;
 
 
 - (instancetype) init NS_UNAVAILABLE;

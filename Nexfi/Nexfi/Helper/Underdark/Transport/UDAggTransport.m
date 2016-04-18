@@ -161,9 +161,31 @@
 	[link sendNextFrame];
 }
 
-
 - (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel didReceiveFrame:(NSData*)data
 {
+    
+    UDAggLink* link = _linksConnected[@(channel.nodeId)];
+    if(!link)
+    {
+        LogError(@"Link doesn't exist for channel %@", channel);
+        return;
+    }
+    
+    if(![link containsChannel:channel])
+    {
+        LogError(@"Link doesn't contain channel %@", channel);
+        return;
+    }
+    
+    sldispatch_async(_queue, ^{
+        [_delegate transport:self link:link didReceiveFrame:data];
+    });
+}
+- (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel didReceiveFrame:(NSData*)data WithProgress:(float)progress
+{
+    
+
+    
 	UDAggLink* link = _linksConnected[@(channel.nodeId)];
 	if(!link)
 	{
@@ -178,8 +200,27 @@
 	}
 	
 	sldispatch_async(_queue, ^{
-		[_delegate transport:self link:link didReceiveFrame:data];
+//		[_delegate transport:self link:link didReceiveFrame:data];
+        [_delegate transport:self link:link didReceiveFrame:data WithProgress:progress];
 	});
 }
-
+- (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel fail:(NSString*)fail{
+    
+    UDAggLink* link = _linksConnected[@(channel.nodeId)];
+    if(!link)
+    {
+        LogError(@"Link doesn't exist for channel %@", channel);
+        return;
+    }
+    
+    if(![link containsChannel:channel])
+    {
+        LogError(@"Link doesn't contain channel %@", channel);
+        return;
+    }
+    
+    sldispatch_async(_queue, ^{
+        [_delegate transport:self link:link fail:fail];
+    });
+}
 @end

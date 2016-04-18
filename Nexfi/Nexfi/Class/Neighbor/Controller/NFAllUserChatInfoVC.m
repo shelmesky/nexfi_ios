@@ -16,6 +16,7 @@
 #import "Message.h"
 #import "NFChatCacheFileUtil.h"
 #import "NFPeersView.h"
+#import "NFTribeInfoVC.h"
 @interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate>
 {
     //用来保存输入框中的信息
@@ -28,7 +29,7 @@
 }
 @property (nonatomic,strong) UITableView *tableView;
 @property (strong, nonatomic) XMChatBar *chatBar;
-@property (nonatomic, strong) NFPeersView *peesView;
+//@property (nonatomic, strong) NFPeersView *peesView;
 
 @end
 
@@ -41,7 +42,7 @@
 {
     [super viewDidLoad];
     
-    [self setBaseVCAttributesWith:@"群聊" left:nil right:nil WithInVC:self];
+    [self setBaseVCAttributesWith:@"群聊" left:nil right:@"041.png" WithInVC:self];
     
     _textArray=[[NSMutableArray alloc]init];
     
@@ -49,7 +50,7 @@
     
     [UnderdarkUtil share].node.allUserChatVC = self;
     
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64 + 30, SCREEN_SIZE.width, SCREEN_SIZE.height-64- kMinHeight - 30
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64- kMinHeight
 ) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
@@ -60,13 +61,13 @@
     [self.view addSubview:_tableView];
     
     [self.view addSubview:self.chatBar];
-    [self.view addSubview:self.peesView];
+//    [self.view addSubview:self.peesView];
     
     
     //获取历史数据
     [self showHistoryMsg];
     
-    self.peesView.peesCount.text = self.peersCount?[NSString stringWithFormat:@"当前有%@人",self.peersCount]:@"当前有0人";
+//    self.peesView.peesCount.text = self.peersCount?[NSString stringWithFormat:@"当前有%@人",self.peersCount]:@"当前有0人";
 
     
     //检测是否接收到数据
@@ -131,9 +132,14 @@
 -(void)onSelect:(UIView*)sender{
 
 }
-- (void)updatePeersCount:(NSString *)peersCount{
-    self.peesView.peesCount.text = [NSString stringWithFormat:@"当前有%@人",peersCount];
+#pragma - mark 跳转群组信息
+- (void)RightBarBtnClick:(id)sender{
+    NFTribeInfoVC *vc = [[NFTribeInfoVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
+//- (void)updatePeersCount:(NSString *)peersCount{
+//    self.peesView.peesCount.text = [NSString stringWithFormat:@"当前有%@人",peersCount];
+//}
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -183,8 +189,8 @@
             //            [_array release];
             _textArray = [[NSMutableArray alloc]init];
         }
-        NSMutableArray* temp = [[NSMutableArray alloc]init];
-        NSMutableArray* p;
+//        NSMutableArray* temp = [[NSMutableArray alloc]init];
+//        NSMutableArray* p;
         //if([self.roomName length]>0)
         //    p = [Message fetchMessageListWithUser:self.roomName byPage:_page];
         //else
@@ -358,9 +364,6 @@
 {
     [super viewWillDisappear:animated];
 }
-
-
-
 #pragma -mark 获取当前时间
 -(NSString *)getDateWithFormatter:(NSString *)formatter
 {
@@ -428,12 +431,12 @@
         [self.tableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, frame.origin.y)];
     } completion:nil];
 }
-- (UIView *)peesView{
-    if (!_peesView) {
-        _peesView = [[NFPeersView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, 30)];
-    }
-    return _peesView;
-}
+//- (UIView *)peesView{
+//    if (!_peesView) {
+//        _peesView = [[NFPeersView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, 30)];
+//    }
+//    return _peesView;
+//}
 
 
 /*

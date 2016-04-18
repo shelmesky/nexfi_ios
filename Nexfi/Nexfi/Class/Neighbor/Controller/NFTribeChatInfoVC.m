@@ -17,6 +17,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self setBaseVCAttributesWith:@"聊天信息" left:nil right:nil WithInVC:self];
+
+    
 }
 
 - (void)didReceiveMemoryWarning {

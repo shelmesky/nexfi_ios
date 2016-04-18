@@ -10,6 +10,8 @@
 #import "Message.h"
 #import "TribeMessage.h"
 #import "PersonMessage.h"
+#import "FNSendImageView.h"
+
 @class JXEmoji;
 @class JXImageView;
 //头像大小
@@ -35,6 +37,15 @@
 @property (nonatomic, assign) Message * msg;
 @property (nonatomic, assign) NSObject* delegate;
 @property (nonatomic, assign) SEL		didTouch;
+
+/**
+ *  显示消息发送状态的UIImageView -> 用于消息发送不成功时显示
+ */
+@property (nonatomic, strong) FNSendImageView *messageSendStateIV;
+/**
+ *  消息发送状态,当状态为XMNMessageSendFail或XMNMessageSendStateSending时,XMNMessageSendStateIV显示
+ */
+@property (nonatomic, assign) FNMessageSendState messageSendState;
 
 -(void)setHeadImage:(UIImage*)headImage;
 -(void)setHeadImageWithURL:(NSURL*) imgUrl;

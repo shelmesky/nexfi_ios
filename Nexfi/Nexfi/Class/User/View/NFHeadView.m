@@ -41,9 +41,9 @@
     }
 }
 - (void)addTribeClick:(id)sender{
-    if (self.delegate && [self.delegate respondsToSelector:@selector(addTribeClicks:)]) {
-        [self.delegate addTribeClicks:sender];
-    }
+//    if (self.delegate && [self.delegate respondsToSelector:@selector(addTribeClicks:)]) {
+//        [self.delegate addTribeClicks:sender];
+//    }
 }
 - (void)setup{
 

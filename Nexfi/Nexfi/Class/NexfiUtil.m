@@ -180,6 +180,11 @@ static NexfiUtil *_util;
 //        return [result autorelease];
     return result;
 }
++(BOOL)isMeSend:(Message *)msg{
+    
+    return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
+    
+}
 - (NSString *)pathForTemporaryFileWithPrefix:(NSString *)prefix
 
 {

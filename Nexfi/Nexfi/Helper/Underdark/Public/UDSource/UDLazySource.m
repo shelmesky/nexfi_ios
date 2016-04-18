@@ -56,6 +56,9 @@
 - (void) retrieve:(UDSourceRetrieveBlock _Nonnull)completion
 {
 	NSData* data = _block();
+    NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:0];
+    NSLog(@"dic=====%@",dic);
+
 	completion(data);
 } // retrieve
 

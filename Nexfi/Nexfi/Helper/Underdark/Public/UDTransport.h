@@ -58,6 +58,14 @@ extern NSString* UDBeaconDetectedNotification;
  * @see [UDLink sendFrame:]
  */
 - (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData*)frameData;
+/**
+ *获取数据
+ */
+- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData*)frameData WithProgress:(float)progress;
+/**
+ *失败
+ */
+- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link fail:(NSString*)fail;
 
 @end
 
