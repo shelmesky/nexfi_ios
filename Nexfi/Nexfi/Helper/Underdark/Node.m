@@ -60,14 +60,43 @@
 //    [self.controller updateFramesCount];
     
 }
-- (void)broadcastFrame:(id<UDSource>)frameData{
-    if (_links.count == 0) {
-        return;
-    }
-//    [self.controller updateFramesCount];
-    for (int i = 0; i < self.links.count; i ++) {
-        self.link = [self.links objectAtIndex:i];
-        [self.link sendData:frameData];
+- (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType{
+    switch (messageType) {
+            
+        case eMessageType_SingleChat:
+        {
+            //获取与该用户的link发送数据
+            id<UDLink>myLink = [self.singleVC getUserLink];
+            if (myLink) {
+                [myLink sendData:frameData];
+            }else{
+                if (self.delegate && [self.delegate respondsToSelector:@selector(singleChatSendFailWithInfo:)]) {
+                    [self.delegate singleChatSendFailWithInfo:@"该用户已经下线"];
+                }
+            }
+            break;
+        }
+        case eMessageType_AllUserChat:
+        {
+            //没有连接群聊发送消息失败
+            if (self.links.count == 0) {
+                
+                if (self.delegate && [self.delegate respondsToSelector:@selector(AllUserChatSendFailWithInfo:)]) {
+                    [self.delegate AllUserChatSendFailWithInfo:@"您附近没有用户上线哦~"];
+                }
+                
+                return;
+            }
+            for (int i = 0; i < self.links.count; i ++) {
+                id<UDLink>myLink = [self.links objectAtIndex:i];
+                
+                [myLink sendData:frameData];
+            }
+
+            break;
+        }
+        default:
+            break;
     }
 
 }
@@ -163,12 +192,25 @@
         }
         case eMessageType_SingleChat:
         {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            if (self.singleVC) {
+                NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
+                [self.singleVC refreshGetData:msgDic];
+            }else{
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            }
+
+            NSLog(@"收到了");
             break;
         }
         case eMessageType_AllUserChat:
         {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"allUser" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            if (self.neighbourVc) {
+                NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
+                [self.allUserChatVC refreshGetData:msgDic];
+            }else{
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"allUser" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            }
+
             break;
         }
         default:

@@ -50,12 +50,12 @@
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
     
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 14; i++) {
         UIImage *image;
         if (i<8) {
             image = [UIImage imageNamed:[NSString stringWithFormat:@"img_head_0%d",i+2]];
         }else{
-            image = [UIImage imageNamed:[NSString stringWithFormat:@"img_head_1%d",i+2]];
+            image = [UIImage imageNamed:[NSString stringWithFormat:@"img_head_%d",i+2]];
         }
         [self.dataArr addObject:image];
     }
@@ -63,7 +63,7 @@
 }
 #pragma mark - UICollectionViewDataSource
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
-    return _dataArr.count + 1;
+    return _dataArr.count;
 }
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView
                   cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -171,7 +171,13 @@
     UserModel *user = [[UserManager shareManager]getUser];
     NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
 //    user.headImg = cell.headImg.image;
-    user.headImgStr = [data base64Encoding];
+//    user.headImgStr = [data base64Encoding];
+    if (self.nowRow<9) {
+        user.headImgPath = [NSString stringWithFormat:@"img_head_0%ld",self.nowRow+2];
+    }else{
+        user.headImgPath = [NSString stringWithFormat:@"img_head_%ld",self.nowRow+2];
+    }
+    NSLog(@"headIm ==== %@",user.headImgPath);
     [[UserManager shareManager]loginSuccessWithUser:user];
     
     [self.navigationController popViewControllerAnimated:YES];

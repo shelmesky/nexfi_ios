@@ -16,10 +16,19 @@
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
 
+
+@protocol NodeDelegate <NSObject>
+//发送消息失败
+- (void)singleChatSendFailWithInfo:(NSString *)failMsg;
+- (void)AllUserChatSendFailWithInfo:(NSString *)failMsg;
+
+@end
+
 @interface Node : NSObject<UDTransportDelegate>
 
 @property (nonatomic, strong)NSString *usersId;
 @property (nonatomic,strong)NeighbourVC *neighbourVc;
+@property (nonatomic,strong)NFSingleChatInfoVC *singleVC;
 @property (nonatomic,strong)NFAllUserChatInfoVC *allUserChatVC;
 
 @property (nonatomic ,strong)id<UDTransport>transport;
@@ -34,8 +43,11 @@
 @property (nonatomic, strong)NSMutableArray *links;
 @property (nonatomic ,strong)id<UDLink>link;
 
+@property (nonatomic, assign)id<NodeDelegate>delegate;
 
 - (void)start;
 - (void)stop;
 - (void)broadcastFrame:(id<UDSource>)frameData;
+
+- (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType;
 @end

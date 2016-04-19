@@ -63,8 +63,10 @@
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
     if ([[UserManager shareManager]getUser]) {
-        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-        _headView.userImg.image = [UIImage imageWithData:data];
+        //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
+        //        _headView.userImg.image = [UIImage imageWithData:data];
+        UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath];
+        _headView.userImg.image = img;
     }
     [super viewWillAppear:animated];
 }

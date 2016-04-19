@@ -56,8 +56,33 @@
     
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
     
+    //展示进度
+    WGradientProgress *gradProg = [WGradientProgress sharedInstance];
+    [gradProg showOnParent:self.navigationController.navigationBar position:WProgressPosDown];
+    
+    [self showProgress];
+    
     //检测是否接收到数据
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
+    
+}
+- (void)showProgress{
+    WGradientProgress *pro = [WGradientProgress sharedInstance];
+    
+    if (pro.progress == 0) {
+        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
+        
+        [pro setProgress:increment + pro.progress];
+    }
+
+    double delayInSeconds = 2.0;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
+        
+        [pro setProgress:increment + pro.progress];
+        
+        [self showProgress];
+    });
     
 }
 #pragma -mark 获取接收到的数据
@@ -71,7 +96,8 @@
         msg.pContent = msg.file;
     }
     UserModel *user = [[UserModel alloc]init];
-    user.headImgStr = msg.senderFaceImageStr;
+//    user.headImgStr = msg.senderFaceImageStr;
+    user.headImgPath = msg.senderFaceImageStr;
     user.userName = msg.senderNickName;
     user.userId = msg.sender;
     
@@ -84,6 +110,10 @@
 }
 #pragma -mark NSNotification 用户信息更新
 - (void)refreshTable:(NSNotification *)notify{
+    //获取到进度 进度消失
+    WGradientProgress *pro = [WGradientProgress sharedInstance];
+    [pro hide];
+    
     NSDictionary *userDic = notify.userInfo[@"user"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
     NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic];
@@ -93,7 +123,6 @@
     
     UserModel *users = [[UserModel alloc]initWithaDic:user];
 
-    
     if (self.handleByUsers.count == 0) {
         [self.handleByUsers addObject:users];
     }else{
@@ -102,9 +131,27 @@
         }
     }
     
+    self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
+    
+    
     [self.usersTable reloadData];
     
+    //设置用户上线动画
+    NSUInteger index = [self.handleByUsers indexOfObject:users];
+    NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    [self playBounceAnimation:cell.nickNameLabel];
     
+    
+}
+#pragma -mark 设置用户上线的动画
+- (void)playBounceAnimation:(UILabel *)nameLa{
+    CAKeyframeAnimation *animation = [CAKeyframeAnimation animationWithKeyPath:@"transform.scale"];
+    
+    animation.values = @[@(1),@(1.5),@(0.9),@(0.5),@(1)];
+    animation.duration = 0.7;
+    animation.calculationMode = kCAAnimationCubic;
+    
+    [nameLa.layer addAnimation:animation forKey:@"playBounceAnimation"];
 }
 #pragma -mark 私聊
 - (void)nearbyUserCellDidClickChatButtonForIndexPath:(NSIndexPath *)indexPath{

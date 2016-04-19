@@ -19,6 +19,9 @@
 #import "NSDataEx.h"
 #import "SqlManager.h"
 #import "UIColor+Hex.h"
+#import "WGradientProgress.h"
+#import "MWPhotoBrowser.h"
+#import "MWPhoto.h"
 
 #import "IQKeyboardManager.h"
 
