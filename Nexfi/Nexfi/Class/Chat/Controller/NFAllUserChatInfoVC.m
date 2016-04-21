@@ -17,7 +17,7 @@
 #import "NFChatCacheFileUtil.h"
 #import "NFPeersView.h"
 #import "NFTribeInfoVC.h"
-@interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate>
+@interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
 {
     //用来保存输入框中的信息
     NSMutableArray * _textArray;
@@ -27,6 +27,7 @@
     
     BOOL sendOnce;
 }
+@property (nonatomic,strong) NSMutableArray *msgs;
 @property (nonatomic,strong) UITableView *tableView;
 @property (strong, nonatomic) XMChatBar *chatBar;
 @property (nonatomic, strong)NSMutableArray *mwPhotos;
@@ -36,9 +37,11 @@
 @end
 
 @implementation NFAllUserChatInfoVC
-
--(void)viewWillAppear:(BOOL)animated{
-    [self refresh:nil];
+- (NSMutableArray *)msgs{
+    if (_msgs) {
+        _msgs = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _msgs;
 }
 - (void)viewDidLoad
 {
@@ -51,6 +54,8 @@
     _pool = [[NSMutableArray alloc]init];
     
     [UnderdarkUtil share].node.allUserChatVC = self;
+    [UnderdarkUtil share].node.delegate = self;
+
     
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64- kMinHeight
 ) style:UITableViewStylePlain];
@@ -134,6 +139,7 @@
 }
 #pragma mark -FNMsgCellDelegate
 - (void)clickPic:(NSUInteger)index{
+    /*
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = NO;
@@ -173,6 +179,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
+     */
     
 }
 #pragma - mark 跳转群组信息
@@ -218,38 +225,6 @@
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         return rect.size.height + 20 + 50;
-    }
-}
--(void)refresh:(TribeMessage*)msg
-{
-
-    BOOL b=YES;
-    if(msg == nil){
-        if(_textArray==nil){
-            //            [_array release];
-            _textArray = [[NSMutableArray alloc]init];
-        }
-//        NSMutableArray* temp = [[NSMutableArray alloc]init];
-//        NSMutableArray* p;
-        //if([self.roomName length]>0)
-        //    p = [Message fetchMessageListWithUser:self.roomName byPage:_page];
-        //else
-        //    p = [Message fetchMessageListWithUser:_chatPerson.userId byPage:_page];
-        //b = p.count>0;
-        //[temp addObjectsFromArray:p];
-        //[temp addObjectsFromArray:_array];
-        //[_array addObjectsFromArray:temp];
-        //[temp release];
-        // p = nil;
-    }else
-        [_textArray addObject:msg];
-    
-    if (b) {
-        [self free:_pool];
-        _refreshCount++;
-        [_tableView reloadData];
-        // if(msg || _page == 0)
-        //    [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_array.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 -(void)free:(NSMutableArray*)array{
@@ -420,6 +395,9 @@
 #pragma mark -NodeDelegate
 - (void)AllUserChatSendFailWithInfo:(NSString *)failMsg{
     [HudTool showErrorHudWithText:failMsg inView:self.view duration:2];
+}
+- (void)singleChatSendFailWithInfo:(NSString *)failMsg{
+    
 }
 #pragma mark - XMChatBarDelegate
 

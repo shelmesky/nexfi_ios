@@ -47,8 +47,6 @@
     
 }
 - (void)start{
-//    [self.controller updateFramesCount];
-//    [self.controller updatePeerCount];
 
     [_transport start];
     
@@ -57,7 +55,6 @@
     
     [self.transport stop];
     _framesCount = 0;
-//    [self.controller updateFramesCount];
     
 }
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType{
@@ -192,11 +189,30 @@
         }
         case eMessageType_SingleChat:
         {
-            if (self.singleVC) {
+            if (self.singleVC) {//当前页面是单聊
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.singleVC refreshGetData:msgDic];
             }else{
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"singleChat" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+                
+                NSDictionary *text = dic;
+                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+                
+                PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
+                msg.nodeId = nodeId;
+                if (msg.fileType != eMessageBodyType_Text && msg.file) {
+                    msg.pContent = msg.file;
+                }
+                UserModel *user = [[UserModel alloc]init];
+                //    user.headImgStr = msg.senderFaceImageStr;
+                user.headImgPath = msg.senderFaceImageStr;
+                user.userName = msg.senderNickName;
+                user.userId = msg.sender;
+                
+                //保存聊天记录
+                [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
+                //增加未读消息数量
+                [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
+                
             }
 
             NSLog(@"收到了");
@@ -204,11 +220,27 @@
         }
         case eMessageType_AllUserChat:
         {
-            if (self.neighbourVc) {
+            if (self.allUserChatVC) {//当前页面是群聊
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.allUserChatVC refreshGetData:msgDic];
             }else{
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"allUser" object:nil userInfo:@{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+
+                NSDictionary *text = dic;
+                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+                TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
+                msg.nodeId = nodeId;
+                if (msg.fileType != eMessageBodyType_Text && msg.file) {
+                    msg.tContent = msg.file;
+                }
+                msg.isRead = @"1";
+                UserModel *user = [[UserModel alloc]init];
+                user.userId = msg.sender;
+                user.userName = msg.senderNickName;
+                //    user.headImgStr = msg.senderFaceImageStr;
+                user.headImgPath = msg.senderFaceImageStr;
+                //保存聊天记录
+                [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
+                //增加未读消息数量
             }
 
             break;

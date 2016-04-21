@@ -22,7 +22,7 @@
 @protocol FCMsgCellDelegate <NSObject>
 
 - (void)clickPic:(NSUInteger)index;
-- (void)clickMsgContent:(NSUInteger)index;
+//- (void)clickMsgContent:(NSUInteger)index;
 
 @end
 

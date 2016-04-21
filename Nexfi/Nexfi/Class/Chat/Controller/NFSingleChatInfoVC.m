@@ -15,7 +15,7 @@
 
 
 
-@interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate>
+@interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
 {
     UITableView * _tableView;
     
@@ -57,6 +57,7 @@
     _pool = [[NSMutableArray alloc]init];
     
     [UnderdarkUtil share].node.singleVC = self;
+    [UnderdarkUtil share].node.delegate = self;
 
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64 -kMinHeight) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -85,6 +86,7 @@
 }
 #pragma mark -FNMsgCellDelegate
 - (void)clickPic:(NSUInteger)index{
+    /*
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = NO;
@@ -124,7 +126,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
-    
+     */
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法
@@ -403,6 +405,9 @@
 #pragma mark -NodeDelegate
 - (void)singleChatSendFailWithInfo:(NSString *)failMsg{
     [HudTool showErrorHudWithText:failMsg inView:self.view duration:2];
+}
+- (void)AllUserChatSendFailWithInfo:(NSString *)failMsg{
+    
 }
 #pragma mark - XMChatBarDelegate
 

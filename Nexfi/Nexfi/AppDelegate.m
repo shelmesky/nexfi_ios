@@ -30,9 +30,9 @@
     [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;
     [IQKeyboardManager sharedManager].shouldToolbarUsesTextFieldTintColor = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
-    [[IQKeyboardManager sharedManager] disableToolbarInViewControllerClass:[NFAllUserChatInfoVC class]];
+//    [[IQKeyboardManager sharedManager] disableToolbarInViewControllerClass:[NFAllUserChatInfoVC class]];
 
-
+    
 
     
 //    NeighbourVC *v = [[NeighbourVC alloc]init];
@@ -43,22 +43,20 @@
     UIDevice *myDevice = [UIDevice currentDevice];
     
     NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
-    NSLog(@"hehe==%@",deviceUDID);//DEBCE83D-C25A-44ED-B9BD-FA4CAA1E439A
-//    -(NSString*) uuid {
-        CFUUIDRef puuid = CFUUIDCreate( nil );
-        CFStringRef uuidString = CFUUIDCreateString( nil, puuid );
-        NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
-        CFRelease(puuid);
-        CFRelease(uuidString);
-    
-//        return [result autorelease];
-//    }
-    NSLog(@"hehehaha==%@",myDevice.name);//DEBCE83D-C25A-44ED-B9BD-FA4CAA1E439A
+
 
 
 //    self.window.rootViewController = nav;
     
     return YES;
+}
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+- (BOOL)prefersStatusBarHidden
+{
+    return NO;
 }
 /*
 - (NSString *)machineModel {

@@ -47,7 +47,7 @@
 
 - (void)start;
 - (void)stop;
-- (void)broadcastFrame:(id<UDSource>)frameData;
+//- (void)broadcastFrame:(id<UDSource>)frameData;
 
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType;
 @end

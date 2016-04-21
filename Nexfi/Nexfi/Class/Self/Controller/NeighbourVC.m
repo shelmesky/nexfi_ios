@@ -54,58 +54,35 @@
     
     [self.usersTable registerNib:[UINib nibWithNibName:@"NFNearbyUserCell" bundle:nil] forCellReuseIdentifier:@"NFNearbyUserCell"];
     
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
+
     
     //展示进度
     WGradientProgress *gradProg = [WGradientProgress sharedInstance];
     [gradProg showOnParent:self.navigationController.navigationBar position:WProgressPosDown];
     
     [self showProgress];
-    
-    //检测是否接收到数据
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(getText:) name:@"singleChat" object:nil];
+    //好友列表
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
     
 }
 - (void)showProgress{
     WGradientProgress *pro = [WGradientProgress sharedInstance];
     
-    if (pro.progress == 0) {
-        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
-        
-        [pro setProgress:increment + pro.progress];
-    }
-
-    double delayInSeconds = 2.0;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
-        
-        [pro setProgress:increment + pro.progress];
-        
-        [self showProgress];
-    });
-    
-}
-#pragma -mark 获取接收到的数据
-- (void)getText:(NSNotification *)notify{
-    NSDictionary *text = notify.userInfo[@"text"];
-    NSString *nodeId = notify.userInfo[@"nodeId"];
-
-    PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
-    msg.nodeId = nodeId;
-    if (msg.fileType != eMessageBodyType_Text && msg.file) {
-        msg.pContent = msg.file;
-    }
-    UserModel *user = [[UserModel alloc]init];
-//    user.headImgStr = msg.senderFaceImageStr;
-    user.headImgPath = msg.senderFaceImageStr;
-    user.userName = msg.senderNickName;
-    user.userId = msg.sender;
-    
-    //保存聊天记录
-    [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
-    //增加未读消息数量
-    [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
-    
+//    if (pro.progress == 0) {
+//        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
+//        
+//        [pro setProgress:increment + pro.progress];
+//    }
+//
+//    double delayInSeconds = 2.0;
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
+//        
+//        [pro setProgress:increment + pro.progress];
+//        
+//        [self showProgress];
+//    });
+    [pro setProgress:1.0];
     
 }
 #pragma -mark NSNotification 用户信息更新
