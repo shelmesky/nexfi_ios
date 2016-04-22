@@ -7,7 +7,7 @@
 //
 
 #import "FCCongureInfoVC.h"
-
+#import "UnderdarkUtil.h"
 
 @interface FCCongureInfoVC ()
 @property (weak, nonatomic) IBOutlet UITextField *nickName;
@@ -35,6 +35,13 @@
     UserModel *account = [[UserManager shareManager] getUser];
     account.userName = self.nickName.text;
     [[UserManager shareManager] loginSuccessWithUser:account];
+    
+    if ([UnderdarkUtil share].node.links.count > 0) {
+        for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+            id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+            [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo]];
+        }
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
     

@@ -15,7 +15,7 @@
 #import "FCTabHeadView.h"
 #import "NFHeadView.h"
 #import "NFHeadVC.h"
-@interface UserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
+@interface UserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
 @property (nonatomic, strong)UITableView *userInfoTable;
 @property (nonatomic, strong)NSArray *data;
@@ -46,7 +46,7 @@
     _headView.exclusiveTouch = YES;
     _headView.delegate = self;
     
-    self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height) style:UITableViewStyleGrouped];
+    self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64) style:UITableViewStyleGrouped];
     self.userInfoTable.delegate = self;
     self.userInfoTable.dataSource = self;
     [self.view addSubview:self.userInfoTable];
@@ -59,11 +59,13 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
-    if ([[UserManager shareManager]getUser]) {
+    if ([[UserManager shareManager]getUser].userId || [[UserManager shareManager]getUser].headImgPath) {
 //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
 //        _headView.userImg.image = [UIImage imageWithData:data];
         UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath];
         _headView.userImg.image = img;
+    }else{
+        _headView.userImg.image = [UIImage imageNamed:@"img_head_01"];
     }
     [super viewWillAppear:animated];
 }

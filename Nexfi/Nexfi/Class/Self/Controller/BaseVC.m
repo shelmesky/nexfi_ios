@@ -30,6 +30,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
+    if (IOS7) {
+        self.edgesForExtendedLayout = UIRectEdgeNone;
+        self.extendedLayoutIncludesOpaqueBars = NO;
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
 
     
     self.tipLabel = [[UILabel alloc]init];
@@ -39,6 +44,9 @@
     self.tipLabel.textAlignment = NSTextAlignmentCenter;
     self.tipLabel.layer.cornerRadius = 3.f;
     [self.view addSubview:self.tipLabel];
+    
+//    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+//                                                         forBarMetrics:UIBarMetricsDefault];
 }
 
 
@@ -57,7 +65,6 @@
     }
     
 
-    
     [super viewWillAppear:animated];
 }
 
@@ -168,8 +175,9 @@
     [self.titleLabel sizeToFit];
 }
 
-- (void)setRightButtonWithTitle:(NSString*)title
+- (void)setRightButtonWithTitle:(NSString*)title WithTitleName:(NSString *)titleName
 {
+    self.navigationItem.title = titleName;
 
     CGRect rect = [title boundingRectWithSize:CGSizeMake(MAXFLOAT, 44) options:NSStringDrawingUsesLineFragmentOrigin|
      NSStringDrawingUsesDeviceMetrics|
@@ -211,7 +219,8 @@
         [self.navigationItem setRightBarButtonItem:rightButtonItem];
     }
 }
-
+//[[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
+//forBarMetrics:UIBarMetricsDefault];
 //设置导航左边的button的图片名和背景图片名
 - (void)setLeftButtonWithImageName:(NSString*)imageName bgImageName:(NSString*)bgImageName
 {

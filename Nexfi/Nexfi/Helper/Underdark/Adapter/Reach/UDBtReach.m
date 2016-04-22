@@ -83,8 +83,12 @@
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
 	CBCentralManagerState state = central.state;
+    
+    if (state == 2 || state == 3 || state == 4) {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"blueToothFail" object:nil];
+    }
 	
-	if(state == CBCentralManagerStateUnknown)
+	if(state == CBCentralManagerStateUnknown)//初始化
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnknown");
 		if(_reachable)
@@ -94,7 +98,7 @@
 		}
 	}
 	
-	if(state == CBCentralManagerStateResetting)
+	if(state == CBCentralManagerStateResetting) //设备不支持状态，重置
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateResetting");
 		if(_reachable)
@@ -104,7 +108,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStateUnsupported)
+	if(state == CBCentralManagerStateUnsupported)//不支持
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnsupported");
 		if(_reachable)
@@ -114,7 +118,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStateUnauthorized)
+	if(state == CBCentralManagerStateUnauthorized)//未授权
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnauthorized");
 		if(_reachable)
@@ -124,7 +128,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStatePoweredOff)
+	if(state == CBCentralManagerStatePoweredOff)//尚未打开蓝牙
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStatePoweredOff");
 		if(_reachable)
@@ -134,7 +138,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStatePoweredOn)
+	if(state == CBCentralManagerStatePoweredOn)//蓝牙开启
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStatePoweredOn");
 		if(!_reachable)

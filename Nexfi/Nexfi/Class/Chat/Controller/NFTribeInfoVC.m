@@ -29,14 +29,19 @@
     // Do any additional setup after loading the view from its nib.
     [self setBaseVCAttributesWith:@"聊天信息" left:nil right:nil WithInVC:self];
     
-    self.tribeTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height - 64) style:UITableViewStylePlain];
+    self.tribeTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64) style:UITableViewStylePlain];
     self.tribeTable.delegate = self;
     self.tribeTable.dataSource = self;
     self.tribeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tribeTable];
 
     
+}
+- (void)viewWillAppear:(BOOL)animated{
+    
     [self getHandleUsers];
+    
+    [super viewWillAppear:animated];
 }
 - (void)getHandleUsers{
     
@@ -46,10 +51,15 @@
             self.handleByUsers = [[NSMutableArray alloc]initWithArray:NeighbourVc.handleByUsers];
         }
     }
+    
+    
 
     if (![self.handleByUsers containsObject:[[UserManager shareManager]getUser]]) {
         [self.handleByUsers addObject:[[UserManager shareManager]getUser]];
     }
+    
+    [self.tribeTable reloadData];
+    
 }
 #pragma mark - table
 //- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

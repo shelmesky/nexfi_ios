@@ -22,7 +22,7 @@
 #import "WGradientProgress.h"
 #import "MWPhotoBrowser.h"
 #import "MWPhoto.h"
-
+#import "ConFunc.h"
 #import "IQKeyboardManager.h"
 
 #import "XMNChat.h"

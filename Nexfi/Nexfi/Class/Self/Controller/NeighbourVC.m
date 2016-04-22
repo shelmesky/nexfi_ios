@@ -35,7 +35,8 @@
     // Do any additional setup after loading the view from its nib.
 
     [self setBaseVCAttributesWith:@"附近的人" left:nil right:@"群聊" WithInVC:self];
-    
+//    [self setRightButtonWithTitle:@"群聊" WithTitleName:@"附近的人"];
+//    [self setRightButtonWithStateImage:@"btn-shouye1" stateHighlightedImage:@"btn-shouye" stateDisabledImage:nil titleName:@"11"];
 
     
     [[UnderdarkUtil share].node start];
@@ -43,9 +44,7 @@
     
 
     
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    
-    self.usersTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64) style:UITableViewStyleGrouped];
+    self.usersTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height-64 - 49) style:UITableViewStyleGrouped];
     self.usersTable.delegate = self;
     self.usersTable.dataSource = self;
     self.usersTable.rowHeight = 60;
@@ -63,6 +62,9 @@
     [self showProgress];
     //好友列表
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
+
+    //检测蓝牙是否开启
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(blueToothMsgFail:) name:@"blueToothFail" object:nil];
     
 }
 - (void)showProgress{
@@ -85,6 +87,16 @@
     [pro setProgress:1.0];
     
 }
+#pragma -mark  蓝牙打开失败信息
+- (void)blueToothMsgFail:(id)sender{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"蓝牙开启请求" message:@"此app需要通过蓝牙和其他用户进行通信" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+    });
+
+    
+}
 #pragma -mark NSNotification 用户信息更新
 - (void)refreshTable:(NSNotification *)notify{
     //获取到进度 进度消失
@@ -96,20 +108,37 @@
     NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic];
     [user removeObjectForKey:@"nodeId"];
     [user setObject:nodeId forKey:@"nodeId"];
-    //过滤多余的用户信息
     
     UserModel *users = [[UserModel alloc]initWithaDic:user];
 
-    if (self.handleByUsers.count == 0) {
-        [self.handleByUsers addObject:users];
-    }else{
-        if (![self.handleByUsers containsObject:users]) {
-            [self.handleByUsers addObject:users];
+    
+    //过滤多余的用户信息
+    NSString *update = notify.userInfo[@"update"];
+    if (update) {
+        
+        for (int i = 0; i < self.handleByUsers.count; i ++) {
+            UserModel *user = [self.handleByUsers objectAtIndex:i];
+            if ([user.userId isEqualToString:users.userId]) {
+                [self.handleByUsers replaceObjectAtIndex:i withObject:users];
+            }
         }
+        
+        
+    }else{
+    
+
+        if (self.handleByUsers.count == 0) {
+                [self.handleByUsers addObject:users];
+        }else{
+            if (![self.handleByUsers containsObject:users]) {
+                [self.handleByUsers addObject:users];
+            }
+        }
+        
+        self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
+        
+        
     }
-    
-    self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
-    
     
     [self.usersTable reloadData];
     
@@ -117,7 +146,6 @@
     NSUInteger index = [self.handleByUsers indexOfObject:users];
     NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [self playBounceAnimation:cell.nickNameLabel];
-    
     
 }
 #pragma -mark 设置用户上线的动画
@@ -166,6 +194,12 @@
     UserModel *user = self.handleByUsers[indexPath.row];
     cell.user = user;
     return cell;
+}
+- (void)rightButtonPressed:(UIButton *)sender
+{
+    NFAllUserChatInfoVC *allUserVC = [[NFAllUserChatInfoVC alloc]init];
+    allUserVC.peersCount = self.peesCount;
+    [self.navigationController pushViewController:allUserVC animated:YES];
 }
 - (void)RightBarBtnClick:(id)sender{
     NFAllUserChatInfoVC *allUserVC = [[NFAllUserChatInfoVC alloc]init];

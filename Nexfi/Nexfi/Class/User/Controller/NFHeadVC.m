@@ -5,7 +5,7 @@
 //  Created by fyc on 16/4/6.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
+#import "UnderdarkUtil.h"
 #import "NFHeadVC.h"
 #import "FCHeadCollectionCell.h"
 #import "FCPersonCell.h"
@@ -44,7 +44,7 @@
     flowLayout.itemSize = CGSizeMake(70 , 70);
     flowLayout.sectionInset = UIEdgeInsetsMake(10, 10, 0, 10);
     
-    _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height - 64) collectionViewLayout:flowLayout];
+    _collectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64) collectionViewLayout:flowLayout];
     _collectionView.delegate = self;
     _collectionView.backgroundColor = [UIColor whiteColor];
     _collectionView.dataSource = self;
@@ -165,20 +165,30 @@
 }
 
 - (void)RightBarBtnClick:(id)sender{
-    
+    if (self.nowRow == -1) {
+        [self.navigationController popViewControllerAnimated:YES];
+        return;
+    }
     FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
     
     UserModel *user = [[UserManager shareManager]getUser];
     NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
 //    user.headImg = cell.headImg.image;
 //    user.headImgStr = [data base64Encoding];
-    if (self.nowRow<9) {
+    if (self.nowRow<8) {
         user.headImgPath = [NSString stringWithFormat:@"img_head_0%ld",self.nowRow+2];
     }else{
         user.headImgPath = [NSString stringWithFormat:@"img_head_%ld",self.nowRow+2];
     }
     NSLog(@"headIm ==== %@",user.headImgPath);
     [[UserManager shareManager]loginSuccessWithUser:user];
+    
+    if ([UnderdarkUtil share].node.links.count > 0) {
+        for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+            id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+            [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo]];
+        }
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
     

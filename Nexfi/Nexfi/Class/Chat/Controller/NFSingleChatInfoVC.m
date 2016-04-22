@@ -42,9 +42,7 @@
 
 @implementation NFSingleChatInfoVC
 
--(void)viewWillAppear:(BOOL)animated{
-    [self refresh:nil];
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,7 +57,7 @@
     [UnderdarkUtil share].node.singleVC = self;
     [UnderdarkUtil share].node.delegate = self;
 
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64 -kMinHeight) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height-64 -kMinHeight) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     //取消tableview上的横线
@@ -396,8 +394,8 @@
 }
 - (XMChatBar *)chatBar {
     if (!_chatBar) {
-        _chatBar = [[XMChatBar alloc] initWithFrame:CGRectMake(0, SCREEN_SIZE.height - kMinHeight - (self.navigationController.navigationBar.isTranslucent ? 0 : 64), SCREEN_SIZE.width, kMinHeight)];
-        [_chatBar setSuperViewHeight:SCREEN_SIZE.height - (self.navigationController.navigationBar.isTranslucent ? 0 : 64)];
+        _chatBar = [[XMChatBar alloc] initWithFrame:CGRectMake(0, SCREEN_SIZE.height - kMinHeight - 64, SCREEN_SIZE.width, kMinHeight)];
+        [_chatBar setSuperViewHeight:SCREEN_SIZE.height - 64];
         _chatBar.delegate = self;
     }
     return _chatBar;

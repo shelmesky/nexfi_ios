@@ -23,7 +23,7 @@
  *
  *  @param title 设置右边按钮的title
  */
-- (void)setRightButtonWithTitle:(NSString *)title;
+- (void)setRightButtonWithTitle:(NSString*)title WithTitleName:(NSString *)titleName;
 
 - (void)setLeftButtonWithImageName:(NSString*)imageName bgImageName:(NSString*)bgImageName;
 

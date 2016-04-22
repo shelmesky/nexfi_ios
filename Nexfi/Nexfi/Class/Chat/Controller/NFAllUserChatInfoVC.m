@@ -56,11 +56,13 @@
     [UnderdarkUtil share].node.allUserChatVC = self;
     [UnderdarkUtil share].node.delegate = self;
 
+
     
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, SCREEN_SIZE.height-64- kMinHeight
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64
 ) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
+//    _tableView.backgroundColor = [UIColor blueColor];
     //取消tableview上的横线
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     
@@ -370,10 +372,10 @@
     [_textArray addObject:msg];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
     [indexPaths addObject:indexPath];
-    //[_tableView beginUpdates];
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-    //[_tableView endUpdates];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    [_tableView beginUpdates];
+    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    [_tableView endUpdates];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 #pragma -mark 获取当前时间
 -(NSString *)getDateWithFormatter:(NSString *)formatter
@@ -386,8 +388,8 @@
 }
 - (XMChatBar *)chatBar {
     if (!_chatBar) {
-        _chatBar = [[XMChatBar alloc] initWithFrame:CGRectMake(0, SCREEN_SIZE.height - kMinHeight - (self.navigationController.navigationBar.isTranslucent ? 0 : 64), SCREEN_SIZE.width, kMinHeight)];
-        [_chatBar setSuperViewHeight:SCREEN_SIZE.height - (self.navigationController.navigationBar.isTranslucent ? 0 : 64)];
+        _chatBar = [[XMChatBar alloc] initWithFrame:CGRectMake(0, SCREEN_SIZE.height - kMinHeight - 64, SCREEN_SIZE.width, kMinHeight)];
+        [_chatBar setSuperViewHeight:SCREEN_SIZE.height - 64];
         _chatBar.delegate = self;
     }
     return _chatBar;

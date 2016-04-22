@@ -97,7 +97,7 @@
     }
 
 }
-- (id<UDSource>)sendMsgWithMessageType:(MessageType)type WithConnectedLink:(id<UDLink>)link{
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         NSData *data;
@@ -108,7 +108,7 @@
             
         }else if(type == eMessageType_SendUserInfo){//发送用户信息
             UserModel *user = [[UserManager shareManager]getUser];
-            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+//            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
 
             NSDictionary *userDic = [NexfiUtil getObjectData:user];
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:userDic];
@@ -116,6 +116,17 @@
 
             data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
+            
+        }else if (type == eMessageType_UpdateUserInfo){//更新用户信息
+            
+            UserModel *user = [[UserManager shareManager]getUser];
+            //            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+            
+            NSDictionary *userDic = [NexfiUtil getObjectData:user];
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:userDic];
+            [usersDic setObject:[NSString stringWithFormat:@"%ld",eMessageType_UpdateUserInfo] forKey:@"messageType"];
+            
+            data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
         }
         return data;
@@ -129,7 +140,7 @@
     [self.links addObject:link];
     
 //    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo WithConnectedLink:link]];
+        [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo]];
 
 //    });
     
@@ -179,12 +190,17 @@
     switch ([dic[@"messageType"] intValue]) {
         case eMessageType_requestUserInfo:
         {
-            [link sendData:[self sendMsgWithMessageType:eMessageType_SendUserInfo WithConnectedLink:link]];
+            [link sendData:[self sendMsgWithMessageType:eMessageType_SendUserInfo]];
             break;
         }
         case eMessageType_SendUserInfo:
         {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            break;
+        }
+        case eMessageType_UpdateUserInfo:
+        {
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"update":@"1"}];
             break;
         }
         case eMessageType_SingleChat:

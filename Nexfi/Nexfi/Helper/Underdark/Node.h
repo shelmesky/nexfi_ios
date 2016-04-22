@@ -48,6 +48,6 @@
 - (void)start;
 - (void)stop;
 //- (void)broadcastFrame:(id<UDSource>)frameData;
-
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type;
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType;
 @end

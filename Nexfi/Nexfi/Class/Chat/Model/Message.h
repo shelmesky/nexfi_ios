@@ -29,7 +29,8 @@ typedef NS_ENUM(NSInteger, MessageType) {
     eMessageType_AllUserChat = 2,
     eMessageType_GroupChat = 3,
     eMessageType_SendUserInfo = 4,
-    eMessageType_requestUserInfo = 5
+    eMessageType_requestUserInfo = 5,
+    eMessageType_UpdateUserInfo = 6
 
 };
 

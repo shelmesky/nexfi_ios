@@ -5,6 +5,7 @@
 //  Created by fyc on 16/4/5.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
+//#import "UnderdarkUtil.h"
 #import "Message.h"
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
@@ -32,4 +33,6 @@
 - (void)configureTabVC;
 
 +(BOOL)isMeSend:(Message *)msg;
+
+//-(void)toUpdateUserInfo;
 @end

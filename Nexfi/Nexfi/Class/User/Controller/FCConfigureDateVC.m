@@ -5,7 +5,7 @@
 //  Created by fyc on 15/12/7.
 //  Copyright © 2015年 FuYaChen. All rights reserved.
 //
-
+#import "UnderdarkUtil.h"
 #import "FCConfigureDateVC.h"
 #import "UserManager.h"
 
@@ -47,6 +47,13 @@
     user.birthday = dateString;
     user.age = [NSString stringWithFormat:@"%ld",[self getAgeWithBirthday:self.datePicker.date]];
     [[UserManager shareManager]loginSuccessWithUser:user];
+
+    if ([UnderdarkUtil share].node.links.count > 0) {
+        for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+            id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+            [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo]];
+        }
+    }
     
     [self.navigationController popViewControllerAnimated:YES];
 
