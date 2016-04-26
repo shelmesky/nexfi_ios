@@ -101,15 +101,14 @@
     for (UIView *v in cell.contentView.subviews) {
         [v removeFromSuperview];
     }
-    UIButton *go = [UIButton buttonWithType:UIButtonTypeSystem];
-    go.bounds = CGRectMake(0, 0, 230, 30);
-    go.center = CGPointMake(SCREEN_SIZE.width/2, 24);
-//    go.clipsToBounds = YES;
-//    go.layer.cornerRadius = 10;
-    [go setTitle:@"去看看" forState:UIControlStateNormal];
-//    go.backgroundColor = [UIColor redColor];
-    [go setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [cell.contentView addSubview:go];
+    UILabel *goLab = [[UILabel alloc]init];
+    goLab.bounds = CGRectMake(0, 0, 230, 30);
+    goLab.center = CGPointMake(SCREEN_SIZE.width/2, 24);
+    goLab.text = @"去看看";
+    goLab.textAlignment = NSTextAlignmentCenter;
+    goLab.textColor = [UIColor blackColor];
+    [cell.contentView addSubview:goLab];
+
     /*
     FCPersonHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FCPersonHeadCell"];
     if (!cell) {

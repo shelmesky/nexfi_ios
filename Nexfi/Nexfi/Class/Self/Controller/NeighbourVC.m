@@ -14,7 +14,6 @@
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
 
-
 @end
 
 @implementation NeighbourVC
@@ -35,8 +34,6 @@
     // Do any additional setup after loading the view from its nib.
 
     [self setBaseVCAttributesWith:@"附近的人" left:nil right:@"群聊" WithInVC:self];
-//    [self setRightButtonWithTitle:@"群聊" WithTitleName:@"附近的人"];
-//    [self setRightButtonWithStateImage:@"btn-shouye1" stateHighlightedImage:@"btn-shouye" stateDisabledImage:nil titleName:@"11"];
 
     
     [[UnderdarkUtil share].node start];

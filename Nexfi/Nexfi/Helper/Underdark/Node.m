@@ -57,6 +57,45 @@
     _framesCount = 0;
     
 }
+#pragma -mark 群发数据
+- (id<UDSource>)frameDatawithTribeMessage:(TribeMessage *)msg{
+    
+    UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
+        
+        NSData *newData;
+        
+        
+        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
+        newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+        
+        
+        return newData;
+        
+    }];
+    
+    return result;
+}
+
+#pragma -mark 转发
+- (void)groupSendBroadcastFrame:(id<UDSource>)frameData WithtribeMessage:(TribeMessage *)msg{
+    if (self.links.count == 0) {
+        
+        if (self.delegate && [self.delegate respondsToSelector:@selector(AllUserChatSendFailWithInfo:)]) {
+            [self.delegate AllUserChatSendFailWithInfo:@"您附近没有用户上线哦~"];
+        }
+        
+        return;
+    }
+    for (int i = 0; i < self.links.count; i ++) {
+        id<UDLink>myLink = [self.links objectAtIndex:i];
+        //不重复发给之前发我消息的人
+//        if (![[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:msg.nodeId]) {
+            [myLink sendData:frameData];
+
+//        }
+    }
+    
+}
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType{
     switch (messageType) {
             
@@ -254,9 +293,30 @@
                 user.userName = msg.senderNickName;
                 //    user.headImgStr = msg.senderFaceImageStr;
                 user.headImgPath = msg.senderFaceImageStr;
+                /*
                 //保存聊天记录
                 [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
                 //增加未读消息数量
+                 
+                 */
+                
+                NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
+                
+                
+                if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+                    
+                    //保存聊天记录
+                    [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
+                    //增加未读消息数量
+                    
+                    //        [self showTableMsg:msg];
+                    [self groupSendBroadcastFrame:[self frameDatawithTribeMessage:msg] WithtribeMessage:msg];
+                    
+                    
+                    
+                }
+                
+
             }
 
             break;

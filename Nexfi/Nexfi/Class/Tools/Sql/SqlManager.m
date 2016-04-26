@@ -293,6 +293,30 @@ static SqlManager *_share = nil;
         
     }
 }
+#pragma -mark 查询总群聊的所有msgId
+- (NSMutableArray *)getAllChatMsgIdList{
+    
+    NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
+    
+    
+    if ([db open]) {
+        
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat"];
+        
+        while ([rs next]) {
+            
+            
+            NSString *msgId = [rs stringForColumn:@"msg_id"];
+            
+            [chatList addObject:msgId];
+            
+        }
+        
+    }
+    
+    return chatList;
+    
+}
 #pragma -mark 查询总群聊的历史纪录
 - (NSMutableArray *)getAllChatListWithNum:(NSInteger)num{
     

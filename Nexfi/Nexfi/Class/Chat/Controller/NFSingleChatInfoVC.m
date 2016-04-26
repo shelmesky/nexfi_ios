@@ -84,7 +84,7 @@
 }
 #pragma mark -FNMsgCellDelegate
 - (void)clickPic:(NSUInteger)index{
-    /*
+    
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = NO;
@@ -93,6 +93,9 @@
     BOOL autoPlayOnAppear = NO;
     self.mwPhotos = [[NSMutableArray alloc]initWithCapacity:0];
     NSUInteger currentIndex = 0;
+    
+    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    
     for (int i = 0; i < self.historyMsgs.count; i ++) {
         PersonMessage *msg = self.historyMsgs[i];
         if (msg.fileType == eMessageBodyType_Image) {
@@ -124,7 +127,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
-     */
+     
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法
@@ -211,37 +214,6 @@
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         return rect.size.height + 20 + 50;
-    }
-}
--(void)refresh:(PersonMessage*)msg
-{
-    BOOL b=YES;
-    if(msg == nil){
-        if(_textArray==nil){
-            //            [_array release];
-            _textArray = [[NSMutableArray alloc]init];
-        }
-        NSMutableArray* temp = [[NSMutableArray alloc]init];
-        NSMutableArray* p;
-        //if([self.roomName length]>0)
-        //    p = [Message fetchMessageListWithUser:self.roomName byPage:_page];
-        //else
-        //    p = [Message fetchMessageListWithUser:_chatPerson.userId byPage:_page];
-        //b = p.count>0;
-        //[temp addObjectsFromArray:p];
-        //[temp addObjectsFromArray:_array];
-        //[_array addObjectsFromArray:temp];
-        //[temp release];
-        // p = nil;
-    }else
-        [_textArray addObject:msg];
-    
-    if (b) {
-        [self free:_pool];
-        _refreshCount++;
-        [_tableView reloadData];
-        // if(msg || _page == 0)
-        //    [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_array.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
     }
 }
 -(void)free:(NSMutableArray*)array{

@@ -175,7 +175,7 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSData *newData = UIImageJPEGRepresentation(image, scale);
     UIImage *newImage = [UIImage imageWithData:newData];
     
-	NSData* newPictureData = UIImageJPEGRepresentation(newImage,0.5);
+	NSData* newPictureData = UIImageJPEGRepresentation(newImage,1);
 	return newPictureData;
 }
 

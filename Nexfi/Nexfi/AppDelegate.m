@@ -40,9 +40,9 @@
 ////
 //    self.window.rootViewController = nav;
     
-    UIDevice *myDevice = [UIDevice currentDevice];
-    
-    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
+//    UIDevice *myDevice = [UIDevice currentDevice];
+//    
+//    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
 
 
 

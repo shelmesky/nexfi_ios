@@ -141,7 +141,7 @@
 }
 #pragma mark -FNMsgCellDelegate
 - (void)clickPic:(NSUInteger)index{
-    /*
+    
     BOOL displayActionButton = YES;
     BOOL displaySelectionButtons = NO;
     BOOL displayNavArrows = NO;
@@ -150,6 +150,10 @@
     BOOL autoPlayOnAppear = NO;
     self.mwPhotos = [[NSMutableArray alloc]initWithCapacity:0];
     NSUInteger currentIndex = 0;
+    
+    self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
+
+    
     for (int i = 0; i < self.historyMsgs.count; i ++) {
         TribeMessage *msg = self.historyMsgs[i];
         if (msg.fileType == eMessageBodyType_Image) {
@@ -181,7 +185,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
-     */
+     
     
 }
 #pragma - mark 跳转群组信息
@@ -249,19 +253,36 @@
     user.userName = msg.senderNickName;
     //    user.headImgStr = msg.senderFaceImageStr;
     user.headImgPath = msg.senderFaceImageStr;
-    //保存聊天记录
-    [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
-    //增加未读消息数量
+    NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
     
-    [self showTableMsg:msg];
+    
+    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+        sendOnce = YES;
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [[UnderdarkUtil share].node groupSendBroadcastFrame:[self frameData:msg.fileType withSendData:nil WithTribeMsg:msg] WithtribeMessage:msg];
+
+        });
+
+        
+        //保存聊天记录
+        [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
+        //增加未读消息数量
+        
+
+        
+        
+        
+    }
+
 }
+
 #pragma -mark 调用发送数据接口
 - (void)broadcastFrame:(id<UDSource>)frameData{
     if ([UnderdarkUtil share].node.links.count == 0) {
         
         [HudTool showErrorHudWithText:@"您附近没有用户上线哦~" inView:self.view duration:2];
 
-        
         return;
     }
     for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
@@ -271,93 +292,106 @@
     }
     
 }
+#pragma -mark 群发数据
+
+
 #pragma -mark 获取发送的数据
-- (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
+- (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data WithTribeMsg:(TribeMessage *)tribeMsg{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         
         NSData *newData;
-        TribeMessage *msg = [[TribeMessage alloc]init];
-        NSString *deviceUDID = [NexfiUtil uuid];
-        
-        switch (type) {
-            case eMessageBodyType_Text:
-            {
-                msg.tContent = data;
-                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.sender = [[UserManager shareManager]getUser].userId;
-                msg.fileType = eMessageBodyType_Text;
-                msg.msgId = deviceUDID;
-//                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
-                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                msg.durational = @"";
-                msg.isRead = [NSString stringWithFormat:@"0"];
+        if (!tribeMsg) {
+            TribeMessage *msg = [[TribeMessage alloc]init];
+            NSString *deviceUDID = [NexfiUtil uuid];
+            
+            switch (type) {
+                case eMessageBodyType_Text:
+                {
+                    msg.tContent = data;
+                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    msg.fileType = eMessageBodyType_Text;
+                    msg.msgId = deviceUDID;
+                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
+                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
+                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
+                    msg.durational = @"";
+                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    
+                    break;
+                }
+                case eMessageBodyType_Image:
+                {
+                    //缓存到本地图片
+                    NSData *picData = [Photo image2Data:data];
+                    NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
+                    
+                    NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
+                    NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+                    
+                    
+                    NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+                    [picData writeToFile:fullPath atomically:YES];
+                    
+                    msg.tContent = imgPath;
+                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    msg.fileType = eMessageBodyType_Image;
+                    msg.msgId = deviceUDID;
+                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
+                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
+                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
+                    msg.durational = @"";
+                    msg.file = [picData base64Encoding];
+                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    
+                    
+                    break;
+                }
+                case eMessageBodyType_File:
+                {
                 
-                break;
+                    
+                    break;
+                }
+                default:
+                    break;
             }
-            case eMessageBodyType_Image:
-            {
-                //缓存到本地图片
-                NSData *picData = [Photo image2Data:data];
-                NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
-                
-                NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
-                NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
-                
-                
-                NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
-                [picData writeToFile:fullPath atomically:YES];
-                
-                msg.tContent = imgPath;
-                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.sender = [[UserManager shareManager]getUser].userId;
-                msg.fileType = eMessageBodyType_Image;
-                msg.msgId = deviceUDID;
-//                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
-                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                msg.durational = @"";
-                msg.file = [picData base64Encoding];
-                msg.isRead = [NSString stringWithFormat:@"0"];
+            
+            msg.messageType = eMessageType_AllUserChat;
+            
+            
+            NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
+            newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+            //刷新表
+            if (sendOnce == YES) {
+                sendOnce = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showTableMsg:msg];
+                    
+                    
+                });
+            }
+            
+            //插入数据库
+            
+            [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
 
-                
-                break;
+        }else{
+            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
+            newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+            
+            //刷新表
+            if (sendOnce == YES) {
+                sendOnce = NO;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self showTableMsg:tribeMsg];
+                    
+                    
+                });
             }
-            case eMessageBodyType_File:
-            {
-                
-                //                newData = UIImageJPEGRepresentation(data, 0.5);
-                //                msg.file = newData;
-                //                msg.timestamp = [self getDate];
-                //                msg.sender = @"1";
-                //                msg.fileType = [NSString stringWithFormat:@"%ld",eMessageBodyType_Image];
-                //                msg.msgId = deviceUDID;
-                
-                break;
-            }
-            default:
-                break;
         }
-        
-        msg.messageType = eMessageType_AllUserChat;
-
-        
-        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
-        newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
-        //刷新表
-        if (sendOnce == YES) {
-            sendOnce = NO;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self showTableMsg:msg];
-                
-                
-            });
-        }
-
-        //插入数据库
-        
-        [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
         
         
         return newData;
@@ -416,7 +450,7 @@
 
     sendOnce = YES;
 //    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message]];
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message] WithMessageType:eMessageType_AllUserChat];
+    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
 
 }
 
@@ -429,7 +463,7 @@
     
     sendOnce = YES;
 //    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]] WithMessageType:eMessageType_AllUserChat];
+    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
     
 }
 

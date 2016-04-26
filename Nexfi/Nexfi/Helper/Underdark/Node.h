@@ -50,4 +50,7 @@
 //- (void)broadcastFrame:(id<UDSource>)frameData;
 - (id<UDSource>)sendMsgWithMessageType:(MessageType)type;
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType;
+//转发
+- (void)groupSendBroadcastFrame:(id<UDSource>)frameData WithtribeMessage:(TribeMessage *)msg;
+- (id<UDSource>)frameDatawithTribeMessage:(TribeMessage *)msg;
 @end
