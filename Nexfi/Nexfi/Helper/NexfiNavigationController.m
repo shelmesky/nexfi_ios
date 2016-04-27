@@ -8,7 +8,7 @@
 
 #import "NexfiNavigationController.h"
 
-@interface NexfiNavigationController ()
+@interface NexfiNavigationController ()<UINavigationControllerDelegate>
 
 @end
 
@@ -44,6 +44,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     // Do any additional setup after loading the view.
     self.delegate = self;
 

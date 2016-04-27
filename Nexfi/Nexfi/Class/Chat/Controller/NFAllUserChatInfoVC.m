@@ -49,6 +49,8 @@
     
     [self setBaseVCAttributesWith:@"群聊" left:nil right:@"041.png" WithInVC:self];
     
+    
+    
     _textArray=[[NSMutableArray alloc]init];
     
     _pool = [[NSMutableArray alloc]init];

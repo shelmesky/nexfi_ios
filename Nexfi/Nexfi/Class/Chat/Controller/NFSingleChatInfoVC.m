@@ -12,7 +12,7 @@
 #import "NexfiUtil.h"
 #import "Message.h"
 #import "NFChatCacheFileUtil.h"
-
+#import "OtherInfoVC.h"
 
 
 @interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
@@ -83,6 +83,34 @@
     }
 }
 #pragma mark -FNMsgCellDelegate
+//点击用户头像
+- (void)clickUserHeadPic:(NSUInteger)index{
+    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    UserModel *user = [[UserModel alloc]init];
+    PersonMessage *pMsg = self.historyMsgs[index];
+    if ([NexfiUtil isMeSend:pMsg]) {
+        user = [UserManager shareManager].getUser;
+    }else{
+        NSMutableArray *handleByUsers;
+        for (UIViewController *vc in self.navigationController.viewControllers) {
+            if ([vc isKindOfClass:[NeighbourVC class]]) {
+                NeighbourVC *NeighbourVc = (NeighbourVC *)vc;
+                handleByUsers = [[NSMutableArray alloc]initWithArray:NeighbourVc.handleByUsers];
+            }
+        }
+        
+        for (UserModel *handleUser in handleByUsers) {
+            if ([handleUser.userId isEqualToString:pMsg.sender]) {
+                user = handleUser;
+            }
+        }
+    }
+    
+    OtherInfoVC *vc = [[OtherInfoVC alloc]init];
+    vc.user = user;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+//点击发送的图片
 - (void)clickPic:(NSUInteger)index{
     
     BOOL displayActionButton = YES;

@@ -5,11 +5,15 @@
 //  Created by JK PENG on 11-8-17.
 //  Copyright 2011年 Devdiv. All rights reserved.
 //
-
+typedef enum : NSUInteger {
+    ChatPicType,
+    HeadPicType,
+} imageType;
 #import <UIKit/UIKit.h>
 @protocol JXImageViewDelegate <NSObject>
 
-- (void)tapImage:(id)sender;
+- (void)tapImage:(NSUInteger)sender;//点击图片放大
+
 
 @end
 
@@ -23,5 +27,5 @@
 @property (nonatomic, assign) NSObject* delegate;
 @property (nonatomic, assign) SEL		didTouch;
 @property (nonatomic, assign) BOOL      changeAlpha;
-@property (nonatomic, assign) NSString *imageType;
+@property (nonatomic, assign) imageType imageType;
 @end

@@ -23,6 +23,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    
     [self initView];
     
     [self setBaseVCAttributesWith:@"头像" left:nil right:@"保存" WithInVC:self];

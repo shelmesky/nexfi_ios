@@ -29,11 +29,13 @@
     return self;
 }
 - (void)tap:(UITapGestureRecognizer *)gesture{
-    
+
     if (self.JXImageDelegate && [self.JXImageDelegate respondsToSelector:@selector(tapImage:)]) {
-        [self.JXImageDelegate tapImage:nil];
+        [self.JXImageDelegate tapImage:self.imageType];
         
     }
+    
+
 }
 /*
 // Only override drawRect: if you perform custom drawing.

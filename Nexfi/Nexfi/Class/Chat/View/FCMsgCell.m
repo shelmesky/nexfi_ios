@@ -21,9 +21,12 @@
         // Initialization code
         _drawed = NO;
         _userHead =[[JXImageView alloc]initWithFrame:CGRectZero];
+        _userHead.imageType = HeadPicType;
+        _userHead.JXImageDelegate = self;
 //        _headMask =[[JXImageView alloc]initWithFrame:CGRectZero];
         _chatImage=[[JXImageView alloc]initWithFrame:CGRectZero];
         _chatImage.JXImageDelegate = self;
+        _chatImage.imageType = ChatPicType;
         
         _bubbleBg =[UIButton buttonWithType:UIButtonTypeCustom];
         
@@ -60,7 +63,7 @@
 //        [_headMask setImage:[[UIImage imageNamed:@"UserHeaderImageBox"]stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
 //        [_userHead setImage:[UIImage imageNamed:@"default_portrait_chat.png"]];
         
-        _userHead.imageType = @"UserHead";
+//        _userHead.imageType = @"UserHead";
     }
     return self;
 }
@@ -183,10 +186,17 @@
         [self.contentView addSubview:_readImage];
     }
 }
-- (void)tapImage:(id)sender{
-    if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
-        [self.msgDelegate clickPic:_bubbleBg.tag];
+- (void)tapImage:(NSUInteger)sender{
+    if (sender == ChatPicType) {//点击图片放大
+        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
+            [self.msgDelegate clickPic:_bubbleBg.tag];
+        }
+    }else{//点击头像
+        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
+            [self.msgDelegate clickUserHeadPic:_bubbleBg.tag];
+        }
     }
+
 }
 -(void)draw{
     if(_drawed)

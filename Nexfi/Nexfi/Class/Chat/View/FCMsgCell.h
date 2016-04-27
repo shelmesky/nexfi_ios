@@ -21,7 +21,8 @@
 
 @protocol FCMsgCellDelegate <NSObject>
 
-- (void)clickPic:(NSUInteger)index;
+- (void)clickPic:(NSUInteger)index;//点击聊天图片放大
+- (void)clickUserHeadPic:(NSUInteger)index;
 //- (void)clickMsgContent:(NSUInteger)index;
 
 @end

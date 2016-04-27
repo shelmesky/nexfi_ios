@@ -5,7 +5,6 @@
 //  Created by fyc on 16/4/14.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
 #import "NFTribeInfoVC.h"
 #import "NFTribeInfoCell.h"
 #import "NeighbourVC.h"
@@ -14,6 +13,7 @@
 
 @property (nonatomic, retain)UITableView *tribeTable;
 @property (nonatomic, retain)NSMutableArray *handleByUsers;
+@property (nonatomic, assign)BOOL isHidden;
 
 @end
 
@@ -34,6 +34,8 @@
     self.tribeTable.dataSource = self;
     self.tribeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tribeTable];
+    
+    
 
     
 }
@@ -93,10 +95,15 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    UserModel *user = self.handleByUsers[indexPath.row];
-    OtherInfoVC *vc = [[OtherInfoVC alloc]init];
-    vc.user = user;
-    [self.navigationController pushViewController:vc animated:YES];
+//    UserModel *user = self.handleByUsers[indexPath.row];
+//    OtherInfoVC *vc = [[OtherInfoVC alloc]init];
+//    vc.user = user;
+//    [self.navigationController pushViewController:vc animated:YES];
+
+
+
+
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
