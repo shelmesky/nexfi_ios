@@ -351,7 +351,7 @@
         id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
         
         //单聊找到跟对方连接的link
-        if ([[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:self.to_user.nodeId]|| [nodeList containsObject:[NSString stringWithFormat:@"%lld",myLink.nodeId]]) {
+        if ([[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:self.to_user.nodeId]) {//|| [nodeList containsObject:[NSString stringWithFormat:@"%lld",myLink.nodeId]]
             return myLink;
         }
     }

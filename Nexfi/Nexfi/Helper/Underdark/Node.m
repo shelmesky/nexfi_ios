@@ -112,6 +112,7 @@
             if (myLink) {
                 [myLink sendData:frameData];
             }else{
+                
                 if (self.delegate && [self.delegate respondsToSelector:@selector(singleChatSendFailWithInfo:)]) {
                     [self.delegate singleChatSendFailWithInfo:@"该用户已经下线"];
                 }
@@ -250,6 +251,7 @@
         }
         case eMessageType_SingleChat:
         {
+            NSLog(@"name === %@ nodeId= ====%@",self.singleVC.to_user.userName,self.singleVC.to_user.userName);
             if (self.singleVC && [self.singleVC.to_user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",link.nodeId]]) {//当前页面是单聊 并且发消息的人和当前页面聊天的人是同一个人
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.singleVC refreshGetData:msgDic];
