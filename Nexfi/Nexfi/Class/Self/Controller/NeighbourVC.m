@@ -17,6 +17,12 @@
 @end
 
 @implementation NeighbourVC
+- (NSMutableArray *)nodeList{
+    if (!_nodeList) {
+        _nodeList = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _nodeList;
+}
 - (NSMutableArray *)handleByUsers{
     if (!_handleByUsers) {
         _handleByUsers = [[NSMutableArray alloc]initWithCapacity:0];
@@ -137,6 +143,9 @@
         
     }
     
+    //获取所有用户的nodeId
+    [self getAllNodeId];
+    
     [self.usersTable reloadData];
     
     //设置用户上线动画
@@ -144,6 +153,12 @@
     NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [self playBounceAnimation:cell.nickNameLabel];
     
+}
+- (NSMutableArray *)getAllNodeId{
+    for (UserModel *user in self.handleByUsers) {
+        [self.nodeList addObject:user.nodeId];
+    }
+    return self.nodeList;
 }
 #pragma -mark 设置用户上线的动画
 - (void)playBounceAnimation:(UILabel *)nameLa{
