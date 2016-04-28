@@ -7,6 +7,9 @@
 //
 
 #import "BaseVC.h"
+#import "IQKeyboardManager.h"
+#import "NFAllUserChatInfoVC.h"
+#import "NFSingleChatInfoVC.h"
 
 #define NAVIGATION_BAR_HEIGHT self.navigationController.navigationBar.frame.size.height
 #define BUTTONMarginX    10
@@ -16,7 +19,9 @@
 
 
 @interface BaseVC ()
-
+{
+    BOOL _wasKeyboardManagerEnabled;
+}
 @property (nonatomic,strong)UILabel *titleLabel;
 
 @property (nonatomic,strong)UILabel *tipLabel;
@@ -54,7 +59,26 @@
 {
     return 64.f;
 }
+//IQKeyboardManager 禁用
+-(void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if ([self isKindOfClass:[NFAllUserChatInfoVC class]] || [self isKindOfClass:[NFSingleChatInfoVC class]]) {
+        _wasKeyboardManagerEnabled = [[IQKeyboardManager sharedManager] isEnabled];
+        [[IQKeyboardManager sharedManager] setEnable:NO];
+    }
 
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    if ([self isKindOfClass:[NFAllUserChatInfoVC class]] || [self isKindOfClass:[NFSingleChatInfoVC class]]) {
+        [[IQKeyboardManager sharedManager] setEnable:_wasKeyboardManagerEnabled];
+
+    }
+    
+}
 -(void)viewWillAppear:(BOOL)animated
 {
     //非根视图默认添加返回按钮

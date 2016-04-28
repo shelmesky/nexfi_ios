@@ -96,6 +96,21 @@ static SqlManager *_share = nil;
     
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
+    
+//        //插入之前去数据库 检查重复消息
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat"];
+        NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
+        while ([rs next]) {
+            
+            
+            NSString *msgId = [rs stringForColumn:@"msg_id"];
+            
+            [chatList addObject:msgId];
+            
+        }
+        if ([chatList containsObject:message.msgId]) {//有的话就不插入
+            return;
+        }
         
         [dic setObject:user.userId forKey:@"userId"];
         [dic setObject:user.headImgPath forKey:@"headImgStr"];

@@ -19,10 +19,12 @@
 //间距
 #define INSETS 8.0f
 
+@class FCMsgCell;
 @protocol FCMsgCellDelegate <NSObject>
 
 - (void)clickPic:(NSUInteger)index;//点击聊天图片放大
 - (void)clickUserHeadPic:(NSUInteger)index;
+- (void)msgCellTappedBlank:(FCMsgCell *)msgCell;
 //- (void)clickMsgContent:(NSUInteger)index;
 
 @end
@@ -44,6 +46,7 @@
 @property (nonatomic, assign) Message * msg;
 @property (nonatomic, assign) NSObject* delegate;
 @property (nonatomic, assign) SEL		didTouch;
+@property (nonatomic, assign) int cellHeight;
 
 /**
  *  显示消息发送状态的UIImageView -> 用于消息发送不成功时显示

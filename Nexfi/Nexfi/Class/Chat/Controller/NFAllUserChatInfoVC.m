@@ -86,7 +86,6 @@
     //别人发我，我发别人都要取出来
     self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
     
-    
     for (TribeMessage *msg in self.historyMsgs) {
         [self showTableMsg:msg];
     }
@@ -142,6 +141,9 @@
 
 }
 #pragma mark -FNMsgCellDelegate
+- (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
+    [self.chatBar endInputing];
+}
 - (void)clickPic:(NSUInteger)index{
     
     BOOL displayActionButton = YES;
@@ -255,27 +257,29 @@
     user.userName = msg.senderNickName;
     //    user.headImgStr = msg.senderFaceImageStr;
     user.headImgPath = msg.senderFaceImageStr;
-    NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
+
     
     
-    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
-        sendOnce = YES;
-        
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-            [[UnderdarkUtil share].node groupSendBroadcastFrame:[self frameData:msg.fileType withSendData:nil WithTribeMsg:msg] WithtribeMessage:msg];
-
-        });
-
-        
+//    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+    
         //保存聊天记录
         [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
         //增加未读消息数量
         
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            [[UnderdarkUtil share].node groupSendBroadcastFrame:[self frameData:msg.fileType withSendData:nil WithTribeMsg:msg] WithtribeMessage:msg];
 
+//        });
+    
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTableMsg:msg];
         
-        
-        
-    }
+        });
+
+    
+
+
+//    }
 
 }
 
@@ -304,6 +308,7 @@
         
         NSData *newData;
         if (!tribeMsg) {
+            
             TribeMessage *msg = [[TribeMessage alloc]init];
             NSString *deviceUDID = [NexfiUtil uuid];
             
@@ -366,13 +371,12 @@
             
             NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
             newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+        
             //刷新表
             if (sendOnce == YES) {
                 sendOnce = NO;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showTableMsg:msg];
-                    
-                    
                 });
             }
             
@@ -384,17 +388,16 @@
             NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
             newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
             
-            //刷新表
-            if (sendOnce == YES) {
-                sendOnce = NO;
+            
+            NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
+            if (![msgList containsObject:tribeMsg.msgId]) {
+                //刷新表
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showTableMsg:tribeMsg];
-                    
                     
                 });
             }
         }
-        
         
         return newData;
         

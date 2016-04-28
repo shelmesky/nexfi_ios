@@ -42,6 +42,7 @@
 @property (nonatomic, strong)dispatch_queue_t queue;
 @property (nonatomic, strong)NSMutableArray *links;
 @property (nonatomic ,strong)id<UDLink>link;
+@property (nonatomic, strong)NSMutableArray *clcleMsgList;
 
 @property (nonatomic, assign)id<NodeDelegate>delegate;
 

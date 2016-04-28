@@ -169,13 +169,13 @@ static const char encodingTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopq
     NSData *pictureData = UIImageJPEGRepresentation(image, 1);
     CGFloat kbSize = pictureData.length;
     CGFloat scale = 1.0;
-    if (kbSize > 200) {
-        scale  = 200/kbSize;
+    if (kbSize > 100) {
+        scale  = 100/kbSize;
     }
     NSData *newData = UIImageJPEGRepresentation(image, scale);
     UIImage *newImage = [UIImage imageWithData:newData];
     
-	NSData* newPictureData = UIImageJPEGRepresentation(newImage,1);
+	NSData* newPictureData = UIImageJPEGRepresentation(newImage,0.5);
 	return newPictureData;
 }
 

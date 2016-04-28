@@ -137,6 +137,7 @@
     
     CGRect addBarFrame = self.frame;
     addBarFrame.size.height = textViewFrame.size.height+offset;
+//    addBarFrame.size.height = textViewFrame.size.height;
     addBarFrame.origin.y = self.superViewHeight - self.bottomHeight - addBarFrame.size.height;
     [self setFrame:addBarFrame animated:NO];
     if (textView.scrollEnabled) {
@@ -232,11 +233,15 @@
 }
 
 - (NSArray *)titlesOfMoreView:(XMChatMoreView *)moreView{
-    return @[@"拍摄",@"照片",@"位置"];
+//    return @[@"拍摄",@"照片",@"位置"];
+    return @[@"拍摄",@"照片"];
+
 }
 
 - (NSArray *)imageNamesOfMoreView:(XMChatMoreView *)moreView{
-    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic",@"chat_bar_icons_location"];
+//    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic",@"chat_bar_icons_location"];
+    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic"];
+
 }
 
 #pragma mark - XMChatFaceViewDelegate

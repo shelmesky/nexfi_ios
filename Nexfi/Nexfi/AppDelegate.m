@@ -25,7 +25,7 @@
     //创建数据库
     [[SqlManager shareInstance]creatTable];
     
-    [IQKeyboardManager sharedManager].enable = YES;
+    [IQKeyboardManager sharedManager].enable = NO;
 //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;
     [IQKeyboardManager sharedManager].shouldResignOnTouchOutside = YES;
     [IQKeyboardManager sharedManager].shouldToolbarUsesTextFieldTintColor = YES;

@@ -37,11 +37,12 @@
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSArray *historyMsgs;
 @property (nonatomic,strong) NSMutableArray *mwPhotos;
+@property (nonatomic,strong) FCMsgCell *msgCell;
+@property (nonatomic,strong) NSArray *msgCellHeightList;
 
 @end
 
 @implementation NFSingleChatInfoVC
-
 
 - (void)viewDidLoad
 {
@@ -83,6 +84,9 @@
     }
 }
 #pragma mark -FNMsgCellDelegate
+- (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
+    [self.chatBar endInputing];
+}
 //点击用户头像
 - (void)clickUserHeadPic:(NSUInteger)index{
     self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
@@ -186,31 +190,38 @@
         cell.didTouch = @selector(onSelect:);
         cell.msg      = msg;
         cell.msgDelegate = self;
-        
-        if([cell isMeSend])
-        {
-//            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-//            [cell setHeadImage:[UIImage imageWithData:imgData]];
-            [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
-            
-        }
-        else
-        {
-//            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:self.to_user.headImgStr];
-//            [cell setHeadImage:[UIImage imageWithData:imgData]];
-            [cell setHeadImage:[UIImage imageNamed:self.to_user.headImgPath]];
-        }
+
     }
+    
+    if([cell isMeSend])
+    {
+        //            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
+        //            [cell setHeadImage:[UIImage imageWithData:imgData]];
+        [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
+        
+    }
+    else
+    {
+        //            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:self.to_user.headImgStr];
+        //            [cell setHeadImage:[UIImage imageWithData:imgData]];
+        [cell setHeadImage:[UIImage imageNamed:self.to_user.headImgPath]];
+    }
+    
+    self.msgCell = cell;
+    
     
     return cell;
 }
 -(void)onSelect:(UIView*)sender{
 
 }
-
+//- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
+//    return 200;
+//}
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     PersonMessage *msg=[_textArray objectAtIndex:indexPath.row];
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
@@ -243,6 +254,59 @@
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         return rect.size.height + 20 + 50;
     }
+    
+//    return [self.msgCellHeightList[indexPath.row] floatValue];
+//    return self.msgCell.cellHeight;
+}
+#pragma -mark 获取所有cell高度的数组
+- (NSArray *)msgCellHeightList{
+    NSMutableArray *cellHeightTemList = [[NSMutableArray alloc]initWithCapacity:0];
+    for (PersonMessage *msg in _textArray) {
+        
+        int n = msg.fileType ;
+        int height = 0;
+        if (n == eMessageBodyType_Image) {
+            if ([NexfiUtil isMeSend:msg]) {
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.pContent]];
+                if (image) {
+                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                    //                return imageHeight + 20 + 25;
+                    height = imageHeight + 20 + 25;
+                }
+                height = 110;
+                //            return 110;
+                
+            }else{
+                NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.pContent];
+                UIImage *image = [UIImage imageWithData:data];
+                if (image) {
+                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                    //                return imageHeight + 20 + 25;
+                    height = imageHeight + 20 + 25;
+                }
+                height = 110;
+                //            return 110;
+            }
+        }else if (n == eMessageBodyType_Voice){
+            height = 66;
+            //        return 66;
+            
+        }else if (n == eMessageBodyType_File){
+            height = 80;
+            //        return 80;
+        }else{
+            CGRect rect = [msg.pContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+                           NSStringDrawingUsesDeviceMetrics|
+                           NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
+            //        return rect.size.height + 20 + 50;
+            height = rect.size.height + 20 + 50;
+        }
+        
+        [cellHeightTemList addObject:@(height)];
+        
+    }
+    return cellHeightTemList;
 }
 -(void)free:(NSMutableArray*)array{
     for(NSInteger i=[array count]-1;i>=0;i--){
@@ -264,7 +328,14 @@
     //增加未读消息数量
     [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
     
-    [self showTableMsg:msg];
+    
+    //判断收到消息的是不是当前页面的人，如果是 就显示 如果不是就存数据库
+    if ([self.to_user.userId isEqualToString:msg.sender]) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showTableMsg:msg];
+        });
+    }
+    
 }
 - (id<UDLink>)getUserLink{
     if ([UnderdarkUtil share].node.links.count == 0) {
@@ -371,6 +442,7 @@
     
     return result;
 }
+
 -(void)showTableMsg:(PersonMessage *) msg
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];

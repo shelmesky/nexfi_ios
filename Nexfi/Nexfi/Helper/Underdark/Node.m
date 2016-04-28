@@ -13,6 +13,12 @@
 #import "DDLog.h"
 #import "UDLink.h"
 @implementation Node
+- (NSMutableArray *)clcleMsgList{
+    if (!_clcleMsgList) {
+        _clcleMsgList = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _clcleMsgList;
+}
 - (id)init{
     if (self = [super init]) {
         _links = [[NSMutableArray alloc]initWithCapacity:0];
@@ -244,7 +250,7 @@
         }
         case eMessageType_SingleChat:
         {
-            if (self.singleVC) {//当前页面是单聊
+            if (self.singleVC && [self.singleVC.to_user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",link.nodeId]]) {//当前页面是单聊 并且发消息的人和当前页面聊天的人是同一个人
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.singleVC refreshGetData:msgDic];
             }else{
@@ -300,21 +306,20 @@
                  
                  */
                 
-                NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
+//                NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
                 
                 
-                if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
-                    
+//                if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+                
                     //保存聊天记录
                     [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
                     //增加未读消息数量
                     
                     //        [self showTableMsg:msg];
-                    [self groupSendBroadcastFrame:[self frameDatawithTribeMessage:msg] WithtribeMessage:msg];
+//                    [self groupSendBroadcastFrame:[self frameDatawithTribeMessage:msg] WithtribeMessage:msg];
                     
                     
-                    
-                }
+//                }
                 
 
             }

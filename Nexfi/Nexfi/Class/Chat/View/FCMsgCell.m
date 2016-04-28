@@ -12,7 +12,6 @@
 
 @implementation FCMsgCell
 @synthesize index,delegate,didTouch,msg;
-
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -59,6 +58,9 @@
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self.contentView addSubview:self.messageSendStateIV];
+        
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+        [self.contentView addGestureRecognizer:tap];
 
 //        [_headMask setImage:[[UIImage imageNamed:@"UserHeaderImageBox"]stretchableImageWithLeftCapWidth:10 topCapHeight:10]];
 //        [_userHead setImage:[UIImage imageNamed:@"default_portrait_chat.png"]];
@@ -66,6 +68,15 @@
 //        _userHead.imageType = @"UserHead";
     }
     return self;
+}
+- (void)handleTap:(UITapGestureRecognizer *)tap {
+    if (tap.state == UIGestureRecognizerStateEnded) {
+
+        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(msgCellTappedBlank:)]) {
+            [self.msgDelegate msgCellTappedBlank:self];
+        }
+        
+    }
 }
 -(BOOL)isMeSend{
     //return [[msg sender] isEqualToString:[[NSUserDefaults standardUserDefaults]stringForKey:kMY_USER_ID]];
@@ -108,7 +119,7 @@
     }
     if(aMessage.fileType  == eMessageBodyType_Text)
         _messageConent.text = content;
-    
+
 }
 
 -(void)setHeadImage:(UIImage*)headImage
