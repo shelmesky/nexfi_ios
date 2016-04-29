@@ -433,10 +433,14 @@
         NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
         //刷新表
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showTableMsg:msg];
+        if (sendOnce == YES) {
+            sendOnce = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showTableMsg:msg];
+                
+            });
+        }
 
-        });
         //插入数据库
         
         [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
