@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, FNMessageSendState){
  @constant eMessageType_GroupChat 群聊
  @constant eMessageType_SendUserInfo 发送用户信息
  @constant eMessageType_requestUserInfo 请求用户信息
-
  */
 typedef NS_ENUM(NSInteger, MessageType) {
     eMessageType_SingleChat = 1,

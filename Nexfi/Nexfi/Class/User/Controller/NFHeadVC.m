@@ -170,10 +170,10 @@
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
+//    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
     
     UserModel *user = [[UserManager shareManager]getUser];
-    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
+//    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
 //    user.headImg = cell.headImg.image;
 //    user.headImgStr = [data base64Encoding];
     if (self.nowRow<8) {
@@ -183,6 +183,8 @@
     }
     NSLog(@"headIm ==== %@",user.headImgPath);
     [[UserManager shareManager]loginSuccessWithUser:user];
+    //更新数据库用户数据
+    [[SqlManager shareInstance]updateUserName:user];
     
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

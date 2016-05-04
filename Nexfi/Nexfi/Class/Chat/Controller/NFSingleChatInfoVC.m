@@ -73,6 +73,8 @@
     [self showHistoryMsg];
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
+    
+    self.msgCellHeightList = [self getMsgCellHeightList];
 
 }
 - (void)showHistoryMsg{
@@ -222,6 +224,8 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
+    /*
+    
     PersonMessage *msg=[_textArray objectAtIndex:indexPath.row];
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
@@ -255,58 +259,52 @@
         return rect.size.height + 20 + 50;
     }
     
-//    return [self.msgCellHeightList[indexPath.row] floatValue];
+    */
+    
+    return [self.msgCellHeightList[indexPath.row] floatValue];
 //    return self.msgCell.cellHeight;
 }
 #pragma -mark 获取所有cell高度的数组
-- (NSArray *)msgCellHeightList{
+- (NSArray *)getMsgCellHeightList{
     NSMutableArray *cellHeightTemList = [[NSMutableArray alloc]initWithCapacity:0];
     for (PersonMessage *msg in _textArray) {
         
         int n = msg.fileType ;
-        int height = 0;
         if (n == eMessageBodyType_Image) {
             if ([NexfiUtil isMeSend:msg]) {
                 NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                 UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.pContent]];
                 if (image) {
                     float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                    //                return imageHeight + 20 + 25;
-                    height = imageHeight + 20 + 25;
+                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
+                }else{
+                    [cellHeightTemList addObject:@(110)];
                 }
-                height = 110;
-                //            return 110;
                 
             }else{
                 NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.pContent];
                 UIImage *image = [UIImage imageWithData:data];
                 if (image) {
                     float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                    //                return imageHeight + 20 + 25;
-                    height = imageHeight + 20 + 25;
+                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
+                }else{
+                    [cellHeightTemList addObject:@(110)];
                 }
-                height = 110;
-                //            return 110;
             }
         }else if (n == eMessageBodyType_Voice){
-            height = 66;
-            //        return 66;
-            
+            [cellHeightTemList addObject:@(66)];
         }else if (n == eMessageBodyType_File){
-            height = 80;
-            //        return 80;
+            [cellHeightTemList addObject:@(80)];
         }else{
             CGRect rect = [msg.pContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                            NSStringDrawingUsesDeviceMetrics|
                            NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-            //        return rect.size.height + 20 + 50;
-            height = rect.size.height + 20 + 50;
+            [cellHeightTemList addObject:@(rect.size.height + 20 + 50)];
         }
-        
-        [cellHeightTemList addObject:@(height)];
-        
     }
+    
     return cellHeightTemList;
+        
 }
 -(void)free:(NSMutableArray*)array{
     for(NSInteger i=[array count]-1;i>=0;i--){

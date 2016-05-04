@@ -35,9 +35,6 @@
     self.tribeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tribeTable];
     
-    
-
-    
 }
 - (void)viewWillAppear:(BOOL)animated{
     
@@ -95,15 +92,10 @@
     return cell;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-//    UserModel *user = self.handleByUsers[indexPath.row];
-//    OtherInfoVC *vc = [[OtherInfoVC alloc]init];
-//    vc.user = user;
-//    [self.navigationController pushViewController:vc animated:YES];
-
-
-
-
-    
+    UserModel *user = self.handleByUsers[indexPath.row];
+    OtherInfoVC *vc = [[OtherInfoVC alloc]init];
+    vc.user = user;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

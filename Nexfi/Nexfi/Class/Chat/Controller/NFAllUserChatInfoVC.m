@@ -32,6 +32,7 @@
 @property (strong, nonatomic) XMChatBar *chatBar;
 @property (nonatomic, strong)NSMutableArray *mwPhotos;
 @property (nonatomic, strong)NSArray *historyMsgs;
+@property (nonatomic,strong) NSArray *msgCellHeightList;
 //@property (nonatomic, strong) NFPeersView *peesView;
 
 @end
@@ -80,7 +81,7 @@
     
 //    self.peesView.peesCount.text = self.peersCount?[NSString stringWithFormat:@"当前有%@人",self.peersCount]:@"当前有0人";
     
-    
+    self.msgCellHeightList = [self getMsgCellHeightList];
 }
 - (void)showHistoryMsg{
     //别人发我，我发别人都要取出来
@@ -203,7 +204,7 @@
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    /*
     TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
@@ -236,7 +237,54 @@
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         return rect.size.height + 20 + 50;
     }
+     */
+    
+    return [self.msgCellHeightList[indexPath.row] floatValue];
+
 }
+#pragma -mark 获取所有cell高度的数组
+- (NSArray *)getMsgCellHeightList{
+    NSMutableArray *cellHeightTemList = [[NSMutableArray alloc]initWithCapacity:0];
+    for (TribeMessage *msg in _textArray) {
+        NSLog(@"msg=====%@",msg.tContent);
+        int n = msg.fileType ;
+        if (n == eMessageBodyType_Image) {
+            if ([NexfiUtil isMeSend:msg]) {
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.tContent]];
+                if (image) {
+                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
+                }else{
+                    [cellHeightTemList addObject:@(110)];
+                }
+                
+            }else{
+                NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.tContent];
+                UIImage *image = [UIImage imageWithData:data];
+                if (image) {
+                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
+                }else{
+                    [cellHeightTemList addObject:@(110)];
+                }
+            }
+        }else if (n == eMessageBodyType_Voice){
+            [cellHeightTemList addObject:@(66)];
+        }else if (n == eMessageBodyType_File){
+            [cellHeightTemList addObject:@(80)];
+        }else{
+            CGRect rect = [msg.tContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+                           NSStringDrawingUsesDeviceMetrics|
+                           NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
+            [cellHeightTemList addObject:@(rect.size.height + 20 + 50)];
+        }
+    }
+    
+    return cellHeightTemList;
+    
+}
+
 -(void)free:(NSMutableArray*)array{
     for(NSInteger i=[array count]-1;i>=0;i--){
         [array removeObjectAtIndex:i];

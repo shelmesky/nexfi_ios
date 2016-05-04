@@ -35,6 +35,8 @@
     UserModel *account = [[UserManager shareManager] getUser];
     account.userName = self.nickName.text;
     [[UserManager shareManager] loginSuccessWithUser:account];
+    //更新数据库用户数据
+    [[SqlManager shareInstance]updateUserName:account];
     
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

@@ -33,6 +33,9 @@
 - (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(PersonMessage *)message;
 #pragma -mark 更新用户数据
 - (void)update_chat_to_user:(UserModel *)toUser WithMsg:(PersonMessage *)message;
+#pragma -mark 更新用户信息
+- (void)updateUserHead:(UserModel *)userModel;
+- (void)updateUserName:(UserModel *)userModel;
 #pragma -mark 清空群组未读消息
 - (void)clearMsgOfGroup:(NSString *)groupId;
 #pragma -mark 清空总群未读消息

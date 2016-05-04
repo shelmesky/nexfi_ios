@@ -247,6 +247,16 @@
         case eMessageType_UpdateUserInfo:
         {
             [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"update":@"1"}];
+            
+            NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:dic];
+            [user removeObjectForKey:@"nodeId"];
+            [user setObject:[NSString stringWithFormat:@"%lld",link.nodeId] forKey:@"nodeId"];
+            
+            UserModel *users = [[UserModel alloc]initWithaDic:user];
+            //更新数据库用户数据
+            [[SqlManager shareInstance]updateUserName:users];
+            [[SqlManager shareInstance]updateUserHead:users];
+
             break;
         }
         case eMessageType_SingleChat:

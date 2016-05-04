@@ -151,6 +151,28 @@ static SqlManager *_share = nil;
     
     
 }
+#pragma -mark 用户更新数据
+- (void)updateUserHead:(UserModel *)userModel{
+    
+    if ([db executeUpdate:@"update nexfi_chat_user set headImgStr=? where userId = ?",userModel.headImgPath,userModel.userId]) {
+        NSLog(@"更新nexfi_chat_user  头像信息成功");
+    }
+    if ([db executeUpdate:@"update nexfi_allUser_chat set headImgStr=? where userId =?",userModel.headImgPath,userModel.userId]) {
+        NSLog(@"更新nexfi_allUser_chat  头像信息成功");
+    }
+    
+}
+- (void)updateUserName:(UserModel *)userModel{
+    
+    if ([db executeUpdate:@"update nexfi_chat_user set userName = ? where userId =?",userModel.userName,userModel.userId]) {
+        NSLog(@"更新nexfi_allUser_chat  姓名成功");
+    }
+    if ([db executeUpdate:@"update nexfi_allUser_chat set userName=? where userId =?",userModel.userName,userModel.userId]) {
+        NSLog(@"更新nexfi_allUser_chat  姓名成功");
+    }
+
+    
+}
 #pragma -mark 插入某人－》某人数据
 - (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(PersonMessage *)message{
     if (message == nil)
