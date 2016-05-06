@@ -72,9 +72,18 @@ typedef NS_ENUM(NSUInteger, SLBeaconState)
 	NSString* hexPart = [NSString stringWithFormat:@"%08X", appId];
 	NSString* uuidString = [uuidBeaconTemplate stringByReplacingOccurrencesOfString:@"xxxxxxxx" withString:hexPart];
 	_beaconUuid = [[NSUUID alloc] initWithUUIDString:uuidString];
-	
+	//为beacon基站创建一个唯一标示
+    /*
+     proximityUUID :对于每个公司这个是唯一的。对于该公司的所有的ibeacons都有相同的UUID。
+     major:相关的一系列ibeacons的标示。
+     
+     minor:某个特殊的ibeacon的标示。
+     
+     identifier:该beacons区域的唯一标示。
+     */
 	_region = [[CLBeaconRegion alloc] initWithProximityUUID:_beaconUuid identifier:@"SolidarityBeacon"];
 	_region.notifyEntryStateOnDisplay = YES;
+    //获取该Beacon区域的信号信息
 	_beaconData =  [_region peripheralDataWithMeasuredPower:nil];
 
 	_locationManager = [[CLLocationManager alloc] init];
@@ -168,9 +177,9 @@ typedef NS_ENUM(NSUInteger, SLBeaconState)
 	NSDictionary* options =
 	@{//CBPeripheralManagerOptionRestoreIdentifierKey: @"SLBtPeripheral",
 	  CBPeripheralManagerOptionShowPowerAlertKey: @(NO)};
-	
+	//创建Beacon信号
 	_peripheralManager = [[CBPeripheralManager alloc] initWithDelegate:self queue:dispatch_get_main_queue() options:options];
-	
+	//广播Beacon信号
 	[self advertiseIfNecessary];
 }
 
@@ -280,6 +289,7 @@ didStartMonitoringForRegion:(CLRegion *)region
 
 - (void)peripheralManagerDidUpdateState:(CBPeripheralManager *)peripheral
 {
+    //设备开启状态
 	if(peripheral.state == CBPeripheralManagerStatePoweredOn)
 	{
 		//LogDebug(@"beacon CBPeripheralManagerStatePoweredOn");
@@ -288,7 +298,7 @@ didStartMonitoringForRegion:(CLRegion *)region
 		
 		return;
 	}
-	
+	//设备关闭状态
 	if(peripheral.state == CBPeripheralManagerStatePoweredOff)
 	{
 		//LogDebug(@"beacon CBPeripheralManagerStatePoweredOff");
@@ -297,19 +307,19 @@ didStartMonitoringForRegion:(CLRegion *)region
 		
 		return;
 	}
-	
+	//初始化的时候（未知）
 	if(peripheral.state == CBPeripheralManagerStateUnknown)
 	{
 		//LogDebug(@"beacon CBPeripheralManagerStateUnknown");
 		return;
 	}
-	
+	//正在重置状态
 	if(peripheral.state == CBPeripheralManagerStateResetting)
 	{
 		//LogDebug(@"beacon CBPeripheralManagerStateResetting");
 		return;
 	}
-	
+	//设备不支持的状态
 	if(peripheral.state == CBPeripheralManagerStateUnsupported)
 	{
 		//LogError(@"beacon CBPeripheralManagerStateUnsupported");
@@ -317,7 +327,7 @@ didStartMonitoringForRegion:(CLRegion *)region
 		[self notifyBluetoothRequired];
 		return;
 	}
-	
+	// 设备未授权状态
 	if(peripheral.state == CBPeripheralManagerStateUnauthorized)
 	{
 		//LogError(@"CBPeripheralManagerStateUnauthorized");

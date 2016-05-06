@@ -51,11 +51,11 @@
 
 - (void)updateConstraints{
     [super updateConstraints];
-//    [self.voiceButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.mas_left).with.offset(10);
-//        make.top.equalTo(self.mas_top).with.offset(8);
-//        make.width.equalTo(self.voiceButton.mas_height);
-//    }];
+    [self.voiceButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).with.offset(10);
+        make.top.equalTo(self.mas_top).with.offset(8);
+        make.width.equalTo(self.voiceButton.mas_height);
+    }];
     
     [self.moreButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.mas_right).with.offset(-10);
@@ -63,19 +63,18 @@
         make.width.equalTo(self.moreButton.mas_height);
     }];
     
-//    [self.faceButton mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.right.equalTo(self.moreButton.mas_left).with.offset(-10);
-//        make.top.equalTo(self.mas_top).with.offset(8);
-//        make.width.equalTo(self.faceButton.mas_height);
-//    }];
+    //    [self.faceButton mas_makeConstraints:^(MASConstraintMaker *make) {
+    //        make.right.equalTo(self.moreButton.mas_left).with.offset(-10);
+    //        make.top.equalTo(self.mas_top).with.offset(8);
+    //        make.width.equalTo(self.faceButton.mas_height);
+    //    }];
     
     [self.textView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.mas_left).with.offset(10);
+        make.left.equalTo(self.voiceButton.mas_right).with.offset(10);
         make.right.equalTo(self.moreButton.mas_left).with.offset(-10);
         make.top.equalTo(self.mas_top).with.offset(4);
         make.bottom.equalTo(self.mas_bottom).with.offset(-4);
     }];
-
 }
 
 - (void)dealloc{
@@ -121,7 +120,7 @@
     self.faceButton.selected = self.moreButton.selected = self.voiceButton.selected = NO;
 //    [self showFaceView:NO];
     [self showMoreView:NO];
-//    [self showVoiceView:NO];
+    [self showVoiceView:NO];
     return YES;
 }
 
@@ -288,11 +287,11 @@
 - (void)setup{
     
     self.MP3 = [[Mp3Recorder alloc] initWithDelegate:self];
-//    [self addSubview:self.voiceButton];
+    [self addSubview:self.voiceButton];
     [self addSubview:self.moreButton];
 //    [self addSubview:self.faceButton];
     [self addSubview:self.textView];
-//    [self.textView addSubview:self.voiceRecordButton];
+    [self.textView addSubview:self.voiceRecordButton];
     
     UIImageView *topLine = [[UIImageView alloc] init];
     topLine.backgroundColor = [UIColor colorWithRed:184/255.0f green:184/255.0f blue:184/255.0f alpha:1.0f];
@@ -357,7 +356,7 @@
     
     //显示对应的View
     [self showMoreView:showType == XMFunctionViewShowMore && self.moreButton.selected];
-//    [self showVoiceView:showType == XMFunctionViewShowVoice && self.voiceButton.selected];
+    [self showVoiceView:showType == XMFunctionViewShowVoice && self.voiceButton.selected];
 //    [self showFaceView:showType == XMFunctionViewShowFace && self.faceButton.selected];
     
     switch (showType) {
@@ -402,9 +401,9 @@
         [self.moreButton setSelected:!self.moreButton.selected];
         [self.voiceButton setSelected:NO];
     }else if (button == self.voiceButton){
-//        [self.faceButton setSelected:NO];
-//        [self.moreButton setSelected:NO];
-//        [self.voiceButton setSelected:!self.voiceButton.selected];
+        [self.faceButton setSelected:NO];
+        [self.moreButton setSelected:NO];
+        [self.voiceButton setSelected:!self.voiceButton.selected];
     }
     
     if (!button.selected) {

@@ -98,6 +98,8 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	
 	_state = UDBnjServerStateStarting;
 	
+    
+    //通过NSNetService发布socket
 	_service = [[NSNetService alloc] initWithDomain:@"" type:_adapter.serviceType name:@(_adapter.nodeId).description port:0];
 	if(!_service)
 	{

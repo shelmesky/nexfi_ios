@@ -133,7 +133,10 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconDetected:) name:UDBeaconDetectedNotification object:nil];
-	
+	//iBeacon发射器。
+    /*
+     这个应用的使用场景是将某个 iBeacon 发射器安装在你的电脑包、钱包甚至是你的猫的项圈上——即任何你不想丢失的重要物件。一旦你的设备离开发射器的范围，你的应用就会检测到并通知你。
+     */
 	sldispatch_async(dispatch_get_main_queue(), ^{
 		if(_peerToPeer)
 		{

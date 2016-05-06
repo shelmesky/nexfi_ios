@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E2BF1CB1CDC7465005989B1 /* UDBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E79821CC62B9500EE2272 /* UDBonjourBrowser.m */; };
 		0E54938E1CB3AB7D00DE40E8 /* SenderTextNodeBkg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E54938C1CB3AB7D00DE40E8 /* SenderTextNodeBkg@2x.png */; };
 		0E54938F1CB3AB7D00DE40E8 /* SenderTextNodeBkgHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E54938D1CB3AB7D00DE40E8 /* SenderTextNodeBkgHL@2x.png */; };
 		0E5493921CB3ABA000DE40E8 /* ReceiverTextNodeBkg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493901CB3ABA000DE40E8 /* ReceiverTextNodeBkg@2x.png */; };
@@ -3132,6 +3133,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EBAE9681CB3824000361D18 /* NexfiUITests.m in Sources */,
+				0E2BF1CB1CDC7465005989B1 /* UDBonjourBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
