@@ -19,6 +19,8 @@
 //间距
 #define INSETS 8.0f
 
+
+
 @class FCMsgCell;
 @protocol FCMsgCellDelegate <NSObject>
 
@@ -59,11 +61,17 @@
  */
 @property (nonatomic, assign) FNMessageSendState messageSendState;
 
+@property (nonatomic, assign) FNVoiceMessageState voiceMessageState;
+
 @property (nonatomic, retain) UIImageView *messageVoiceStatusIV;
 
 -(void)setHeadImage:(UIImage*)headImage;
 //-(void)setHeadImageWithURL:(NSURL*) imgUrl;
+//是不是本人
 -(BOOL)isMeSend;
+//更新为已读状态
 -(void)updateIsRead:(BOOL)b;
+//改变录音的播放状态
+- (void)sendVoiceMesState:(FNVoiceMessageState)voiceMessageState;
 
 @end

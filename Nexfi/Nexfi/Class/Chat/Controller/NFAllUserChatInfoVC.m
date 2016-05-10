@@ -150,17 +150,40 @@
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
     [self.chatBar endInputing];
 }
+#pragma -mark 点击bubble
 - (void)msgCellTappedContent:(FCMsgCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
     switch (msgCell.msg.fileType) {
-        case eMessageBodyType_Video:
+        case eMessageBodyType_Voice:
         {
 //            NSString *voice = msgCell.msg.
+            TribeMessage *msg = (TribeMessage *)msgCell.msg;
+            NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
+            for (FCMsgCell *cell in cells) {
+                [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+            }
+            
+            
+            msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
+
             if ([NexfiUtil isMeSend:msgCell.msg]) {
+                //展示UI
+                //播放
+       
+                NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+                
+                NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.tContent];
+                [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
+                [msgCell.messageVoiceStatusIV startAnimating];
+
                 
             }else{
-                
+                //展示UI
+                //播放
+                [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.tContent] atIndex:indexPath.row isMe:NO];
+                [msgCell.messageVoiceStatusIV startAnimating];
             }
+
             
             break;
         }
@@ -169,6 +192,7 @@
             break;
     }
 }
+#pragma -mark 点击图片放大
 - (void)clickPic:(NSUInteger)index{
     
     BOOL displayActionButton = YES;

@@ -26,6 +26,7 @@
 //        _headMask =[[JXImageView alloc]initWithFrame:CGRectZero];
         _chatImage=[[JXImageView alloc]initWithFrame:CGRectZero];
         _chatImage.JXImageDelegate = self;
+        _chatImage.userInteractionEnabled = YES;
         _chatImage.imageType = ChatPicType;
         //气泡背景
         _bubbleBg =[UIButton buttonWithType:UIButtonTypeCustom];
@@ -67,16 +68,29 @@
     }
     return self;
 }
+- (void)sendVoiceMesState:(FNVoiceMessageState)voiceMessageState{
+    if (voiceMessageState == FNVoiceMessageStateNormal) {
+//        self.messageVoiceStatusIV.hidden = YES;
+        [self.messageVoiceStatusIV stopAnimating];
+    }else if (voiceMessageState == FNVoiceMessageStatePlaying){
+//        self.messageVoiceStatusIV.hidden = NO;
+        [self.messageVoiceStatusIV startAnimating];
+    }else if (voiceMessageState == FNVoiceMessageStateCancel){
+//        self.messageVoiceStatusIV.hidden = YES;
+        [self.messageVoiceStatusIV stopAnimating];
+    }
+}
 - (UIImageView *)messageVoiceStatusIV {
     if (!_messageVoiceStatusIV) {
         _messageVoiceStatusIV = [[UIImageView alloc] init];
+        _messageVoiceStatusIV.userInteractionEnabled = YES;
         _messageVoiceStatusIV.image = ![self isMeSend] ? [UIImage imageNamed:@"message_voice_receiver_normal"] : [UIImage imageNamed:@"message_voice_sender_normal"];
         UIImage *image1 = [UIImage imageNamed:[self isMeSend] ? @"message_voice_sender_playing_1" : @"message_voice_receiver_playing_1"];
         UIImage *image2 = [UIImage imageNamed:[self isMeSend] ? @"message_voice_sender_playing_2" : @"message_voice_receiver_playing_2"];
         UIImage *image3 = [UIImage imageNamed:[self isMeSend] ? @"message_voice_sender_playing_3" : @"message_voice_receiver_playing_3"];
-        _messageVoiceStatusIV.highlightedAnimationImages = @[image1,image2,image3];
-        _messageVoiceStatusIV.animationDuration = 1.5f;
-        _messageVoiceStatusIV.animationRepeatCount = NSUIntegerMax;
+        _messageVoiceStatusIV.animationImages = @[image1,image2,image3];
+        _messageVoiceStatusIV.animationDuration = 1;
+//        _messageVoiceStatusIV.animationRepeatCount = NSUIntegerMax;
     }
     return _messageVoiceStatusIV;
 }
@@ -366,7 +380,7 @@
         if(w>200)
             w = 200;
         //录音喇叭 图片
-        UIImageView* iv = [[UIImageView alloc] init];
+//        UIImageView* iv = [[UIImageView alloc] init];
         //录音时间
         UILabel* p = [[UILabel alloc] init];
         p.text = [NSString stringWithFormat:@"%d''",[durational intValue]];
@@ -381,18 +395,18 @@
         CGFloat BubbleEndW = ([durational intValue] - 3)*perSecWidth + w; //大于3的bubble的长度
         CGFloat BubbleOrX = SCREEN_SIZE.width-BubbleEndW-HEAD_SIZE-INSETS*2;
         if(isMe){
-            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
+//            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
             
             _bubbleBg.frame = [durational intValue] > 3?CGRectMake(BubbleOrX, 10, BubbleEndW, 50):CGRectMake(SCREEN_SIZE.width-w-HEAD_SIZE-INSETS*2, 10, w, 50);
-            iv.frame = CGRectMake(_bubbleBg.frame.size.width-35, 15, 19, 19);
+            self.messageVoiceStatusIV.frame = CGRectMake(_bubbleBg.frame.size.width-35, 15, 19, 19);
             p.frame = CGRectMake(_bubbleBg.frame.origin.x-50, 30, 50, 15);
             p.textAlignment = NSTextAlignmentRight;
         }
         else{
-            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
+//            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
             
             _bubbleBg.frame=CGRectMake(2*INSETS+HEAD_SIZE, 10, BubbleEndW, 50);
-            iv.frame = CGRectMake(15, 15, 19, 19);
+            self.messageVoiceStatusIV.frame = CGRectMake(15, 15, 19, 19);
             p.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+3, 30, 50, 15);
             p.textAlignment = NSTextAlignmentLeft;
             
@@ -400,7 +414,7 @@
         }
         
         [self.contentView addSubview:p];
-        [_bubbleBg addSubview:iv];
+        [_bubbleBg addSubview:self.messageVoiceStatusIV];
         
 
 #ifdef IS_TEST_VERSION

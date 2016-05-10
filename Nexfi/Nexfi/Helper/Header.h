@@ -24,7 +24,7 @@
 #import "MWPhoto.h"
 #import "ConFunc.h"
 #import "IQKeyboardManager.h"
-
+#import "FNAVAudioPlayer.h"
 #import "XMNChat.h"
 
 #import "Message.h"

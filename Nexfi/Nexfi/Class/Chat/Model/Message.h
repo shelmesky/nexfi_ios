@@ -55,6 +55,15 @@ typedef NS_ENUM(NSInteger, MessageBodyType) {
     eMessageBodyType_File,
     eMessageBodyType_Command
 };
+/**
+ *  录音消息的状态
+ */
+typedef NS_ENUM(NSUInteger, FNVoiceMessageState) {
+    FNVoiceMessageStateNormal,/**< 未播放状态 */
+    FNVoiceMessageStateDownloading,/**< 正在下载中 */
+    FNVoiceMessageStatePlaying,/**< 正在播放 */
+    FNVoiceMessageStateCancel,/**< 播放被取消 */
+};
 #import <Foundation/Foundation.h>
 
 @interface Message : NSObject

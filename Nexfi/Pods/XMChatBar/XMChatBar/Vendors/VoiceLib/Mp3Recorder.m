@@ -119,6 +119,8 @@
 {
     NSString *cafFilePath = [self cafPath];
     NSString *mp3FilePath = [[self mp3Path] stringByAppendingPathComponent:[self randomMP3FileName]];
+    
+    NSString *mp3PartFilePath = [@"Documents/com.XMFraker.XMNChat.audioCache" stringByAppendingPathComponent:[self randomMP3FileName]];
 
     NSLog(@"MP3转换开始");
     if (_delegate && [_delegate respondsToSelector:@selector(beginConvert)]) {
@@ -164,7 +166,7 @@
         [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: nil];
         NSLog(@"MP3转换结束");
         if (_delegate && [_delegate respondsToSelector:@selector(endConvertWithMP3FileName:)]) {
-            [_delegate endConvertWithMP3FileName:mp3FilePath];
+            [_delegate endConvertWithMP3FileName:mp3PartFilePath];
         }
         [self deleteCafCache];
     }

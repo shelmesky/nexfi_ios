@@ -20,6 +20,7 @@
 		0E2BF1E61CE06811005989B1 /* message_voice_sender_playing_1@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2BF1DA1CE06811005989B1 /* message_voice_sender_playing_1@3x.png */; };
 		0E2BF1E71CE06811005989B1 /* message_voice_sender_playing_2@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2BF1DB1CE06811005989B1 /* message_voice_sender_playing_2@3x.png */; };
 		0E2BF1E81CE06811005989B1 /* message_voice_sender_playing_3@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E2BF1DC1CE06811005989B1 /* message_voice_sender_playing_3@3x.png */; };
+		0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */; };
 		0E54938E1CB3AB7D00DE40E8 /* SenderTextNodeBkg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E54938C1CB3AB7D00DE40E8 /* SenderTextNodeBkg@2x.png */; };
 		0E54938F1CB3AB7D00DE40E8 /* SenderTextNodeBkgHL@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E54938D1CB3AB7D00DE40E8 /* SenderTextNodeBkgHL@2x.png */; };
 		0E5493921CB3ABA000DE40E8 /* ReceiverTextNodeBkg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493901CB3ABA000DE40E8 /* ReceiverTextNodeBkg@2x.png */; };
@@ -584,6 +585,8 @@
 		0E2BF1DA1CE06811005989B1 /* message_voice_sender_playing_1@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_voice_sender_playing_1@3x.png"; sourceTree = "<group>"; };
 		0E2BF1DB1CE06811005989B1 /* message_voice_sender_playing_2@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_voice_sender_playing_2@3x.png"; sourceTree = "<group>"; };
 		0E2BF1DC1CE06811005989B1 /* message_voice_sender_playing_3@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "message_voice_sender_playing_3@3x.png"; sourceTree = "<group>"; };
+		0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAVAudioPlayer.h; sourceTree = "<group>"; };
+		0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAVAudioPlayer.m; sourceTree = "<group>"; };
 		0E54938C1CB3AB7D00DE40E8 /* SenderTextNodeBkg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SenderTextNodeBkg@2x.png"; path = "../SenderTextNodeBkg@2x.png"; sourceTree = "<group>"; };
 		0E54938D1CB3AB7D00DE40E8 /* SenderTextNodeBkgHL@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "SenderTextNodeBkgHL@2x.png"; path = "../SenderTextNodeBkgHL@2x.png"; sourceTree = "<group>"; };
 		0E5493901CB3ABA000DE40E8 /* ReceiverTextNodeBkg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ReceiverTextNodeBkg@2x.png"; path = "../ReceiverTextNodeBkg@2x.png"; sourceTree = "<group>"; };
@@ -1439,6 +1442,8 @@
 				0E9E77451CC62AD100EE2272 /* NFTribeInfoCell.h */,
 				0E9E77461CC62AD100EE2272 /* NFTribeInfoCell.m */,
 				0E9E77471CC62AD100EE2272 /* NFTribeInfoCell.xib */,
+				0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */,
+				0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -3127,6 +3132,7 @@
 				0E9E7B321CC62B9500EE2272 /* Node.m in Sources */,
 				0E9E77E31CC62AD100EE2272 /* FCCongureInfoVC.m in Sources */,
 				0E9E7B381CC62B9500EE2272 /* UDUnderdark.m in Sources */,
+				0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */,
 				0E9E77C41CC62AD100EE2272 /* FaceViewController.m in Sources */,
 				0E9E7AD21CC62B9500EE2272 /* UIView+Extension.m in Sources */,
 				0E9E7B3E1CC62B9500EE2272 /* UDRouterImpl.m in Sources */,
