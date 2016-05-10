@@ -32,12 +32,18 @@
 @property (strong, nonatomic) XMChatBar *chatBar;
 @property (nonatomic, strong)NSMutableArray *mwPhotos;
 @property (nonatomic, strong)NSArray *historyMsgs;
-@property (nonatomic,strong) NSArray *msgCellHeightList;
+@property (nonatomic,strong) NSMutableArray *msgCellHeightList;
 //@property (nonatomic, strong) NFPeersView *peesView;
 
 @end
 
 @implementation NFAllUserChatInfoVC
+- (NSMutableArray *)msgCellHeightList{
+    if (!_msgCellHeightList) {
+        _msgCellHeightList = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _msgCellHeightList;
+}
 - (NSMutableArray *)msgs{
     if (_msgs) {
         _msgs = [[NSMutableArray alloc]initWithCapacity:0];
@@ -81,7 +87,6 @@
     
 //    self.peesView.peesCount.text = self.peersCount?[NSString stringWithFormat:@"当前有%@人",self.peersCount]:@"当前有0人";
     
-    self.msgCellHeightList = [self getMsgCellHeightList];
 }
 - (void)showHistoryMsg{
     //别人发我，我发别人都要取出来
@@ -145,6 +150,25 @@
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
     [self.chatBar endInputing];
 }
+- (void)msgCellTappedContent:(FCMsgCell *)msgCell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
+    switch (msgCell.msg.fileType) {
+        case eMessageBodyType_Video:
+        {
+//            NSString *voice = msgCell.msg.
+            if ([NexfiUtil isMeSend:msgCell.msg]) {
+                
+            }else{
+                
+            }
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
 - (void)clickPic:(NSUInteger)index{
     
     BOOL displayActionButton = YES;
@@ -201,11 +225,13 @@
 //- (void)updatePeersCount:(NSString *)peersCount{
 //    self.peesView.peesCount.text = [NSString stringWithFormat:@"当前有%@人",peersCount];
 //}
-//每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    /*
-    TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
+    return [self.msgCellHeightList[indexPath.row] floatValue];
+}
+#pragma -mark 获取所有cell高度的数组
+- (id)getMsgCellHeightWithMsg:(TribeMessage *)msg{
+    
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
         if ([NexfiUtil isMeSend:msg]) {
@@ -213,83 +239,36 @@
             UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.tContent]];
             if (image) {
                 float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return imageHeight + 20 + 25;
+                return @(imageHeight + 20 + 25);
+            }else{
+                return @(110);
             }
-            return 110;
             
         }else{
             NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.tContent];
             UIImage *image = [UIImage imageWithData:data];
             if (image) {
                 float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return imageHeight + 20 + 25;
+                return @(imageHeight + 20 + 25);
+            }else{
+                return @(110);
             }
-            return 110;
         }
     }else if (n == eMessageBodyType_Voice){
-        return 66;
-        
+        return @(66);
     }else if (n == eMessageBodyType_File){
-        return 80;
+        return @(80);
     }else{
-        CGRect rect = [[_textArray[indexPath.row]tContent] boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+        CGRect rect = [msg.tContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-        return rect.size.height + 20 + 50;
-    }
-     */
-    
-    return [self.msgCellHeightList[indexPath.row] floatValue];
-
-}
-#pragma -mark 获取所有cell高度的数组
-- (NSArray *)getMsgCellHeightList{
-    NSMutableArray *cellHeightTemList = [[NSMutableArray alloc]initWithCapacity:0];
-    for (TribeMessage *msg in _textArray) {
-        NSLog(@"msg=====%@",msg.tContent);
-        int n = msg.fileType ;
-        if (n == eMessageBodyType_Image) {
-            if ([NexfiUtil isMeSend:msg]) {
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.tContent]];
-                if (image) {
-                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
-                }else{
-                    [cellHeightTemList addObject:@(110)];
-                }
-                
-            }else{
-                NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.tContent];
-                UIImage *image = [UIImage imageWithData:data];
-                if (image) {
-                    float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                    [cellHeightTemList addObject:@(imageHeight + 20 + 25)];
-                }else{
-                    [cellHeightTemList addObject:@(110)];
-                }
-            }
-        }else if (n == eMessageBodyType_Voice){
-            [cellHeightTemList addObject:@(66)];
-        }else if (n == eMessageBodyType_File){
-            [cellHeightTemList addObject:@(80)];
-        }else{
-            CGRect rect = [msg.tContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
-                           NSStringDrawingUsesDeviceMetrics|
-                           NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-            [cellHeightTemList addObject:@(rect.size.height + 20 + 50)];
+        if (rect.size.height < 15) {
+            return @(85);
         }
+        return @(rect.size.height + 20 + 50);
     }
-    
-    return cellHeightTemList;
-    
 }
 
--(void)free:(NSMutableArray*)array{
-    for(NSInteger i=[array count]-1;i>=0;i--){
-        [array removeObjectAtIndex:i];
-    }
-}
 #pragma -mark 获取接收到的数据
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
@@ -406,9 +385,27 @@
                 }
                 case eMessageBodyType_File:
                 {
-                
+                    
                     
                     break;
+                }
+                case eMessageBodyType_Voice:
+                {
+                    NSDictionary *voicePro = data;
+                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:voicePro[@"voiceName"]]];
+                    msg.tContent = voicePro[@"voiceName"];
+                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    msg.fileType = eMessageBodyType_Voice;
+                    msg.msgId = deviceUDID;
+                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
+                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
+                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
+                    msg.durational = voicePro[@"voiceSec"];
+                    msg.file = [voiceData base64Encoding];
+                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    break;
+                    
                 }
                 default:
                     break;
@@ -457,12 +454,15 @@
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     [_textArray addObject:msg];
+    [self.msgCellHeightList addObject:[self getMsgCellHeightWithMsg:msg]];
+    NSLog(@"gao===%@",self.msgCellHeightList);
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
     [indexPaths addObject:indexPath];
-    [_tableView beginUpdates];
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
-    [_tableView endUpdates];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    //[_tableView beginUpdates];
+    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+    //[_tableView endUpdates];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+    //   [_tableView reloadData];
 }
 #pragma -mark 获取当前时间
 -(NSString *)getDateWithFormatter:(NSString *)formatter
@@ -508,8 +508,9 @@
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
-    
-    
+    sendOnce = YES;
+    NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@(seconds)};
+    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Voice withSendData:voicePro WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{

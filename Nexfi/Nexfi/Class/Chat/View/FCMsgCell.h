@@ -25,6 +25,7 @@
 - (void)clickPic:(NSUInteger)index;//点击聊天图片放大
 - (void)clickUserHeadPic:(NSUInteger)index;
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell;
+- (void)msgCellTappedContent:(FCMsgCell *)msgCell;
 //- (void)clickMsgContent:(NSUInteger)index;
 
 @end
@@ -48,6 +49,7 @@
 @property (nonatomic, assign) SEL		didTouch;
 @property (nonatomic, assign) int cellHeight;
 
+
 /**
  *  显示消息发送状态的UIImageView -> 用于消息发送不成功时显示
  */
@@ -56,6 +58,8 @@
  *  消息发送状态,当状态为XMNMessageSendFail或XMNMessageSendStateSending时,XMNMessageSendStateIV显示
  */
 @property (nonatomic, assign) FNMessageSendState messageSendState;
+
+@property (nonatomic, retain) UIImageView *messageVoiceStatusIV;
 
 -(void)setHeadImage:(UIImage*)headImage;
 //-(void)setHeadImageWithURL:(NSURL*) imgUrl;

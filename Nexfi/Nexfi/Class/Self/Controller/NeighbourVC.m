@@ -72,21 +72,7 @@
 }
 - (void)showProgress{
     WGradientProgress *pro = [WGradientProgress sharedInstance];
-    
-//    if (pro.progress == 0) {
-//        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
-//        
-//        [pro setProgress:increment + pro.progress];
-//    }
-//
-//    double delayInSeconds = 2.0;
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        CGFloat increment = (arc4random() % 5)/50.0f + 0.1;
-//        
-//        [pro setProgress:increment + pro.progress];
-//        
-//        [self showProgress];
-//    });
+
     [pro setProgress:1.0];
     
 }
