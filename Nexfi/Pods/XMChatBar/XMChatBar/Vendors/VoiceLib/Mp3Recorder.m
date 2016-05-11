@@ -120,7 +120,7 @@
     NSString *cafFilePath = [self cafPath];
     NSString *mp3FilePath = [[self mp3Path] stringByAppendingPathComponent:[self randomMP3FileName]];
     
-    NSString *mp3PartFilePath = [@"Documents/com.XMFraker.XMNChat.audioCache" stringByAppendingPathComponent:[self randomMP3FileName]];
+    NSString *mp3PartFilePath = [@"com.XMFraker.XMNChat.audioCache" stringByAppendingPathComponent:[self randomMP3FileName]];
 
     NSLog(@"MP3转换开始");
     if (_delegate && [_delegate respondsToSelector:@selector(beginConvert)]) {

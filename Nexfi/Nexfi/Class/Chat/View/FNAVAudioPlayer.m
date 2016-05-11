@@ -102,8 +102,11 @@
 - (void)playAudioWithPath:(NSString *)audioPath{
     NSError *audioPlaerError;
     _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:audioPath] error:&audioPlaerError];
-    if (!_audioPlayer || audioPath) {
+    if (!_audioPlayer || !audioPath) {
         return;
+    }
+    if (audioPlaerError) {
+        
     }
     
     _audioPlayer.volume = 1.0f;
@@ -113,9 +116,6 @@
     [_audioPlayer play];
 }
 - (void)playAudioWithData:(NSData *)audioData {
-    
-    
-
     
     NSError *audioPlayerError;
     _audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&audioPlayerError];

@@ -96,6 +96,48 @@
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
     [self.chatBar endInputing];
 }
+#pragma -mark 点击bubble
+- (void)msgCellTappedContent:(FCMsgCell *)msgCell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
+    switch (msgCell.msg.fileType) {
+        case eMessageBodyType_Voice:
+        {
+            PersonMessage *msg = (PersonMessage *)msgCell.msg;
+            NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
+            for (FCMsgCell *cell in cells) {
+                [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+            }
+            
+            
+            msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
+            
+            if ([NexfiUtil isMeSend:msgCell.msg]) {
+                //展示UI
+                //播放
+                
+                NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+                
+                NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.pContent];
+                [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
+                [msgCell.messageVoiceStatusIV startAnimating];
+                
+                
+            }else{
+                //展示UI
+                //播放
+                [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.pContent] atIndex:indexPath.row isMe:NO];
+                [msgCell.messageVoiceStatusIV startAnimating];
+            }
+            
+            
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
 //点击用户头像
 - (void)clickUserHeadPic:(NSUInteger)index{
     self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
@@ -382,7 +424,12 @@
             {
                 
                 NSDictionary *voicePro = data;
-                NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:voicePro[@"voiceName"]]];
+                
+                NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+                NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:voicePro[@"voiceName"]];
+                
+                NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
+                
                 msg.pContent = voicePro[@"voiceName"];
                 msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.sender = [[UserManager shareManager]getUser].userId;

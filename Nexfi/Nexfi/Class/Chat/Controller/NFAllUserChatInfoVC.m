@@ -156,7 +156,6 @@
     switch (msgCell.msg.fileType) {
         case eMessageBodyType_Voice:
         {
-//            NSString *voice = msgCell.msg.
             TribeMessage *msg = (TribeMessage *)msgCell.msg;
             NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
             for (FCMsgCell *cell in cells) {
@@ -416,7 +415,12 @@
                 case eMessageBodyType_Voice:
                 {
                     NSDictionary *voicePro = data;
-                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:voicePro[@"voiceName"]]];
+                    //存半路径 取data要加前缀
+                    NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+                    NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:voicePro[@"voiceName"]];
+                    
+                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
+
                     msg.tContent = voicePro[@"voiceName"];
                     msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                     msg.sender = [[UserManager shareManager]getUser].userId;
