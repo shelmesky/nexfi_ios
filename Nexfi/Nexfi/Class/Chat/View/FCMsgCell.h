@@ -25,14 +25,14 @@
 @protocol FCMsgCellDelegate <NSObject>
 
 - (void)clickPic:(NSUInteger)index;//点击聊天图片放大
-- (void)clickUserHeadPic:(NSUInteger)index;
-- (void)msgCellTappedBlank:(FCMsgCell *)msgCell;
-- (void)msgCellTappedContent:(FCMsgCell *)msgCell;
+- (void)clickUserHeadPic:(NSUInteger)index;//点击头像
+- (void)msgCellTappedBlank:(FCMsgCell *)msgCell;//点击空白区域
+- (void)msgCellTappedContent:(FCMsgCell *)msgCell;//点击bubble
 //- (void)clickMsgContent:(NSUInteger)index;
 
 @end
 
-@interface FCMsgCell : UITableViewCell<JXImageViewDelegate>
+@interface FCMsgCell : UITableViewCell
 
 {
     JXImageView *_userHead;

@@ -22,19 +22,21 @@
         //用户头像
         _userHead =[[JXImageView alloc]initWithFrame:CGRectZero];
         _userHead.imageType = HeadPicType;
-        _userHead.JXImageDelegate = self;
+        _userHead.userInteractionEnabled = YES;
 //        _headMask =[[JXImageView alloc]initWithFrame:CGRectZero];
+        //聊天图片
         _chatImage=[[JXImageView alloc]initWithFrame:CGRectZero];
-        _chatImage.JXImageDelegate = self;
         _chatImage.userInteractionEnabled = YES;
         _chatImage.imageType = ChatPicType;
         //气泡背景
         _bubbleBg =[UIButton buttonWithType:UIButtonTypeCustom];
-        _bubbleBg.userInteractionEnabled = YES;
+//        _bubbleBg.userInteractionEnabled = YES;
         //文本
         _messageConent=[[JXEmoji alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
         _messageConent.backgroundColor = [UIColor clearColor];
         _messageConent.userInteractionEnabled = YES;
+        _messageConent.hidden = YES;
+        _messageConent.backgroundColor = [UIColor redColor];
         _messageConent.numberOfLines = 0;
         _messageConent.lineBreakMode = NSLineBreakByWordWrapping;
         _messageConent.font = [UIFont systemFontOfSize:15];
@@ -98,9 +100,21 @@
     
     if (tap.state == UIGestureRecognizerStateEnded) {
         CGPoint tapPoint = [tap locationInView:self.contentView];
-        if (CGRectContainsPoint(_bubbleBg.frame, tapPoint)) {//点文本内容
-            if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(msgCellTappedContent:)]) {
-                [self.msgDelegate msgCellTappedContent:self];
+        if (CGRectContainsPoint(_bubbleBg.frame, tapPoint)) {//点击bubble
+            if (msg.fileType == eMessageBodyType_Text) {//文本
+                
+            }else if (msg.fileType == eMessageBodyType_Image){//图片
+                if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
+                    [self.msgDelegate clickPic:index];
+                }
+            }else if(msg.fileType == eMessageBodyType_Voice){//语音
+                if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(msgCellTappedContent:)]) {
+                    [self.msgDelegate msgCellTappedContent:self];
+                }
+            }
+        }else if (CGRectContainsPoint(_userHead.frame, tapPoint)) {//头像
+            if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
+                [self.msgDelegate clickUserHeadPic:index];
             }
         }else{//任何区域
             if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(msgCellTappedBlank:)]) {
@@ -225,15 +239,15 @@
     }
 }
 - (void)tapImage:(NSUInteger)sender{
-    if (sender == ChatPicType) {//点击图片放大
-        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
-            [self.msgDelegate clickPic:_bubbleBg.tag];
-        }
-    }else{//点击头像
-        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
-            [self.msgDelegate clickUserHeadPic:_bubbleBg.tag];
-        }
-    }
+//    if (sender == ChatPicType) {//点击图片放大
+//        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
+//            [self.msgDelegate clickPic:_bubbleBg.tag];
+//        }
+//    }else{//点击头像
+//        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
+//            [self.msgDelegate clickUserHeadPic:_bubbleBg.tag];
+//        }
+//    }
 
 }
 -(void)draw{
@@ -296,6 +310,8 @@
     float bubbleHeight;
     
     if(msg.fileType ==eMessageBodyType_Text){
+        _messageConent.hidden = NO;
+        _chatImage.hidden = YES;
         if(isMe){
             
             bubbleX = SCREEN_SIZE.width - INSETS*2 - HEAD_SIZE - textSize.size.width - 40;
@@ -330,9 +346,9 @@
     }
     
     
-    _messageConent.hidden = NO;
     if(msg.fileType ==eMessageBodyType_Image){
-        
+        _messageConent.hidden = YES;
+        _chatImage.hidden = NO;
         if(isMe)
         {
             bubbleX = SCREEN_SIZE.width - INSETS*2 -HEAD_SIZE - 100;

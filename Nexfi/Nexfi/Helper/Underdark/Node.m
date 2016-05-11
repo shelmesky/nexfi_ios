@@ -54,13 +54,12 @@
 }
 - (void)start{
 
-    [_transport start];
+    [self.transport start];
     
 }
 - (void)stop{
     
     [self.transport stop];
-    _framesCount = 0;
     
 }
 #pragma -mark 群发数据
@@ -123,11 +122,9 @@
         {
             //没有连接群聊发送消息失败
             if (self.links.count == 0) {
-                
                 if (self.delegate && [self.delegate respondsToSelector:@selector(AllUserChatSendFailWithInfo:)]) {
                     [self.delegate AllUserChatSendFailWithInfo:@"您附近没有用户上线哦~"];
                 }
-                
                 return;
             }
             for (int i = 0; i < self.links.count; i ++) {
@@ -189,7 +186,6 @@
         [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo]];
 
 //    });
-    
     
     self.peersCount += 1;
     

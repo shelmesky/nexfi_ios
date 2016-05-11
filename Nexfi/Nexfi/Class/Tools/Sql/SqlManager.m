@@ -350,7 +350,7 @@ static SqlManager *_share = nil;
         }
         
     }
-    
+    [chatList addObject:@"1"];
     return chatList;
     
 }

@@ -10,12 +10,6 @@ typedef enum : NSUInteger {
     HeadPicType,
 } imageType;
 #import <UIKit/UIKit.h>
-@protocol JXImageViewDelegate <NSObject>
-
-- (void)tapImage:(NSUInteger)sender;//点击图片放大
-
-
-@end
 
 @interface JXImageView : UIImageView<UIGestureRecognizerDelegate> {
 	SEL			_didTouch;
@@ -23,7 +17,6 @@ typedef enum : NSUInteger {
     BOOL        changeAlpha;
     NSString * _imageType;
 }
-@property (nonatomic, assign)id<JXImageViewDelegate>JXImageDelegate;
 @property (nonatomic, assign) NSObject* delegate;
 @property (nonatomic, assign) SEL		didTouch;
 @property (nonatomic, assign) BOOL      changeAlpha;

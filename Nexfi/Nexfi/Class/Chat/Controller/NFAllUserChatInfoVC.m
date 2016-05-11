@@ -153,42 +153,27 @@
 #pragma -mark 点击bubble
 - (void)msgCellTappedContent:(FCMsgCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
-    switch (msgCell.msg.fileType) {
-        case eMessageBodyType_Voice:
-        {
-            TribeMessage *msg = (TribeMessage *)msgCell.msg;
-            NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
-            for (FCMsgCell *cell in cells) {
-                [cell sendVoiceMesState:FNVoiceMessageStateNormal];
-            }
-            
-            
-            msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
 
-            if ([NexfiUtil isMeSend:msgCell.msg]) {
-                //展示UI
-                //播放
-       
-                NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-                
-                NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.tContent];
-                [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
-                [msgCell.messageVoiceStatusIV startAnimating];
+    TribeMessage *msg = (TribeMessage *)msgCell.msg;
+    //关闭播放动画
+    NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
+    for (FCMsgCell *cell in cells) {
+        [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+    }
+    //播放录音
+    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
+    if ([NexfiUtil isMeSend:msgCell.msg]) {
 
-                
-            }else{
-                //展示UI
-                //播放
-                [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.tContent] atIndex:indexPath.row isMe:NO];
-                [msgCell.messageVoiceStatusIV startAnimating];
-            }
+        NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        
+        NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.tContent];
+        [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
+        [msgCell.messageVoiceStatusIV startAnimating];
+        
+    }else{
 
-            
-            break;
-        }
-            
-        default:
-            break;
+        [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.tContent] atIndex:indexPath.row isMe:NO];
+        [msgCell.messageVoiceStatusIV startAnimating];
     }
 }
 #pragma -mark 点击图片放大
@@ -238,6 +223,10 @@
     
     [self.navigationController pushViewController:browser animated:YES];
      
+    
+}
+#pragma - mark 点击头像
+- (void)clickUserHeadPic:(NSUInteger)index{
     
 }
 #pragma - mark 跳转群组信息
@@ -309,8 +298,8 @@
     user.headImgPath = msg.senderFaceImageStr;
 
     
-    
-//    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+    NSArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
+    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
     
         //保存聊天记录
         [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
@@ -329,7 +318,7 @@
     
 
 
-//    }
+    }
 
 }
 
@@ -451,11 +440,16 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showTableMsg:msg];
                 });
+                
+                //插入数据库
+                
+                [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
             }
             
-            //插入数据库
+
+                
             
-            [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
+
 
         }else{
             NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
@@ -481,9 +475,16 @@
 -(void)showTableMsg:(TribeMessage *) msg
 {
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    //消息重复不刷新表
+    for (int i = 0; i < _textArray.count; i++) {
+        TribeMessage *tMsg = _textArray[i];
+        if ([tMsg.msgId isEqualToString:msg.msgId]) {
+            return;
+        }
+    }
     [_textArray addObject:msg];
+    
     [self.msgCellHeightList addObject:[self getMsgCellHeightWithMsg:msg]];
-    NSLog(@"gao===%@",self.msgCellHeightList);
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
     [indexPaths addObject:indexPath];
     //[_tableView beginUpdates];

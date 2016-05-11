@@ -19,23 +19,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         changeAlpha = YES;
-        self.userInteractionEnabled = YES;
-        
-        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
-        tap.delegate = self;
-        [self addGestureRecognizer:tap];
         
     }
     return self;
-}
-- (void)tap:(UITapGestureRecognizer *)gesture{
-
-    if (self.JXImageDelegate && [self.JXImageDelegate respondsToSelector:@selector(tapImage:)]) {
-        [self.JXImageDelegate tapImage:self.imageType];
-        
-    }
-    
-
 }
 /*
 // Only override drawRect: if you perform custom drawing.
