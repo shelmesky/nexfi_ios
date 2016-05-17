@@ -213,7 +213,6 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 		return;
 	
 	LogDebug(@"bnj netServiceDidNotPublish %@", errorDict[NSNetServicesErrorCode]);
-	
 	_service = nil;
 	_state = UDBnjServerStateStopped;
 	_desiredState = UDBnjServerStateStopped;

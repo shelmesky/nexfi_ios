@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSString *sex;//
 @property (nonatomic, retain) NSString *age;
 @property (nonatomic, retain) NSString *birthday;
-@property (nonatomic, retain) NSString *headImgStr;
+//@property (nonatomic, retain) NSString *headImgStr;
 @property (nonatomic, retain) NSString *headImgPath;
 
 @property (nonatomic, retain) NSString *nodeId;

@@ -20,7 +20,7 @@
         self.senderFaceImageStr = aDic[@"senderFaceImageStr"];
         self.fileType = [aDic[@"fileType"] intValue];
         self.messageType = [aDic[@"messageType"] intValue];
-        self.nodeId = aDic[@"nodeId"];
+//        self.nodeId = aDic[@"nodeId"];
         self.durational = aDic[@"durational"];
         self.file = aDic[@"file"];
         self.receiver = aDic[@"receiver"] ;

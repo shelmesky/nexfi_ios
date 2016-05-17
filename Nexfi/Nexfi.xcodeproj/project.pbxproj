@@ -383,14 +383,6 @@
 		0E9E7ABE1CC62B9500EE2272 /* lxh_zhuanfa.gif in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78DD1CC62B9500EE2272 /* lxh_zhuanfa.gif */; };
 		0E9E7ABF1CC62B9500EE2272 /* lxh_zhuanfa.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78DE1CC62B9500EE2272 /* lxh_zhuanfa.png */; };
 		0E9E7AC01CC62B9500EE2272 /* lxh_zhuanfa@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78DF1CC62B9500EE2272 /* lxh_zhuanfa@2x.png */; };
-		0E9E7AC11CC62B9500EE2272 /* MJConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78E21CC62B9500EE2272 /* MJConst.m */; };
-		0E9E7AC21CC62B9500EE2272 /* MJFoundation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78E51CC62B9500EE2272 /* MJFoundation.m */; };
-		0E9E7AC31CC62B9500EE2272 /* MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78E71CC62B9500EE2272 /* MJProperty.m */; };
-		0E9E7AC41CC62B9500EE2272 /* MJType.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78E91CC62B9500EE2272 /* MJType.m */; };
-		0E9E7AC51CC62B9500EE2272 /* NSObject+MJCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78EB1CC62B9500EE2272 /* NSObject+MJCoding.m */; };
-		0E9E7AC61CC62B9500EE2272 /* NSObject+MJKeyValue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78ED1CC62B9500EE2272 /* NSObject+MJKeyValue.m */; };
-		0E9E7AC71CC62B9500EE2272 /* NSObject+MJProperty.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78EF1CC62B9500EE2272 /* NSObject+MJProperty.m */; };
-		0E9E7AC81CC62B9500EE2272 /* NSString+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E78F11CC62B9500EE2272 /* NSString+MJExtension.m */; };
 		0E9E7AC91CC62B9500EE2272 /* messages_icon_empty_status.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78F41CC62B9500EE2272 /* messages_icon_empty_status.png */; };
 		0E9E7ACA1CC62B9500EE2272 /* messages_icon_empty_status@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78F51CC62B9500EE2272 /* messages_icon_empty_status@2x.png */; };
 		0E9E7ACB1CC62B9500EE2272 /* messages_icon_empty_status@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E78F61CC62B9500EE2272 /* messages_icon_empty_status@3x.png */; };
@@ -995,23 +987,6 @@
 		0E9E78DD1CC62B9500EE2272 /* lxh_zhuanfa.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = lxh_zhuanfa.gif; sourceTree = "<group>"; };
 		0E9E78DE1CC62B9500EE2272 /* lxh_zhuanfa.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lxh_zhuanfa.png; sourceTree = "<group>"; };
 		0E9E78DF1CC62B9500EE2272 /* lxh_zhuanfa@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "lxh_zhuanfa@2x.png"; sourceTree = "<group>"; };
-		0E9E78E11CC62B9500EE2272 /* MJConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJConst.h; sourceTree = "<group>"; };
-		0E9E78E21CC62B9500EE2272 /* MJConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJConst.m; sourceTree = "<group>"; };
-		0E9E78E31CC62B9500EE2272 /* MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJExtension.h; sourceTree = "<group>"; };
-		0E9E78E41CC62B9500EE2272 /* MJFoundation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJFoundation.h; sourceTree = "<group>"; };
-		0E9E78E51CC62B9500EE2272 /* MJFoundation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJFoundation.m; sourceTree = "<group>"; };
-		0E9E78E61CC62B9500EE2272 /* MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJProperty.h; sourceTree = "<group>"; };
-		0E9E78E71CC62B9500EE2272 /* MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJProperty.m; sourceTree = "<group>"; };
-		0E9E78E81CC62B9500EE2272 /* MJType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJType.h; sourceTree = "<group>"; };
-		0E9E78E91CC62B9500EE2272 /* MJType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJType.m; sourceTree = "<group>"; };
-		0E9E78EA1CC62B9500EE2272 /* NSObject+MJCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJCoding.h"; sourceTree = "<group>"; };
-		0E9E78EB1CC62B9500EE2272 /* NSObject+MJCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJCoding.m"; sourceTree = "<group>"; };
-		0E9E78EC1CC62B9500EE2272 /* NSObject+MJKeyValue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJKeyValue.h"; sourceTree = "<group>"; };
-		0E9E78ED1CC62B9500EE2272 /* NSObject+MJKeyValue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJKeyValue.m"; sourceTree = "<group>"; };
-		0E9E78EE1CC62B9500EE2272 /* NSObject+MJProperty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+MJProperty.h"; sourceTree = "<group>"; };
-		0E9E78EF1CC62B9500EE2272 /* NSObject+MJProperty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+MJProperty.m"; sourceTree = "<group>"; };
-		0E9E78F01CC62B9500EE2272 /* NSString+MJExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MJExtension.h"; sourceTree = "<group>"; };
-		0E9E78F11CC62B9500EE2272 /* NSString+MJExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MJExtension.m"; sourceTree = "<group>"; };
 		0E9E78F41CC62B9500EE2272 /* messages_icon_empty_status.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = messages_icon_empty_status.png; sourceTree = "<group>"; };
 		0E9E78F51CC62B9500EE2272 /* messages_icon_empty_status@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messages_icon_empty_status@2x.png"; sourceTree = "<group>"; };
 		0E9E78F61CC62B9500EE2272 /* messages_icon_empty_status@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messages_icon_empty_status@3x.png"; sourceTree = "<group>"; };
@@ -1702,7 +1677,6 @@
 			isa = PBXGroup;
 			children = (
 				0E9E77FC1CC62B9400EE2272 /* EmotionIcons */,
-				0E9E78E01CC62B9500EE2272 /* MJExtension */,
 				0E9E78F21CC62B9500EE2272 /* YBKeyboard */,
 			);
 			path = Resources;
@@ -1961,30 +1935,6 @@
 				0E9E78DF1CC62B9500EE2272 /* lxh_zhuanfa@2x.png */,
 			);
 			path = lxh;
-			sourceTree = "<group>";
-		};
-		0E9E78E01CC62B9500EE2272 /* MJExtension */ = {
-			isa = PBXGroup;
-			children = (
-				0E9E78E11CC62B9500EE2272 /* MJConst.h */,
-				0E9E78E21CC62B9500EE2272 /* MJConst.m */,
-				0E9E78E31CC62B9500EE2272 /* MJExtension.h */,
-				0E9E78E41CC62B9500EE2272 /* MJFoundation.h */,
-				0E9E78E51CC62B9500EE2272 /* MJFoundation.m */,
-				0E9E78E61CC62B9500EE2272 /* MJProperty.h */,
-				0E9E78E71CC62B9500EE2272 /* MJProperty.m */,
-				0E9E78E81CC62B9500EE2272 /* MJType.h */,
-				0E9E78E91CC62B9500EE2272 /* MJType.m */,
-				0E9E78EA1CC62B9500EE2272 /* NSObject+MJCoding.h */,
-				0E9E78EB1CC62B9500EE2272 /* NSObject+MJCoding.m */,
-				0E9E78EC1CC62B9500EE2272 /* NSObject+MJKeyValue.h */,
-				0E9E78ED1CC62B9500EE2272 /* NSObject+MJKeyValue.m */,
-				0E9E78EE1CC62B9500EE2272 /* NSObject+MJProperty.h */,
-				0E9E78EF1CC62B9500EE2272 /* NSObject+MJProperty.m */,
-				0E9E78F01CC62B9500EE2272 /* NSString+MJExtension.h */,
-				0E9E78F11CC62B9500EE2272 /* NSString+MJExtension.m */,
-			);
-			path = MJExtension;
 			sourceTree = "<group>";
 		};
 		0E9E78F21CC62B9500EE2272 /* YBKeyboard */ = {
@@ -2530,6 +2480,7 @@
 				TargetAttributes = {
 					0EBAE93E1CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = L44VF3A557;
 					};
 					0EBAE9571CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
@@ -3061,8 +3012,6 @@
 				0E9E7AE31CC62B9500EE2272 /* YBKeyboardEmojView.m in Sources */,
 				0E9E7B3F1CC62B9500EE2272 /* UDFrameCache.m in Sources */,
 				0E9E77861CC62AD100EE2272 /* TribeMessage.m in Sources */,
-				0E9E7AC11CC62B9500EE2272 /* MJConst.m in Sources */,
-				0E9E7AC81CC62B9500EE2272 /* NSString+MJExtension.m in Sources */,
 				0E9E7B211CC62B9500EE2272 /* UDNsdAdvertiser.m in Sources */,
 				0E9E77CA1CC62AD100EE2272 /* menuImageView.m in Sources */,
 				0E9E7AE51CC62B9500EE2272 /* YBKeyboardInputBarButton.m in Sources */,
@@ -3102,7 +3051,6 @@
 				0E9E77EB1CC62AD100EE2272 /* FCHeadCollectionCell.m in Sources */,
 				0E9E7ADB1CC62B9500EE2272 /* YBKeyboardEmojiPopView.m in Sources */,
 				0E9E7AE21CC62B9500EE2272 /* YBKeyboardEmojSet.m in Sources */,
-				0E9E7AC71CC62B9500EE2272 /* NSObject+MJProperty.m in Sources */,
 				0E9E77DE1CC62AD100EE2272 /* NFChatCacheFileUtil.m in Sources */,
 				0E9E77E71CC62AD100EE2272 /* UserInfoVC.m in Sources */,
 				0E9E7B3A1CC62B9500EE2272 /* Packet+Builders.m in Sources */,
@@ -3127,7 +3075,6 @@
 				0E9E7B371CC62B9500EE2272 /* UDTransport.m in Sources */,
 				0E9E7ADC1CC62B9500EE2272 /* YBKeyboardEmojListCell.m in Sources */,
 				0E9E7B201CC62B9500EE2272 /* UDNsdAdapter.m in Sources */,
-				0E9E7AC21CC62B9500EE2272 /* MJFoundation.m in Sources */,
 				0E9E7B271CC62B9500EE2272 /* UDBonjourAdapter.m in Sources */,
 				0E9E7B321CC62B9500EE2272 /* Node.m in Sources */,
 				0E9E77E31CC62AD100EE2272 /* FCCongureInfoVC.m in Sources */,
@@ -3153,7 +3100,6 @@
 				0E9E79DD1CC62B9500EE2272 /* ConFunc.m in Sources */,
 				0E9E7B161CC62B9500EE2272 /* YBKeyboardRecordView.m in Sources */,
 				0E9E77D81CC62AD100EE2272 /* BaseVC.m in Sources */,
-				0E9E7AC31CC62B9500EE2272 /* MJProperty.m in Sources */,
 				0E9E7B281CC62B9500EE2272 /* UDBonjourBrowser.m in Sources */,
 				0E9E7AD81CC62B9500EE2272 /* YBKeyboardEmojiAttachment.m in Sources */,
 				0E9E7B2D1CC62B9500EE2272 /* UDBuffer.m in Sources */,
@@ -3170,13 +3116,10 @@
 				0E9E7B151CC62B9500EE2272 /* YBKeyboardTextView.m in Sources */,
 				0E9E77781CC62AD100EE2272 /* ChatVC.m in Sources */,
 				0E9E7AE41CC62B9500EE2272 /* YBKeyBoardInputBar.m in Sources */,
-				0E9E7AC61CC62B9500EE2272 /* NSObject+MJKeyValue.m in Sources */,
 				0E9E7B121CC62B9500EE2272 /* YBkeyboardMoreFunctionModel.m in Sources */,
 				0E9E777A1CC62AD100EE2272 /* NFAllUserChatInfoVC.m in Sources */,
 				0E9E77D01CC62AD100EE2272 /* FCPersonHeadCell.m in Sources */,
-				0E9E7AC51CC62B9500EE2272 /* NSObject+MJCoding.m in Sources */,
 				0E9E77C91CC62AD100EE2272 /* JXSelectImageView.m in Sources */,
-				0E9E7AC41CC62B9500EE2272 /* MJType.m in Sources */,
 				0E9E7B3C1CC62B9500EE2272 /* UDPacketKind.m in Sources */,
 				0EBAE9441CB3824000361D18 /* main.m in Sources */,
 			);
@@ -3323,17 +3266,17 @@
 			baseConfigurationReference = BB99C2D7709B8608003F2070 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Qiang Ma (H8ANU3PWUX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qiang Ma (H8ANU3PWUX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ZiZu.NexF;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "4202765a-ae0f-4dc8-85bc-326bd02cb135";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -3343,17 +3286,17 @@
 			baseConfigurationReference = 8C46A9998135D78B6AC18670 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Qiang Ma (H8ANU3PWUX)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Qiang Ma (H8ANU3PWUX)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ZiZu.NexF;
+				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "4202765a-ae0f-4dc8-85bc-326bd02cb135";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;

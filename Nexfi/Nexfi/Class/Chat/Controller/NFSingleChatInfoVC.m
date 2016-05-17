@@ -55,7 +55,6 @@
     
     [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
 
-    
     _textArray=[[NSMutableArray alloc]init];
 
     _pool = [[NSMutableArray alloc]init];
@@ -79,8 +78,6 @@
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
     
-    
-
 }
 - (void)showHistoryMsg{
     //别人发我，我发别人都要取出来
@@ -88,7 +85,6 @@
 
     for (PersonMessage *msg in self.historyMsgs) {
         [self showTableMsg:msg];
-        
     }
     
 }
@@ -307,7 +303,7 @@
     NSString *nodeId = dic[@"nodeId"];
     
     PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
-    msg.nodeId = nodeId;
+//    msg.nodeId = nodeId;
     if (msg.fileType != eMessageBodyType_Text && msg.file) {
         msg.pContent = msg.file;
     }
@@ -317,12 +313,10 @@
     [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
     
     
-    //判断收到消息的是不是当前页面的人，如果是 就显示 如果不是就存数据库
-    if ([self.to_user.userId isEqualToString:msg.sender]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showTableMsg:msg];
-        });
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showTableMsg:msg];
+    });
+    
     
 }
 - (id<UDLink>)getUserLink{
@@ -350,9 +344,7 @@
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
-        
-//                NSData *newData = [@"nihaoa" dataUsingEncoding:NSUTF8StringEncoding];
-        
+                
         
         
         NSData *newData;
@@ -436,22 +428,22 @@
         }
         
         msg.messageType = eMessageType_SingleChat;
-
-        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
-        newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+//        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
+        
+        newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         //刷新表
         if (sendOnce == YES) {
             sendOnce = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showTableMsg:msg];
             });
+            
+            //插入数据库
+            
+            [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
         }
 
-        //插入数据库
-        
-        [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
-         
-         
+ 
         return newData;
         
     }];

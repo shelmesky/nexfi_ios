@@ -242,7 +242,7 @@ static SqlManager *_share = nil;
         }else{
             [dict setObject:message.receiver forKey:@"userId"];
             [dict setObject:toUser.userName forKey:@"userName"];
-            [dict setObject:toUser.headImgStr forKey:@"headImgStr"];
+            [dict setObject:toUser.headImgPath forKey:@"headImgStr"];
         
         }
         
@@ -483,7 +483,7 @@ static SqlManager *_share = nil;
         while ([rs next]) {
             user.userId = [rs stringForColumn:@"userId"];
             user.userName = [rs stringForColumn:@"userName"];
-            user.headImgStr = [rs stringForColumn:@"headImgStr"];
+            user.headImgPath = [rs stringForColumn:@"headImgStr"];
             user.lastmsg = [rs stringForColumn:@"lastmsg"];
             user.send_time = [rs stringForColumn:@"send_time"];
             user.unreadnum = [NSString stringWithFormat:@"%d",[rs intForColumn:@"unreadnum"]];
@@ -503,7 +503,7 @@ static SqlManager *_share = nil;
     while ([rs next]) {
         user.userId = [rs stringForColumn:@"userId"];
         user.userName = [rs stringForColumn:@"userName"];
-        user.headImgStr = [rs stringForColumn:@"headImgStr"];
+        user.headImgPath = [rs stringForColumn:@"headImgStr"];
         user.lastmsg = [rs stringForColumn:@"lastmsg"];
         user.send_time = [rs stringForColumn:@"send_time"];
         user.unreadnum = [NSString stringWithFormat:@"%d",[rs intForColumn:@"unreadnum"]];

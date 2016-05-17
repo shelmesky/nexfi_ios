@@ -77,8 +77,6 @@
         [cells.addTribe setTitle:@"" forState:UIControlStateNormal];
         [cells.addTribe setBackgroundImage:[UIImage imageNamed:@"102"] forState:UIControlStateNormal];
         [cells.addTribe addTarget:self action:@selector(addTribeClick:) forControlEvents:UIControlEventTouchUpInside];
-        
-        
         return cells;
         
     }
@@ -95,9 +93,6 @@
     UIImage *image = [_dataArr objectAtIndex:indexPath.item];
 
     cell.headImg.image = image;
-    
-    
-    
     
     return cell;
 }

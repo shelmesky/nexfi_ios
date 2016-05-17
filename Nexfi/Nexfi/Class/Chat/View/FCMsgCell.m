@@ -36,7 +36,7 @@
         _messageConent.backgroundColor = [UIColor clearColor];
         _messageConent.userInteractionEnabled = YES;
         _messageConent.hidden = YES;
-        _messageConent.backgroundColor = [UIColor redColor];
+//        _messageConent.backgroundColor = [UIColor redColor];
         _messageConent.numberOfLines = 0;
         _messageConent.lineBreakMode = NSLineBreakByWordWrapping;
         _messageConent.font = [UIFont systemFontOfSize:15];
@@ -59,7 +59,7 @@
         [_chatImage setHidden:YES];
         [_messageConent setHidden:YES];
         
-        [_chatImage setBackgroundColor:[UIColor redColor]];
+//        [_chatImage setBackgroundColor:[UIColor redColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self.contentView addSubview:self.messageSendStateIV];

@@ -17,6 +17,8 @@
 #import "NFChatCacheFileUtil.h"
 #import "NFPeersView.h"
 #import "NFTribeInfoVC.h"
+
+
 @interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
 {
     //用来保存输入框中的信息
@@ -56,8 +58,6 @@
     
     [self setBaseVCAttributesWith:@"群聊" left:nil right:@"041.png" WithInVC:self];
     
-    
-    
     _textArray=[[NSMutableArray alloc]init];
     
     _pool = [[NSMutableArray alloc]init];
@@ -65,8 +65,6 @@
     [UnderdarkUtil share].node.allUserChatVC = self;
     [UnderdarkUtil share].node.delegate = self;
 
-
-    
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64
 ) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -284,9 +282,9 @@
 #pragma -mark 获取接收到的数据
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
-    NSString *nodeId = dic[@"nodeId"];
+//    NSString *nodeId = dic[@"nodeId"];
     TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
-    msg.nodeId = nodeId;
+//    msg.nodeId = nodeId;
     if (msg.fileType != eMessageBodyType_Text && msg.file) {
         msg.tContent = msg.file;
     }
@@ -431,8 +429,8 @@
             msg.messageType = eMessageType_AllUserChat;
             
             
-            NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
-            newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+//            NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
+            newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         
             //刷新表
             if (sendOnce == YES) {
@@ -452,8 +450,8 @@
 
 
         }else{
-            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
-            newData = [NSJSONSerialization dataWithJSONObject:msgDic options:0 error:0];
+//            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
+            newData = [NSJSONSerialization dataWithJSONObject:tribeMsg.mj_keyValues options:0 error:0];
             
             
             NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];

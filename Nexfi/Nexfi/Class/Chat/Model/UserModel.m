@@ -19,7 +19,7 @@
         self.age = aDic[@"age"];
         self.birthday = aDic[@"birthday"];
 //        self.headImg = aDic[@"headImg"];
-        self.headImgStr = aDic[@"headImgStr"];
+//        self.headImgStr = aDic[@"headImgStr"];
         self.nodeId = aDic[@"nodeId"];
         self.headImgPath = aDic[@"headImgPath"];
 
@@ -35,7 +35,7 @@
 //        self.userHead = [aDecoder decodeObjectForKey:@"userHead"];
         self.birthday = [aDecoder decodeObjectForKey:@"birthday"];
         self.age = [aDecoder decodeObjectForKey:@"age"];
-        self.headImgStr = [aDecoder decodeObjectForKey:@"headImgStr"];
+//        self.headImgStr = [aDecoder decodeObjectForKey:@"headImgStr"];
         self.nodeId = [aDecoder decodeObjectForKey:@"nodeId"];
         self.headImgPath = [aDecoder decodeObjectForKey:@"headImgPath"];
 //        self.headImg = [aDecoder decodeObjectForKey:@"headImg"];
@@ -51,7 +51,7 @@
 //    [aCoder encodeObject:self.userHead forKey:@"userHead"];
     [aCoder encodeObject:self.age forKey:@"age"];
     [aCoder encodeObject:self.userId forKey:@"userId"];
-    [aCoder encodeObject:self.headImgStr forKey:@"headImgStr"];
+//    [aCoder encodeObject:self.headImgStr forKey:@"headImgStr"];
     [aCoder encodeObject:self.nodeId forKey:@"nodeId"];
     [aCoder encodeObject:self.headImgPath forKey:@"headImgPath"];
 //    [aCoder encodeObject:self.headImg forKey:@"headImg"];
@@ -60,7 +60,7 @@
 }
 
 - (NSString *)description{
-    return [NSString stringWithFormat:@"id：%@,昵称：%@,性别：%@,生日：%@,年龄：%@ 图片: %@",self.userId,self.userName,self.sex,self.birthday,self.age,self.headImgStr];
+    return [NSString stringWithFormat:@"id：%@,昵称：%@,性别：%@,生日：%@,年龄：%@ 图片: %@",self.userId,self.userName,self.sex,self.birthday,self.age,self.headImgPath];
 }
 
 @end

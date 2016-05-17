@@ -17,15 +17,6 @@
 @property (nonatomic, retain) NSString *pContent;
 
 
-@property (nonatomic, retain) NSString *timestamp;//发送时间
-@property (nonatomic, retain) NSString *msgId;//消息id
-@property (nonatomic, retain) NSString *sender;//发送此条消息的id
-@property (nonatomic, retain) NSString *senderNickName;
-@property (nonatomic, retain) NSString *senderFaceImageStr;
-@property (nonatomic, assign) MessageBodyType fileType;//文件类型
-@property (nonatomic, assign) MessageType messageType;
-@property (nonatomic, retain) NSString *nodeId;
-
 - (id)initWithaDic:(NSDictionary *)aDic;
 
 @end

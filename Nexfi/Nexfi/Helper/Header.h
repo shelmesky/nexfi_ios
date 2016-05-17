@@ -26,6 +26,7 @@
 #import "IQKeyboardManager.h"
 #import "FNAVAudioPlayer.h"
 #import "XMNChat.h"
+#import "MJExtension.h"
 
 #import "Message.h"
 

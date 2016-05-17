@@ -75,20 +75,9 @@ typedef NS_ENUM(NSUInteger, FNVoiceMessageState) {
 @property (nonatomic, retain) NSString *senderFaceImageStr;
 @property (nonatomic, assign) MessageBodyType fileType;//文件类型
 @property (nonatomic, assign) MessageType messageType;
-@property (nonatomic, retain) NSString *nodeId;
+//@property (nonatomic, retain) NSString *nodeId;
 
 
-
-
-//@property (nonatomic, retain) NSString *content;//内容
-//单聊@{receiver,personContent,durational,file}
-//群聊@{isRead,TribeContent,durational,file,groupId}
-//所有人@{isRead,TribeContent,durational,file}
-
-
-//@property (nonatomic, retain) NSString *durational;//语音时间
-//@property (nonatomic, retain) NSString *file;
-//@property (nonatomic, retain) NSString *receiver;//接收者
 
 
 @end
