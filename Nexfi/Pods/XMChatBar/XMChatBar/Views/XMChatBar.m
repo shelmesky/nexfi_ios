@@ -15,6 +15,8 @@
 #import "XMProgressHUD.h"
 #import "Mp3Recorder.h"
 
+#import "ZYQAssetPickerController.h"
+
 #import "Masonry.h"
 
 @interface XMChatBar ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,Mp3RecorderDelegate,XMChatMoreViewDelegate,XMChatMoreViewDataSource,XMChatFaceViewDelegate,XMLocationControllerDelegate>
@@ -152,7 +154,16 @@
     [self sendImageMessage:image];
     [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
-
+-(void)assetPickerController:(ZYQAssetPickerController *)picker didFinishPickingAssets:(NSArray *)assets{
+    NSMutableArray *images = [[NSMutableArray alloc]initWithCapacity:0];
+    for (int i=0; i<assets.count; i++) {
+        ALAsset *asset=assets[i];
+        UIImage *tempImg=[UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+        //添加图片
+        [images addObject:tempImg];
+    }
+    [self sendImageMessage:images];
+}
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
     [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
@@ -197,9 +208,17 @@
         case XMChatMoreItemAlbum:
         {
             //显示相册
+            /*
             UIImagePickerController *pickerC = [[UIImagePickerController alloc] init];
             pickerC.delegate = self;
             [self.rootViewController presentViewController:pickerC animated:YES completion:nil];
+             */
+            ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
+            picker.maximumNumberOfSelection = 1;
+            picker.assetsFilter = [ALAssetsFilter allPhotos];
+            picker.showEmptyGroups = NO;
+            picker.delegate = self;
+            [self.rootViewController presentViewController:picker animated:YES completion:NULL];
         }
             break;
         case XMChatMoreItemCamera:
@@ -493,9 +512,9 @@
  *
  *  @param image 发送的图片
  */
-- (void)sendImageMessage:(UIImage *)image{
+- (void)sendImageMessage:(NSArray *)image{
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBar:sendPictures:)]) {
-        [self.delegate chatBar:self sendPictures:@[image]];
+        [self.delegate chatBar:self sendPictures:image];
     }
 }
 

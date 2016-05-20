@@ -30,6 +30,7 @@ PODS:
   - SDWebImage/Core (3.7.5)
   - XMChatBar (1.3.0):
     - Masonry
+  - ZYQAssetPickerController (1.0.0)
 
 DEPENDENCIES:
   - CocoaLumberjack (= 2.2.0)
@@ -43,6 +44,7 @@ DEPENDENCIES:
   - ProtocolBuffers (= 1.9.9)
   - SDWebImage (~> 3.7.5)
   - XMChatBar (~> 1.3.0)
+  - ZYQAssetPickerController (~> 1.0.0)
 
 SPEC CHECKSUMS:
   CocoaLumberjack: 17fe8581f84914d5d7e6360f7c70022b173c3ae0
@@ -59,5 +61,6 @@ SPEC CHECKSUMS:
   ProtocolBuffers: 18c1d7d0c651d3c878e6fcc8ab8ab1c679b457b1
   SDWebImage: 69c6303e3348fba97e03f65d65d4fbc26740f461
   XMChatBar: 348941c9622f17fdbb2627e6013dd87a24a10428
+  ZYQAssetPickerController: e5cf51ee6c05fa06746830026c247cb9f6699e84
 
 COCOAPODS: 0.39.0

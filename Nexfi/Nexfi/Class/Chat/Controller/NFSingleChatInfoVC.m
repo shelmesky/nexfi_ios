@@ -19,14 +19,10 @@
 {
     UITableView * _tableView;
     
-    UIImageView * _bottomImageView;
-    
-    UITextField * _inputText;
     
     //用来保存输入框中的信息
     NSMutableArray * _textArray;
     
-    BOOL _isChangedKeyBoard;
     NSMutableArray *_pool;
     int _refreshCount;
     
@@ -508,9 +504,14 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
-    sendOnce = YES;
+    
 //    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
-        [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]] WithMessageType:eMessageType_SingleChat];
+    for (int i = 0; i < pictures.count; i ++) {
+        sendOnce = YES;
+        UIImage *image = pictures[i];
+        [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:image] WithMessageType:eMessageType_SingleChat];
+    }
+
     
 }
 

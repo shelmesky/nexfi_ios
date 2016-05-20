@@ -265,7 +265,6 @@
             [self.neighbourVc.usersTable reloadData];
             
         }
-
     }];
             
 }

@@ -30,7 +30,8 @@ static SqlManager *_share = nil;
 }
 - (NSString *)getPath {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *fmdbPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:@"nexfi.db"];
+    
+    NSString *fmdbPath = [[paths objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"nexfi_%@.db",[[UserManager shareManager]getUser].userId]];
     
     NSLog(@"fmdbPath ===%@",fmdbPath);
     

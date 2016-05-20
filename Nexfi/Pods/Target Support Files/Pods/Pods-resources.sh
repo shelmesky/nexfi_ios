@@ -62,6 +62,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_resource "JGProgressHUD/JGProgressHUD/JGProgressHUD/JGProgressHUD Resources.bundle"
   install_resource "XMChatBar/XMChatBar/chatBar.xcassets"
   install_resource "XMChatBar/XMChatBar/face.plist"
+  install_resource "ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/MWPhotoBrowser.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -69,6 +70,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_resource "JGProgressHUD/JGProgressHUD/JGProgressHUD/JGProgressHUD Resources.bundle"
   install_resource "XMChatBar/XMChatBar/chatBar.xcassets"
   install_resource "XMChatBar/XMChatBar/face.plist"
+  install_resource "ZYQAssetPickerController/ZYQAssetPickerController/ZYQAssetPicker.Bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/MWPhotoBrowser.bundle"
 fi
 

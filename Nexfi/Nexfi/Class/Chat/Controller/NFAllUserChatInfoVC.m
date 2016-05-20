@@ -542,9 +542,13 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
-    sendOnce = YES;
+    
 //    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
+    for (int i = 0; i < pictures.count; i ++) {
+        sendOnce = YES;
+        UIImage *image = pictures[i];
+        [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:image WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
+    }
     
 }
 

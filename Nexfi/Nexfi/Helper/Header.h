@@ -28,6 +28,7 @@
 #import "XMNChat.h"
 #import "MJExtension.h"
 
+
 #import "Message.h"
 
 //#import "CoreJPush.h"
