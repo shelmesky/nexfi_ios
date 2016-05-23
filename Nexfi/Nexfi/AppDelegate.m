@@ -25,7 +25,10 @@
     // Override point for customization after application launch.
     NSLog(@"home===%@",NSHomeDirectory());
     //创建数据库
-    [[SqlManager shareInstance]creatTable];
+    if ([[UserManager shareManager]getUser].userId) {
+        [[SqlManager shareInstance]creatTable];
+    }
+    
     
     [IQKeyboardManager sharedManager].enable = NO;
 //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;

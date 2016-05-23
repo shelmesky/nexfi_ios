@@ -37,6 +37,29 @@ static SqlManager *_share = nil;
     
     return  fmdbPath;
 }
+// 删除数据库
+- (void)deleteDatabse
+{
+    BOOL success;
+    NSError *error;
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) ;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString * fmdbPath  = [[paths objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"nexfi_%@.db",[[UserManager shareManager]getUser].userId]];
+    // delete the old db.
+    if ([fileManager fileExistsAtPath:fmdbPath])
+    {
+        [db close];
+        success = [fileManager removeItemAtPath:fmdbPath error:&error];
+        if (!success) {
+            NSAssert1(0, @"Failed to delete old database file with message '%@'.", [error localizedDescription]);
+        }
+    }
+}
+- (void)openDb{
+    if ([db open]) {
+        NSLog(@"open db success");
+    }
+}
 #pragma -mark 创建表
 - (void)creatTable{
     if (![db open]) {
@@ -45,7 +68,7 @@ static SqlManager *_share = nil;
         //用户表
         [db executeUpdate:@"create table if not exists nexfi_chat_user (userId text , headImgStr text, userName text,send_time text,lastmsg text, unreadnum integer default 0)"];
         //双方聊天表
-        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer)"];
+        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer,isRead integer)"];
         
         //所有人的群聊
         [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,headImgStr text , userName text, send_time text, msg_text text, msg_id text , filetype text ,durational interger, isRead interger)"];
@@ -203,10 +226,11 @@ static SqlManager *_share = nil;
         [dict setObject:message.pContent forKey:@"msg_text"];
         [dict setObject:message.timestamp forKey:@"send_time"];
         [dict setObject:message.durational forKey:@"durational"];
+        [dict setObject:message.isRead forKey:@"isRead"];
         [dict setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
         
         
-        [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational)" withParameterDictionary:dict];
+        [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational,:isRead)" withParameterDictionary:dict];
         
         //更新聊天页面最后一条消息
         [self update_chat_to_user:toUser WithMsg:message];
@@ -277,10 +301,18 @@ static SqlManager *_share = nil;
         }
     }
 }
-#pragma -mark 清空总群未读消息
-- (void)clearMsgOfAllUser{
+#pragma -mark 清空单聊未读消息
+- (void)clearMsgOfSingleWithmsg_id:(NSString *)msg_id{
     if ([db open]) {
-        if ([db executeUpdate:@"update nexfi_allUser_chat set isRead = 1"]) {
+        if ([db executeUpdate:@"update nexfi_chat set isRead = 1 where msg_id=?",msg_id]) {
+            NSLog(@"清空单聊未读消息成功");
+        }
+    }
+}
+#pragma -mark 清空总群未读消息
+- (void)clearMsgOfAllUserWithMsgId:(NSString *)msgId {
+    if ([db open]) {
+        if ([db executeUpdate:@"update nexfi_allUser_chat set isRead = 1 where msg_id=?",msgId]) {
             NSLog(@"清空总群消息成功");
         }
     }
@@ -447,6 +479,11 @@ static SqlManager *_share = nil;
         
 //        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc limit :startNum,:endNum" withParameterDictionary:dict];
         
+        /*
+         xists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer,isRead integer)"];
+         
+         */
+        
           FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
         
         //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select * from letmedo_chat where from_user_id=%@ or to_user_id=%@ order by public_time desc limit :startNum,:endNum",fromId,toId]];
@@ -460,12 +497,13 @@ static SqlManager *_share = nil;
             msg = [[PersonMessage alloc] init];
             msg.sender = [rs stringForColumn:@"from_user_id"];
             msg.receiver = [rs stringForColumn:@"to_user_id"];
-            
+            msg.msgId = [rs stringForColumn:@"msg_id"];
             msg.pContent = [rs stringForColumn:@"msg_text"];
             msg.timestamp = [rs stringForColumn:@"send_time"];
             
             msg.durational = [rs stringForColumn:@"durational"];
             msg.fileType = [[rs stringForColumn:@"filetype"] intValue];
+            msg.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
             [recordArray addObject: msg];
         }
         [rs close];

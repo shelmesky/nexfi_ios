@@ -91,8 +91,9 @@
 #pragma -mark 点击bubble
 - (void)msgCellTappedContent:(FCMsgCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
-
+    
     PersonMessage *msg = (PersonMessage *)msgCell.msg;
+    
     NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
     for (FCMsgCell *cell in cells) {
         [cell sendVoiceMesState:FNVoiceMessageStateNormal];
@@ -114,6 +115,9 @@
         [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.pContent] atIndex:indexPath.row isMe:NO];
         [msgCell.messageVoiceStatusIV startAnimating];
     }
+    //设为已读
+    [msgCell updateIsRead:YES];//UI
+    [[SqlManager shareInstance]clearMsgOfSingleWithmsg_id:msg.msgId];//数据库
     
 }
 //点击用户头像
@@ -224,15 +228,10 @@
     
     if([cell isMeSend])
     {
-        //            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-        //            [cell setHeadImage:[UIImage imageWithData:imgData]];
         [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
-        
     }
     else
     {
-        //            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:self.to_user.headImgStr];
-        //            [cell setHeadImage:[UIImage imageWithData:imgData]];
         [cell setHeadImage:[UIImage imageNamed:self.to_user.headImgPath]];
     }
     
@@ -244,14 +243,6 @@
 -(void)onSelect:(UIView*)sender{
 
 }
-//- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath{
-//    return 200;
-//}
-//每行的高度
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return [self.msgCellHeightList[indexPath.row] floatValue];
-//}
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -296,10 +287,9 @@
 #pragma -mark 获取接收到的数据
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
-    NSString *nodeId = dic[@"nodeId"];
+//    NSString *nodeId = dic[@"nodeId"];
     
-    PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
-//    msg.nodeId = nodeId;
+    PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
     if (msg.fileType != eMessageBodyType_Text && msg.file) {
         msg.pContent = msg.file;
     }
@@ -308,12 +298,9 @@
     //增加未读消息数量
     [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
     
-    
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showTableMsg:msg];
     });
-    
-    
 }
 - (id<UDLink>)getUserLink{
     if ([UnderdarkUtil share].node.links.count == 0) {
@@ -356,10 +343,10 @@
                 msg.receiver = self.to_user.userId;
                 msg.fileType = eMessageBodyType_Text;
                 msg.msgId = deviceUDID;
-//                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
                 msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
                 msg.senderNickName = [[UserManager shareManager]getUser].userName;
                 msg.durational = @"";
+                msg.isRead = @"1";
                 break;
             }
             case eMessageBodyType_Image:
@@ -369,9 +356,6 @@
                 NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
                 NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
                 NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
-                
-                
-                
                 NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                 [picData writeToFile:fullPath atomically:YES];
                 
@@ -385,6 +369,7 @@
                 msg.senderNickName = [[UserManager shareManager]getUser].userName;
                 msg.durational = @"";
                 msg.file = [picData base64Encoding];
+                msg.isRead = @"1";
                 
                 break;
             }
@@ -410,12 +395,11 @@
                 msg.fileType = eMessageBodyType_Voice;
                 msg.msgId = deviceUDID;
                 msg.receiver = self.to_user.userId;
-                //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
                 msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
                 msg.senderNickName = [[UserManager shareManager]getUser].userName;
                 msg.durational = voicePro[@"voiceSec"];
                 msg.file = [voiceData base64Encoding];
-//                msg.isRead = [NSString stringWithFormat:@"0"];
+                msg.isRead = @"0";
                 
                 break;
             }
@@ -424,8 +408,6 @@
         }
         
         msg.messageType = eMessageType_SingleChat;
-//        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
-        
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         //刷新表
         if (sendOnce == YES) {
@@ -489,7 +471,6 @@
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
 
     sendOnce = YES;
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message]];
     [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message] WithMessageType:eMessageType_SingleChat];
 }
 
@@ -504,15 +485,11 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
-    
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
     for (int i = 0; i < pictures.count; i ++) {
         sendOnce = YES;
         UIImage *image = pictures[i];
         [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:image] WithMessageType:eMessageType_SingleChat];
     }
-
-    
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{

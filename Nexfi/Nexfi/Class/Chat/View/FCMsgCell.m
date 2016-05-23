@@ -123,6 +123,23 @@
         }
     }
 }
+-(void)updateIsRead:(BOOL)b{
+    if(b)
+        _readImage.hidden = YES;
+    else{
+        if(_readImage==nil)
+            _readImage=[[JXImageView alloc]initWithImage:[UIImage imageNamed:@"VoiceNodeUnread"]];
+        _readImage.hidden = NO;
+        if([self isMeSend]){
+            _readImage.frame = CGRectMake(_bubbleBg.frame.origin.x-10, _bubbleBg.frame.origin.y+10, 6, 6);
+        }
+        else{
+            _readImage.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+1, _bubbleBg.frame.origin.y+10, 6, 6);
+        }
+        
+        [self.contentView addSubview:_readImage];
+    }
+}
 -(BOOL)isMeSend{
     
     return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
@@ -221,23 +238,6 @@
     
 }
 
--(void)updateIsRead:(BOOL)b{
-    if(b)
-        _readImage.hidden = YES;
-    else{
-        if(_readImage==nil)
-            _readImage=[[JXImageView alloc]initWithImage:[UIImage imageNamed:@"VoiceNodeUnread"]];
-        _readImage.hidden = NO;
-        if([self isMeSend]){
-            _readImage.frame = CGRectMake(_bubbleBg.frame.origin.x-15, _bubbleBg.frame.origin.y+5, 11, 11);
-        }
-        else{
-            _readImage.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+1, _bubbleBg.frame.origin.y+5, 11, 11);
-        }
-        
-        [self.contentView addSubview:_readImage];
-    }
-}
 - (void)tapImage:(NSUInteger)sender{
 //    if (sender == ChatPicType) {//点击图片放大
 //        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
@@ -261,14 +261,17 @@
     NSString *durational;
     PersonMessage *pMsg;
     TribeMessage *tMsg;
+    NSString *isRead;
     if ([msg isKindOfClass:[PersonMessage class]]) {
         pMsg = (PersonMessage *)msg;
         content = pMsg.pContent;
         durational = pMsg.durational;
+        isRead = pMsg.isRead;
     }else if ([msg isKindOfClass:[TribeMessage class]]){
         tMsg = (TribeMessage *)msg;
         content = tMsg.tContent;
         durational = tMsg.durational;
+        isRead = tMsg.isRead;
     }
     
     CGRect textSize = [content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
@@ -426,7 +429,8 @@
             p.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+3, 30, 50, 15);
             p.textAlignment = NSTextAlignmentLeft;
             
-            //[self updateIsRead:true];//[msg.isRead boolValue]];
+            //语音已读 未读
+//            [isRead isEqualToString:@"1"]?[self updateIsRead:YES]:[self updateIsRead:NO];
         }
         
         [self.contentView addSubview:p];
@@ -434,7 +438,6 @@
         
 
 #ifdef IS_TEST_VERSION
-        [self updateIsRead:true];//[msg.isRead boolValue]];
 #endif
     }
     

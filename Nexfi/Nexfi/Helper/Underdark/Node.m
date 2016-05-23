@@ -309,7 +309,8 @@
                 NSDictionary *text = dic;
                 NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
                 
-                PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
+//                PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
+                PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
 //                msg.nodeId = nodeId;
                 if (msg.fileType != eMessageBodyType_Text && msg.file) {
                     msg.pContent = msg.file;
@@ -339,12 +340,12 @@
 
                 NSDictionary *text = dic;
                 NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-                TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
+//                TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
+                TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
 //                msg.nodeId = nodeId;
                 if (msg.fileType != eMessageBodyType_Text && msg.file) {
                     msg.tContent = msg.file;
                 }
-                msg.isRead = @"1";
                 UserModel *user = [[UserModel alloc]init];
                 user.userId = msg.sender;
                 user.userName = msg.senderNickName;

@@ -129,6 +129,9 @@
     
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    
+    
     if (indexPath.section == 0) {
         switch (indexPath.row) {
             case 0://昵称
@@ -168,6 +171,9 @@
         }else{
             user.userId = [NexfiUtil uuid];
             [[UserManager shareManager]loginSuccessWithUser:user];
+            //同时创建数据库
+            [[SqlManager shareInstance]creatTable];
+            
             [[NexfiUtil shareUtil] layOutTheApp];
         }
     }

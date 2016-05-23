@@ -8,6 +8,7 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 #import "PersonMessage.h"
+#import "Message.h"
 #import "TribeMessage.h"
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
@@ -38,8 +39,10 @@
 - (void)updateUserName:(UserModel *)userModel;
 #pragma -mark 清空群组未读消息
 - (void)clearMsgOfGroup:(NSString *)groupId;
+#pragma -mark 清空单聊未读消息
+- (void)clearMsgOfSingleWithmsg_id:(NSString *)msg_id;
 #pragma -mark 清空总群未读消息
-- (void)clearMsgOfAllUser;
+- (void)clearMsgOfAllUserWithMsgId:(NSString *)msgId;
 #pragma -mark 增加未读消息
 -(void)addUnreadNum:(NSString*)user_id;
 #pragma -mark 清空未读消息

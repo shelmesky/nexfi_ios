@@ -69,7 +69,6 @@
 ) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
-//    _tableView.backgroundColor = [UIColor blueColor];
     //取消tableview上的横线
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     
@@ -77,13 +76,9 @@
     [self.view addSubview:_tableView];
     
     [self.view addSubview:self.chatBar];
-//    [self.view addSubview:self.peesView];
-    
     
     //获取历史数据
     [self showHistoryMsg];
-    
-//    self.peesView.peesCount.text = self.peersCount?[NSString stringWithFormat:@"当前有%@人",self.peersCount]:@"当前有0人";
     
 }
 - (void)showHistoryMsg{
@@ -125,15 +120,11 @@
         
         if([cell isMeSend])
         {
-//            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-//            [cell setHeadImage:[UIImage imageWithData:imgData]];
-                     [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
+            [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
             
         }
         else
         {
-//            NSData *imgData = [[NSData alloc]initWithBase64EncodedString:msg.senderFaceImageStr];
-//            [cell setHeadImage:[UIImage imageWithData:imgData]];
             [cell setHeadImage:[UIImage imageNamed:msg.senderFaceImageStr]];
 
         }
@@ -173,6 +164,11 @@
         [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.tContent] atIndex:indexPath.row isMe:NO];
         [msgCell.messageVoiceStatusIV startAnimating];
     }
+    
+    //设为已读
+    [msgCell updateIsRead:YES];//UI
+    [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
+    
 }
 #pragma -mark 点击图片放大
 - (void)clickPic:(NSUInteger)index{
@@ -232,9 +228,6 @@
     NFTribeInfoVC *vc = [[NFTribeInfoVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
-//- (void)updatePeersCount:(NSString *)peersCount{
-//    self.peesView.peesCount.text = [NSString stringWithFormat:@"当前有%@人",peersCount];
-//}
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [self.msgCellHeightList[indexPath.row] floatValue];
@@ -283,16 +276,13 @@
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
 //    NSString *nodeId = dic[@"nodeId"];
-    TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
-//    msg.nodeId = nodeId;
+    TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
     if (msg.fileType != eMessageBodyType_Text && msg.file) {
         msg.tContent = msg.file;
     }
-    msg.isRead = @"1";
     UserModel *user = [[UserModel alloc]init];
     user.userId = msg.sender;
     user.userName = msg.senderNickName;
-    //    user.headImgStr = msg.senderFaceImageStr;
     user.headImgPath = msg.senderFaceImageStr;
 
     
@@ -303,41 +293,13 @@
         [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
         //增加未读消息数量
         
-//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//            [[UnderdarkUtil share].node groupSendBroadcastFrame:[self frameData:msg.fileType withSendData:nil WithTribeMsg:msg] WithtribeMessage:msg];
-
-//        });
-    
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showTableMsg:msg];
         
         });
-
-    
-
-
     }
 
 }
-
-#pragma -mark 调用发送数据接口
-- (void)broadcastFrame:(id<UDSource>)frameData{
-    if ([UnderdarkUtil share].node.links.count == 0) {
-        
-        [HudTool showErrorHudWithText:@"您附近没有用户上线哦~" inView:self.view duration:2];
-
-        return;
-    }
-    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
-        self.link = [[UnderdarkUtil share].node.links objectAtIndex:i];
-        
-        [self.link sendData:frameData];
-    }
-    
-}
-#pragma -mark 群发数据
-
-
 #pragma -mark 获取发送的数据
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data WithTribeMsg:(TribeMessage *)tribeMsg{
     
@@ -357,11 +319,10 @@
                     msg.sender = [[UserManager shareManager]getUser].userId;
                     msg.fileType = eMessageBodyType_Text;
                     msg.msgId = deviceUDID;
-                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
                     msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
                     msg.senderNickName = [[UserManager shareManager]getUser].userName;
                     msg.durational = @"";
-                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    msg.isRead = @"1";
                     
                     break;
                 }
@@ -388,7 +349,7 @@
                     msg.senderNickName = [[UserManager shareManager]getUser].userName;
                     msg.durational = @"";
                     msg.file = [picData base64Encoding];
-                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    msg.isRead = @"1";
                     
                     
                     break;
@@ -418,7 +379,7 @@
                     msg.senderNickName = [[UserManager shareManager]getUser].userName;
                     msg.durational = voicePro[@"voiceSec"];
                     msg.file = [voiceData base64Encoding];
-                    msg.isRead = [NSString stringWithFormat:@"0"];
+                    msg.isRead = @"0";
                     break;
                     
                 }
@@ -529,7 +490,6 @@
 //    [self addMessage:textMessageDict];
 
     sendOnce = YES;
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message]];
     [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
 
 }
@@ -542,8 +502,6 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
-    
-//    [self broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:[pictures objectAtIndex:0]]];
     for (int i = 0; i < pictures.count; i ++) {
         sendOnce = YES;
         UIImage *image = pictures[i];
@@ -572,12 +530,6 @@
         [self.tableView setFrame:CGRectMake(0, 0, self.view.frame.size.width, frame.origin.y)];
     } completion:nil];
 }
-//- (UIView *)peesView{
-//    if (!_peesView) {
-//        _peesView = [[NFPeersView alloc]initWithFrame:CGRectMake(0, 64, SCREEN_SIZE.width, 30)];
-//    }
-//    return _peesView;
-//}
 #pragma mark - MWPhotoBrowserDelegate
 
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
