@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger, MessageType) {
     eMessageType_SendUserInfo = 4,
     eMessageType_requestUserInfo = 5,
     eMessageType_UpdateUserInfo = 6
-
+    
 };
 
 
@@ -68,13 +68,32 @@ typedef NS_ENUM(NSUInteger, FNVoiceMessageState) {
 
 @interface Message : NSObject
 
-@property (nonatomic, retain) NSString *timestamp;//发送时间
-@property (nonatomic, retain) NSString *msgId;//消息id
-@property (nonatomic, retain) NSString *sender;//发送此条消息的id
-@property (nonatomic, retain) NSString *senderNickName;
-@property (nonatomic, retain) NSString *senderFaceImageStr;
-@property (nonatomic, assign) MessageBodyType fileType;//文件类型
+@property (nonatomic, retain) NSString *timeStamp;//发送时间
 @property (nonatomic, assign) MessageType messageType;
+@property (nonatomic, assign) MessageBodyType fileType;//文件类型
+@property (nonatomic, retain) NSString *msgId;//消息id
+@property (nonatomic, retain) UserModel *UserMessage;
+/*
+ {
+ UserMessage = {
+ @property (nonatomic, retain) NSString *userId;//
+ @property (nonatomic, retain) NSString *userNick;//
+ @property (nonatomic, retain) NSString *userGender;//
+ @property (nonatomic, assign) int userAge;
+ @property (nonatomic, retain) NSString *userAvatar;
+ 
+ }
+ }
+ */
+
+
+//@property (nonatomic, retain) NSString *sender;//发送此条消息的id
+//@property (nonatomic, retain) NSString *senderNickName;
+//@property (nonatomic, retain) NSString *senderFaceImageStr;
+// 用户所有属性
+
+
+
 //@property (nonatomic, retain) NSString *nodeId;
 
 

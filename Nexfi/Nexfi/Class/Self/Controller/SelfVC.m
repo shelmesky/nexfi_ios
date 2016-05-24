@@ -65,7 +65,7 @@
     if ([[UserManager shareManager]getUser]) {
         //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
         //        _headView.userImg.image = [UIImage imageWithData:data];
-        UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath];
+        UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
         _headView.userImg.image = img;
     }
     [super viewWillAppear:animated];
@@ -191,7 +191,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //            [self modifyGender:gender];
             UserModel *user = [[UserManager shareManager]getUser];
-            user.sex = gender;
+            user.userGender = gender;
             [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -207,13 +207,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

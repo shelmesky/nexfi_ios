@@ -23,25 +23,25 @@
         _userHead =[[JXImageView alloc]initWithFrame:CGRectZero];
         _userHead.imageType = HeadPicType;
         _userHead.userInteractionEnabled = YES;
-//        _headMask =[[JXImageView alloc]initWithFrame:CGRectZero];
+        //        _headMask =[[JXImageView alloc]initWithFrame:CGRectZero];
         //聊天图片
         _chatImage=[[JXImageView alloc]initWithFrame:CGRectZero];
         _chatImage.userInteractionEnabled = YES;
         _chatImage.imageType = ChatPicType;
         //气泡背景
         _bubbleBg =[UIButton buttonWithType:UIButtonTypeCustom];
-//        _bubbleBg.userInteractionEnabled = YES;
+        //        _bubbleBg.userInteractionEnabled = YES;
         //文本
         _messageConent=[[JXEmoji alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
         _messageConent.backgroundColor = [UIColor clearColor];
         _messageConent.userInteractionEnabled = YES;
         _messageConent.hidden = YES;
-//        _messageConent.backgroundColor = [UIColor redColor];
+        //        _messageConent.backgroundColor = [UIColor redColor];
         _messageConent.numberOfLines = 0;
         _messageConent.lineBreakMode = NSLineBreakByWordWrapping;
         _messageConent.font = [UIFont systemFontOfSize:15];
         _messageConent.offset = -12;
-//        _messageConent.textAlignment = NSTextAlignmentCenter;
+        //        _messageConent.textAlignment = NSTextAlignmentCenter;
         //时间
         _timeLabel = [[UILabel alloc] initWithFrame:CGRectZero];
         _timeLabel.backgroundColor = [UIColor clearColor];
@@ -50,7 +50,7 @@
         
         [self.contentView addSubview:_bubbleBg];
         [self.contentView addSubview:_userHead];
-//        [self.contentView addSubview:_headMask];
+        //        [self.contentView addSubview:_headMask];
         [_bubbleBg addSubview:_messageConent];
         [_bubbleBg addSubview:_chatImage];
         [self.contentView addSubview:_timeLabel];
@@ -59,26 +59,26 @@
         [_chatImage setHidden:YES];
         [_messageConent setHidden:YES];
         
-//        [_chatImage setBackgroundColor:[UIColor redColor]];
+        //        [_chatImage setBackgroundColor:[UIColor redColor]];
         [self setSelectionStyle:UITableViewCellSelectionStyleNone];
         
         [self.contentView addSubview:self.messageSendStateIV];
         
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         [self.contentView addGestureRecognizer:tap];
-
+        
     }
     return self;
 }
 - (void)sendVoiceMesState:(FNVoiceMessageState)voiceMessageState{
     if (voiceMessageState == FNVoiceMessageStateNormal) {
-//        self.messageVoiceStatusIV.hidden = YES;
+        //        self.messageVoiceStatusIV.hidden = YES;
         [self.messageVoiceStatusIV stopAnimating];
     }else if (voiceMessageState == FNVoiceMessageStatePlaying){
-//        self.messageVoiceStatusIV.hidden = NO;
+        //        self.messageVoiceStatusIV.hidden = NO;
         [self.messageVoiceStatusIV startAnimating];
     }else if (voiceMessageState == FNVoiceMessageStateCancel){
-//        self.messageVoiceStatusIV.hidden = YES;
+        //        self.messageVoiceStatusIV.hidden = YES;
         [self.messageVoiceStatusIV stopAnimating];
     }
 }
@@ -92,7 +92,7 @@
         UIImage *image3 = [UIImage imageNamed:[self isMeSend] ? @"message_voice_sender_playing_3" : @"message_voice_receiver_playing_3"];
         _messageVoiceStatusIV.animationImages = @[image1,image2,image3];
         _messageVoiceStatusIV.animationDuration = 1;
-//        _messageVoiceStatusIV.animationRepeatCount = NSUIntegerMax;
+        //        _messageVoiceStatusIV.animationRepeatCount = NSUIntegerMax;
     }
     return _messageVoiceStatusIV;
 }
@@ -142,7 +142,7 @@
 }
 -(BOOL)isMeSend{
     
-    return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
+    return [msg.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
 - (void)setMessageSendState:(FNMessageSendState)messageSendState{
@@ -163,22 +163,25 @@
     [super layoutSubviews];
     [self draw];
 }
--(void)setMsg:(Message *)aMessage
-{
+- (void)setMsg:(Message *)aMessage{
+    msg = aMessage;
     NSString *content ;
     if ([aMessage isKindOfClass:[PersonMessage class]]) {
         PersonMessage *pMsg = (PersonMessage *)aMessage;
-        content = pMsg.pContent;
-        msg = pMsg;
+        if (pMsg.fileType == eMessageBodyType_Text) {
+            content = pMsg.textMessage.fileData;
+        }
     }else if ([aMessage isKindOfClass:[TribeMessage class]]){
         TribeMessage *tMsg = (TribeMessage *)aMessage;
-        content = tMsg.tContent;
-        msg = tMsg;
+        if (tMsg.fileType == eMessageBodyType_Text) {
+            content = tMsg.textMessage.fileData;
+        }
     }
     if(aMessage.fileType  == eMessageBodyType_Text)
         _messageConent.text = content;
-
+    
 }
+
 
 -(void)setHeadImage:(UIImage*)headImage
 {
@@ -190,7 +193,7 @@
 //{
 //    if (imgUrl)
 //        [_userHead setImageWithURL:imgUrl placeholderImage:[UIImage imageNamed:@"default_portrait_chat.png"]];
-//    
+//
 //}
 -(void)setChatImage:(UIImage *)chatImage
 {
@@ -239,24 +242,24 @@
 }
 
 - (void)tapImage:(NSUInteger)sender{
-//    if (sender == ChatPicType) {//点击图片放大
-//        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
-//            [self.msgDelegate clickPic:_bubbleBg.tag];
-//        }
-//    }else{//点击头像
-//        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
-//            [self.msgDelegate clickUserHeadPic:_bubbleBg.tag];
-//        }
-//    }
-
+    //    if (sender == ChatPicType) {//点击图片放大
+    //        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
+    //            [self.msgDelegate clickPic:_bubbleBg.tag];
+    //        }
+    //    }else{//点击头像
+    //        if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickUserHeadPic:)]) {
+    //            [self.msgDelegate clickUserHeadPic:_bubbleBg.tag];
+    //        }
+    //    }
+    
 }
 -(void)draw{
     if(_drawed)
         return;
     _drawed = YES;
     BOOL isMe=[self isMeSend];
-//    CGSize textSize = _messageConent.frame.size;
-
+    //    CGSize textSize = _messageConent.frame.size;
+    
     NSString *content ;
     NSString *durational;
     PersonMessage *pMsg;
@@ -264,48 +267,61 @@
     NSString *isRead;
     if ([msg isKindOfClass:[PersonMessage class]]) {
         pMsg = (PersonMessage *)msg;
-        content = pMsg.pContent;
-        durational = pMsg.durational;
-        isRead = pMsg.isRead;
+        if (pMsg.fileType == eMessageBodyType_Text) {
+            content = pMsg.textMessage.fileData;
+            isRead = pMsg.textMessage.isRead;
+        }else if (pMsg.fileType == eMessageBodyType_Image){
+            content = pMsg.fileMessage.fileData;
+            isRead = pMsg.fileMessage.isRead;
+        }else if (pMsg.fileType == eMessageBodyType_Voice){
+            content = pMsg.voiceMessage.fileData;
+            isRead = pMsg.voiceMessage.isRead;
+            durational = pMsg.voiceMessage.durational;
+        }
     }else if ([msg isKindOfClass:[TribeMessage class]]){
         tMsg = (TribeMessage *)msg;
-        content = tMsg.tContent;
-        durational = tMsg.durational;
-        isRead = tMsg.isRead;
+        if (tMsg.fileType == eMessageBodyType_Text) {
+            content = tMsg.textMessage.fileData;
+            isRead = tMsg.textMessage.isRead;
+        }else if (tMsg.fileType == eMessageBodyType_Image){
+            content = tMsg.fileMessage.fileData;
+            isRead = tMsg.fileMessage.isRead;
+        }else if (tMsg.fileType == eMessageBodyType_Voice){
+            content = tMsg.voiceMessage.fileData;
+            isRead = tMsg.voiceMessage.isRead;
+            durational = tMsg.voiceMessage.durational;
+        }
     }
     
     CGRect textSize = [content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
-                   NSStringDrawingUsesDeviceMetrics|
-                   NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-    NSString* usersId;
+                       NSStringDrawingUsesDeviceMetrics|
+                       NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
     
     
     if(isMe){
-        usersId = [msg sender];//msg.fromUserId;
         [_userHead setFrame:CGRectMake(SCREEN_SIZE.width-INSETS-HEAD_SIZE, 5, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_sender_background_normal"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_sender_background_highlight"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];//message_receiver_background_normal  message_receiver_background_highlight
         
-//        _timeLabel.frame = CGRectMake(160, 0, 100, 8);
-//        _timeLabel.textAlignment = NSTextAlignmentRight;
+        //        _timeLabel.frame = CGRectMake(160, 0, 100, 8);
+        //        _timeLabel.textAlignment = NSTextAlignmentRight;
     }else{
-        usersId = [msg sender];//msg.toUserId;
         [_userHead setFrame:CGRectMake(INSETS, 5, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_receiver_background_normal"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_receiver_background_highlight"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
         
-//        _timeLabel.frame = CGRectMake(80, 0, 100, 8);
-//        _timeLabel.textAlignment = NSTextAlignmentLeft;
+        //        _timeLabel.frame = CGRectMake(80, 0, 100, 8);
+        //        _timeLabel.textAlignment = NSTextAlignmentLeft;
     }
     _timeLabel.bounds = CGRectMake(0, 0, 100, 8);
     _timeLabel.center = CGPointMake(SCREEN_SIZE.width/2, 4);
     _timeLabel.textAlignment = NSTextAlignmentCenter;
-
+    
     _headMask.frame=CGRectMake(_userHead.frame.origin.x-3, _userHead.frame.origin.y-1, HEAD_SIZE+6, HEAD_SIZE+6);
     
     NSDateFormatter* f=[[NSDateFormatter alloc]init];
     [f setDateFormat:@"MM-dd HH:mm"];
-    _timeLabel.text = [msg timestamp];//[f stringFromDate:[msg timestamp]];
+    _timeLabel.text = [msg timeStamp];//[f stringFromDate:[msg timestamp]];
     
     float bubbleY;
     float bubbleX;
@@ -328,11 +344,11 @@
             _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
             _messageConent.bounds = CGRectMake(0, 0, textSize.size.width+15, textSize.size.height + 15);
             _messageConent.center = CGPointMake(bubbleWidth/2, bubbleHeight/2);
-//            _messageConent.textAlignment = NSTextAlignmentRight;
+            //            _messageConent.textAlignment = NSTextAlignmentRight;
             
         }else
         {
-
+            
             bubbleX = 2*INSETS+HEAD_SIZE;
             bubbleY = 10;
             bubbleWidth = textSize.size.width + 40;
@@ -344,8 +360,11 @@
             _bubbleBg.frame=CGRectMake(bubbleX, bubbleY, bubbleWidth, bubbleHeight);
             _messageConent.bounds = CGRectMake(0, 0, textSize.size.width+ 15, textSize.size.height + 15);
             _messageConent.center = CGPointMake(bubbleWidth/2, bubbleHeight/2);
-//            _messageConent.textAlignment = NSTextAlignmentLeft;
+            //            _messageConent.textAlignment = NSTextAlignmentLeft;
         }
+        
+        _messageConent.text = content;
+        
     }
     
     
@@ -359,14 +378,15 @@
             bubbleWidth = 100;
             bubbleHeight = 100;
             [_chatImage setHidden:NO];
-               NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            _chatImage.image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],content]];
+            
+            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:content];
+            _chatImage.image = [UIImage imageWithData:imageData];
             if (_chatImage.image) {
                 _chatImage.frame = CGRectMake(10, 7, 80, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width);
                 
                 _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width + 14);
             }
-
+            
         }
         else
         {
@@ -375,19 +395,19 @@
             bubbleWidth = 100;
             bubbleHeight = 100;
             [_chatImage setHidden:NO];
-
+            
             NSData *imageData = [[NSData alloc]initWithBase64EncodedString:content];
             _chatImage.image = [UIImage imageWithData:imageData];
             
-
+            
             
             _chatImage.frame = CGRectMake(10, 7, 80, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width);
-
+            
             _bubbleBg.frame = CGRectMake(bubbleX, bubbleY, bubbleWidth, (float)(80*_chatImage.image.size.height)/(float)_chatImage.image.size.width + 14);
-
-
+            
+            
         }
-
+        
     }
     
     
@@ -399,7 +419,7 @@
         if(w>200)
             w = 200;
         //录音喇叭 图片
-//        UIImageView* iv = [[UIImageView alloc] init];
+        //        UIImageView* iv = [[UIImageView alloc] init];
         //录音时间
         UILabel* p = [[UILabel alloc] init];
         p.text = [NSString stringWithFormat:@"%d''",[durational intValue]];
@@ -410,11 +430,11 @@
         float bubbleTotalW  = SCREEN_SIZE.width - (2*INSETS + HEAD_SIZE + 20)*2;//bubble最大宽度
         float perSecWidth = (float)(bubbleTotalW - w)/60;//没秒bubble增大的宽度
         
-
+        
         CGFloat BubbleEndW = ([durational intValue] - 3)*perSecWidth + w; //大于3的bubble的长度
         CGFloat BubbleOrX = SCREEN_SIZE.width-BubbleEndW-HEAD_SIZE-INSETS*2;
         if(isMe){
-//            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
+            //            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
             
             _bubbleBg.frame = [durational intValue] > 3?CGRectMake(BubbleOrX, 10, BubbleEndW, 50):CGRectMake(SCREEN_SIZE.width-w-HEAD_SIZE-INSETS*2, 10, w, 50);
             self.messageVoiceStatusIV.frame = CGRectMake(_bubbleBg.frame.size.width-35, 15, 19, 19);
@@ -422,7 +442,7 @@
             p.textAlignment = NSTextAlignmentRight;
         }
         else{
-//            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
+            //            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
             
             _bubbleBg.frame=CGRectMake(2*INSETS+HEAD_SIZE, 10, BubbleEndW, 50);
             self.messageVoiceStatusIV.frame = CGRectMake(15, 15, 19, 19);
@@ -430,34 +450,34 @@
             p.textAlignment = NSTextAlignmentLeft;
             
             //语音已读 未读
-//            [isRead isEqualToString:@"1"]?[self updateIsRead:YES]:[self updateIsRead:NO];
+            //            [isRead isEqualToString:@"1"]?[self updateIsRead:YES]:[self updateIsRead:NO];
         }
         
         [self.contentView addSubview:p];
         [_bubbleBg addSubview:self.messageVoiceStatusIV];
         
-
+        
 #ifdef IS_TEST_VERSION
 #endif
     }
     
     
-//    if ([msg.fileType intValue]==kWCMessageTypeGif){
-//        [_bubbleBg setHidden:YES];
-//        NSString* path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[msg.file lastPathComponent]];
-//        SCGIFImageView* iv = [[SCGIFImageView alloc] initWithGIFFile:path];
-//        if(isMe)
-//            iv.frame = CGRectMake(180, 0, 80, 80);//185
-//        else
-//            iv.frame = CGRectMake(INSETS*2+HEAD_SIZE, 0, 80, 80);
-//        [self.contentView addSubview:iv];
-//        [iv release];
-//    }
+    //    if ([msg.fileType intValue]==kWCMessageTypeGif){
+    //        [_bubbleBg setHidden:YES];
+    //        NSString* path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[msg.file lastPathComponent]];
+    //        SCGIFImageView* iv = [[SCGIFImageView alloc] initWithGIFFile:path];
+    //        if(isMe)
+    //            iv.frame = CGRectMake(180, 0, 80, 80);//185
+    //        else
+    //            iv.frame = CGRectMake(INSETS*2+HEAD_SIZE, 0, 80, 80);
+    //        [self.contentView addSubview:iv];
+    //        [iv release];
+    //    }
     
     if ([self isMeSend]) {
         self.messageSendStateIV.frame = CGRectMake(_bubbleBg.frame.origin.x - 20, _bubbleBg.center.y - 10, 10, 10);
     }
-
+    
     
 }
 
@@ -468,7 +488,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

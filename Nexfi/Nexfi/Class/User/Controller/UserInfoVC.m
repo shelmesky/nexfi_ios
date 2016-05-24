@@ -33,7 +33,7 @@
     
     [self initView];
     
-
+    
     
 }
 - (void)initView{
@@ -59,10 +59,10 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
-    if ([[UserManager shareManager]getUser].userId || [[UserManager shareManager]getUser].headImgPath) {
-//        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-//        _headView.userImg.image = [UIImage imageWithData:data];
-        UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath];
+    if ([[UserManager shareManager]getUser].userId || [[UserManager shareManager]getUser].userAvatar) {
+        //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
+        //        _headView.userImg.image = [UIImage imageWithData:data];
+        UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
         _headView.userImg.image = img;
     }else{
         _headView.userImg.image = [UIImage imageNamed:@"img_head_01"];
@@ -86,7 +86,7 @@
         if (!cells) {
             cells =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonCell" owner:self options:nil] objectAtIndex:0];
             cells.selectionStyle = UITableViewCellSelectionStyleNone;
-
+            
         }
         
         cells.pTitle.text = _data[indexPath.row];
@@ -108,22 +108,22 @@
     goLab.textAlignment = NSTextAlignmentCenter;
     goLab.textColor = [UIColor blackColor];
     [cell.contentView addSubview:goLab];
-
-    /*
-    FCPersonHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FCPersonHeadCell"];
-    if (!cell) {
-        cell =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonHeadCell" owner:self options:nil] objectAtIndex:0];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    }
     
-    //第一行cell
-    cell.title.text = _data[indexPath.row];
-    UserModel *user = [[UserManager shareManager] getUser];
-    if (user.userHead) {
-        cell.pHead.image = [UIImage imageWithData:user.userHead];
-    }
+    /*
+     FCPersonHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FCPersonHeadCell"];
+     if (!cell) {
+     cell =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonHeadCell" owner:self options:nil] objectAtIndex:0];
+     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+     }
+     
+     //第一行cell
+     cell.title.text = _data[indexPath.row];
+     UserModel *user = [[UserManager shareManager] getUser];
+     if (user.userHead) {
+     cell.pHead.image = [UIImage imageWithData:user.userHead];
+     }
      */
-
+    
     
     return cell;
     
@@ -157,16 +157,16 @@
             default:
                 break;
         }
-
+        
     }else{
         UserModel *user = [[UserManager shareManager]getUser];
-        if (!user.headImgPath) {
+        if (!user.userAvatar) {
             [HudTool showErrorHudWithText:@"请设置头像" inView:self.view duration:1];
-        }else if (!user.userName){
+        }else if (!user.userNick){
             [HudTool showErrorHudWithText:@"请设置昵称" inView:self.view duration:1];
-        }else if (!user.age){
+        }else if (!user.userAge){
             [HudTool showErrorHudWithText:@"请设置年龄" inView:self.view duration:1];
-        }else if(!user.sex){
+        }else if(!user.userGender){
             [HudTool showErrorHudWithText:@"请设置性别" inView:self.view duration:1];
         }else{
             user.userId = [NexfiUtil uuid];
@@ -196,7 +196,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];
     
-
+    
     _headView.userImg.image = image;
     
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -225,9 +225,9 @@
         //1为男，2为女
         NSString *gender = buttonIndex==0 ? @"1" : @"2";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//            [self modifyGender:gender];
+            //            [self modifyGender:gender];
             UserModel *user = [[UserManager shareManager]getUser];
-            user.sex = gender;
+            user.userGender = gender;
             [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -243,13 +243,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

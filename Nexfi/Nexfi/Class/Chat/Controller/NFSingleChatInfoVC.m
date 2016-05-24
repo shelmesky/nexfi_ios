@@ -27,7 +27,7 @@
     int _refreshCount;
     
     BOOL sendOnce;
-
+    
 }
 @property (strong, nonatomic) XMChatBar *chatBar;
 @property (nonatomic,strong) UITableView *tableView;
@@ -49,15 +49,15 @@
 {
     [super viewDidLoad];
     
-    [self setBaseVCAttributesWith:self.to_user.userName left:nil right:nil WithInVC:self];
-
+    [self setBaseVCAttributesWith:self.to_user.userNick left:nil right:nil WithInVC:self];
+    
     _textArray=[[NSMutableArray alloc]init];
-
+    
     _pool = [[NSMutableArray alloc]init];
     
     [UnderdarkUtil share].node.singleVC = self;
     [UnderdarkUtil share].node.delegate = self;
-
+    
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height-64 -kMinHeight) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
@@ -68,7 +68,7 @@
     _tableView.backgroundColor=[UIColor clearColor];
     [self.view addSubview:_tableView];
     [self.view addSubview:self.chatBar];
-
+    
     //获取历史数据
     [self showHistoryMsg];
     //清除该用户的未读消息
@@ -78,7 +78,7 @@
 - (void)showHistoryMsg{
     //别人发我，我发别人都要取出来
     self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
-
+    
     for (PersonMessage *msg in self.historyMsgs) {
         [self showTableMsg:msg];
     }
@@ -99,22 +99,13 @@
         [cell sendVoiceMesState:FNVoiceMessageStateNormal];
     }
     
-    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
+    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.voiceMessage.durational intValue];
     
-    if ([NexfiUtil isMeSend:msgCell.msg]) {
-        
-        NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        
-        NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.pContent];
-        [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
-        [msgCell.messageVoiceStatusIV startAnimating];
-        
-        
-    }else{
-        
-        [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.pContent] atIndex:indexPath.row isMe:NO];
-        [msgCell.messageVoiceStatusIV startAnimating];
-    }
+    //播放动画
+    [msgCell.messageVoiceStatusIV startAnimating];
+    //播放声音
+    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row isMe:NO];
+    
     //设为已读
     [msgCell updateIsRead:YES];//UI
     [[SqlManager shareInstance]clearMsgOfSingleWithmsg_id:msg.msgId];//数据库
@@ -137,7 +128,7 @@
         }
         
         for (UserModel *handleUser in handleByUsers) {
-            if ([handleUser.userId isEqualToString:pMsg.sender]) {
+            if ([handleUser.userId isEqualToString:pMsg.UserMessage.userId]) {
                 user = handleUser;
             }
         }
@@ -164,15 +155,11 @@
     for (int i = 0; i < self.historyMsgs.count; i ++) {
         PersonMessage *msg = self.historyMsgs[i];
         if (msg.fileType == eMessageBodyType_Image) {
-            if ([NexfiUtil isMeSend:msg]) {//是我
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.pContent]]];
-                [self.mwPhotos addObject:photo];
-            }else{
-                NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.pContent];
-                MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithData:imageData]];
-                [self.mwPhotos addObject:photo];
-            }
+            
+            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
+            MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithData:imageData]];
+            [self.mwPhotos addObject:photo];
+            
             if (index == i) {
                 currentIndex = self.mwPhotos.count - 1;
             }
@@ -192,7 +179,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
-     
+    
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法
@@ -223,16 +210,16 @@
         cell.didTouch = @selector(onSelect:);
         cell.msg      = msg;
         cell.msgDelegate = self;
-
+        
     }
     
     if([cell isMeSend])
     {
-        [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
+        [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar]];
     }
     else
     {
-        [cell setHeadImage:[UIImage imageNamed:self.to_user.headImgPath]];
+        [cell setHeadImage:[UIImage imageNamed:self.to_user.userAvatar]];
     }
     
     self.msgCell = cell;
@@ -241,7 +228,7 @@
     return cell;
 }
 -(void)onSelect:(UIView*)sender{
-
+    
 }
 //每行的高度
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,32 +240,22 @@
     
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
-        if ([NexfiUtil isMeSend:msg]) {
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.pContent]];
-            if (image) {
-                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return @(imageHeight + 20 + 25);
-            }else{
-                return @(110);
-            }
-            
+        
+        NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
+        UIImage *image = [UIImage imageWithData:data];
+        if (image) {
+            float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+            return @(imageHeight + 20 + 25);
         }else{
-            NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.pContent];
-            UIImage *image = [UIImage imageWithData:data];
-            if (image) {
-                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return @(imageHeight + 20 + 25);
-            }else{
-                return @(110);
-            }
+            return @(110);
         }
+        
     }else if (n == eMessageBodyType_Voice){
         return @(66);
     }else if (n == eMessageBodyType_File){
         return @(80);
     }else{
-        CGRect rect = [msg.pContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+        CGRect rect = [msg.textMessage.fileData boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         return @(rect.size.height + 20 + 50);
@@ -287,12 +264,10 @@
 #pragma -mark 获取接收到的数据
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
-//    NSString *nodeId = dic[@"nodeId"];
+    //    NSString *nodeId = dic[@"nodeId"];
     
     PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
-    if (msg.fileType != eMessageBodyType_Text && msg.file) {
-        msg.pContent = msg.file;
-    }
+    
     //保存聊天记录
     [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
     //增加未读消息数量
@@ -309,9 +284,9 @@
     NSMutableArray *nodeList;
     if ([UnderdarkUtil share].node.neighbourVc) {
         nodeList = [[UnderdarkUtil share].node.neighbourVc getAllNodeId];
-
+        
     }
-
+    
     for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
         id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
         
@@ -327,26 +302,28 @@
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
-                
+        
         
         
         NSData *newData;
         PersonMessage *msg = [[PersonMessage alloc]init];
         NSString *deviceUDID = [NexfiUtil uuid];
-
+        
         switch (type) {
             case eMessageBodyType_Text:
             {
-                msg.pContent = data;
-                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.sender = [[UserManager shareManager]getUser].userId;
+                
+                TextMessage *textMessage = [[TextMessage alloc]init];
+                textMessage.fileData = data;
+                textMessage.isRead = @"1";
+                msg.textMessage = textMessage;
+                
+                msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.receiver = self.to_user.userId;
                 msg.fileType = eMessageBodyType_Text;
                 msg.msgId = deviceUDID;
-                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                msg.durational = @"";
-                msg.isRead = @"1";
+                msg.UserMessage = [[UserManager shareManager]getUser];
+                
                 break;
             }
             case eMessageBodyType_Image:
@@ -358,18 +335,17 @@
                 NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                 NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                 [picData writeToFile:fullPath atomically:YES];
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [picData base64Encoding];
+                fileMessage.filePath = imgPath;
+                fileMessage.isRead = @"1";
+                msg.fileMessage = fileMessage;
                 
-                msg.pContent = imgPath;
                 msg.fileType = eMessageBodyType_Image;
-                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.sender = [[UserManager shareManager]getUser].userId;
+                msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.receiver = self.to_user.userId;
                 msg.msgId = deviceUDID;
-                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                msg.durational = @"";
-                msg.file = [picData base64Encoding];
-                msg.isRead = @"1";
+                msg.UserMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -389,17 +365,18 @@
                 
                 NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
                 
-                msg.pContent = voicePro[@"voiceName"];
-                msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.sender = [[UserManager shareManager]getUser].userId;
+                VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+                voiceMessage.isRead = @"0";
+                voiceMessage.fileData = [voiceData base64Encoding];
+                voiceMessage.durational = voicePro[@"voiceSec"];
+                
+                msg.voiceMessage = voiceMessage;
+                
+                msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.fileType = eMessageBodyType_Voice;
                 msg.msgId = deviceUDID;
                 msg.receiver = self.to_user.userId;
-                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                msg.durational = voicePro[@"voiceSec"];
-                msg.file = [voiceData base64Encoding];
-                msg.isRead = @"0";
+                msg.UserMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -420,8 +397,8 @@
             
             [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
         }
-
- 
+        
+        
         return newData;
         
     }];
@@ -469,7 +446,7 @@
 #pragma mark - XMChatBarDelegate
 
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
-
+    
     sendOnce = YES;
     [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message] WithMessageType:eMessageType_SingleChat];
 }
@@ -523,13 +500,13 @@
     return nil;
 }
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

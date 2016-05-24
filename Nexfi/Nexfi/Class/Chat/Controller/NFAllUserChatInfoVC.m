@@ -64,9 +64,9 @@
     
     [UnderdarkUtil share].node.allUserChatVC = self;
     [UnderdarkUtil share].node.delegate = self;
-
+    
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64
-) style:UITableViewStylePlain];
+                                                            ) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     //取消tableview上的横线
@@ -120,20 +120,20 @@
         
         if([cell isMeSend])
         {
-            [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].headImgPath]];
+            [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar]];
             
         }
         else
         {
-            [cell setHeadImage:[UIImage imageNamed:msg.senderFaceImageStr]];
-
+            [cell setHeadImage:[UIImage imageNamed:msg.UserMessage.userAvatar]];
+            
         }
     }
     
     return cell;
 }
 -(void)onSelect:(UIView*)sender{
-
+    
 }
 #pragma mark -FNMsgCellDelegate
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
@@ -142,29 +142,19 @@
 #pragma -mark 点击bubble
 - (void)msgCellTappedContent:(FCMsgCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
-
+    
     TribeMessage *msg = (TribeMessage *)msgCell.msg;
     //关闭播放动画
     NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
     for (FCMsgCell *cell in cells) {
         [cell sendVoiceMesState:FNVoiceMessageStateNormal];
     }
-    //播放录音
-    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.durational intValue];
-    if ([NexfiUtil isMeSend:msgCell.msg]) {
-
-        NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-        
-        NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:msg.tContent];
-        [[FNAVAudioPlayer sharePlayer]playAudioWithvoiceData:mp3Path atIndex:indexPath.row isMe:YES];
-        [msgCell.messageVoiceStatusIV startAnimating];
-        
-    }else{
-
-        [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.tContent] atIndex:indexPath.row isMe:NO];
-        [msgCell.messageVoiceStatusIV startAnimating];
-    }
-    
+    //设置播放录音
+    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.voiceMessage.durational intValue];
+    //播放动画
+    [msgCell.messageVoiceStatusIV startAnimating];
+    //播放声音
+    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row isMe:NO];
     //设为已读
     [msgCell updateIsRead:YES];//UI
     [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
@@ -183,20 +173,16 @@
     NSUInteger currentIndex = 0;
     
     self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
-
+    
     
     for (int i = 0; i < self.historyMsgs.count; i ++) {
         TribeMessage *msg = self.historyMsgs[i];
         if (msg.fileType == eMessageBodyType_Image) {
-            if ([NexfiUtil isMeSend:msg]) {//是我
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.tContent]]];
-                [self.mwPhotos addObject:photo];
-            }else{
-                NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.tContent];
-                MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithData:imageData]];
-                [self.mwPhotos addObject:photo];
-            }
+            
+            NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
+            MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithData:imageData]];
+            [self.mwPhotos addObject:photo];
+            
             if (index == i) {
                 currentIndex = self.mwPhotos.count - 1;
             }
@@ -216,7 +202,7 @@
     [browser setCurrentPhotoIndex:currentIndex];
     
     [self.navigationController pushViewController:browser animated:YES];
-     
+    
     
 }
 #pragma - mark 点击头像
@@ -237,32 +223,22 @@
     
     int n = msg.fileType ;
     if (n == eMessageBodyType_Image) {
-        if ([NexfiUtil isMeSend:msg]) {
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            UIImage *image = [UIImage imageWithContentsOfFile:[NSString stringWithFormat:@"%@/%@",[paths objectAtIndex:0],msg.tContent]];
-            if (image) {
-                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return @(imageHeight + 20 + 25);
-            }else{
-                return @(110);
-            }
-            
+        
+        NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
+        UIImage *image = [UIImage imageWithData:data];
+        if (image) {
+            float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
+            return @(imageHeight + 20 + 25);
         }else{
-            NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.tContent];
-            UIImage *image = [UIImage imageWithData:data];
-            if (image) {
-                float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-                return @(imageHeight + 20 + 25);
-            }else{
-                return @(110);
-            }
+            return @(110);
         }
+        
     }else if (n == eMessageBodyType_Voice){
         return @(66);
     }else if (n == eMessageBodyType_File){
         return @(80);
     }else{
-        CGRect rect = [msg.tContent boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
+        CGRect rect = [msg.textMessage.fileData boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
         if (rect.size.height < 15) {
@@ -275,30 +251,24 @@
 #pragma -mark 获取接收到的数据
 - (void)refreshGetData:(NSDictionary *)dic{
     NSDictionary *text = dic[@"text"];
-//    NSString *nodeId = dic[@"nodeId"];
     TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
-    if (msg.fileType != eMessageBodyType_Text && msg.file) {
-        msg.tContent = msg.file;
-    }
-    UserModel *user = [[UserModel alloc]init];
-    user.userId = msg.sender;
-    user.userName = msg.senderNickName;
-    user.headImgPath = msg.senderFaceImageStr;
-
+    
+    
+    
     
     NSArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
     if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
-    
+        
         //保存聊天记录
-        [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
+        [[SqlManager shareInstance]insertAllUser_ChatWith:msg.UserMessage WithMsg:msg];
         //增加未读消息数量
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showTableMsg:msg];
-        
+            
         });
     }
-
+    
 }
 #pragma -mark 获取发送的数据
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data WithTribeMsg:(TribeMessage *)tribeMsg{
@@ -314,15 +284,20 @@
             switch (type) {
                 case eMessageBodyType_Text:
                 {
-                    msg.tContent = data;
-                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    
+                    TextMessage *textMessage = [[TextMessage alloc]init];
+                    textMessage.fileData = data;
+                    textMessage.isRead = @"1";
+                    msg.textMessage = textMessage;
+                    
+                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                     msg.fileType = eMessageBodyType_Text;
                     msg.msgId = deviceUDID;
-                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                    msg.durational = @"";
-                    msg.isRead = @"1";
+                    
+                    
+                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    
+                    
                     
                     break;
                 }
@@ -339,17 +314,18 @@
                     NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
                     [picData writeToFile:fullPath atomically:YES];
                     
-                    msg.tContent = imgPath;
-                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    FileMessage *fileMessage = [[FileMessage alloc]init];
+                    fileMessage.fileData = [picData base64Encoding];
+                    fileMessage.filePath = imgPath;
+                    fileMessage.isRead = @"1";
+                    msg.fileMessage = fileMessage;
+                    
+                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                     msg.fileType = eMessageBodyType_Image;
                     msg.msgId = deviceUDID;
-                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
-                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                    msg.durational = @"";
-                    msg.file = [picData base64Encoding];
-                    msg.isRead = @"1";
+                    
+                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    
                     
                     
                     break;
@@ -368,18 +344,21 @@
                     NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:voicePro[@"voiceName"]];
                     
                     NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
-
-                    msg.tContent = voicePro[@"voiceName"];
-                    msg.timestamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.sender = [[UserManager shareManager]getUser].userId;
+                    
+                    VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+                    voiceMessage.isRead = @"0";
+                    voiceMessage.fileData = [voiceData base64Encoding];
+                    voiceMessage.durational = voicePro[@"voiceSec"];
+                    
+                    msg.voiceMessage = voiceMessage;
+                    
+                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                     msg.fileType = eMessageBodyType_Voice;
                     msg.msgId = deviceUDID;
-                    //                msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgStr;
-                    msg.senderFaceImageStr = [[UserManager shareManager]getUser].headImgPath;
-                    msg.senderNickName = [[UserManager shareManager]getUser].userName;
-                    msg.durational = voicePro[@"voiceSec"];
-                    msg.file = [voiceData base64Encoding];
-                    msg.isRead = @"0";
+                    
+                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    
+                    
                     break;
                     
                 }
@@ -390,9 +369,8 @@
             msg.messageType = eMessageType_AllUserChat;
             
             
-//            NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
             newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
-        
+            
             //刷新表
             if (sendOnce == YES) {
                 sendOnce = NO;
@@ -405,13 +383,13 @@
                 [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
             }
             
-
-                
             
-
-
+            
+            
+            
+            
         }else{
-//            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
+            //            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
             newData = [NSJSONSerialization dataWithJSONObject:tribeMsg.mj_keyValues options:0 error:0];
             
             
@@ -480,18 +458,18 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
     
-//    NSMutableDictionary *textMessageDict = [NSMutableDictionary dictionary];
-//    textMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeText);
-//    textMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
-//    textMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
-//    textMessageDict[kXMNMessageConfigurationTextKey] = message;
-//    textMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
-//    textMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
-//    [self addMessage:textMessageDict];
-
+    //    NSMutableDictionary *textMessageDict = [NSMutableDictionary dictionary];
+    //    textMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeText);
+    //    textMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
+    //    textMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
+    //    textMessageDict[kXMNMessageConfigurationTextKey] = message;
+    //    textMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
+    //    textMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
+    //    [self addMessage:textMessageDict];
+    
     sendOnce = YES;
     [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
-
+    
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
@@ -511,14 +489,14 @@
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{
-//    NSMutableDictionary *locationMessageDict = [NSMutableDictionary dictionary];
-//    locationMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeLocation);
-//    locationMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
-//    locationMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
-//    locationMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
-//    locationMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
-//    locationMessageDict[kXMNMessageConfigurationLocationKey]=locationText;
-//    [self addMessage:locationMessageDict];
+    //    NSMutableDictionary *locationMessageDict = [NSMutableDictionary dictionary];
+    //    locationMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeLocation);
+    //    locationMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
+    //    locationMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
+    //    locationMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
+    //    locationMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
+    //    locationMessageDict[kXMNMessageConfigurationLocationKey]=locationText;
+    //    [self addMessage:locationMessageDict];
     
 }
 
@@ -543,13 +521,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

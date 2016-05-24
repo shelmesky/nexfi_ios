@@ -66,15 +66,15 @@ static SqlManager *_share = nil;
         NSLog(@"open db fail");
     }else{
         //用户表
-        [db executeUpdate:@"create table if not exists nexfi_chat_user (userId text , headImgStr text, userName text,send_time text,lastmsg text, unreadnum integer default 0)"];
+        [db executeUpdate:@"create table if not exists nexfi_chat_user (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text,lastmsg text, unreadnum integer default 0)"];
         //双方聊天表
         [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer,isRead integer)"];
         
         //所有人的群聊
-        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,headImgStr text , userName text, send_time text, msg_text text, msg_id text , filetype text ,durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text ,durational interger, isRead interger)"];
         
         //群聊（群组）
-        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , headImgStr text, userName text , send_time text, msg_text text, msg_id text, filetype text, groupId text , durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , durational interger, isRead interger)"];
         
     }
 }
@@ -120,8 +120,8 @@ static SqlManager *_share = nil;
     
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
-    
-//        //插入之前去数据库 检查重复消息
+        
+        //        //插入之前去数据库 检查重复消息
         FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat"];
         NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
         while ([rs next]) {
@@ -137,17 +137,44 @@ static SqlManager *_share = nil;
         }
         
         [dic setObject:user.userId forKey:@"userId"];
-        [dic setObject:user.headImgPath forKey:@"headImgStr"];
-        [dic setObject:user.userName forKey:@"userName"];
-        [dic setObject:message.timestamp forKey:@"send_time"];
-        [dic setObject:message.tContent forKey:@"msg_text"];
+        [dic setObject:user.userAvatar forKey:@"userAvatar"];
+        [dic setObject:user.userNick forKey:@"userNick"];
+        [dic setObject:user.userGender forKey:@"userGender"];
+        [dic setObject:[NSString stringWithFormat:@"%d",user.userAge] forKey:@"userAge"];
+        [dic setObject:message.timeStamp forKey:@"send_time"];
         [dic setObject:message.msgId forKey:@"msg_id"];
         [dic setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
-        [dic setObject:message.durational forKey:@"durational"];
-        [dic setObject:message.isRead forKey:@"isRead"];
         
+        NSString *content;
+        NSString *durational;
+        NSString *isRead;
+        if (message.fileType == eMessageBodyType_Image) {
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Voice){
+            content = message.voiceMessage.fileData;
+            durational = message.voiceMessage.durational;
+            isRead = message.voiceMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Text){
+            content = message.textMessage.fileData;
+            isRead = message.textMessage.isRead;
+        }
+        [dic setObject:content forKey:@"msg_text"];
+        if (durational) {
+            [dic setObject:durational forKey:@"durational"];
+        }
+        [dic setObject:isRead forKey:@"isRead"];
         
-        [db executeUpdate:@"insert into nexfi_allUser_chat(userId,headImgStr,userName,send_time,msg_text,msg_id,filetype,durational,isRead)values(:userId, :headImgStr,:userName, :send_time, :msg_text, :msg_id, :filetype, :durational,:isRead)"withParameterDictionary:dic];
+        if (message.fileType == eMessageBodyType_Voice) {
+            
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,durational,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :durational,:isRead)"withParameterDictionary:dic];
+            
+        }else{
+            
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead)"withParameterDictionary:dic];
+            
+        }
+        
     }
     
 }
@@ -159,18 +186,44 @@ static SqlManager *_share = nil;
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
         
         [dic setObject:user.userId forKey:@"userId"];
-        [dic setObject:user.headImgPath forKey:@"headImgStr"];
-        [dic setObject:user.userName forKey:@"userName"];
-        [dic setObject:message.timestamp forKey:@"send_time"];
-        [dic setObject:message.tContent forKey:@"msg_text"];
+        [dic setObject:user.userAvatar forKey:@"userAvatar"];
+        [dic setObject:user.userNick forKey:@"userNick"];
+        [dic setObject:[NSString stringWithFormat:@"%d",user.userAge] forKey:@"userAge"];
+        [dic setObject:user.userGender forKey:@"userGender"];
+        [dic setObject:message.timeStamp forKey:@"send_time"];
         [dic setObject:message.msgId forKey:@"msg_id"];
         [dic setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
-        [dic setObject:message.durational forKey:@"durational"];
         [dic setObject:groupId forKey:@"groupId"];
-        [dic setObject:message.isRead forKey:@"isRead"];
         
-        [db executeUpdate:@"insert into nexfi_group_chat(userId,headImgStr,userName,send_time,msg_text,msg_id,filetype,groupId,durational,isRead)values(:userId,:headImgStr,:userName,:send_time,:msg_text,:msg_id,:filetype,:groupId,:durational,:isRead)"withParameterDictionary:dic];
-
+        NSString *content;
+        NSString *durational;
+        NSString *isRead;
+        if (message.fileType == eMessageBodyType_Image) {
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Voice){
+            content = message.voiceMessage.fileData;
+            durational = message.voiceMessage.durational;
+            isRead = message.voiceMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Text){
+            content = message.textMessage.fileData;
+            isRead = message.textMessage.isRead;
+        }
+        [dic setObject:content forKey:@"msg_text"];
+        if (durational) {
+            [dic setObject:durational forKey:@"durational"];
+        }
+        [dic setObject:isRead forKey:@"isRead"];
+        if (message.fileType == eMessageBodyType_Voice) {
+            
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,durational,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :durational, :isRead)"withParameterDictionary:dic];
+            
+        }else{
+            
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead)"withParameterDictionary:dic];
+            
+        }
+        
     }
     
     
@@ -178,23 +231,23 @@ static SqlManager *_share = nil;
 #pragma -mark 用户更新数据
 - (void)updateUserHead:(UserModel *)userModel{
     
-    if ([db executeUpdate:@"update nexfi_chat_user set headImgStr=? where userId = ?",userModel.headImgPath,userModel.userId]) {
+    if ([db executeUpdate:@"update nexfi_chat_user set userAvatar=? where userId = ?",userModel.userAvatar,userModel.userId]) {
         NSLog(@"更新nexfi_chat_user  头像信息成功");
     }
-    if ([db executeUpdate:@"update nexfi_allUser_chat set headImgStr=? where userId =?",userModel.headImgPath,userModel.userId]) {
+    if ([db executeUpdate:@"update nexfi_allUser_chat set userAvatar=? where userId =?",userModel.userAvatar,userModel.userId]) {
         NSLog(@"更新nexfi_allUser_chat  头像信息成功");
     }
     
 }
 - (void)updateUserName:(UserModel *)userModel{
     
-    if ([db executeUpdate:@"update nexfi_chat_user set userName = ? where userId =?",userModel.userName,userModel.userId]) {
+    if ([db executeUpdate:@"update nexfi_chat_user set userNick = ? where userId =?",userModel.userNick,userModel.userId]) {
         NSLog(@"更新nexfi_allUser_chat  姓名成功");
     }
-    if ([db executeUpdate:@"update nexfi_allUser_chat set userName=? where userId =?",userModel.userName,userModel.userId]) {
+    if ([db executeUpdate:@"update nexfi_allUser_chat set userNick=? where userId =?",userModel.userNick,userModel.userId]) {
         NSLog(@"更新nexfi_allUser_chat  姓名成功");
     }
-
+    
     
 }
 #pragma -mark 插入某人－》某人数据
@@ -210,32 +263,54 @@ static SqlManager *_share = nil;
         
         NSString * chatToId;
         //我发别人
-        if([message.sender isEqualToString:[[UserManager shareManager]getUser].userId])
+        
+        if([message.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId])
         {
             [dict setObject:[[UserManager shareManager]getUser].userId forKey:@"from_user_id"];
             [dict setObject:message.receiver forKey:@"to_user_id"];
             chatToId = message.receiver;
             
         }else {//别人发我
-            [dict setObject:message.sender forKey:@"from_user_id"];
+            [dict setObject:message.UserMessage.userId forKey:@"from_user_id"];
             [dict setObject:[[UserManager shareManager]getUser].userId forKey:@"to_user_id"];
-            chatToId = message.sender;
+            chatToId = message.UserMessage.userId;
             
         }
+        NSString *content;
+        NSString *durational;
+        NSString *isRead;
+        if (message.fileType == eMessageBodyType_Image) {
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Voice){
+            content = message.voiceMessage.fileData;
+            durational = message.voiceMessage.durational;
+            isRead = message.voiceMessage.isRead;
+        }else if (message.fileType == eMessageBodyType_Text){
+            content = message.textMessage.fileData;
+            isRead = message.textMessage.isRead;
+        }
+        [dict setObject:content forKey:@"msg_text"];
+        if (durational) {
+            [dict setObject:durational forKey:@"durational"];
+        }
+        [dict setObject:isRead forKey:@"isRead"];
+        
         [dict setObject:message.msgId forKey:@"msg_id"];
-        [dict setObject:message.pContent forKey:@"msg_text"];
-        [dict setObject:message.timestamp forKey:@"send_time"];
-        [dict setObject:message.durational forKey:@"durational"];
-        [dict setObject:message.isRead forKey:@"isRead"];
+        [dict setObject:message.timeStamp forKey:@"send_time"];
         [dict setObject:[NSString stringWithFormat:@"%ld",message.fileType] forKey:@"filetype"];
         
+        if (message.fileType == eMessageBodyType_Voice) {
+            [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational,:isRead)" withParameterDictionary:dict];
+        }else{
+            [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:isRead)" withParameterDictionary:dict];
+        }
         
-        [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational,:isRead)" withParameterDictionary:dict];
         
         //更新聊天页面最后一条消息
         [self update_chat_to_user:toUser WithMsg:message];
         
-        if (![message.sender isEqualToString:[[UserManager shareManager]getUser].userId]) {
+        if (![message.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId]) {
             [self addUnreadNum:chatToId];
         }
         //刷新未读消息UI 还有当前聊天页面UI
@@ -258,39 +333,44 @@ static SqlManager *_share = nil;
         
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         //别人发我最后一条消息
-        if([message.sender isEqualToString:toUser.userId])
+        if([message.UserMessage.userId isEqualToString:toUser.userId])
         {
-            [dict setObject:message.sender forKey:@"userId"];
-            [dict setObject:message.senderNickName forKey:@"userName"];
-            [dict setObject:message.senderFaceImageStr forKey:@"headImgStr"];
+            [dict setObject:message.UserMessage.userId forKey:@"userId"];
+            [dict setObject:message.UserMessage.userNick forKey:@"userNick"];
+            [dict setObject:message.UserMessage.userAvatar forKey:@"userAvatar"];
+            [dict setObject:message.UserMessage.userGender forKey:@"userGender"];
+            [dict setObject:[NSString stringWithFormat:@"%d",message.UserMessage.userAge] forKey:@"userAge"];
+            
             
         }else{
             [dict setObject:message.receiver forKey:@"userId"];
-            [dict setObject:toUser.userName forKey:@"userName"];
-            [dict setObject:toUser.headImgPath forKey:@"headImgStr"];
-        
+            [dict setObject:toUser.userNick forKey:@"userNick"];
+            [dict setObject:toUser.userAvatar forKey:@"userAvatar"];
+            [dict setObject:toUser.userGender forKey:@"userGender"];
+            [dict setObject:[NSString stringWithFormat:@"%d",toUser.userAge] forKey:@"userAge"];
+            
         }
         
-        [dict setObject:message.timestamp forKey:@"send_time"];
+        [dict setObject:message.timeStamp forKey:@"send_time"];
         
         if(message.fileType == eMessageBodyType_Voice){
             [dict setObject:@"[语音]" forKey:@"lastmsg"];
         }else if (message.fileType ==eMessageBodyType_Image){
             [dict setObject:@"[图片]" forKey:@"lastmsg"];
         }else{
-            [dict setObject:message.pContent forKey:@"lastmsg"];
+            [dict setObject:message.textMessage.fileData forKey:@"lastmsg"];
         }
         
         if (count == 0) {
-            [db executeUpdate:@"insert into nexfi_chat_user(userId,headImgStr,userName,send_time,lastmsg,unreadnum) values(:userId,:headImgStr,:userName,:send_time,:lastmsg,0)"withParameterDictionary:dict];
+            [db executeUpdate:@"insert into nexfi_chat_user(userId,userAvatar,userNick,userGender,userAge,send_time,lastmsg,unreadnum) values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :lastmsg, 0)"withParameterDictionary:dict];
         }else{
-            [db executeUpdate:@"update nexfi_chat_user set userName=:userName,headImgStr=:headImgStr,send_time=:send_time,lastmsg=:lastmsg where userId=:userId"withParameterDictionary:dict];
+            [db executeUpdate:@"update nexfi_chat_user set userNick=:userNick,userAvatar=:userAvatar,userGender=:userGender,userAge=:userAge,send_time=:send_time,lastmsg=:lastmsg where userId=:userId"withParameterDictionary:dict];
             
             NSLog(@"更新聊天用户信息");
             
         }
         
-
+        
     }
 }
 #pragma -mark 清空群组未读消息
@@ -323,7 +403,7 @@ static SqlManager *_share = nil;
     if ([db open]) {
         
         [db executeUpdate:@"UPDATE nexfi_chat_user SET unreadnum=unreadnum+1 WHERE userId = ?",user_id];
-
+        
     }
     
 }
@@ -343,18 +423,18 @@ static SqlManager *_share = nil;
 {
     if ([db open]) {
         
-
+        
         //删除聊天窗口
         [db executeUpdate:[NSString stringWithFormat:@"delete from nexfi_chat_user where user_id=%@",user_id]];
         //删除聊天内容nexfi_chat
         [db executeUpdate:[NSString stringWithFormat:@"delete from nexfi_chat  where from_user_id=%@ or to_user_id =%@",user_id,user_id]];
- 
+        
     }
 }
 #pragma -mark 删除所有人的聊天记录
 - (void)deleteAllTalk{
     if ([db open]) {
-   
+        
         //删除聊天窗口
         [db executeUpdate:@"delete from nexfi_chat_user"];
         //删除聊天内容
@@ -391,31 +471,50 @@ static SqlManager *_share = nil;
 - (NSMutableArray *)getAllChatListWithNum:(NSInteger)num{
     
     NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
-
+    
     
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
         
-//        
-//        [dic setObject:[NSString stringWithFormat:@"%ld",num] forKey:@"startNum"];
-//        [dic setObject:[NSString stringWithFormat:@"%ld",num + 20] forKey:@"endNum"];
+        //
+        //        [dic setObject:[NSString stringWithFormat:@"%ld",num] forKey:@"startNum"];
+        //        [dic setObject:[NSString stringWithFormat:@"%ld",num + 20] forKey:@"endNum"];
         
-//        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time desc limit :startNum,:endNum"withParameterDictionary:dic];
+        //        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time desc limit :startNum,:endNum"withParameterDictionary:dic];
         FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time asc"];
         
         while ([rs next]) {
             
             TribeMessage *message = [[TribeMessage alloc]init];
             
-            message.sender = [rs stringForColumn:@"userId"];
-            message.senderFaceImageStr = [rs stringForColumn:@"headImgStr"];
-            message.senderNickName = [rs stringForColumn:@"userName"];
-            message.timestamp = [rs stringForColumn:@"send_time"];
-            message.tContent = [rs stringForColumn:@"msg_text"];
+            if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Text) {
+                TextMessage *textMessage = [[TextMessage alloc]init];
+                textMessage.fileData = [rs stringForColumn:@"msg_text"];
+                textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                message.textMessage = textMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                message.fileMessage = fileMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
+                VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+                voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
+                voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                message.voiceMessage = voiceMessage;
+            }
+            UserModel *user = [[UserModel alloc]init];
+            user.userId = [rs stringForColumn:@"userId"];
+            user.userAvatar = [rs stringForColumn:@"userAvatar"];
+            user.userNick = [rs stringForColumn:@"userNick"];
+            user.userAge = [[rs stringForColumn:@"userAge"] intValue];
+            user.userGender = [rs stringForColumn:@"userGender"];
+            message.UserMessage = user;
+            
+            message.timeStamp = [rs stringForColumn:@"send_time"];
             message.msgId = [rs stringForColumn:@"msg_id"];
             message.fileType = [[rs stringForColumn:@"filetype"] intValue];
-            message.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
-            message.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
             
             [chatList addObject:message];
             
@@ -445,15 +544,37 @@ static SqlManager *_share = nil;
             
             TribeMessage *message = [[TribeMessage alloc]init];
             
-            message.sender = [rs stringForColumn:@"userId"];
-            message.senderFaceImageStr = [rs stringForColumn:@"headImgStr"];
-            message.senderNickName = [rs stringForColumn:@"userName"];
-            message.timestamp = [rs stringForColumn:@"send_time"];
-            message.tContent = [rs stringForColumn:@"msg_text"];
+            if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Text) {
+                TextMessage *textMessage = [[TextMessage alloc]init];
+                textMessage.fileData = [rs stringForColumn:@"msg_text"];
+                textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                message.textMessage = textMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                message.fileMessage = fileMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
+                VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+                voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
+                voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                message.voiceMessage = voiceMessage;
+            }
+            
+            
+            UserModel *user = [[UserModel alloc]init];
+            user.userId = [rs stringForColumn:@"userId"];
+            user.userAvatar = [rs stringForColumn:@"userAvatar"];
+            user.userNick = [rs stringForColumn:@"userNick"];
+            user.userAge = [[rs stringForColumn:@"userAge"] intValue];
+            user.userGender = [rs stringForColumn:@"userGender"];
+            message.UserMessage = user;
+            
+            message.timeStamp = [rs stringForColumn:@"send_time"];
             message.msgId = [rs stringForColumn:@"msg_id"];
             message.fileType = [[rs stringForColumn:@"filetype"] intValue];
-            message.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
-            message.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+            
             message.groupId = [rs stringForColumn:@"groupId"];
             [chatList addObject:message];
             
@@ -477,14 +598,14 @@ static SqlManager *_share = nil;
         [dict setObject:[NSString stringWithFormat: @"%ld", num] forKey:@"startNum"];
         [dict setObject:[NSString stringWithFormat: @"%ld", num+30] forKey:@"endNum"];
         
-//        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc limit :startNum,:endNum" withParameterDictionary:dict];
+        //        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc limit :startNum,:endNum" withParameterDictionary:dict];
         
         /*
          xists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer,isRead integer)"];
          
          */
         
-          FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
         
         //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select * from letmedo_chat where from_user_id=%@ or to_user_id=%@ order by public_time desc limit :startNum,:endNum",fromId,toId]];
         
@@ -495,15 +616,35 @@ static SqlManager *_share = nil;
             NSLog(@"dad");
             
             msg = [[PersonMessage alloc] init];
-            msg.sender = [rs stringForColumn:@"from_user_id"];
+            UserModel *user = [[UserModel alloc]init];
+            user.userId = [rs stringForColumn:@"from_user_id"];
+            msg.UserMessage = user;
+            
             msg.receiver = [rs stringForColumn:@"to_user_id"];
             msg.msgId = [rs stringForColumn:@"msg_id"];
-            msg.pContent = [rs stringForColumn:@"msg_text"];
-            msg.timestamp = [rs stringForColumn:@"send_time"];
             
-            msg.durational = [rs stringForColumn:@"durational"];
+            if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Text) {
+                TextMessage *textMessage = [[TextMessage alloc]init];
+                textMessage.fileData = [rs stringForColumn:@"msg_text"];
+                textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                msg.textMessage = textMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                msg.fileMessage = fileMessage;
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
+                VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+                voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
+                voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                msg.voiceMessage = voiceMessage;
+            }
+            
+            
+            msg.timeStamp = [rs stringForColumn:@"send_time"];
             msg.fileType = [[rs stringForColumn:@"filetype"] intValue];
-            msg.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+            
             [recordArray addObject: msg];
         }
         [rs close];
@@ -520,12 +661,12 @@ static SqlManager *_share = nil;
         FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat_user order by send_time desc"];
         UserModel *user = [[UserModel alloc]init];;
         while ([rs next]) {
+            
             user.userId = [rs stringForColumn:@"userId"];
-            user.userName = [rs stringForColumn:@"userName"];
-            user.headImgPath = [rs stringForColumn:@"headImgStr"];
-            user.lastmsg = [rs stringForColumn:@"lastmsg"];
-            user.send_time = [rs stringForColumn:@"send_time"];
-            user.unreadnum = [NSString stringWithFormat:@"%d",[rs intForColumn:@"unreadnum"]];
+            user.userNick = [rs stringForColumn:@"userNick"];
+            user.userAvatar = [rs stringForColumn:@"userAvatar"];
+            user.userAge = [[rs stringForColumn:@"userAge"] intValue];
+            user.userGender = [rs stringForColumn:@"userGender"];
             
             [allUser addObject:user];
         }
@@ -535,17 +676,22 @@ static SqlManager *_share = nil;
 }
 #pragma -mark 查询聊天好友信息
 - (UserModel *)getChatUserInfo:(NSString *)userId{
-    UserModel *user;
+    UserModel *user = [[UserModel alloc]init];
     
     FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat_user where userId = %@",userId];
     
+    /*
+     userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text,lastmsg text, unreadnum integer default 0
+     
+     */
+    
     while ([rs next]) {
         user.userId = [rs stringForColumn:@"userId"];
-        user.userName = [rs stringForColumn:@"userName"];
-        user.headImgPath = [rs stringForColumn:@"headImgStr"];
-        user.lastmsg = [rs stringForColumn:@"lastmsg"];
-        user.send_time = [rs stringForColumn:@"send_time"];
-        user.unreadnum = [NSString stringWithFormat:@"%d",[rs intForColumn:@"unreadnum"]];
+        user.userNick = [rs stringForColumn:@"userNick"];
+        user.userAvatar = [rs stringForColumn:@"userAvatar"];
+        user.userAge = [[rs stringForColumn:@"userAge"] intValue];
+        user.userGender = [rs stringForColumn:@"userGender"];
+        
     }
     
     return user;

@@ -20,15 +20,15 @@
 {
     _user = user;
     if ([self.pTitle.text isEqualToString:@"昵称"]) {
-        self.pDsecirp.text = user.userName;
+        self.pDsecirp.text = user.userNick;
     }
     if ([self.pTitle.text isEqualToString:@"年龄"]) {
-        self.pDsecirp.text = user.age;
+        self.pDsecirp.text = [NSString stringWithFormat:@"%d",user.userAge];
     }
     if ([self.pTitle.text isEqualToString:@"性别"]) {
-        if (user.sex.intValue == 1) {
+        if (user.userGender.intValue == 1) {
             self.pDsecirp.text = @"男";
-        }else if (user.sex.intValue == 2) {
+        }else if (user.userGender.intValue == 2) {
             self.pDsecirp.text = @"女";
         }else{
             self.pDsecirp.text = @"未设置";

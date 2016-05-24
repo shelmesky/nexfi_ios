@@ -20,15 +20,15 @@
 - (void)setUserModel:(UserModel *)userModel{
     _userModel = userModel;
     
-//    NSData *headData = [[NSData alloc]initWithBase64EncodedString:userModel.headImgStr];
+    //    NSData *headData = [[NSData alloc]initWithBase64EncodedString:userModel.headImgStr];
     
-    self.HeadImg.image = [UIImage imageNamed:userModel.headImgPath];
-    self.nameLa.text = userModel.userName;
-
+    self.HeadImg.image = [UIImage imageNamed:userModel.userAvatar];
+    self.nameLa.text = userModel.userNick;
+    
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

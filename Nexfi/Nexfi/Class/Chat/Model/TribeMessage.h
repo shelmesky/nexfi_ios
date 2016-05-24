@@ -10,14 +10,13 @@
 #import "Message.h"
 @interface TribeMessage : Message
 
-@property (nonatomic, retain) NSString *durational;//语音时间
-@property (nonatomic, retain) NSString *file;
-@property (nonatomic, retain) NSString *tContent;
+
 @property (nonatomic, retain) NSString *groupId;//群组的时候用
-@property (nonatomic, retain) NSString *isRead;//0未读 1已读
 
+@property (nonatomic, retain) TextMessage *textMessage;
+@property (nonatomic, retain) FileMessage *fileMessage;
+@property (nonatomic, retain) VoiceMessage *voiceMessage;
 
-- (id)initWithaDic:(NSDictionary *)aDic;
 
 
 @end

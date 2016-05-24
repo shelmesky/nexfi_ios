@@ -20,7 +20,7 @@
     [self setBaseVCAttributesWith:@"个人信息" left:nil right:@"保存" WithInVC:self];
     
     UserModel *account = [[UserManager shareManager] getUser];
-    self.nickName.text = account.userName;
+    self.nickName.text = account.userNick;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
@@ -30,10 +30,10 @@
 
 - (void)RightBarBtnClick:(id)sender{
     [self.view endEditing:YES];
-
+    
     //修改信息并缓存
     UserModel *account = [[UserManager shareManager] getUser];
-    account.userName = self.nickName.text;
+    account.userNick = self.nickName.text;
     [[UserManager shareManager] loginSuccessWithUser:account];
     //更新数据库用户数据
     [[SqlManager shareInstance]updateUserName:account];

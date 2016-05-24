@@ -31,7 +31,7 @@
         
         _nodeId = buf;
         
-
+        
         //优先选择WIFI
         NSMutableArray *transportKinds = [[NSMutableArray alloc]initWithCapacity:0];
         [transportKinds addObject:[NSNumber numberWithInt:UDTransportKindWifi]];
@@ -40,7 +40,7 @@
         _transport = [UDUnderdark configureTransportWithAppId:_appId nodeId:_nodeId delegate:self queue:_queue kinds:transportKinds];
         
     }
-
+    
     
     return self;
     
@@ -50,7 +50,7 @@
  *开启蓝牙/WIFI 监测
  */
 - (void)start{
-
+    
     [self.transport start];
     
 }
@@ -70,7 +70,7 @@
         NSData *newData;
         
         
-//        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
+        //        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         
         
@@ -94,10 +94,10 @@
     for (int i = 0; i < self.links.count; i ++) {
         id<UDLink>myLink = [self.links objectAtIndex:i];
         //不重复发给之前发我消息的人
-//        if (![[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:msg.nodeId]) {
-            [myLink sendData:frameData];
-
-//        }
+        //        if (![[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:msg.nodeId]) {
+        [myLink sendData:frameData];
+        
+        //        }
     }
     
 }
@@ -134,7 +134,7 @@
         
         [myLink sendData:frameData];
     }
-
+    
 }
 - (void)broadcastFrame:(id<UDSource>)frameData WithMessageType:(MessageType)messageType{
     switch (messageType) {
@@ -167,7 +167,7 @@
                 
                 [myLink sendData:frameData];
             }
-
+            
             break;
         }
         default:
@@ -178,7 +178,7 @@
 }
 /**
  *发送 用户信息请求消息 （eMessageType_requestUserInfo）用户信息返回消息 （eMessageType_SendUserInfo）
- *更新用户信息 （eMessageType_UpdateUserInfo）  
+ *更新用户信息 （eMessageType_UpdateUserInfo）
  *MessageType  自己定义
  */
 - (id<UDSource>)sendMsgWithMessageType:(MessageType)type{
@@ -192,20 +192,17 @@
             
         }else if(type == eMessageType_SendUserInfo){//发送用户信息
             UserModel *user = [[UserManager shareManager]getUser];
-
-//            NSDictionary *userDic = [NexfiUtil getObjectData:user];
+            
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:user.mj_keyValues];
             [usersDic setObject:[NSString stringWithFormat:@"%ld",(long)eMessageType_SendUserInfo] forKey:@"messageType"];
-
+            
             data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
             
         }else if (type == eMessageType_UpdateUserInfo){//更新用户信息
             
             UserModel *user = [[UserManager shareManager]getUser];
-            //            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
             
-//            NSDictionary *userDic = [NexfiUtil getObjectData:user];
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:user.mj_keyValues];
             [usersDic setObject:[NSString stringWithFormat:@"%ld",(long)eMessageType_UpdateUserInfo] forKey:@"messageType"];
             
@@ -224,16 +221,16 @@
     
     //请求用户信息接口
     [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo]];
-
+    
     //更新用户数量
     self.peersCount += 1;
     
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
     
-//    LogDebug(@"");
-//    if (self.allUserChatVC) {
-//        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-//    }
+    //    LogDebug(@"");
+    //    if (self.allUserChatVC) {
+    //        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+    //    }
     
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
@@ -245,9 +242,9 @@
     self.peersCount -= 1;
     
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
-//    if (self.allUserChatVC) {
-//        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-//    }
+    //    if (self.allUserChatVC) {
+    //        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
+    //    }
     
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
@@ -266,7 +263,7 @@
             
         }
     }];
-            
+    
 }
 /**
  *用户接收消息接口  自定义消息类型区分不同类型的消息 messageType
@@ -296,7 +293,7 @@
             //更新数据库用户数据
             [[SqlManager shareInstance]updateUserName:users];
             [[SqlManager shareInstance]updateUserHead:users];
-
+            
             break;
         }
         case eMessageType_SingleChat://单聊
@@ -307,27 +304,15 @@
             }else{
                 
                 NSDictionary *text = dic;
-                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-                
-//                PersonMessage *msg = [[PersonMessage alloc]initWithaDic:text];
                 PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
-//                msg.nodeId = nodeId;
-                if (msg.fileType != eMessageBodyType_Text && msg.file) {
-                    msg.pContent = msg.file;
-                }
-                UserModel *user = [[UserModel alloc]init];
-                //    user.headImgStr = msg.senderFaceImageStr;
-                user.headImgPath = msg.senderFaceImageStr;
-                user.userName = msg.senderNickName;
-                user.userId = msg.sender;
                 
                 //保存聊天记录
-                [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
+                [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:msg.UserMessage WithMsg:msg];
                 //增加未读消息数量
                 [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
                 
             }
-
+            
             NSLog(@"收到了");
             break;
         }
@@ -337,33 +322,24 @@
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.allUserChatVC refreshGetData:msgDic];
             }else{
-
+                
                 NSDictionary *text = dic;
-                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-//                TribeMessage *msg = [[TribeMessage alloc]initWithaDic:text];
+                //                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
                 TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
-//                msg.nodeId = nodeId;
-                if (msg.fileType != eMessageBodyType_Text && msg.file) {
-                    msg.tContent = msg.file;
-                }
-                UserModel *user = [[UserModel alloc]init];
-                user.userId = msg.sender;
-                user.userName = msg.senderNickName;
-                //    user.headImgStr = msg.senderFaceImageStr;
-                user.headImgPath = msg.senderFaceImageStr;
+                
                 
                 //保存聊天记录
-                [[SqlManager shareInstance]insertAllUser_ChatWith:user WithMsg:msg];
+                [[SqlManager shareInstance]insertAllUser_ChatWith:msg.UserMessage WithMsg:msg];
                 //增加未读消息数量
-
+                
             }
-
+            
             break;
         }
         default:
             break;
     }
-
+    
 }
 - (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link fail:(NSString*)fail{
     

@@ -30,11 +30,11 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    [self setBaseVCAttributesWith:[self.user.userId isEqualToString:[[UserManager shareManager]getUser].userId]?@"我的信息":[NSString stringWithFormat:@"%@的信息",self.user.userName] left:nil right:nil WithInVC:self];
+    [self setBaseVCAttributesWith:[self.user.userId isEqualToString:[[UserManager shareManager]getUser].userId]?@"我的信息":[NSString stringWithFormat:@"%@的信息",self.user.userNick] left:nil right:nil WithInVC:self];
     self.data = @[@"昵称",@"年龄",@"性别"];
     
     [self initView];
-
+    
     
     
     
@@ -70,13 +70,13 @@
     if (self.user) {
         //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
         //        _headView.userImg.image = [UIImage imageWithData:data];
-        UIImage *img = [UIImage imageNamed:[self getUser:self.user].headImgPath];
+        UIImage *img = [UIImage imageNamed:[self getUser:self.user].userAvatar];
         _headView.userImg.image = img;
     }
     [super viewWillAppear:animated];
 }
 - (UserModel*)getUser:(UserModel *)user{
-
+    
     if ([self.user.userId isEqualToString:[[UserManager shareManager]getUser].userId]) {
         return [UserManager shareManager].getUser;
     }
@@ -95,24 +95,24 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    
     FCPersonCell *cells =  [tableView dequeueReusableCellWithIdentifier:@"FCPersonCell"];
     if (!cells) {
         cells =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonCell" owner:self options:nil] objectAtIndex:0];
         cells.selectionStyle = UITableViewCellSelectionStyleNone;
-//        cells.accessoryType = UITableViewCellAccessoryNone;
+        //        cells.accessoryType = UITableViewCellAccessoryNone;
         
     }
     
     cells.pTitle.text = _data[indexPath.row];
     if (self.user) {
         cells.user = [self getUser:self.user];
-
+        
     }
     
     return cells;
     
-
+    
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.1;
@@ -193,7 +193,7 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             //            [self modifyGender:gender];
             UserModel *user = [[UserManager shareManager]getUser];
-            user.sex = gender;
+            user.userGender = gender;
             [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
@@ -209,13 +209,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end

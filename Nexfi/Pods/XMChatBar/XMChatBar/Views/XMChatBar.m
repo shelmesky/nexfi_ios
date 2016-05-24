@@ -151,7 +151,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     UIImage *image = info[UIImagePickerControllerOriginalImage];
-    [self sendImageMessage:image];
+    [self sendImageMessage:@[image]];
     [self.rootViewController dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)assetPickerController:(ZYQAssetPickerController *)picker didFinishPickingAssets:(NSArray *)assets{

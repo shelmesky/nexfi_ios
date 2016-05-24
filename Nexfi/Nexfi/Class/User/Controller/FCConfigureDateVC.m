@@ -45,9 +45,9 @@
     
     UserModel *user = [[UserManager shareManager] getUser];
     user.birthday = dateString;
-    user.age = [NSString stringWithFormat:@"%ld",[self getAgeWithBirthday:self.datePicker.date]];
+    user.userAge = (int)[self getAgeWithBirthday:self.datePicker.date];
     [[UserManager shareManager]loginSuccessWithUser:user];
-
+    
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
             id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
@@ -56,7 +56,7 @@
     }
     
     [self.navigationController popViewControllerAnimated:YES];
-
+    
 }
 
 //picker值改变事件

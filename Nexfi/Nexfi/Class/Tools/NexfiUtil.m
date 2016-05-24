@@ -41,7 +41,7 @@ static NexfiUtil *_util;
     if (type == 3) {//时间戳转换成具体时间
         if (date.length>10)
             date = [date substringWithRange:NSMakeRange(0, 11)];
-//            date = [date substringFromIndex:0 toIndex:10];
+        //            date = [date substringFromIndex:0 toIndex:10];
         inputDate = [NSDate dateWithTimeIntervalSince1970:[date longLongValue]];
     }
     NSDateFormatter *outputFormatter = [[NSDateFormatter alloc] init];
@@ -69,12 +69,12 @@ static NexfiUtil *_util;
     UITabBarController *tabbar = [[UITabBarController alloc] init];
     //设定Tabbar的点击后的颜色 #ffa055
     [[UITabBar appearance] setTintColor:RGBACOLOR(56, 194, 58, 1)];
-//    [[UITabBar appearance]setBackgroundColor:[UIColor whiteColor]];
+    //    [[UITabBar appearance]setBackgroundColor:[UIColor whiteColor]];
     [[UITabBar appearance]setBarTintColor:[UIColor whiteColor]];
     [[UITabBar appearance]setBackgroundImage:[ConFunc createImageWithColor:RGBACOLOR(251, 251, 251, 1) size:CGSizeMake(SCREEN_SIZE.width,49)]];//设置背景，修改颜色是没有用的
     
     //设定Tabbar的颜色
-//    [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
+    //    [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
     NexfiNavigationController *neighbouVC = [self newNavigationControllerForClass:[NeighbourVC class]
                                                                             title:@"附近"
                                                                         itemImage:@"btn-shouye"
@@ -107,7 +107,7 @@ static NexfiUtil *_util;
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     
     unsigned int propsCount;
-
+    
     objc_property_t *props = class_copyPropertyList([obj class], &propsCount);
     for(int i = 0;i < propsCount; i++)
     {
@@ -175,13 +175,13 @@ static NexfiUtil *_util;
     NSString * result = (NSString *)CFBridgingRelease(CFStringCreateCopy( NULL, uuidString));
     CFRelease(puuid);
     CFRelease(uuidString);
-
-//        return [result autorelease];
+    
+    //        return [result autorelease];
     return result;
 }
 +(BOOL)isMeSend:(Message *)msg{
     
-    return [[msg sender] isEqualToString:[[UserManager shareManager]getUser].userId];
+    return [msg.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
 - (NSString *)pathForTemporaryFileWithPrefix:(NSString *)prefix
@@ -236,9 +236,9 @@ static NexfiUtil *_util;
     
 }
 - (void)toUpdateUserInfo{
-//    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
-//        id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
-//        [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:6]];
-//    }
+    //    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+    //        id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+    //        [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:6]];
+    //    }
 }
 @end

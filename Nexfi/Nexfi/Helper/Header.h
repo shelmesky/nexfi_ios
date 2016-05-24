@@ -27,6 +27,9 @@
 #import "FNAVAudioPlayer.h"
 #import "XMNChat.h"
 #import "MJExtension.h"
+#import "TextMessage.h"
+#import "FileMessage.h"
+#import "VoiceMessage.h"
 
 
 #import "Message.h"

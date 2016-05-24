@@ -28,30 +28,30 @@
 
 - (void)setUser:(UserModel *)user{
     _user = user;
-//    if (user.headImgStr || [user.headImgStr isKindOfClass:[NSNull class]]) {
-//        
-//        NSData *data = [[NSData alloc]initWithBase64EncodedString:user.headImgStr];
-//        self.headImageView.image = [UIImage imageWithData:data];
-//        
-//    }
-    if (user.headImgPath) {
-        self.headImageView.image = [UIImage imageNamed:user.headImgPath];
+    //    if (user.headImgStr || [user.headImgStr isKindOfClass:[NSNull class]]) {
+    //
+    //        NSData *data = [[NSData alloc]initWithBase64EncodedString:user.headImgStr];
+    //        self.headImageView.image = [UIImage imageWithData:data];
+    //
+    //    }
+    if (user.userAvatar) {
+        self.headImageView.image = [UIImage imageNamed:user.userAvatar];
     }
     else{
         self.headImageView.image = [UIImage imageNamed:@"img_head_01"];
     }
     
-    self.nickNameLabel.text = user.userName;
-
+    self.nickNameLabel.text = user.userNick;
+    
     CGSize labels = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:self.nickNameLabel.font}];
     self.nickNameWidth.constant = labels.width + 1;
     
     
     //男女icon(1男2女)
-    if ([[NSString stringWithFormat:@"%@",user.sex] isEqualToString:@"1"]) {
+    if ([[NSString stringWithFormat:@"%@",user.userGender] isEqualToString:@"1"]) {
         self.genderIconView.image = [UIImage imageNamed:@"054"];
         self.genderIconView.hidden = NO;
-    }else if ([[NSString stringWithFormat:@"%@",user.sex] isEqualToString:@"2"]){
+    }else if ([[NSString stringWithFormat:@"%@",user.userGender] isEqualToString:@"2"]){
         self.genderIconView.image = [UIImage imageNamed:@"057"];
         self.genderIconView.hidden = NO;
     }else{

@@ -27,10 +27,10 @@
     [self initView];
     
     [self setBaseVCAttributesWith:@"头像" left:nil right:@"保存" WithInVC:self];
-
+    
     
     self.nowRow = -1;//区别于indexPath
-
+    
 }
 - (NSMutableArray *)dataArr{
     if (!_dataArr) {
@@ -91,7 +91,7 @@
     cell.headImg.tag = 10000 + indexPath.item;
     
     UIImage *image = [_dataArr objectAtIndex:indexPath.item];
-
+    
     cell.headImg.image = image;
     
     return cell;
@@ -104,10 +104,10 @@
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-//    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    if (self.delegate&&[self.delegate respondsToSelector:@selector(imgClick:)]) {
-//        [self.delegate imgClick:cell];
-//    }
+    //    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    //    if (self.delegate&&[self.delegate respondsToSelector:@selector(imgClick:)]) {
+    //        [self.delegate imgClick:cell];
+    //    }
     //刷新和展示点击item 展示的状态
     [self refreshSelectStatusAndShowWithIndexPath:indexPath];
     
@@ -136,7 +136,7 @@
     
     [self.dataArr addObject:image];
     
-//    [self refreshSelectStatusAndShowWithIndexPath:[NSIndexPath indexPathForItem:self.dataArr.count -1 inSection:0]];
+    //    [self refreshSelectStatusAndShowWithIndexPath:[NSIndexPath indexPathForItem:self.dataArr.count -1 inSection:0]];
     [self.collectionView reloadData];
     
     
@@ -145,17 +145,17 @@
 #pragma mark - sheet
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex{
     //头像
-        if (buttonIndex <= 1) {
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.allowsEditing = YES;
-            picker.delegate = self;
-            if (buttonIndex == 0) {
-                picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            }else{
-                picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            }
-            [self presentViewController:picker animated:YES completion:nil];
+    if (buttonIndex <= 1) {
+        UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+        picker.allowsEditing = YES;
+        picker.delegate = self;
+        if (buttonIndex == 0) {
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        }else{
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         }
+        [self presentViewController:picker animated:YES completion:nil];
+    }
     
     
 }
@@ -165,18 +165,18 @@
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-//    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
+    //    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
     
     UserModel *user = [[UserManager shareManager]getUser];
-//    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
-//    user.headImg = cell.headImg.image;
-//    user.headImgStr = [data base64Encoding];
+    //    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
+    //    user.headImg = cell.headImg.image;
+    //    user.headImgStr = [data base64Encoding];
     if (self.nowRow<8) {
-        user.headImgPath = [NSString stringWithFormat:@"img_head_0%ld",self.nowRow+2];
+        user.userAvatar = [NSString stringWithFormat:@"img_head_0%ld",self.nowRow+2];
     }else{
-        user.headImgPath = [NSString stringWithFormat:@"img_head_%ld",self.nowRow+2];
+        user.userAvatar = [NSString stringWithFormat:@"img_head_%ld",self.nowRow+2];
     }
-    NSLog(@"headIm ==== %@",user.headImgPath);
+    NSLog(@"headIm ==== %@",user.userAvatar);
     [[UserManager shareManager]loginSuccessWithUser:user];
     //更新数据库用户数据
     [[SqlManager shareInstance]updateUserName:user];
@@ -197,13 +197,13 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
