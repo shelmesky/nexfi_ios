@@ -128,7 +128,7 @@
         }
         
         for (UserModel *handleUser in handleByUsers) {
-            if ([handleUser.userId isEqualToString:pMsg.UserMessage.userId]) {
+            if ([handleUser.userId isEqualToString:pMsg.userMessage.userId]) {
                 user = handleUser;
             }
         }
@@ -154,7 +154,7 @@
     
     for (int i = 0; i < self.historyMsgs.count; i ++) {
         PersonMessage *msg = self.historyMsgs[i];
-        if (msg.fileType == eMessageBodyType_Image) {
+        if (msg.messageBodyType == eMessageBodyType_Image) {
             
             NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
             MWPhoto *photo = [MWPhoto photoWithImage:[UIImage imageWithData:imageData]];
@@ -238,7 +238,7 @@
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(PersonMessage *)msg{
     
-    int n = msg.fileType ;
+    int n = msg.messageBodyType ;
     if (n == eMessageBodyType_Image) {
         
         NSData *data =[[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
@@ -320,7 +320,7 @@
                 
                 msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.receiver = self.to_user.userId;
-                msg.fileType = eMessageBodyType_Text;
+                msg.messageBodyType = eMessageBodyType_Text;
                 msg.msgId = deviceUDID;
                 msg.UserMessage = [[UserManager shareManager]getUser];
                 
@@ -341,7 +341,7 @@
                 fileMessage.isRead = @"1";
                 msg.fileMessage = fileMessage;
                 
-                msg.fileType = eMessageBodyType_Image;
+                msg.messageBodyType = eMessageBodyType_Image;
                 msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.receiver = self.to_user.userId;
                 msg.msgId = deviceUDID;
@@ -373,7 +373,7 @@
                 msg.voiceMessage = voiceMessage;
                 
                 msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                msg.fileType = eMessageBodyType_Voice;
+                msg.messageBodyType = eMessageBodyType_Voice;
                 msg.msgId = deviceUDID;
                 msg.receiver = self.to_user.userId;
                 msg.UserMessage = [[UserManager shareManager]getUser];

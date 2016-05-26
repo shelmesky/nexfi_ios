@@ -112,7 +112,7 @@
  *MessageType  自己定义
  */
 
-- (id<UDSource>)sendMsgWithMessageType:(MessageType)type;
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type WithLink:(id<UDLink>)link;
 
 
 /**

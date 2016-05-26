@@ -70,9 +70,9 @@ typedef NS_ENUM(NSUInteger, FNVoiceMessageState) {
 
 @property (nonatomic, retain) NSString *timeStamp;//发送时间
 @property (nonatomic, assign) MessageType messageType;
-@property (nonatomic, assign) MessageBodyType fileType;//文件类型
+@property (nonatomic, assign) MessageBodyType messageBodyType;//文件类型
 @property (nonatomic, retain) NSString *msgId;//消息id
-@property (nonatomic, retain) UserModel *UserMessage;
+@property (nonatomic, retain) UserModel *userMessage;
 /*
  {
  UserMessage = {

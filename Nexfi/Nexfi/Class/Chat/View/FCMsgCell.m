@@ -101,13 +101,13 @@
     if (tap.state == UIGestureRecognizerStateEnded) {
         CGPoint tapPoint = [tap locationInView:self.contentView];
         if (CGRectContainsPoint(_bubbleBg.frame, tapPoint)) {//点击bubble
-            if (msg.fileType == eMessageBodyType_Text) {//文本
+            if (msg.messageBodyType == eMessageBodyType_Text) {//文本
                 
-            }else if (msg.fileType == eMessageBodyType_Image){//图片
+            }else if (msg.messageBodyType == eMessageBodyType_Image){//图片
                 if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(clickPic:)]) {
                     [self.msgDelegate clickPic:index];
                 }
-            }else if(msg.fileType == eMessageBodyType_Voice){//语音
+            }else if(msg.messageBodyType == eMessageBodyType_Voice){//语音
                 if (self.msgDelegate && [self.msgDelegate respondsToSelector:@selector(msgCellTappedContent:)]) {
                     [self.msgDelegate msgCellTappedContent:self];
                 }
@@ -142,7 +142,7 @@
 }
 -(BOOL)isMeSend{
     
-    return [msg.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
+    return [msg.userMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
 - (void)setMessageSendState:(FNMessageSendState)messageSendState{
@@ -168,16 +168,16 @@
     NSString *content ;
     if ([aMessage isKindOfClass:[PersonMessage class]]) {
         PersonMessage *pMsg = (PersonMessage *)aMessage;
-        if (pMsg.fileType == eMessageBodyType_Text) {
+        if (pMsg.messageBodyType == eMessageBodyType_Text) {
             content = pMsg.textMessage.fileData;
         }
     }else if ([aMessage isKindOfClass:[TribeMessage class]]){
         TribeMessage *tMsg = (TribeMessage *)aMessage;
-        if (tMsg.fileType == eMessageBodyType_Text) {
+        if (tMsg.messageBodyType == eMessageBodyType_Text) {
             content = tMsg.textMessage.fileData;
         }
     }
-    if(aMessage.fileType  == eMessageBodyType_Text)
+    if(aMessage.messageBodyType  == eMessageBodyType_Text)
         _messageConent.text = content;
     
 }
@@ -267,26 +267,26 @@
     NSString *isRead;
     if ([msg isKindOfClass:[PersonMessage class]]) {
         pMsg = (PersonMessage *)msg;
-        if (pMsg.fileType == eMessageBodyType_Text) {
+        if (pMsg.messageBodyType == eMessageBodyType_Text) {
             content = pMsg.textMessage.fileData;
             isRead = pMsg.textMessage.isRead;
-        }else if (pMsg.fileType == eMessageBodyType_Image){
+        }else if (pMsg.messageBodyType == eMessageBodyType_Image){
             content = pMsg.fileMessage.fileData;
             isRead = pMsg.fileMessage.isRead;
-        }else if (pMsg.fileType == eMessageBodyType_Voice){
+        }else if (pMsg.messageBodyType == eMessageBodyType_Voice){
             content = pMsg.voiceMessage.fileData;
             isRead = pMsg.voiceMessage.isRead;
             durational = pMsg.voiceMessage.durational;
         }
     }else if ([msg isKindOfClass:[TribeMessage class]]){
         tMsg = (TribeMessage *)msg;
-        if (tMsg.fileType == eMessageBodyType_Text) {
+        if (tMsg.messageBodyType == eMessageBodyType_Text) {
             content = tMsg.textMessage.fileData;
             isRead = tMsg.textMessage.isRead;
-        }else if (tMsg.fileType == eMessageBodyType_Image){
+        }else if (tMsg.messageBodyType == eMessageBodyType_Image){
             content = tMsg.fileMessage.fileData;
             isRead = tMsg.fileMessage.isRead;
-        }else if (tMsg.fileType == eMessageBodyType_Voice){
+        }else if (tMsg.messageBodyType == eMessageBodyType_Voice){
             content = tMsg.voiceMessage.fileData;
             isRead = tMsg.voiceMessage.isRead;
             durational = tMsg.voiceMessage.durational;
@@ -328,7 +328,7 @@
     float bubbleWidth;
     float bubbleHeight;
     
-    if(msg.fileType ==eMessageBodyType_Text){
+    if(msg.messageBodyType ==eMessageBodyType_Text){
         _messageConent.hidden = NO;
         _chatImage.hidden = YES;
         if(isMe){
@@ -368,7 +368,7 @@
     }
     
     
-    if(msg.fileType ==eMessageBodyType_Image){
+    if(msg.messageBodyType ==eMessageBodyType_Image){
         _messageConent.hidden = YES;
         _chatImage.hidden = NO;
         if(isMe)
@@ -411,7 +411,7 @@
     }
     
     
-    if(msg.fileType ==eMessageBodyType_Voice){
+    if(msg.messageBodyType ==eMessageBodyType_Voice){
         float w = (SCREEN_SIZE.width-HEAD_SIZE-INSETS*2-50)/30;
         w = 50+w*3;//[msg.timeLen intValue];
         if(w<50)
@@ -462,7 +462,7 @@
     }
     
     
-    //    if ([msg.fileType intValue]==kWCMessageTypeGif){
+    //    if ([msg.messageBodyType intValue]==kWCMessageTypeGif){
     //        [_bubbleBg setHidden:YES];
     //        NSString* path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[msg.file lastPathComponent]];
     //        SCGIFImageView* iv = [[SCGIFImageView alloc] initWithGIFFile:path];

@@ -181,30 +181,49 @@
  *更新用户信息 （eMessageType_UpdateUserInfo）
  *MessageType  自己定义
  */
-- (id<UDSource>)sendMsgWithMessageType:(MessageType)type{
+- (id<UDSource>)sendMsgWithMessageType:(MessageType)type WithLink:(id<UDLink>)link{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
         NSData *data;
         if (type == eMessageType_requestUserInfo) {//请求用户信息
-            NSDictionary *userDic = @{@"messageType":[NSString stringWithFormat:@"%ld",(long)eMessageType_requestUserInfo]};
-            data = [NSJSONSerialization dataWithJSONObject:userDic options:0 error:0];
             
-            
-        }else if(type == eMessageType_SendUserInfo){//发送用户信息
             UserModel *user = [[UserManager shareManager]getUser];
+            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+//            [[UserManager shareManager]loginSuccessWithUser:user];
             
-            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:user.mj_keyValues];
-            [usersDic setObject:[NSString stringWithFormat:@"%ld",(long)eMessageType_SendUserInfo] forKey:@"messageType"];
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+            
+            [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
+            
+            [usersDic setObject:@(eMessageType_requestUserInfo) forKey:@"messageType"];
             
             data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
+        }else if(type == eMessageType_SendUserInfo){//发送用户信息
+            
+            UserModel *user = [[UserManager shareManager]getUser];
+            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+//            [[UserManager shareManager]loginSuccessWithUser:user];
+            
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+            
+            [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
+            
+            [usersDic setObject:@(eMessageType_SendUserInfo) forKey:@"messageType"];
+
+            data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
         }else if (type == eMessageType_UpdateUserInfo){//更新用户信息
             
             UserModel *user = [[UserManager shareManager]getUser];
+            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+//            [[UserManager shareManager]loginSuccessWithUser:user];
             
-            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithDictionary:user.mj_keyValues];
-            [usersDic setObject:[NSString stringWithFormat:@"%ld",(long)eMessageType_UpdateUserInfo] forKey:@"messageType"];
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+            
+            [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
+            
+            [usersDic setObject:@(eMessageType_UpdateUserInfo) forKey:@"messageType"];
             
             data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
@@ -220,7 +239,7 @@
     [self.links addObject:link];
     
     //请求用户信息接口
-    [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo]];
+    [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo WithLink:link]];
     
     //更新用户数量
     self.peersCount += 1;
@@ -273,7 +292,7 @@
     switch ([dic[@"messageType"] intValue]) {
         case eMessageType_requestUserInfo://请求用户信息
         {
-            [link sendData:[self sendMsgWithMessageType:eMessageType_SendUserInfo]];
+            [link sendData:[self sendMsgWithMessageType:eMessageType_SendUserInfo WithLink:link]];
             break;
         }
         case eMessageType_SendUserInfo://发送用户信息
@@ -283,13 +302,12 @@
         }
         case eMessageType_UpdateUserInfo://更新用户信息
         {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"update":@"1"}];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"update":@"1",@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
             
-            NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:dic];
-            [user removeObjectForKey:@"nodeId"];
-            [user setObject:[NSString stringWithFormat:@"%lld",link.nodeId] forKey:@"nodeId"];
+            UserModel *users = [UserModel mj_objectWithKeyValues:dic[@"userMessage"]];
+            users.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+//            [[UserManager shareManager]loginSuccessWithUser:users];
             
-            UserModel *users = [[UserModel alloc]initWithaDic:user];
             //更新数据库用户数据
             [[SqlManager shareInstance]updateUserName:users];
             [[SqlManager shareInstance]updateUserHead:users];
@@ -307,7 +325,7 @@
                 PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
                 
                 //保存聊天记录
-                [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:msg.UserMessage WithMsg:msg];
+                [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:msg.userMessage WithMsg:msg];
                 //增加未读消息数量
                 [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
                 
@@ -329,7 +347,7 @@
                 
                 
                 //保存聊天记录
-                [[SqlManager shareInstance]insertAllUser_ChatWith:msg.UserMessage WithMsg:msg];
+                [[SqlManager shareInstance]insertAllUser_ChatWith:msg.userMessage WithMsg:msg];
                 //增加未读消息数量
                 
             }

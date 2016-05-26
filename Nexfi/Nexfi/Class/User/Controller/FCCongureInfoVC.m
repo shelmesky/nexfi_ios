@@ -41,7 +41,7 @@
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
             id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
-            [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo]];
+            [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo WithLink:myLink]];
         }
     }
     

@@ -181,7 +181,7 @@ static NexfiUtil *_util;
 }
 +(BOOL)isMeSend:(Message *)msg{
     
-    return [msg.UserMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
+    return [msg.userMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
 - (NSString *)pathForTemporaryFileWithPrefix:(NSString *)prefix

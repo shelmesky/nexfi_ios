@@ -94,13 +94,10 @@
     
     NSDictionary *userDic = notify.userInfo[@"user"];
     NSString *nodeId = notify.userInfo[@"nodeId"];
-    NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic];
-    [user removeObjectForKey:@"nodeId"];
-    [user setObject:nodeId forKey:@"nodeId"];
+    NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
     
-    UserModel *users = [[UserModel alloc]initWithaDic:user];
-
-    
+    UserModel *users = [UserModel mj_objectWithKeyValues:user];
+    users.nodeId = nodeId;
     //过滤多余的用户信息
     NSString *update = notify.userInfo[@"update"];
     if (update) {
