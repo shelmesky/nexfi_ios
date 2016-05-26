@@ -30,6 +30,7 @@
 		0E5493C41CB4E0EE00DE40E8 /* fujin02.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493C01CB4E0EE00DE40E8 /* fujin02.png */; };
 		0E5493C51CB4E0EE00DE40E8 /* wode01.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493C11CB4E0EE00DE40E8 /* wode01.png */; };
 		0E5493C61CB4E0EE00DE40E8 /* wode02.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E5493C21CB4E0EE00DE40E8 /* wode02.png */; };
+		0E72B57B1CF69AB4009BC146 /* check34.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E72B57A1CF69AB4009BC146 /* check34.png */; };
 		0E8088511CB60D460046DE0F /* btn-账本1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884D1CB60D460046DE0F /* btn-账本1@2x.png */; };
 		0E8088521CB60D460046DE0F /* btn-账本2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884E1CB60D460046DE0F /* btn-账本2@2x.png */; };
 		0E8088531CB60D460046DE0F /* btn-shouye1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E80884F1CB60D460046DE0F /* btn-shouye1@2x.png */; };
@@ -592,6 +593,7 @@
 		0E5493C01CB4E0EE00DE40E8 /* fujin02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fujin02.png; sourceTree = "<group>"; };
 		0E5493C11CB4E0EE00DE40E8 /* wode01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wode01.png; sourceTree = "<group>"; };
 		0E5493C21CB4E0EE00DE40E8 /* wode02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wode02.png; sourceTree = "<group>"; };
+		0E72B57A1CF69AB4009BC146 /* check34.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check34.png; sourceTree = "<group>"; };
 		0E80884D1CB60D460046DE0F /* btn-账本1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-账本1@2x.png"; sourceTree = "<group>"; };
 		0E80884E1CB60D460046DE0F /* btn-账本2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-账本2@2x.png"; sourceTree = "<group>"; };
 		0E80884F1CB60D460046DE0F /* btn-shouye1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btn-shouye1@2x.png"; sourceTree = "<group>"; };
@@ -1304,6 +1306,7 @@
 		0E5493BE1CB4E0EE00DE40E8 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0E72B57A1CF69AB4009BC146 /* check34.png */,
 				0ECDE36B1CEF0A54008ACCCA /* VoiceNodeUnread@2x.png */,
 				0E2BF1D01CE06811005989B1 /* 语音 */,
 				0E9E759C1CBF7B0400EE2272 /* 041@2x.png */,
@@ -2839,6 +2842,7 @@
 				0EBAE94D1CB3824000361D18 /* Main.storyboard in Resources */,
 				0E9E7A6F1CC62B9500EE2272 /* lxh_jiekexun.png in Resources */,
 				0E9E7A211CC62B9500EE2272 /* f_meng@2x.png in Resources */,
+				0E72B57B1CF69AB4009BC146 /* check34.png in Resources */,
 				0E9E779A1CC62AD100EE2272 /* write_face_17.png in Resources */,
 				0E9E77811CC62AD100EE2272 /* NFTribeInfoVC.xib in Resources */,
 				0E9E7B011CC62B9500EE2272 /* icon_messages_more_pic_voice_p.png in Resources */,

@@ -12,7 +12,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImg;
 @property (weak, nonatomic) IBOutlet UILabel *nameLa;
 
-@property (nonatomic, retain)UIView *backView;
+@property (nonatomic, retain)UIImageView *backView;
 
 
 @end

@@ -13,9 +13,11 @@
 - (void)awakeFromNib {
     // Initialization code
     
-    self.backView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    self.backView.backgroundColor = [UIColor lightGrayColor];
-    self.backView.alpha = 0.1;
+    self.backView = [[UIImageView alloc]init];
+    self.backView.center = CGPointMake(self.frame.size.width/2, self.frame.size.height/2);
+    self.backView.bounds = CGRectMake(0, 0, 30, 30);
+    self.backView.image = [UIImage imageNamed:@"check34"];
+//    self.backView.alpha = 0.1;
     [self addSubview:self.backView];
     
 }
