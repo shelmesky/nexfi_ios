@@ -448,16 +448,17 @@
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
     
     sendOnce = YES;
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message] WithMessageType:eMessageType_SingleChat];
+    id<UDSource>source = [self frameData:eMessageBodyType_Text withSendData:message];
+    [[UnderdarkUtil share].node singleChatWithFrame:source];
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
     
     sendOnce = YES;
     NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@(seconds)};
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Voice withSendData:voicePro] WithMessageType:eMessageType_SingleChat];
-    
-    
+    id<UDSource>source = [self frameData:eMessageBodyType_Voice withSendData:voicePro];
+    [[UnderdarkUtil share].node singleChatWithFrame:source];
+
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
@@ -465,7 +466,8 @@
     for (int i = 0; i < pictures.count; i ++) {
         sendOnce = YES;
         UIImage *image = pictures[i];
-        [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:image] WithMessageType:eMessageType_SingleChat];
+        id<UDSource>source = [self frameData:eMessageBodyType_Image withSendData:image];
+        [[UnderdarkUtil share].node singleChatWithFrame:source];
     }
 }
 

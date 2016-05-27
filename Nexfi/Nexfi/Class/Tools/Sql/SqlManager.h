@@ -53,6 +53,8 @@
 - (void)deleteAllTalk;
 #pragma -mark 查询总群聊的所有msgId
 - (NSMutableArray *)getAllChatMsgIdList;
+#pragma -mark 查询总群聊所有的时间
+- (NSMutableArray *)getAlltimeStamps;
 #pragma -mark 查询总群聊的历史纪录
 - (NSMutableArray *)getAllChatListWithNum:(NSInteger)num;
 #pragma -mark 查询总群聊的历史纪录

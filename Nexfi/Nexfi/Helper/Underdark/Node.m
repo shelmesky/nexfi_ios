@@ -164,7 +164,7 @@
             }
             for (int i = 0; i < self.links.count; i ++) {
                 id<UDLink>myLink = [self.links objectAtIndex:i];
-                
+
                 [myLink sendData:frameData];
             }
             
@@ -289,6 +289,8 @@
  */
 - (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData WithProgress:(float)progress{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
+    
+    
     switch ([dic[@"messageType"] intValue]) {
         case eMessageType_requestUserInfo://请求用户信息
         {
@@ -316,6 +318,8 @@
         }
         case eMessageType_SingleChat://单聊
         {
+            
+            
             if (self.singleVC && [self.singleVC.to_user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",link.nodeId]]) {//当前页面是单聊 并且发消息的人和当前页面聊天的人是同一个人
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.singleVC refreshGetData:msgDic];
@@ -336,6 +340,13 @@
         }
         case eMessageType_AllUserChat://群聊
         {
+            
+            NSArray *msgList = [[SqlManager shareInstance]getAlltimeStamps];
+            if ([msgList containsObject:dic[@"timeStamp"]]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+                
+                return;
+            }
+            
             if (self.allUserChatVC) {//当前页面是群聊
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.allUserChatVC refreshGetData:msgDic];

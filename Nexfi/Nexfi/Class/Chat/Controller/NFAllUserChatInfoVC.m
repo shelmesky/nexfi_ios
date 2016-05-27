@@ -253,34 +253,26 @@
     NSDictionary *text = dic[@"text"];
     TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
     
+    //保存聊天记录
+    [[SqlManager shareInstance]insertAllUser_ChatWith:msg.userMessage WithMsg:msg];
+    //增加未读消息数量
     
-    
-    
-    NSArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
-    if (![msgList containsObject:msg.msgId]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showTableMsg:msg];
         
-        //保存聊天记录
-        [[SqlManager shareInstance]insertAllUser_ChatWith:msg.userMessage WithMsg:msg];
-        //增加未读消息数量
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showTableMsg:msg];
-            
-        });
-    }
+    });
+    
     
 }
 #pragma -mark 获取发送的数据
-- (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data WithTribeMsg:(TribeMessage *)tribeMsg{
-    
+- (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
+   
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
-        
+ 
         NSData *newData;
-        if (!tribeMsg) {
-            
+        
             TribeMessage *msg = [[TribeMessage alloc]init];
             NSString *deviceUDID = [NexfiUtil uuid];
-            
             switch (type) {
                 case eMessageBodyType_Text:
                 {
@@ -295,7 +287,7 @@
                     msg.msgId = deviceUDID;
                     
                     
-                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    msg.userMessage = [[UserManager shareManager]getUser];//json
                     
                     
                     
@@ -324,7 +316,7 @@
                     msg.messageBodyType = eMessageBodyType_Image;
                     msg.msgId = deviceUDID;
                     
-                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    msg.userMessage = [[UserManager shareManager]getUser];//json
                     
                     
                     
@@ -356,7 +348,7 @@
                     msg.messageBodyType = eMessageBodyType_Voice;
                     msg.msgId = deviceUDID;
                     
-                    msg.UserMessage = [[UserManager shareManager]getUser];//json
+                    msg.userMessage = [[UserManager shareManager]getUser];//json
                     
                     
                     break;
@@ -368,9 +360,10 @@
             
             msg.messageType = eMessageType_AllUserChat;
             
-            
             newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
             
+
+                
             //刷新表
             if (sendOnce == YES) {
                 sendOnce = NO;
@@ -379,31 +372,17 @@
                 });
                 
                 //插入数据库
-                
+
                 [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
+                
+                
+                
             }
-            
-            
-            
-            
-            
-            
-        }else{
-            //            NSDictionary *msgDic = [NexfiUtil getObjectData:tribeMsg];
-            newData = [NSJSONSerialization dataWithJSONObject:tribeMsg.mj_keyValues options:0 error:0];
-            
-            
-            NSMutableArray *msgList = [[SqlManager shareInstance]getAllChatMsgIdList];
-            if (![msgList containsObject:tribeMsg.msgId]) {
-                //刷新表
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showTableMsg:tribeMsg];
-                    
-                });
-            }
-        }
-        
+                
         return newData;
+        
+        
+        
         
     }];
     
@@ -458,24 +437,19 @@
 
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
     
-    //    NSMutableDictionary *textMessageDict = [NSMutableDictionary dictionary];
-    //    textMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeText);
-    //    textMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
-    //    textMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
-    //    textMessageDict[kXMNMessageConfigurationTextKey] = message;
-    //    textMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
-    //    textMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
-    //    [self addMessage:textMessageDict];
-    
     sendOnce = YES;
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Text withSendData:message WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
+    id<UDSource>source = [self frameData:eMessageBodyType_Text withSendData:message];
+    [[UnderdarkUtil share].node allUserChatWithFrame:source];
+    
     
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
     sendOnce = YES;
     NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@(seconds)};
-    [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Voice withSendData:voicePro WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
+    id<UDSource>source = [self frameData:eMessageBodyType_Voice withSendData:voicePro];
+    [[UnderdarkUtil share].node allUserChatWithFrame:source];
+
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
@@ -483,7 +457,9 @@
     for (int i = 0; i < pictures.count; i ++) {
         sendOnce = YES;
         UIImage *image = pictures[i];
-        [[UnderdarkUtil share].node broadcastFrame:[self frameData:eMessageBodyType_Image withSendData:image WithTribeMsg:nil] WithMessageType:eMessageType_AllUserChat];
+        id<UDSource>source = [self frameData:eMessageBodyType_Image withSendData:image];
+        [[UnderdarkUtil share].node allUserChatWithFrame:source];
+
     }
     
 }

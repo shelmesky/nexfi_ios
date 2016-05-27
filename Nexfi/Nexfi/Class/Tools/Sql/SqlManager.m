@@ -468,6 +468,28 @@ static SqlManager *_share = nil;
         
     }
 }
+#pragma -mark 查询总群聊所有的时间
+- (NSMutableArray *)getAlltimeStamps{
+    NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
+    
+    
+    if ([db open]) {
+        
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat"];
+        
+        while ([rs next]) {
+            
+            
+            NSString *timeStamps = [rs stringForColumn:@"send_time"];
+            
+            [chatList addObject:timeStamps];
+            
+        }
+        
+    }
+    [chatList addObject:@"1"];
+    return chatList;
+}
 #pragma -mark 查询总群聊的所有msgId
 - (NSMutableArray *)getAllChatMsgIdList{
     
