@@ -150,10 +150,10 @@
     self.mwPhotos = [[NSMutableArray alloc]initWithCapacity:0];
     NSUInteger currentIndex = 0;
     
-    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
     
-    for (int i = 0; i < self.historyMsgs.count; i ++) {
-        PersonMessage *msg = self.historyMsgs[i];
+    for (int i = 0; i < _textArray.count; i ++) {
+        PersonMessage *msg = _textArray[i];
+        
         if (msg.messageBodyType == eMessageBodyType_Image) {
             
             NSData *imageData = [[NSData alloc]initWithBase64EncodedString:msg.fileMessage.fileData];
