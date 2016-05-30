@@ -3302,7 +3302,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4202765a-ae0f-4dc8-85bc-326bd02cb135";
+				PROVISIONING_PROFILE = "89ae9da3-56a5-4374-8f13-16a7a210f486";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Debug;
@@ -3322,7 +3322,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4202765a-ae0f-4dc8-85bc-326bd02cb135";
+				PROVISIONING_PROFILE = "89ae9da3-56a5-4374-8f13-16a7a210f486";
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
 			name = Release;

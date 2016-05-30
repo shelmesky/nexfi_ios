@@ -116,9 +116,14 @@
         if (self.handleByUsers.count == 0) {
                 [self.handleByUsers addObject:users];
         }else{
-            if (![self.handleByUsers containsObject:users]) {
-                [self.handleByUsers addObject:users];
+            for (UserModel *user in self.handleByUsers) {
+                if (![user.userId isEqualToString:users.userId] && ![self.handleByUsers containsObject:users]) {
+                    [self.handleByUsers addObject:users];
+                }
             }
+//            if (![self.handleByUsers containsObject:users]) {
+//                [self.handleByUsers addObject:users];
+//            }
         }
         
         self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
