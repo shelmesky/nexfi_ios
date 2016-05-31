@@ -161,12 +161,24 @@
     }else{
         UserModel *user = [[UserManager shareManager]getUser];
         if (!user.userAvatar) {
-            [HudTool showErrorHudWithText:@"请设置头像" inView:self.view duration:1];
-        }else if (!user.userNick){
+            
+            NSString *userAvatar;
+            NSUInteger num = arc4random_uniform(14) + 2;
+            if (num < 10) {
+                userAvatar  = [NSString stringWithFormat:@"img_head_0%ld",num];
+            }else{
+                userAvatar = [NSString stringWithFormat:@"img_head_%ld",num];
+            }
+            user.userAvatar = userAvatar;
+            
+        }
+        if (!user.userNick){
             [HudTool showErrorHudWithText:@"请设置昵称" inView:self.view duration:1];
-        }else if (!user.userAge){
-            [HudTool showErrorHudWithText:@"请设置年龄" inView:self.view duration:1];
-        }else if(!user.userGender){
+        }
+//        else if (!user.userAge){
+//            [HudTool showErrorHudWithText:@"请设置年龄" inView:self.view duration:1];
+//        }
+        else if(!user.userGender){
             [HudTool showErrorHudWithText:@"请设置性别" inView:self.view duration:1];
         }else{
             user.userId = [NexfiUtil uuid];

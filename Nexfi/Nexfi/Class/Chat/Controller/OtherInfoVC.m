@@ -182,12 +182,11 @@
             }
             [self presentViewController:picker animated:YES completion:nil];
         }
-    }
-    
-    else if (actionSheet.tag == 2){
+    }else if (actionSheet.tag == 2){
         if (buttonIndex == 2) {
             return;
         }
+        
         //1为男，2为女
         NSString *gender = buttonIndex==0 ? @"1" : @"2";
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

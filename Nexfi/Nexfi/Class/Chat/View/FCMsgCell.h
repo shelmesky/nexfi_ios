@@ -43,6 +43,7 @@
     JXEmoji *_messageConent;
     UILabel* _timeLabel;
     BOOL _drawed;
+    UILabel *_nickName;
 }
 @property (nonatomic, assign)id<FCMsgCellDelegate>msgDelegate;
 @property (nonatomic) int index;

@@ -221,6 +221,7 @@
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(TribeMessage *)msg{
     
+    
     int n = msg.messageBodyType ;
     if (n == eMessageBodyType_Image) {
         
@@ -228,24 +229,34 @@
         UIImage *image = [UIImage imageWithData:data];
         if (image) {
             float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-            return @(imageHeight + 20 + 25);
+            if ([NexfiUtil isMeSend:msg]) {
+                return @(imageHeight + 15 + 15 + 10);//imageHeight + 15 = bubbleY  15 ＝ timeH 10 ＝ 拓展
+            }else{
+                return @(imageHeight + 15 + 15 + 20 + 10);//imageHeight + 15 = bubbleY  15 ＝ timeH 20 ＝ nickH 10 ＝ 拓展
+            }
         }else{
             return @(110);
         }
         
     }else if (n == eMessageBodyType_Voice){
-        return @(66);
+        if ([NexfiUtil isMeSend:msg]) {
+            return @(50 + 15 + 10);//50 = bubbleY  15 ＝ timeH 10 ＝ 拓展
+        }else{
+            return @(50 + 15 + 20 + 10);//50 = bubbleY 20 ＝ nickH  15 ＝ timeH 10 ＝ 拓展
+        }
     }else if (n == eMessageBodyType_File){
         return @(80);
     }else{
         CGRect rect = [msg.textMessage.fileData boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-        if (rect.size.height < 15) {
-            return @(85);
+        if ([NexfiUtil isMeSend:msg]) {
+            return @(rect.size.height + 40 + 15 + 10);//rect.size.height + 40 = bubbleY 15 = timeY 10 = 拓展
+        }else{
+            return @(rect.size.height + 40 + 20 + 15 + 10);//rect.size.height + 40 = bubbleY 15 = timeY 20 = nickY 10 = 拓展
         }
-        return @(rect.size.height + 20 + 50);
     }
+    
 }
 
 #pragma -mark 获取接收到的数据
@@ -267,126 +278,118 @@
 #pragma -mark 获取发送的数据
 - (id<UDSource>)frameData:(MessageBodyType)type withSendData:(id)data{
    
+    TribeMessage *msg = [[TribeMessage alloc]init];
+    NSString *deviceUDID = [NexfiUtil uuid];
+    switch (type) {
+        case eMessageBodyType_Text:
+        {
+            
+            TextMessage *textMessage = [[TextMessage alloc]init];
+            textMessage.fileData = data;
+            textMessage.isRead = @"1";
+            msg.textMessage = textMessage;
+            
+            msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+            msg.messageBodyType = eMessageBodyType_Text;
+            msg.msgId = deviceUDID;
+            
+            
+            msg.userMessage = [[UserManager shareManager]getUser];//json
+            
+            
+            
+            break;
+        }
+        case eMessageBodyType_Image:
+        {
+            //缓存到本地图片
+            NSData *picData = [Photo image2Data:data];
+            NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
+            
+            NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
+            NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+            
+            
+            NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+            [picData writeToFile:fullPath atomically:YES];
+            
+            FileMessage *fileMessage = [[FileMessage alloc]init];
+            fileMessage.fileData = [picData base64Encoding];
+            fileMessage.filePath = imgPath;
+            fileMessage.isRead = @"1";
+            msg.fileMessage = fileMessage;
+            
+            msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+            msg.messageBodyType = eMessageBodyType_Image;
+            msg.msgId = deviceUDID;
+            
+            msg.userMessage = [[UserManager shareManager]getUser];//json
+            
+            
+            
+            break;
+        }
+        case eMessageBodyType_File:
+        {
+            
+            
+            break;
+        }
+        case eMessageBodyType_Voice:
+        {
+            NSDictionary *voicePro = data;
+            //存半路径 取data要加前缀
+            NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+            NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:voicePro[@"voiceName"]];
+            
+            NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
+            
+            VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+            voiceMessage.isRead = @"0";
+            voiceMessage.fileData = [voiceData base64Encoding];
+            voiceMessage.durational = voicePro[@"voiceSec"];
+            
+            msg.voiceMessage = voiceMessage;
+            
+            msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+            msg.messageBodyType = eMessageBodyType_Voice;
+            msg.msgId = deviceUDID;
+            
+            msg.userMessage = [[UserManager shareManager]getUser];//json
+            
+            
+            break;
+            
+        }
+        default:
+            break;
+    }
+    
+    msg.messageType = eMessageType_AllUserChat;
+    
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
  
         NSData *newData;
         
-            TribeMessage *msg = [[TribeMessage alloc]init];
-            NSString *deviceUDID = [NexfiUtil uuid];
-            switch (type) {
-                case eMessageBodyType_Text:
-                {
-                    
-                    TextMessage *textMessage = [[TextMessage alloc]init];
-                    textMessage.fileData = data;
-                    textMessage.isRead = @"1";
-                    msg.textMessage = textMessage;
-                    
-                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.messageBodyType = eMessageBodyType_Text;
-                    msg.msgId = deviceUDID;
-                    
-                    
-                    msg.userMessage = [[UserManager shareManager]getUser];//json
-                    
-                    
-                    
-                    break;
-                }
-                case eMessageBodyType_Image:
-                {
-                    //缓存到本地图片
-                    NSData *picData = [Photo image2Data:data];
-                    NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
-                    
-                    NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
-                    NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
-                    
-                    
-                    NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
-                    [picData writeToFile:fullPath atomically:YES];
-                    
-                    FileMessage *fileMessage = [[FileMessage alloc]init];
-                    fileMessage.fileData = [picData base64Encoding];
-                    fileMessage.filePath = imgPath;
-                    fileMessage.isRead = @"1";
-                    msg.fileMessage = fileMessage;
-                    
-                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.messageBodyType = eMessageBodyType_Image;
-                    msg.msgId = deviceUDID;
-                    
-                    msg.userMessage = [[UserManager shareManager]getUser];//json
-                    
-                    
-                    
-                    break;
-                }
-                case eMessageBodyType_File:
-                {
-                    
-                    
-                    break;
-                }
-                case eMessageBodyType_Voice:
-                {
-                    NSDictionary *voicePro = data;
-                    //存半路径 取data要加前缀
-                    NSString *DoucmentsPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-                    NSString *mp3Path = [DoucmentsPath stringByAppendingPathComponent:voicePro[@"voiceName"]];
-                    
-                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
-                    
-                    VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
-                    voiceMessage.isRead = @"0";
-                    voiceMessage.fileData = [voiceData base64Encoding];
-                    voiceMessage.durational = voicePro[@"voiceSec"];
-                    
-                    msg.voiceMessage = voiceMessage;
-                    
-                    msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-                    msg.messageBodyType = eMessageBodyType_Voice;
-                    msg.msgId = deviceUDID;
-                    
-                    msg.userMessage = [[UserManager shareManager]getUser];//json
-                    
-                    
-                    break;
-                    
-                }
-                default:
-                    break;
-            }
+        newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
+        
+        //刷新表
+        if (sendOnce == YES) {
+            sendOnce = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self showTableMsg:msg];
+            });
             
-            msg.messageType = eMessageType_AllUserChat;
-            
-            newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
-            
+            //插入数据库
+            [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
 
-                
-            //刷新表
-            if (sendOnce == YES) {
-                sendOnce = NO;
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showTableMsg:msg];
-                });
-                
-                //插入数据库
-
-                [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
-                
-                
-                
-            }
-                
+        }
         return newData;
-        
-        
-        
         
     }];
     
     return result;
+    
 }
 -(void)showTableMsg:(TribeMessage *) msg
 {
@@ -438,6 +441,7 @@
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
     
     sendOnce = YES;
+    
     id<UDSource>source = [self frameData:eMessageBodyType_Text withSendData:message];
     [[UnderdarkUtil share].node allUserChatWithFrame:source];
     

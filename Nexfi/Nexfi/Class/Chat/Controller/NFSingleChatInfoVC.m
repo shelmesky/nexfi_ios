@@ -245,20 +245,32 @@
         UIImage *image = [UIImage imageWithData:data];
         if (image) {
             float imageHeight = (float)(image.size.height * 80)/(float)image.size.width;
-            return @(imageHeight + 20 + 25);
+            if ([NexfiUtil isMeSend:msg]) {
+                return @(imageHeight + 15 + 15 + 10);//imageHeight + 15 = bubbleY  15 ＝ timeH 10 ＝ 拓展
+            }else{
+                return @(imageHeight + 15 + 15 + 20 + 10);//imageHeight + 15 = bubbleY  15 ＝ timeH 20 ＝ nickH 10 ＝ 拓展
+            }
         }else{
             return @(110);
         }
         
     }else if (n == eMessageBodyType_Voice){
-        return @(66);
+        if ([NexfiUtil isMeSend:msg]) {
+            return @(50 + 15 + 10);//50 = bubbleY  15 ＝ timeH 10 ＝ 拓展
+        }else{
+            return @(50 + 15 + 20 + 10);//50 = bubbleY 20 ＝ nickH  15 ＝ timeH 10 ＝ 拓展
+        }
     }else if (n == eMessageBodyType_File){
         return @(80);
     }else{
         CGRect rect = [msg.textMessage.fileData boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
-        return @(rect.size.height + 20 + 50);
+        if ([NexfiUtil isMeSend:msg]) {
+            return @(rect.size.height + 40 + 15 + 10);//rect.size.height + 40 = bubbleY 15 = timeY 10 = 拓展
+        }else{
+            return @(rect.size.height + 40 + 20 + 15 + 10);//rect.size.height + 40 = bubbleY 15 = timeY 20 = nickY 10 = 拓展
+        }
     }
 }
 #pragma -mark 获取接收到的数据
@@ -322,7 +334,7 @@
                 msg.receiver = self.to_user.userId;
                 msg.messageBodyType = eMessageBodyType_Text;
                 msg.msgId = deviceUDID;
-                msg.UserMessage = [[UserManager shareManager]getUser];
+                msg.userMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -345,7 +357,7 @@
                 msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
                 msg.receiver = self.to_user.userId;
                 msg.msgId = deviceUDID;
-                msg.UserMessage = [[UserManager shareManager]getUser];
+                msg.userMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -376,7 +388,7 @@
                 msg.messageBodyType = eMessageBodyType_Voice;
                 msg.msgId = deviceUDID;
                 msg.receiver = self.to_user.userId;
-                msg.UserMessage = [[UserManager shareManager]getUser];
+                msg.userMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -394,7 +406,6 @@
             });
             
             //插入数据库
-            
             [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
         }
         

@@ -131,7 +131,6 @@
     }
     for (int i = 0; i < self.links.count; i ++) {
         id<UDLink>myLink = [self.links objectAtIndex:i];
-        
         [myLink sendData:frameData];
     }
     
@@ -319,7 +318,6 @@
         case eMessageType_SingleChat://单聊
         {
             
-            
             if (self.singleVC && [self.singleVC.to_user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",link.nodeId]]) {//当前页面是单聊 并且发消息的人和当前页面聊天的人是同一个人
                 NSDictionary *msgDic = @{@"text":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]};
                 [self.singleVC refreshGetData:msgDic];
@@ -334,15 +332,15 @@
                 [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
                 
             }
-            
-            NSLog(@"收到了");
+
             break;
         }
         case eMessageType_AllUserChat://群聊
         {
             
             NSArray *msgList = [[SqlManager shareInstance]getAlltimeStamps];
-            if ([msgList containsObject:dic[@"timeStamp"]]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
+            
+            if ([msgList containsObject:dic[@"timeStamp"]] && [[[UserManager shareManager]getUser].userId isEqualToString:dic[@"userMessage"][@"userId"]]) {//如果数据库有了 说明其他人发过了 不需要转发 如果没有 既要存数据库 又要给除来源之外的人发
                 
                 return;
             }

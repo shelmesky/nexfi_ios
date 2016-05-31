@@ -48,6 +48,13 @@
         _timeLabel.textColor = [UIColor grayColor];
         _timeLabel.font = [UIFont systemFontOfSize:8];
         
+        //姓名
+        _nickName = [[UILabel alloc]initWithFrame:CGRectZero];
+        _nickName.backgroundColor = [UIColor clearColor];
+        _nickName.textColor = [UIColor blackColor];
+        _nickName.font = [UIFont systemFontOfSize:12.0];
+        [self.contentView addSubview:_nickName];
+        
         [self.contentView addSubview:_bubbleBg];
         [self.contentView addSubview:_userHead];
         //        [self.contentView addSubview:_headMask];
@@ -262,6 +269,7 @@
     
     NSString *content ;
     NSString *durational;
+    NSString *nick;
     PersonMessage *pMsg;
     TribeMessage *tMsg;
     NSString *isRead;
@@ -278,6 +286,9 @@
             isRead = pMsg.voiceMessage.isRead;
             durational = pMsg.voiceMessage.durational;
         }
+        
+        nick = pMsg.userMessage.userNick;
+        
     }else if ([msg isKindOfClass:[TribeMessage class]]){
         tMsg = (TribeMessage *)msg;
         if (tMsg.messageBodyType == eMessageBodyType_Text) {
@@ -291,24 +302,42 @@
             isRead = tMsg.voiceMessage.isRead;
             durational = tMsg.voiceMessage.durational;
         }
+        
+        nick = tMsg.userMessage.userNick;
+        
     }
     
     CGRect textSize = [content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
     
+    CGRect nickSize = [nick boundingRectWithSize:CGSizeMake(999, 20) options:NSStringDrawingUsesLineFragmentOrigin|
+                       NSStringDrawingUsesDeviceMetrics|
+                       NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:12.0],NSFontAttributeName, nil] context:0];
+    
     
     if(isMe){
-        [_userHead setFrame:CGRectMake(SCREEN_SIZE.width-INSETS-HEAD_SIZE, 5, HEAD_SIZE, HEAD_SIZE)];
+        [_userHead setFrame:CGRectMake(SCREEN_SIZE.width-INSETS-HEAD_SIZE, 15, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_sender_background_normal"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_sender_background_highlight"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];//message_receiver_background_normal  message_receiver_background_highlight
         
         //        _timeLabel.frame = CGRectMake(160, 0, 100, 8);
         //        _timeLabel.textAlignment = NSTextAlignmentRight;
+        
+
+
+        
     }else{
-        [_userHead setFrame:CGRectMake(INSETS, 5, HEAD_SIZE, HEAD_SIZE)];
+        [_userHead setFrame:CGRectMake(INSETS, 15, HEAD_SIZE, HEAD_SIZE)];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_receiver_background_normal"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateNormal];
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_receiver_background_highlight"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
+        
+        
+        _nickName.frame = CGRectMake(_userHead.x + _userHead.width + 5, 15, nickSize.size.width + 5, 20);
+        _nickName.text = nick;
+        _nickName.font = [UIFont systemFontOfSize:12.0];
+        _nickName.textAlignment = NSTextAlignmentLeft;
+        
         
         //        _timeLabel.frame = CGRectMake(80, 0, 100, 8);
         //        _timeLabel.textAlignment = NSTextAlignmentLeft;
@@ -334,7 +363,7 @@
         if(isMe){
             
             bubbleX = SCREEN_SIZE.width - INSETS*2 - HEAD_SIZE - textSize.size.width - 40;
-            bubbleY = 10;
+            bubbleY = 15;
             bubbleWidth = textSize.size.width + 40;
             bubbleHeight = textSize.size.height + 35;
             if (textSize.size.height < 15) {
@@ -350,7 +379,7 @@
         {
             
             bubbleX = 2*INSETS+HEAD_SIZE;
-            bubbleY = 10;
+            bubbleY = 35;
             bubbleWidth = textSize.size.width + 40;
             bubbleHeight = textSize.size.height + 35;
             if (textSize.size.height < 15) {
@@ -391,7 +420,7 @@
         else
         {
             bubbleX = 2*INSETS+HEAD_SIZE;
-            bubbleY = 15;
+            bubbleY = 35;
             bubbleWidth = 100;
             bubbleHeight = 100;
             [_chatImage setHidden:NO];
@@ -436,7 +465,7 @@
         if(isMe){
             //            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
             
-            _bubbleBg.frame = [durational intValue] > 3?CGRectMake(BubbleOrX, 10, BubbleEndW, 50):CGRectMake(SCREEN_SIZE.width-w-HEAD_SIZE-INSETS*2, 10, w, 50);
+            _bubbleBg.frame = [durational intValue] > 3?CGRectMake(BubbleOrX, 15, BubbleEndW, 50):CGRectMake(SCREEN_SIZE.width-w-HEAD_SIZE-INSETS*2, 10, w, 50);
             self.messageVoiceStatusIV.frame = CGRectMake(_bubbleBg.frame.size.width-35, 15, 19, 19);
             p.frame = CGRectMake(_bubbleBg.frame.origin.x-50, 30, 50, 15);
             p.textAlignment = NSTextAlignmentRight;
@@ -444,7 +473,7 @@
         else{
             //            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
             
-            _bubbleBg.frame=CGRectMake(2*INSETS+HEAD_SIZE, 10, BubbleEndW, 50);
+            _bubbleBg.frame=CGRectMake(2*INSETS+HEAD_SIZE, 35, BubbleEndW, 50);
             self.messageVoiceStatusIV.frame = CGRectMake(15, 15, 19, 19);
             p.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+3, 30, 50, 15);
             p.textAlignment = NSTextAlignmentLeft;

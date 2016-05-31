@@ -30,6 +30,7 @@
 #import "TextMessage.h"
 #import "FileMessage.h"
 #import "VoiceMessage.h"
+#import "UIView+Frame.h"
 
 
 #import "Message.h"
