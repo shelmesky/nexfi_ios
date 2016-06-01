@@ -9,7 +9,7 @@
 #import "FCCongureInfoVC.h"
 #import "UnderdarkUtil.h"
 
-@interface FCCongureInfoVC ()
+@interface FCCongureInfoVC ()<UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *nickName;
 @end
 
@@ -21,13 +21,21 @@
     
     UserModel *account = [[UserManager shareManager] getUser];
     self.nickName.text = account.userNick;
+    self.nickName.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
     [self.nickName becomeFirstResponder];
 }
-
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string{
+    NSMutableString *newString = [[NSMutableString alloc]initWithString:textField.text];
+    [newString appendString:string];
+    if ([NexfiUtil convertToInt:newString] > 20) {
+        return NO;
+    }
+    return YES;
+}
 - (void)RightBarBtnClick:(id)sender{
     [self.view endEditing:YES];
     

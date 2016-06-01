@@ -33,6 +33,10 @@
 - (void)configureTabVC;
 
 +(BOOL)isMeSend:(Message *)msg;
+/**
+ *计算字体个数
+ */
++(int)convertToInt:(NSString*)strtemp;
 
 //-(void)toUpdateUserInfo;
 @end

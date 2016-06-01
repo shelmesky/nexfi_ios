@@ -30,7 +30,8 @@
         _chatImage.imageType = ChatPicType;
         //气泡背景
         _bubbleBg =[UIButton buttonWithType:UIButtonTypeCustom];
-        //        _bubbleBg.userInteractionEnabled = YES;
+        _bubbleBg.userInteractionEnabled = YES;
+        
         //文本
         _messageConent=[[JXEmoji alloc]initWithFrame:CGRectMake(0, 0, 200, 20)];
         _messageConent.backgroundColor = [UIColor clearColor];
@@ -439,14 +440,12 @@
         
     }
     
-    
     if(msg.messageBodyType ==eMessageBodyType_Voice){
-        float w = (SCREEN_SIZE.width-HEAD_SIZE-INSETS*2-50)/30;
-        w = 50+w*3;//[msg.timeLen intValue];
-        if(w<50)
-            w = 50;
-        if(w>200)
-            w = 200;
+        _messageConent.hidden = NO;
+        _chatImage.hidden = YES;
+        
+        float w = 70;
+        
         //录音喇叭 图片
         //        UIImageView* iv = [[UIImageView alloc] init];
         //录音时间
@@ -466,16 +465,20 @@
             //            iv.image =  [UIImage imageNamed:@"message_voice_sender_normal"];
             
             _bubbleBg.frame = [durational intValue] > 3?CGRectMake(BubbleOrX, 15, BubbleEndW, 50):CGRectMake(SCREEN_SIZE.width-w-HEAD_SIZE-INSETS*2, 10, w, 50);
+            _messageConent.frame = CGRectMake(0, 0, _bubbleBg.frame.size.width, _bubbleBg.frame.size.height);
             self.messageVoiceStatusIV.frame = CGRectMake(_bubbleBg.frame.size.width-35, 15, 19, 19);
-            p.frame = CGRectMake(_bubbleBg.frame.origin.x-50, 30, 50, 15);
+            p.bounds = CGRectMake(0, 0, 50, 15);
+            p.center = CGPointMake(_bubbleBg.frame.origin.x-50 + 25, _bubbleBg.center.y);
             p.textAlignment = NSTextAlignmentRight;
         }
         else{
             //            iv.image =  [UIImage imageNamed:@"message_voice_receiver_normal"];
             
             _bubbleBg.frame=CGRectMake(2*INSETS+HEAD_SIZE, 35, BubbleEndW, 50);
+            _messageConent.frame = CGRectMake(0, 0, _bubbleBg.frame.size.width, _bubbleBg.frame.size.height);
             self.messageVoiceStatusIV.frame = CGRectMake(15, 15, 19, 19);
-            p.frame = CGRectMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+3, 30, 50, 15);
+            p.bounds = CGRectMake(0, 0, 50, 15);
+            p.center = CGPointMake(_bubbleBg.frame.origin.x+_bubbleBg.frame.size.width+3 + 25, _bubbleBg.center.y);
             p.textAlignment = NSTextAlignmentLeft;
             
             //语音已读 未读
@@ -483,25 +486,12 @@
         }
         
         [self.contentView addSubview:p];
-        [_bubbleBg addSubview:self.messageVoiceStatusIV];
+        [_messageConent addSubview:self.messageVoiceStatusIV];
         
         
-#ifdef IS_TEST_VERSION
-#endif
+
     }
     
-    
-    //    if ([msg.messageBodyType intValue]==kWCMessageTypeGif){
-    //        [_bubbleBg setHidden:YES];
-    //        NSString* path = [[[NSBundle mainBundle] bundlePath] stringByAppendingPathComponent:[msg.file lastPathComponent]];
-    //        SCGIFImageView* iv = [[SCGIFImageView alloc] initWithGIFFile:path];
-    //        if(isMe)
-    //            iv.frame = CGRectMake(180, 0, 80, 80);//185
-    //        else
-    //            iv.frame = CGRectMake(INSETS*2+HEAD_SIZE, 0, 80, 80);
-    //        [self.contentView addSubview:iv];
-    //        [iv release];
-    //    }
     
     if ([self isMeSend]) {
         self.messageSendStateIV.frame = CGRectMake(_bubbleBg.frame.origin.x - 20, _bubbleBg.center.y - 10, 10, 10);

@@ -235,6 +235,21 @@ static NexfiUtil *_util;
     window.rootViewController = tabbar;
     
 }
++(int)convertToInt:(NSString*)strtemp {
+    
+    int strlength = 0;
+    char* p = (char*)[strtemp cStringUsingEncoding:NSUnicodeStringEncoding];
+    for (int i=0 ; i<[strtemp lengthOfBytesUsingEncoding:NSUnicodeStringEncoding] ;i++) {
+        if (*p) {
+            p++;
+            strlength++;
+        }
+        else {
+            p++;
+        }
+    }
+    return strlength;
+}
 - (void)toUpdateUserInfo{
     //    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
     //        id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
