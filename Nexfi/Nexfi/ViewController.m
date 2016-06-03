@@ -7,7 +7,6 @@
 //
 
 #import "ViewController.h"
-#import "ChatVC.h"
 #import "NFSingleChatInfoVC.h"
 #import "UserManager.h"
 #import "SelfVC.h"
@@ -39,10 +38,6 @@
     [self isAutoLogin];
     
 
-}
-- (void)clicks:(id)sender{
-    ChatVC *vc = [[ChatVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)isAutoLogin{
     NSString *userId = [[UserManager shareManager]getUser].userId;

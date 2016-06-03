@@ -75,7 +75,7 @@ static NSMutableArray *imageArray;
             [super drawRect:rect];
         return;
     }
-    
+    _size = self.font.lineHeight;
 	CGFloat upX=0;
 	CGFloat upY=0;
 //    NSLog(@"%f,%f,%f,%f",rect.origin.x,rect.origin.y,rect.size.width,rect.size.height);
@@ -90,6 +90,7 @@ static NSMutableArray *imageArray;
                 UIImage *img=[UIImage imageWithContentsOfFile:imageName];
                 [img drawInRect:CGRectMake(upX, upY+_top, faceWidth, faceHeight)];
                 upX=faceWidth+upX;
+                //中间换行计算高度
                 if (upX >= maxWidth)
                 {
                     upY = upY + _size;
@@ -105,6 +106,7 @@ static NSMutableArray *imageArray;
                 UIImage *img=[UIImage imageWithContentsOfFile:imageName];
                 [img drawInRect:CGRectMake(upX, upY+_top, faceWidth, faceHeight)];
                 upX=faceWidth+upX;
+                //中间换行计算高度
                 if (upX >= maxWidth)
                 {
                     upY = upY + _size;
@@ -124,6 +126,7 @@ static NSMutableArray *imageArray;
                 }else{
                     CGSize size=[temp sizeWithFont:self.font constrainedToSize:CGSizeMake(_size, _size)];
                     [temp drawInRect:CGRectMake(upX, upY+_top, size.width, size.height) withFont:self.font];
+                    //中间换行计算高度
                     upX=upX+size.width;
                     if (upX >= maxWidth)
                     {
@@ -135,6 +138,7 @@ static NSMutableArray *imageArray;
             }
         }
     }
+    
 }
 
 -(void)getImageRange:(NSString*)message  array: (NSMutableArray*)array {
@@ -170,79 +174,12 @@ static NSMutableArray *imageArray;
     [data removeAllObjects];
     [self getImageRange:txt array:data];
     
-    _size      = self.font.pointSize;
-    maxWidth   = self.frame.size.width+offset;
-    CGFloat upX=0;
-    CGFloat upY=_size+6;
-    BOOL isWidth=NO;
-    if (data) {
-        for (int i=0;i<[data count];i++) {
-            NSString *str=[data objectAtIndex:i];
-            BOOL isFace = NO;
-            
-            if ([str hasPrefix:BEGIN_FLAG]&&[str hasSuffix:END_FLAG]) {
-                isFace = [faceArray indexOfObject:str] != NSNotFound;
-                if(isFace){
-                    upX=faceWidth+upX;
-                    if (upX >= maxWidth)
-                    {
-                        upY = upY + _size;
-                        upX = 0;
-                    }
-                }
-            }
-            
-            
-            if ([str hasPrefix:@"[write_face_"]&&[str hasSuffix:END_FLAG]) {
-                isFace = [writefaceArray indexOfObject:str] != NSNotFound;
-                if(isFace){
-                    upX=faceWidth+upX;
-                    if (upX >= maxWidth)
-                    {
-                        upY = upY + _size;
-                        upX = 0;
-                    }
-                }
-            }
-            if(!isFace) {
-                for (int j = 0; j < [str length]; j++) {
-                    NSString *temp = [str substringWithRange:NSMakeRange(j, 1)];
-                    if([temp isEqualToString:@"\n"]){
-                        upY = upY + _size;
-                        upX = 0;
-                    }else{
-                        CGSize size=[temp sizeWithFont:self.font constrainedToSize:CGSizeMake(_size, _size)];
-                        upX=upX+size.width;
-                        if (upX >= maxWidth)
-                        {
-                            upY = upY + size.height;
-                            upX = 0;
-                            isWidth = YES;
-                        }
-                    }
-                }
-            }
-            
-        }
-    }
-    if(upY<self.frame.size.height){
-        _top = (self.frame.size.height-upY)/2;
-//        NSLog(@"_top=%d/%d",_top,self.frame.size.height);
-    }
-    if(upY<_size)
-        upY = _size;
-    if(upY<self.frame.size.height)
-        upY = self.frame.size.height;
-    if(isWidth)
-        upX = self.frame.size.width;
-    self.frame = CGRectMake(self.frame.origin.x,self.frame.origin.y, upX, upY); //@ 需要将该view的尺寸记下，方便以后使用
-//    NSLog(@"%d,%.1f %.1f", [data count], upX, upY);
 }
 
 
 
 -(NSString*)getText:(NSString*)message {
-    //NSString* str = [[NSString alloc] init];
+    
     for(int i=0;i<[faceArray count];i++)
     {
         NSString * face = [NSString stringWithFormat:@"%@",[faceArray objectAtIndex:i]];
@@ -276,6 +213,7 @@ static NSMutableArray *imageArray;
         NSString * face = [NSString stringWithFormat:@"#%@",[writefaceArray objectAtIndex:i]];
         message = [message replace:face withString:[NSString stringWithFormat:@"%@",[faceArray objectAtIndex:i]]];
     }
+    
     return message;
 }
 @end
