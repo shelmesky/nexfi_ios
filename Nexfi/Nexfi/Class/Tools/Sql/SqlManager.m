@@ -616,7 +616,7 @@ static SqlManager *_share = nil;
             user.userNick = [rs stringForColumn:@"userNick"];
             user.userAge = [[rs stringForColumn:@"userAge"] intValue];
             user.userGender = [rs stringForColumn:@"userGender"];
-            message.UserMessage = user;
+            message.userMessage = user;
             
             message.timeStamp = [rs stringForColumn:@"send_time"];
             message.msgId = [rs stringForColumn:@"msg_id"];
@@ -665,7 +665,7 @@ static SqlManager *_share = nil;
             msg = [[PersonMessage alloc] init];
             UserModel *user = [[UserModel alloc]init];
             user.userId = [rs stringForColumn:@"from_user_id"];
-            msg.UserMessage = user;
+            msg.userMessage = user;
             
             msg.receiver = [rs stringForColumn:@"to_user_id"];
             msg.msgId = [rs stringForColumn:@"msg_id"];

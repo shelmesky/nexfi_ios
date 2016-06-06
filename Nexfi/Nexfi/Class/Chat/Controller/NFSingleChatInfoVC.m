@@ -210,6 +210,7 @@
         cell.didTouch = @selector(onSelect:);
         cell.msg      = msg;
         cell.msgDelegate = self;
+        cell.to_User = self.to_user;
         
     }
     

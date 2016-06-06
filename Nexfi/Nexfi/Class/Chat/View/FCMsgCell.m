@@ -308,6 +308,10 @@
         
     }
     
+    if (self.to_User) {
+        nick = self.to_User.userNick;
+    }
+    
     CGRect textSize = [content boundingRectWithSize:CGSizeMake(200, 10000) options:NSStringDrawingUsesLineFragmentOrigin|
                        NSStringDrawingUsesDeviceMetrics|
                        NSStringDrawingTruncatesLastVisibleLine attributes:[NSDictionary dictionaryWithObjectsAndKeys:[UIFont systemFontOfSize:15.0],NSFontAttributeName, nil] context:0];
@@ -334,7 +338,7 @@
         [_bubbleBg setBackgroundImage:[[UIImage imageNamed:@"message_receiver_background_highlight"]stretchableImageWithLeftCapWidth:20 topCapHeight:30] forState:UIControlStateHighlighted];
         
         
-        _nickName.frame = CGRectMake(_userHead.x + _userHead.width + 5, 15, nickSize.size.width + 5, 20);
+        _nickName.frame = CGRectMake(_userHead.x + _userHead.width + 5, 15, nickSize.size.width + 10, 20);
         _nickName.text = nick;
         _nickName.font = [UIFont systemFontOfSize:12.0];
         _nickName.textAlignment = NSTextAlignmentLeft;

@@ -51,6 +51,7 @@
 @property (nonatomic, assign) NSObject* delegate;
 @property (nonatomic, assign) SEL		didTouch;
 @property (nonatomic, assign) int cellHeight;
+@property (nonatomic, retain) UserModel *to_User;
 
 
 /**
