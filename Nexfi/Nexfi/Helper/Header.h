@@ -31,6 +31,8 @@
 #import "FileMessage.h"
 #import "VoiceMessage.h"
 #import "UIView+Frame.h"
+#import "MJCommonHeader.h"
+#import "MJCommonFooter.h"
 
 
 #import "Message.h"

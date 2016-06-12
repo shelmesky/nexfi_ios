@@ -44,6 +44,8 @@
     UILabel* _timeLabel;
     BOOL _drawed;
     UILabel *_nickName;
+    UILabel *_durationLa;
+    JXEmoji *_voiceContent;
 }
 @property (nonatomic, assign)id<FCMsgCellDelegate>msgDelegate;
 @property (nonatomic) int index;

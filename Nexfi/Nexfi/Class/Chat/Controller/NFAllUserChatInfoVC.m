@@ -18,14 +18,18 @@
 #import "NFPeersView.h"
 #import "NFTribeInfoVC.h"
 
+#import "SenderTextCell.h"
+#import "SenderAvatarCell.h"
+#import "ReceiverAvatarCell.h"
+#import "ReceiverVoiceCell.h"
+#import "SenderVoiceCell.h"
+#import "TextCell.h"
 
-@interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
+
+@interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate,chatCellDelegate>
 {
     //用来保存输入框中的信息
     NSMutableArray * _textArray;
-    
-    NSMutableArray *_pool;
-    int _refreshCount;
     
     BOOL sendOnce;
 }
@@ -60,13 +64,10 @@
     
     _textArray=[[NSMutableArray alloc]init];
     
-    _pool = [[NSMutableArray alloc]init];
-    
     [UnderdarkUtil share].node.allUserChatVC = self;
     [UnderdarkUtil share].node.delegate = self;
     
-    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64
-                                                            ) style:UITableViewStylePlain];
+    _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64) style:UITableViewStylePlain];
     _tableView.delegate=self;
     _tableView.dataSource=self;
     //取消tableview上的横线
@@ -74,20 +75,78 @@
     
     //为了让下面的图片显示出来，把背景颜色置为cleanColor
     [self.view addSubview:_tableView];
-    
     [self.view addSubview:self.chatBar];
     
+//    self.tableView.estimatedRowHeight = 100;
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    
+    
     //获取历史数据
-    [self showHistoryMsg];
+    [self showHistoryMsgWithCount:0];
+    [self setupDownRefresh];
     
 }
-- (void)showHistoryMsg{
-    //别人发我，我发别人都要取出来
-    self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 200;
+}
+#pragma -mark 下拉刷新
+- (void)setupDownRefresh
+{
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJCommonHeader *header = [MJCommonHeader headerWithRefreshingBlock:^{
+        [self showHistoryMsgWithCount:_textArray.count];
+    }];
     
+    // 设置header
+    self.tableView.header = header;
+    
+    //    [header beginRefreshing];
+}
+#pragma -mark 刷新后获取消息
+- (void)showHistoryMsgWithCount:(NSInteger)count{
+    //别人发我，我发别人都要取出来
+    self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:count];
+
     for (TribeMessage *msg in self.historyMsgs) {
-        [self showTableMsg:msg];
+        [self showHistoryTableMsg:msg];
     }
+    
+    [self.tableView.header endRefreshing];
+}
+-(void)showHistoryTableMsg:(TribeMessage *)msg{
+    [_textArray insertObject:msg atIndex:0];
+
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_tableView reloadData];
+    });
+    
+}
+-(void)showTableMsg:(TribeMessage *) msg
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        //消息重复不刷新表
+        for (int i = 0; i < _textArray.count; i++) {
+            TribeMessage *tMsg = _textArray[i];
+            if ([tMsg.msgId isEqualToString:msg.msgId]) {
+                return;
+            }
+        }
+        [_textArray addObject:msg];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
+        [indexPaths addObject:indexPath];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tableView beginUpdates];
+            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+            [_tableView endUpdates];
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+            
+        });
+        
+    });
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法
@@ -104,61 +163,107 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
-    NSString * identifier= [NSString stringWithFormat:@"friendCell_%d_%ld",_refreshCount,indexPath.row];
-    FCMsgCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (!cell) {
-        cell=[[FCMsgCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        [_pool addObject:cell];
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        cell.index    = (int)indexPath.row;
-        cell.delegate = self;
-        cell.didTouch = @selector(onSelect:);
-        cell.msg      = msg;
-        cell.msgDelegate = self;
-        
-        if([cell isMeSend])
-        {
-            [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar]];
-            
-        }
-        else
-        {
-            [cell setHeadImage:[UIImage imageNamed:msg.userMessage.userAvatar]];
-            
-        }
-    }
+    ChatCell *cell = [self getCellWithMsg:msg];
+    cell.index = indexPath.row;
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     return cell;
 }
+#pragma -mark  获取不同的cell
+- (ChatCell *)getCellWithMsg:(TribeMessage *)msg{
+    if (msg.messageBodyType == eMessageBodyType_Text) {
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderTextCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SenderTextCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderTextCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            TextCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"TextCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"TextCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:msg.userMessage.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }else if (msg.messageBodyType == eMessageBodyType_Image){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderAvatarCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SenderAvatarCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderAvatarCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverAvatarCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReceiverAvatarCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverAvatarCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:msg.userMessage.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }else if (msg.messageBodyType == eMessageBodyType_Voice){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderVoiceCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"SenderVoiceCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderVoiceCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverVoiceCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"ReceiverVoiceCell"];
+            if (!cell) {
+                cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverVoiceCell" owner:nil options:nil] objectAtIndex:0];
+            }
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:msg.userMessage.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }
+    return nil;
+}
+
 -(void)onSelect:(UIView*)sender{
     
 }
 #pragma mark -FNMsgCellDelegate
-- (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
+- (void)msgCellTappedBlank:(ChatCell *)msgCell{
     [self.chatBar endInputing];
 }
 #pragma -mark 点击bubble
-- (void)msgCellTappedContent:(FCMsgCell *)msgCell{
+- (void)msgCellTappedContent:(ChatCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
     
-    TribeMessage *msg = (TribeMessage *)msgCell.msg;
-    //关闭播放动画
-    NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
-    for (FCMsgCell *cell in cells) {
-        [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+    TribeMessage *msg = _textArray[indexPath.row];
+    
+    ReceiverVoiceCell *cell = (ReceiverVoiceCell *)msgCell;
+    NSArray<ReceiverVoiceCell *>*cells = [self.tableView visibleCells];
+    for (ReceiverVoiceCell *cell in cells) {
+        if (cell.msg.messageBodyType == eMessageBodyType_Voice) {
+            [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+        }
     }
-    //设置播放录音
-    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.voiceMessage.durational intValue];
+    cell.voice.animationRepeatCount = [msg.voiceMessage.durational intValue];
     //播放动画
-    [msgCell.messageVoiceStatusIV startAnimating];
+    [cell.voice startAnimating];
     //播放声音
     [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row isMe:NO];
-    //设为已读
-    [msgCell updateIsRead:YES];//UI
-    [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
     
+
+    //设为已读
+    if ([msgCell isKindOfClass:[ReceiverVoiceCell class]]) {
+        [cell updateIsRead:YES];//UI
+        [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
+        msg.voiceMessage.isRead = @"1";
+        [_textArray replaceObjectAtIndex:indexPath.row withObject:msg];
+    }
 }
 #pragma -mark 点击图片放大
 - (void)clickPic:(NSUInteger)index{
@@ -171,8 +276,6 @@
     BOOL autoPlayOnAppear = NO;
     self.mwPhotos = [[NSMutableArray alloc]initWithCapacity:0];
     NSUInteger currentIndex = 0;
-    
-//    self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
     
     
     for (int i = 0; i < _textArray.count; i ++) {
@@ -214,10 +317,10 @@
     NFTribeInfoVC *vc = [[NFTribeInfoVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self.msgCellHeightList[indexPath.row] floatValue];
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return [self.msgCellHeightList[indexPath.row] floatValue];
+//}
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(TribeMessage *)msg{
     
@@ -391,27 +494,7 @@
     return result;
     
 }
--(void)showTableMsg:(TribeMessage *) msg
-{
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    //消息重复不刷新表
-    for (int i = 0; i < _textArray.count; i++) {
-        TribeMessage *tMsg = _textArray[i];
-        if ([tMsg.msgId isEqualToString:msg.msgId]) {
-            return;
-        }
-    }
-    [_textArray addObject:msg];
-    
-    [self.msgCellHeightList addObject:[self getMsgCellHeightWithMsg:msg]];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
-    [indexPaths addObject:indexPath];
-    //[_tableView beginUpdates];
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-    //[_tableView endUpdates];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    //   [_tableView reloadData];
-}
+
 #pragma -mark 获取当前时间
 -(NSString *)getDateWithFormatter:(NSString *)formatter
 {
@@ -447,10 +530,9 @@
     
     
 }
-
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
     sendOnce = YES;
-    NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@(seconds)};
+    NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@((int)seconds)};
     id<UDSource>source = [self frameData:eMessageBodyType_Voice withSendData:voicePro];
     [[UnderdarkUtil share].node allUserChatWithFrame:source];
 
@@ -498,7 +580,7 @@
     if (index < self.mwPhotos.count)
         return [self.mwPhotos objectAtIndex:index];
     return nil;
-}
+}//1931
 
 /*
  #pragma mark - Navigation

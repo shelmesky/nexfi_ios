@@ -54,8 +54,6 @@
     UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
     window.rootViewController = nav;
 }
-
-
 - (void)pushToChat:(id)sender{
     NFSingleChatInfoVC *vc = [[NFSingleChatInfoVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];

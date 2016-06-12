@@ -14,8 +14,16 @@
 #import "NFChatCacheFileUtil.h"
 #import "OtherInfoVC.h"
 
+#import "SenderTextCell.h"
+#import "SenderAvatarCell.h"
+#import "ReceiverAvatarCell.h"
+#import "ReceiverVoiceCell.h"
+#import "SenderVoiceCell.h"
+#import "TextCell.h"
+#import "ChatCell.h"
 
-@interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate>
+
+@interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate,chatCellDelegate>
 {
     UITableView * _tableView;
     
@@ -23,12 +31,13 @@
     //用来保存输入框中的信息
     NSMutableArray * _textArray;
     
-    NSMutableArray *_pool;
     int _refreshCount;
     
     BOOL sendOnce;
     
 }
+//@property (nonatomic, retain)NSMutableArray *pool;
+@property (nonatomic,assign) NSInteger count;
 @property (strong, nonatomic) XMChatBar *chatBar;
 @property (nonatomic,strong) UITableView *tableView;
 @property (nonatomic,strong) NSArray *historyMsgs;
@@ -39,6 +48,12 @@
 @end
 
 @implementation NFSingleChatInfoVC
+//- (NSMutableArray *)pool{
+//    if (!_pool) {
+//        _pool = [[NSMutableArray alloc]initWithCapacity:0];
+//    }
+//    return _pool;
+//}
 - (NSMutableArray *)msgCellHeightList{
     if (!_msgCellHeightList) {
         _msgCellHeightList = [[NSMutableArray alloc]initWithCapacity:0];
@@ -52,8 +67,6 @@
     [self setBaseVCAttributesWith:self.to_user.userNick left:nil right:nil WithInVC:self];
     
     _textArray=[[NSMutableArray alloc]init];
-    
-    _pool = [[NSMutableArray alloc]init];
     
     [UnderdarkUtil share].node.singleVC = self;
     [UnderdarkUtil share].node.delegate = self;
@@ -69,53 +82,110 @@
     [self.view addSubview:_tableView];
     [self.view addSubview:self.chatBar];
     
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
+    
     //获取历史数据
-    [self showHistoryMsg];
+    [self showHistoryMsgWithCount:0];
+    [self setupDownRefresh];
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
     
 }
-- (void)showHistoryMsg{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 200;
+}
+- (void)setupDownRefresh
+{
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJCommonHeader *header = [MJCommonHeader headerWithRefreshingBlock:^{
+        [self showHistoryMsgWithCount:_textArray.count];
+    }];
+    
+    // 设置header
+    self.tableView.header = header;
+    
+//    [header beginRefreshing];
+}
+- (void)showHistoryMsgWithCount:(NSInteger)count{
     //别人发我，我发别人都要取出来
-    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:count];
     
     for (PersonMessage *msg in self.historyMsgs) {
-        [self showTableMsg:msg];
+        [self showHistoryTableMsg:msg];
     }
+
     
+    [self.tableView.header endRefreshing];
+}
+-(void)showHistoryTableMsg:(PersonMessage *)msg{
+    
+    [_textArray insertObject:msg atIndex:0];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [_tableView reloadData];
+        
+    });
+
+}
+-(void)showTableMsg:(PersonMessage *) msg
+{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+        [_textArray addObject:msg];
+
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
+        [indexPaths addObject:indexPath];
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            [_tableView beginUpdates];
+            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+            [_tableView endUpdates];
+            
+            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        
+        });
+    
+    });
+
 }
 #pragma mark -FNMsgCellDelegate
 - (void)msgCellTappedBlank:(FCMsgCell *)msgCell{
     [self.chatBar endInputing];
 }
 #pragma -mark 点击bubble
-- (void)msgCellTappedContent:(FCMsgCell *)msgCell{
+- (void)msgCellTappedContent:(ChatCell *)msgCell{
     NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
     
-    PersonMessage *msg = (PersonMessage *)msgCell.msg;
+    PersonMessage *msg = _textArray[indexPath.row];
     
-    NSArray<FCMsgCell *>*cells = [self.tableView visibleCells];
-    for (FCMsgCell *cell in cells) {
-        [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+    ReceiverVoiceCell *cell = (ReceiverVoiceCell *)msgCell;
+    NSArray<ReceiverVoiceCell *>*cells = [self.tableView visibleCells];
+    for (ReceiverVoiceCell *cell in cells) {
+        if (cell.msg.messageBodyType == eMessageBodyType_Voice) {
+            [cell sendVoiceMesState:FNVoiceMessageStateNormal];
+        }
     }
-    
-    msgCell.messageVoiceStatusIV.animationRepeatCount = [msg.voiceMessage.durational intValue];
-    
+    cell.voice.animationRepeatCount = [msg.voiceMessage.durational intValue];
     //播放动画
-    [msgCell.messageVoiceStatusIV startAnimating];
+    [cell.voice startAnimating];
     //播放声音
     [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row isMe:NO];
     
     //设为已读
-    [msgCell updateIsRead:YES];//UI
-    [[SqlManager shareInstance]clearMsgOfSingleWithmsg_id:msg.msgId];//数据库
+    if ([msgCell isKindOfClass:[ReceiverVoiceCell class]]) {
+        [cell updateIsRead:YES];//UI
+        [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
+        msg.voiceMessage.isRead = @"1";
+        [_textArray replaceObjectAtIndex:indexPath.row withObject:msg];
+    }
     
 }
 //点击用户头像
 - (void)clickUserHeadPic:(NSUInteger)index{
-    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+
     UserModel *user = [[UserModel alloc]init];
-    PersonMessage *pMsg = self.historyMsgs[index];
+    PersonMessage *pMsg = _textArray[index];
     if ([NexfiUtil isMeSend:pMsg]) {
         user = [UserManager shareManager].getUser;
     }else{
@@ -181,12 +251,6 @@
     [self.navigationController pushViewController:browser animated:YES];
     
 }
-#pragma mark --tableViewDelegate
-//因为tableView是继承于scrollView的，所以可以用srollView的代理方法
--(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    //当我们拖动table的时候，调用让键盘下去的方法
-}
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -196,46 +260,66 @@
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PersonMessage *msg=[_textArray objectAtIndex:indexPath.row];
-    //    NSLog(@"msg0=%d",msg.retainCount);
-    NSString * identifier= [NSString stringWithFormat:@"friendCell_%d_%ld",_refreshCount,indexPath.row];
-    FCMsgCell *cell=[tableView dequeueReusableCellWithIdentifier:identifier];
-    
-    if (!cell) {
-        cell=[[FCMsgCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-        [_pool addObject:cell];
-        
-        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-        cell.index    = (int)indexPath.row;
-        cell.delegate = self;
-        cell.didTouch = @selector(onSelect:);
-        cell.msg      = msg;
-        cell.msgDelegate = self;
-        cell.to_User = self.to_user;
-        
-    }
-    
-    if([cell isMeSend])
-    {
-        [cell setHeadImage:[UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar]];
-    }
-    else
-    {
-        [cell setHeadImage:[UIImage imageNamed:self.to_user.userAvatar]];
-    }
-    
-    self.msgCell = cell;
-    
-    
+    ChatCell *cell = [self getCellWithMsg:msg];
+    cell.index = indexPath.row;
+    cell.delegate = self;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+
     return cell;
 }
+#pragma -mark  获取不同的cell
+- (ChatCell *)getCellWithMsg:(PersonMessage *)msg{
+    if (msg.messageBodyType == eMessageBodyType_Text) {
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderTextCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderTextCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            TextCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"TextCell" owner:nil options:nil] objectAtIndex:0];
+            cell.to_user = self.to_user;
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:self.to_user.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }else if (msg.messageBodyType == eMessageBodyType_Image){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderAvatarCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderAvatarCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverAvatarCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverAvatarCell" owner:nil options:nil] objectAtIndex:0];
+            cell.to_user = self.to_user;
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:self.to_user.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }else if (msg.messageBodyType == eMessageBodyType_Voice){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderVoiceCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderVoiceCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverVoiceCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverVoiceCell" owner:nil options:nil] objectAtIndex:0];
+            cell.to_user = self.to_user;
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:self.to_user.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }
+    return nil;
+}
+
 -(void)onSelect:(UIView*)sender{
     
 }
 //每行的高度
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return [self.msgCellHeightList[indexPath.row] floatValue];
-}
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return [self.msgCellHeightList[indexPath.row] floatValue];
+//}
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(PersonMessage *)msg{
     
@@ -417,20 +501,6 @@
     
     return result;
 }
-
--(void)showTableMsg:(PersonMessage *) msg
-{
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    [_textArray addObject:msg];
-    [self.msgCellHeightList addObject:[self getMsgCellHeightWithMsg:msg]];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
-    [indexPaths addObject:indexPath];
-    //[_tableView beginUpdates];
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-    //[_tableView endUpdates];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-    //   [_tableView reloadData];
-}
 #pragma -mark 获取当前时间
 -(NSString *)getDateWithFormatter:(NSString *)formatter
 {
@@ -467,7 +537,7 @@
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
     
     sendOnce = YES;
-    NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@(seconds)};
+    NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@((int)seconds)};
     id<UDSource>source = [self frameData:eMessageBodyType_Voice withSendData:voicePro];
     [[UnderdarkUtil share].node singleChatWithFrame:source];
 

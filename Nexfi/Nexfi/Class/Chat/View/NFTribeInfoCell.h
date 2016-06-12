@@ -11,6 +11,7 @@
 @interface NFTribeInfoCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UIImageView *HeadImg;
 @property (weak, nonatomic) IBOutlet UILabel *nameLa;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nickNameW;
 
 @property (nonatomic,retain)UserModel *userModel;
 

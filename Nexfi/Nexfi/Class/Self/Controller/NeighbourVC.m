@@ -108,8 +108,6 @@
                 [self.handleByUsers replaceObjectAtIndex:i withObject:users];
             }
         }
-        
-        
     }else{
     
 

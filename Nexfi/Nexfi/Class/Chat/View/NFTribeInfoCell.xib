@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -24,16 +24,12 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ucs-Nv-h4u">
                         <rect key="frame" x="46" y="11" width="88" height="21"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="88" id="Oyf-Ib-1IO"/>
+                            <constraint firstAttribute="height" constant="21" id="DZk-A9-fYV"/>
+                            <constraint firstAttribute="width" constant="88" id="rCW-2X-cdN"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="Oyf-Ib-1IO"/>
-                            </mask>
-                        </variation>
                     </label>
                 </subviews>
                 <constraints>
@@ -47,12 +43,14 @@
                 <variation key="default">
                     <mask key="constraints">
                         <exclude reference="owb-u8-Dyx"/>
+                        <exclude reference="sVQ-IP-7N2"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>
             <connections>
                 <outlet property="HeadImg" destination="jIm-co-KNg" id="taI-Ka-MdG"/>
                 <outlet property="nameLa" destination="Ucs-Nv-h4u" id="wrq-MW-lVr"/>
+                <outlet property="nickNameW" destination="rCW-2X-cdN" id="U3z-DX-b17"/>
             </connections>
         </tableViewCell>
     </objects>

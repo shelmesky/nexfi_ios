@@ -37,6 +37,8 @@
  */
 +(NSData *)scaleData:(NSData *)imageData toWidth:(int)toWidth toHeight:(int)toHeight;
 
++(UIImage *) imageCompressForWidth:(UIImage *)sourceImage targetWidth:(CGFloat)defineWidth;
+
 /*
  * 圆角
  * image 图片对象

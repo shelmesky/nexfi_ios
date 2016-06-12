@@ -519,16 +519,15 @@ static SqlManager *_share = nil;
     
     NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
     
-    
     if ([db open]) {
         NSMutableDictionary *dic = [[NSMutableDictionary alloc]initWithCapacity:0];
         
         //
-        //        [dic setObject:[NSString stringWithFormat:@"%ld",num] forKey:@"startNum"];
-        //        [dic setObject:[NSString stringWithFormat:@"%ld",num + 20] forKey:@"endNum"];
+        [dic setObject:[NSString stringWithFormat:@"%ld",num] forKey:@"startNum"];
+        [dic setObject:[NSString stringWithFormat:@"%d",20] forKey:@"endNum"];
         
-        //        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time desc limit :startNum,:endNum"withParameterDictionary:dic];
-        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time asc"];
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time desc limit :startNum,:endNum"withParameterDictionary:dic];
+//        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat order by send_time asc"];
         
         while ([rs next]) {
             
@@ -557,7 +556,7 @@ static SqlManager *_share = nil;
             user.userNick = [rs stringForColumn:@"userNick"];
             user.userAge = [[rs stringForColumn:@"userAge"] intValue];
             user.userGender = [rs stringForColumn:@"userGender"];
-            message.UserMessage = user;
+            message.userMessage = user;
             
             message.timeStamp = [rs stringForColumn:@"send_time"];
             message.msgId = [rs stringForColumn:@"msg_id"];
@@ -642,9 +641,9 @@ static SqlManager *_share = nil;
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         [dict setObject:fromId forKey:@"from_user_id"];
         [dict setObject:toId forKey:@"to_user_id"];
-        [dict setObject:[NSString stringWithFormat: @"%ld", num] forKey:@"startNum"];
-        [dict setObject:[NSString stringWithFormat: @"%ld", num+30] forKey:@"endNum"];
-        
+        [dict setObject:[NSString stringWithFormat: @"%ld", num] forKey:@"page"];//page
+        [dict setObject:[NSString stringWithFormat: @"%d", 20] forKey:@"pageNum"];//pageNum
+        NSLog(@"dict====%@",dict);
         //        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc limit :startNum,:endNum" withParameterDictionary:dict];
         
         /*
@@ -652,7 +651,8 @@ static SqlManager *_share = nil;
          
          */
         
-        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
+        //FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where (from_user_id=:from_user_id or to_user_id=:to_user_id) order by send_time desc limit :page,:pageNum" withParameterDictionary:dict];
         
         //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select * from letmedo_chat where from_user_id=%@ or to_user_id=%@ order by public_time desc limit :startNum,:endNum",fromId,toId]];
         

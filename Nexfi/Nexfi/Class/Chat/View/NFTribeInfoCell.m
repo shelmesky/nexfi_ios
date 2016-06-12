@@ -24,6 +24,8 @@
     
     self.HeadImg.image = [UIImage imageNamed:userModel.userAvatar];
     self.nameLa.text = userModel.userNick;
+    CGSize labels = [self.nameLa.text sizeWithAttributes:@{NSFontAttributeName:self.nameLa.font}];
+    self.nickNameW.constant = labels.width + 1;
     
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

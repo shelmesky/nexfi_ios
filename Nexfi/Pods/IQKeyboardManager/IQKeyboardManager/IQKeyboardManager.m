@@ -105,6 +105,8 @@ void _IQShowLog(NSString *logString);
 
 /*******************************************/
 
+@property(nonatomic, strong, nonnull, readwrite) NSMutableSet<Class> *registeredClasses;
+
 @property(nonatomic, strong, nonnull, readwrite) NSMutableSet<Class> *disabledDistanceHandlingClasses;
 @property(nonatomic, strong, nonnull, readwrite) NSMutableSet<Class> *enabledDistanceHandlingClasses;
 
@@ -157,8 +159,6 @@ void _IQShowLog(NSString *logString);
 //TextView handling
 @synthesize canAdjustTextView                   =   _canAdjustTextView;
 
-@synthesize shouldFixTextViewClip               =   _shouldFixTextViewClip;
-
 //Resign handling
 @synthesize shouldResignOnTouchOutside          =   _shouldResignOnTouchOutside;
 
@@ -195,15 +195,17 @@ void _IQShowLog(NSString *logString);
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:UIKeyboardDidHideNotification object:nil];
 
+            strongSelf.registeredClasses = [[NSMutableSet alloc] init];
+
 			//  Registering for UITextField notification.
-            [self addTextFieldViewDidBeginEditingNotificationName:UITextFieldTextDidBeginEditingNotification
-                                    didEndEditingNotificationName:UITextFieldTextDidEndEditingNotification];
+            [self registerTextFieldViewClass:[UITextField class]
+             didBeginEditingNotificationName:UITextFieldTextDidBeginEditingNotification
+               didEndEditingNotificationName:UITextFieldTextDidEndEditingNotification];
 
             //  Registering for UITextView notification.
-            [self addTextFieldViewDidBeginEditingNotificationName:UITextViewTextDidBeginEditingNotification
-                                    didEndEditingNotificationName:UITextViewTextDidEndEditingNotification];
-
-            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldViewDidChange:) name:UITextViewTextDidChangeNotification object:nil];
+            [self registerTextFieldViewClass:[UITextView class]
+             didBeginEditingNotificationName:UITextViewTextDidBeginEditingNotification
+               didEndEditingNotificationName:UITextViewTextDidEndEditingNotification];
 
             //  Registering for orientation changes notification
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willChangeStatusBarOrientation:) name:UIApplicationWillChangeStatusBarOrientationNotification object:nil];
@@ -243,14 +245,13 @@ void _IQShowLog(NSString *logString);
             strongSelf.enabledTouchResignedClasses = [[NSMutableSet alloc] init];
 
             [self setShouldToolbarUsesTextFieldTintColor:NO];
-            [self setShouldFixTextViewClip:YES];
         });
     }
     return self;
 }
 
 /*  Automatically called from the `+(void)load` method. */
-+ (instancetype)sharedManager
++ (IQKeyboardManager*)sharedManager
 {
 	//Singleton instance
 	static IQKeyboardManager *kbManager;
@@ -590,8 +591,23 @@ void _IQShowLog(NSString *logString);
 	
     _IQShowLog([NSString stringWithFormat:@"Need to move: %.2f",move]);
 
-    //  Getting it's superScrollView.   //  (Enhancement ID: #21, #24)
-    UIScrollView *superScrollView = (UIScrollView*)[_textFieldView superviewOfClassType:[UIScrollView class]];
+    UIScrollView *superScrollView = nil;
+    UIScrollView *superView = (UIScrollView*)[_textFieldView superviewOfClassType:[UIScrollView class]];
+
+    //Getting UIScrollView whose scrolling is enabled.    //  (Bug ID: #285)
+    while (superView)
+    {
+        if (superView.isScrollEnabled)
+        {
+            superScrollView = superView;
+            break;
+        }
+        else
+        {
+            //  Getting it's superScrollView.   //  (Enhancement ID: #21, #24)
+            superView = (UIScrollView*)[superView superviewOfClassType:[UIScrollView class]];
+        }
+    }
     
     //If there was a lastScrollView.    //  (Bug ID: #34)
     if (_lastScrollView)
@@ -735,7 +751,7 @@ void _IQShowLog(NSString *logString);
             {
                 CGRect lastScrollViewRect = [[_lastScrollView superview] convertRect:_lastScrollView.frame toView:keyWindow];
 
-                CGFloat bottom = kbSize.height-(CGRectGetHeight(keyWindow.frame)-CGRectGetMaxY(lastScrollViewRect));
+                CGFloat bottom = kbSize.height-keyboardDistanceFromTextField-(CGRectGetHeight(keyWindow.frame)-CGRectGetMaxY(lastScrollViewRect));
 
                 // Update the insets so that the scroll vew doesn't shift incorrectly when the offset is near the bottom of the scroll view.
                 UIEdgeInsets movedInsets = _lastScrollView.contentInset;
@@ -753,19 +769,11 @@ void _IQShowLog(NSString *logString);
                     strongSelf.lastScrollView.contentInset = movedInsets;
                     
                     UIEdgeInsets newInset = strongSelf.lastScrollView.scrollIndicatorInsets;
-                    newInset.bottom = movedInsets.bottom - 10;
+                    newInset.bottom = movedInsets.bottom;
                     strongSelf.lastScrollView.scrollIndicatorInsets = newInset;
 
                 } completion:NULL];
 
-                //Maintaining contentSize
-                if (_lastScrollView.contentSize.height<_lastScrollView.frame.size.height)
-                {
-                    CGSize contentSize = _lastScrollView.contentSize;
-                    contentSize.height = _lastScrollView.frame.size.height;
-                    _lastScrollView.contentSize = contentSize;
-                }
-                
                 _IQShowLog([NSString stringWithFormat:@"%@ new ContentInset : %@",[_lastScrollView _IQDescription], NSStringFromUIEdgeInsets(_lastScrollView.contentInset)]);
             }
         }
@@ -916,6 +924,22 @@ void _IQShowLog(NSString *logString);
     _IQShowLog([NSString stringWithFormat:@"****** %@ ended ******",NSStringFromSelector(_cmd)]);
 }
 
+#pragma mark - Public Methods
+
+/*  Refreshes textField/textView position if any external changes is explicitly made by user.   */
+- (void)reloadLayoutIfNeeded
+{
+    if ([self privateIsEnabled] == NO)	return;
+    
+    if (_textFieldView != nil &&
+        _isKeyboardShowing == YES &&
+        CGRectEqualToRect(_topViewBeginRect, CGRectZero) == false &&
+        [_textFieldView isAlertViewTextField] == NO)
+    {
+        [self adjustFrame];
+    }
+}
+
 #pragma mark - UIKeyboad Notification methods
 /*  UIKeyboardWillShowNotification. */
 -(void)keyboardWillShow:(NSNotification*)aNotification
@@ -947,7 +971,7 @@ void _IQShowLog(NSString *logString);
     if (_shouldAdoptDefaultKeyboardAnimation)
     {
         //  Getting keyboard animation.
-        _animationCurve = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationCurveUserInfoKey] integerValue];
+        _animationCurve = [[aNotification userInfo][UIKeyboardAnimationCurveUserInfoKey] integerValue];
         _animationCurve = _animationCurve<<16;
     }
     else
@@ -956,7 +980,7 @@ void _IQShowLog(NSString *logString);
     }
 
     //  Getting keyboard animation duration
-    CGFloat duration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGFloat duration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     
     //Saving animation duration
     if (duration != 0.0)    _animationDuration = duration;
@@ -964,7 +988,7 @@ void _IQShowLog(NSString *logString);
     CGSize oldKBSize = _kbSize;
     
     //  Getting UIKeyboardSize.
-    CGRect kbFrame = [[[aNotification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect kbFrame = [[aNotification userInfo][UIKeyboardFrameEndUserInfoKey] CGRectValue];
 
     CGRect screenSize = [[UIScreen mainScreen] bounds];
 
@@ -1013,7 +1037,7 @@ void _IQShowLog(NSString *logString);
     _isKeyboardShowing = NO;
     
     //  Getting keyboard animation duration
-    CGFloat aDuration = [[[aNotification userInfo] objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    CGFloat aDuration = [[aNotification userInfo][UIKeyboardAnimationDurationUserInfoKey] floatValue];
     if (aDuration!= 0.0f)
     {
         _animationDuration = aDuration;
@@ -1275,31 +1299,6 @@ void _IQShowLog(NSString *logString);
     _IQShowLog([NSString stringWithFormat:@"****** %@ ended ******",NSStringFromSelector(_cmd)]);
 }
 
-/** UITextViewTextDidChangeNotificationBug,  fix for iOS 7.0.x - http://stackoverflow.com/questions/18966675/uitextview-in-ios7-clips-the-last-line-of-text-string */
--(void)textFieldViewDidChange:(NSNotification*)notification //  (Bug ID: #18)
-{
-    if (_shouldFixTextViewClip == YES && _enable == YES)
-    {
-        UITextView *textView = (UITextView *)notification.object;
-        CGRect line = [textView caretRectForPosition: textView.selectedTextRange.start];
-        CGFloat overflow = CGRectGetMaxY(line) - (textView.contentOffset.y + CGRectGetHeight(textView.bounds) - textView.contentInset.bottom - textView.contentInset.top);
-        
-        //Added overflow conditions (Bug ID: 95)
-        if ( overflow > 0  && overflow < FLT_MAX)
-        {
-            // We are at the bottom of the visible text and introduced a line feed, scroll down (iOS 7 does not do it)
-            // Scroll caret to visible area
-            CGPoint offset = textView.contentOffset;
-            offset.y += overflow + 7; // leave 7 pixels margin
-            
-            // Cannot animate with setContentOffset:animated: or caret will not appear
-            [UIView animateWithDuration:_animationDuration delay:0 options:(_animationCurve|UIViewAnimationOptionBeginFromCurrentState) animations:^{
-                [textView setContentOffset:offset];
-            } completion:NULL];
-        }
-    }
-}
-
 #pragma mark - UIInterfaceOrientation Change notification methods
 /**  UIApplicationWillChangeStatusBarOrientationNotification. Need to set the textView to it's original position. If any frame changes made. (Bug ID: #92)*/
 - (void)willChangeStatusBarOrientation:(NSNotification*)aNotification
@@ -1433,7 +1432,7 @@ void _IQShowLog(NSString *logString);
     //If it is not first textField. then it's previous object becomeFirstResponder.
     if (index != NSNotFound && index > 0)
     {
-        UITextField *nextTextField = [textFields objectAtIndex:index-1];
+        UITextField *nextTextField = textFields[index-1];
         
         //  Retaining textFieldView
         UIView *textFieldRetain = _textFieldView;
@@ -1469,7 +1468,7 @@ void _IQShowLog(NSString *logString);
     //If it is not last textField. then it's next object becomeFirstResponder.
     if (index != NSNotFound && index < textFields.count-1)
     {
-        UITextField *nextTextField = [textFields objectAtIndex:index+1];
+        UITextField *nextTextField = textFields[index+1];
         
         //  Retaining textFieldView
         UIView *textFieldRetain = _textFieldView;
@@ -1555,7 +1554,7 @@ void _IQShowLog(NSString *logString);
         UITextField *textField = nil;
         
         if ([siblings count])
-            textField = [siblings objectAtIndex:0]; //Not using firstObject method because iOS5 doesn't not support 'firstObject' method.
+            textField = siblings[0];
         
         //Either there is no inputAccessoryView or if accessoryView is not appropriate for current situation(There is Previous/Next/Done toolbar).
         //setInputAccessoryView: check   (Bug ID: #307)
@@ -1731,7 +1730,7 @@ void _IQShowLog(NSString *logString);
 
                 //In case of UITableView (Special), the next/previous buttons has to be refreshed everytime.    (Bug ID: #56)
                 //	If firstTextField, then previous should not be enabled.
-                if ([siblings objectAtIndex:0] == textField)
+                if (siblings[0] == textField)
                 {
                     [textField setEnablePrevious:NO next:YES];
                 }
@@ -1777,7 +1776,7 @@ void _IQShowLog(NSString *logString);
     for (UITextField *textField in siblings)
     {
         //	If firstTextField, then previous should not be enabled.
-        if ([siblings objectAtIndex:0] == textField)
+        if (siblings[0] == textField)
         {
             if (siblings.count == 1)
             {
@@ -1869,9 +1868,12 @@ void _IQShowLog(NSString *logString);
 /**
  Add customised Notification for third party customised TextField/TextView.
  */
--(void)addTextFieldViewDidBeginEditingNotificationName:(nonnull NSString *)didBeginEditingNotificationName
-                         didEndEditingNotificationName:(nonnull NSString *)didEndEditingNotificationName
+-(void)registerTextFieldViewClass:(nonnull Class)aClass
+  didBeginEditingNotificationName:(nonnull NSString *)didBeginEditingNotificationName
+    didEndEditingNotificationName:(nonnull NSString *)didEndEditingNotificationName
 {
+    [_registeredClasses addObject:aClass];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldViewDidBeginEditing:) name:didBeginEditingNotificationName object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldViewDidEndEditing:) name:didEndEditingNotificationName object:nil];
 }

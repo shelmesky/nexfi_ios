@@ -78,6 +78,11 @@ extern NSInteger const kIQPreviousNextButtonToolbarTag;
  */
 @property(nonatomic, assign) BOOL preventShowingBottomBlankSpace;
 
+/**
+ Refreshes textField/textView position if any external changes is explicitly made by user.
+ */
+- (void)reloadLayoutIfNeeded;
+
 ///-------------------------
 /// @name IQToolbar handling
 ///-------------------------
@@ -135,11 +140,6 @@ extern NSInteger const kIQPreviousNextButtonToolbarTag;
  Adjust textView's frame when it is too big in height. Default is NO.
  */
 @property(nonatomic, assign) BOOL canAdjustTextView;
-
-/**
- Adjust textView's contentInset to fix a bug. for iOS 7.0.x - http://stackoverflow.com/questions/18966675/uitextview-in-ios7-clips-the-last-line-of-text-string Default is YES.
- */
-@property(nonatomic, assign) BOOL shouldFixTextViewClip;
 
 ///---------------------------------------
 /// @name UIKeyboard appearance overriding
@@ -264,8 +264,9 @@ extern NSInteger const kIQPreviousNextButtonToolbarTag;
  @param didBeginEditingNotificationName This should be identical to UITextViewTextDidBeginEditingNotification
  @param didEndEditingNotificationName This should be identical to UITextViewTextDidEndEditingNotification
  */
--(void)addTextFieldViewDidBeginEditingNotificationName:(nonnull NSString *)didBeginEditingNotificationName
-                         didEndEditingNotificationName:(nonnull NSString *)didEndEditingNotificationName;
+-(void)registerTextFieldViewClass:(nonnull Class)aClass
+  didBeginEditingNotificationName:(nonnull NSString *)didBeginEditingNotificationName
+    didEndEditingNotificationName:(nonnull NSString *)didEndEditingNotificationName;
 
 ///----------------------------------------
 /// @name Must not be used for subclassing.
