@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/Helpers/XMNChatServer.h

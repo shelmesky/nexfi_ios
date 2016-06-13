@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/Vendors/SwipeView/SwipeView.h

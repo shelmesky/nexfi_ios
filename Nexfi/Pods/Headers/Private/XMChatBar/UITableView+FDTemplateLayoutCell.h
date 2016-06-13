@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/Categories/UITableView+FDTemplateLayoutCell.h

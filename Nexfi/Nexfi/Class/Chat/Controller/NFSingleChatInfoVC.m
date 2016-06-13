@@ -170,12 +170,12 @@
     //播放动画
     [cell.voice startAnimating];
     //播放声音
-    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row isMe:NO];
+    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row timeStamps:msg.timeStamp];
     
     //设为已读
     if ([msgCell isKindOfClass:[ReceiverVoiceCell class]]) {
         [cell updateIsRead:YES];//UI
-        [[SqlManager shareInstance]clearMsgOfAllUserWithMsgId:msg.msgId];//数据库
+        [[SqlManager shareInstance]clearMsgOfSingleWithmsg_id:msg.msgId];//数据库
         msg.voiceMessage.isRead = @"1";
         [_textArray replaceObjectAtIndex:indexPath.row withObject:msg];
     }

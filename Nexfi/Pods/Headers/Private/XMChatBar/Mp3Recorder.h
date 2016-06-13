@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/Vendors/VoiceLib/Mp3Recorder.h

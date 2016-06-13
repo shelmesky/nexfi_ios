@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/XMNChatViewModel.h

@@ -29,6 +29,9 @@
         [[SqlManager shareInstance]creatTable];
     }
     
+    //清除语音缓存
+    [self clearVoiceCache];
+    
     
     [IQKeyboardManager sharedManager].enable = NO;
 //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;
@@ -54,6 +57,27 @@
 //    self.window.rootViewController = nav;
     
     return YES;
+}
+- (void)clearVoiceCache{
+    
+    NSError *fileError;
+    //清除部分语音缓存
+    NSString *amrPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/amr"];
+    NSArray *amrFilePathArr = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:amrPath error:&fileError];
+    for (NSString *str in amrFilePathArr) {
+        if ([[NSFileManager defaultManager]removeItemAtPath:[amrPath stringByAppendingPathComponent:str] error:nil]) {
+            NSLog(@"删除%@成功",str);
+        }
+    }
+    
+    NSString *wavPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/wav"];
+    NSArray *wavFilePathArr = [[NSFileManager defaultManager]contentsOfDirectoryAtPath:wavPath error:nil];
+    for (NSString *str in wavFilePathArr) {
+        if ([[NSFileManager defaultManager]removeItemAtPath:[wavPath stringByAppendingPathComponent:str] error:nil]) {
+            NSLog(@"删除%@成功",str);
+        }
+    }
+    
 }
 - (UIStatusBarStyle)preferredStatusBarStyle
 {

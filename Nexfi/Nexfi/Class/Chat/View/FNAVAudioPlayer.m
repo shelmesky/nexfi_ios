@@ -6,7 +6,7 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 #import <AVFoundation/AVFoundation.h>
-
+#import "VoiceConverter.h"
 #import "FNAVAudioPlayer.h"
 
 @interface FNAVAudioPlayer ()<AVAudioPlayerDelegate,AVAudioSessionDelegate>{
@@ -72,7 +72,7 @@
     }
     
 }
-- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index isMe:(BOOL)isMe{
+- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index timeStamps:(NSString*)timeStamps{
     
     if (!voiceData) {
         return;
@@ -88,7 +88,7 @@
     self.index = index;
     
     //TODO 从URL中读取音频data
-    isMe?[self playAudioWithPath:voiceData]:[self playAudioWithData:voiceData];
+    [self playAudioWithData:voiceData timeStamps:timeStamps];
     
 }
 #pragma mark - NSNotificationCenter Methods
@@ -115,14 +115,36 @@
     //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
     [_audioPlayer play];
 }
-- (void)playAudioWithData:(NSData *)audioData {
+- (void)playAudioWithData:(NSData *)audioData timeStamps:(NSString *)timeStamps{
     
     NSError *audioPlayerError;
-    _audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&audioPlayerError];
-    if (!_audioPlayer || !audioData) {
-        return;
+    
+    NSString *amrDoPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/amr"];
+    NSString *amrPath = [amrDoPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.amr",timeStamps]];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:amrPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:amrDoPath withIntermediateDirectories:YES attributes:nil error:nil];
+        
+        [audioData writeToFile:amrPath atomically:YES];
+    }
+
+    
+    NSString *wavDoPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/wav"];
+    
+    NSString *wavPath = [wavDoPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.wav",timeStamps]];
+    
+    if (![[NSFileManager defaultManager] fileExistsAtPath:wavPath]) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:wavDoPath withIntermediateDirectories:YES attributes:nil error:nil];
+        
+        [VoiceConverter amrToWav:amrPath wavSavePath:wavPath];
     }
     
+    NSURL *wavUrl = [NSURL fileURLWithPath:wavPath];
+    
+    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:wavUrl error:&audioPlayerError];
+    if (!_audioPlayer || !wavUrl) {
+        return;
+    }
     
     //开启红外感应 !!! 有bug 暂时弃用
     //    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
@@ -134,6 +156,14 @@
 //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
     [_audioPlayer play];
     
+}
+- (void)deleteFileWithPath:(NSString *)path
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if([fileManager removeItemAtPath:path error:nil])
+    {
+        NSLog(@"删除以前的mp3文件");
+    }
 }
 - (void)stopAudioPlayer {
     if (_audioPlayer) {

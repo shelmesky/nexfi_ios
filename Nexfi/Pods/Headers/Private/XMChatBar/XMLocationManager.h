@@ -1,1 +1,0 @@
-../../../XMChatBar/XMChatBar/Vendors/XMLocationManager/XMLocationManager.h
