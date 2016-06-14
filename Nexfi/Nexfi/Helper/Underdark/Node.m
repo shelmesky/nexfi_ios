@@ -69,7 +69,6 @@
         
         NSData *newData;
         
-        
         //        NSDictionary *msgDic = [NexfiUtil getObjectData:msg];
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         
@@ -244,6 +243,7 @@
     self.peersCount += 1;
     
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
+    self.neighbourVc.navigationItem.title = [NSString stringWithFormat:@"附近的人(%d)",self.peersCount];
     
     //    LogDebug(@"");
     //    if (self.allUserChatVC) {
@@ -260,6 +260,7 @@
     self.peersCount -= 1;
     
     self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
+    self.neighbourVc.navigationItem.title = [NSString stringWithFormat:@"附近的人(%d)",self.peersCount];
     //    if (self.allUserChatVC) {
     //        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
     //    }

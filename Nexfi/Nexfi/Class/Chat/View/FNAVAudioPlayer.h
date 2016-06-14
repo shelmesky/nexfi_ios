@@ -22,6 +22,6 @@
 
 + (instancetype)sharePlayer;
 
-- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index timeStamps:(NSString*)timeStamps;//- (void)playAudioWithData:(NSData *)audioData;
+- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index;//- (void)playAudioWithData:(NSData *)audioData;
 - (void)stopAudioPlayer;
 @end

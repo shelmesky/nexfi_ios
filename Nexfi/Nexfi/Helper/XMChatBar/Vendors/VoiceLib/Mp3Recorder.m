@@ -9,13 +9,10 @@
 #import "Mp3Recorder.h"
 #import "lame.h"
 #import <AVFoundation/AVFoundation.h>
-#import "VoiceConverter.h"
 
 @interface Mp3Recorder()<AVAudioRecorderDelegate>
 @property (nonatomic, strong) AVAudioSession *session;
 @property (nonatomic, strong) AVAudioRecorder *recorder;
-@property (nonatomic, strong) NSString *wavPath;
-@property (nonatomic, strong) NSString *currentTimeStr;
 @end
 
 @implementation Mp3Recorder
@@ -34,9 +31,7 @@
 {
     _recorder = nil;
     NSError *recorderSetupError = nil;
-    self.wavPath = [self wavpath];
-    NSURL *url = [NSURL fileURLWithPath:self.wavPath];
-    /* MP3
+    NSURL *url = [NSURL fileURLWithPath:[self cafPath]];
     NSMutableDictionary *settings = [[NSMutableDictionary alloc] init];
     //录音格式 无法使用
     [settings setValue :[NSNumber numberWithInt:kAudioFormatLinearPCM] forKey: AVFormatIDKey];
@@ -46,19 +41,8 @@
     [settings setValue :[NSNumber numberWithInt:2] forKey: AVNumberOfChannelsKey];
     //音频质量,采样质量
     [settings setValue:[NSNumber numberWithInt:AVAudioQualityMin] forKey:AVEncoderAudioQualityKey];
-     */
-    //wav －amr
-    NSDictionary *recordSetting = [[NSDictionary alloc] initWithObjectsAndKeys:
-                                   [NSNumber numberWithFloat: 8000.0],AVSampleRateKey, //采样率
-                                   [NSNumber numberWithInt: kAudioFormatLinearPCM],AVFormatIDKey,
-                                   [NSNumber numberWithInt:16],AVLinearPCMBitDepthKey,//采样位数 默认 16
-                                   [NSNumber numberWithInt: 1], AVNumberOfChannelsKey,//通道的数目
-                                   //                                   [NSNumber numberWithBool:NO],AVLinearPCMIsBigEndianKey,//大端还是小端 是内存的组织方式
-                                   //                                   [NSNumber numberWithBool:NO],AVLinearPCMIsFloatKey,//采样信号是整数还是浮点数
-                                   //                                   [NSNumber numberWithInt: AVAudioQualityMedium],AVEncoderAudioQualityKey,//音频编码质量
-                                   nil];
     _recorder = [[AVAudioRecorder alloc] initWithURL:url
-                                            settings:recordSetting
+                                            settings:settings
                                                error:&recorderSetupError];
     if (recorderSetupError) {
         NSLog(@"%@",recorderSetupError);
@@ -66,12 +50,6 @@
     _recorder.meteringEnabled = YES;
     _recorder.delegate = self;
     [_recorder prepareToRecord];
-    
-    //开始录音
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error:nil];
-    [[AVAudioSession sharedInstance] setActive:YES error:nil];
- 
-    [_recorder record];
 }
 
 - (void)setSesstion
@@ -122,9 +100,9 @@
     [self deleteFileWithPath:[self mp3Path]];
 }
 
-- (void)deleteWavCache
+- (void)deleteCafCache
 {
-    [self deleteFileWithPath:self.wavPath];
+    [self deleteFileWithPath:[self cafPath]];
 }
 
 - (void)deleteFileWithPath:(NSString *)path
@@ -139,26 +117,11 @@
 #pragma mark - Convert Utils
 - (void)audio_PCMtoMP3
 {
-    NSString *cafFilePath = self.wavPath;
-
+    NSString *cafFilePath = [self cafPath];
+    NSString *mp3FilePath = [[self mp3Path] stringByAppendingPathComponent:[self randomMP3FileName]];
     
-    int success = [VoiceConverter wavToAmr:cafFilePath amrSavePath:[self amrPath]];
-    NSLog(@"success===%d",success);
-    NSString *amrPath = [@"audio/amr" stringByAppendingPathComponent:[NSString stringWithFormat:@"rec_%@.amr",self.currentTimeStr]];
-    if (_delegate && [_delegate respondsToSelector:@selector(endConvertWithMP3FileName:)]) {
-            [_delegate endConvertWithMP3FileName:amrPath];
-    }
-    //
-    [self deleteWavCache];
-
+    NSString *mp3PartFilePath = [@"com.XMFraker.XMNChat.audioCache" stringByAppendingPathComponent:[self randomMP3FileName]];
     
-    //MP3
-    /*
-     
-     NSString *mp3FilePath = [[self mp3Path] stringByAppendingPathComponent:[self randomMP3FileName]];
-     
-     NSString *mp3PartFilePath = [@"com.XMFraker.XMNChat.audioCache" stringByAppendingPathComponent:[self randomMP3FileName]];
-     
     NSLog(@"MP3转换开始");
     if (_delegate && [_delegate respondsToSelector:@selector(beginConvert)]) {
         [_delegate beginConvert];
@@ -207,33 +170,15 @@
         }
         [self deleteCafCache];
     }
-     */
     
     
 }
 
 #pragma mark - Path Utils
-- (NSString *)amrPath{
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/amr"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    NSString *amrPath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"rec_%@.amr",self.currentTimeStr]];
-    return amrPath;
-}
-- (NSString *)wavpath
+- (NSString *)cafPath
 {
-    NSDate *now = [NSDate date];
-    NSDateFormatter *dateFormater = [[NSDateFormatter alloc] init];
-    [dateFormater setDateFormat:@"yyyyMMddHHmmss"];
-    NSString *path = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/wav"];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:path]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-    NSString *wavpath = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"rec_%@.wav",[dateFormater stringFromDate:now]]];
-    self.currentTimeStr = [dateFormater stringFromDate:now];
-    return wavpath;
-    
+    NSString *cafPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"tmp.caf"];
+    return cafPath;
 }
 
 - (NSString *)mp3Path {

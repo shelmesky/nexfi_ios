@@ -161,7 +161,8 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	}
 	
 	LogWarn(@"link heartbeat timeout");
-//	[self closeStreams];
+    //程序进入后台关闭流？
+	[self closeStreams];
 }
 
 #pragma mark - UDChannel
@@ -263,7 +264,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 - (void) sendFrame:(nonnull UDOutputItem*)frameData
 {
 	// Transport queue.
-    NSLog(@"frameData ==== %@",frameData);
 
 	UDOutputItem* frameHeader = [self frameHeaderForFrameData:frameData.data];
 	[self performSelector:@selector(enqueueItem:) onThread:self.adapter.ioThread withObject:frameHeader waitUntilDone:NO];
@@ -274,7 +274,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 - (void) sendLinkFrame:(Frame*)frame
 {
 	// Any queue.
-    NSLog(@"frame ==== %@",frame);
 	UDOutputItem* frameBody = [[UDOutputItem alloc] initWithData:[frame data] frameData:nil];
 
 	sldispatch_async(_adapter.queue, ^{
@@ -335,7 +334,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		bytes += _outputDataOffset;
 		
 		NSInteger len = (NSInteger) MIN(512, _outputItem.data.length - _outputDataOffset);
-        NSLog(@"frameData ==== %@====output.length====%ld",[NSJSONSerialization JSONObjectWithData:_outputItem.data options:0 error:0],_outputItem.data.length);
+
 		// Writing to NSOutputStream:
 		// http://stackoverflow.com/a/23001691/1449965
 		// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/WritingOutputStreams.html
@@ -346,7 +345,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		{
 			_outputCanWriteToStream = false;
 			result = [_outputStream write:bytes maxLength:(NSUInteger)len];
-            NSLog(@"result ===== %ld",result);
 		}
 		else
 		{
@@ -417,7 +415,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
         static NSUInteger readableBytes;
         if (_inputByteBuf.readableBytes > 100) {
             readableBytes = _inputByteBuf.readableBytes;
-            NSLog(@"output.length=1111===%ld",readableBytes);
 
         }
 		
@@ -431,9 +428,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
  
 		// Calculating frame body size.
 		uint32_t frameBodySize =  *( ((const uint32_t*)(_inputByteBuf.data.bytes + _inputByteBuf.readerIndex)) + 0) ;
-        
-        NSLog(@"output.length=1111===%ld===frameBodySize====%d",readableBytes,frameBodySize);
-
         
         //获取正值
 		frameBodySize = CFSwapInt32BigToHost(frameBodySize);
@@ -451,10 +445,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			[_inputByteBuf ensureWritable:frameSize - _inputByteBuf.readableBytes];
 			[_inputByteBuf trimWritable:frameSize - _inputByteBuf.readableBytes];
             
-            NSLog(@"progress=     ===%f",progress);
-            
-            NSLog(@"output.length=1111===%ld===frameBodySize====%d",readableBytes,frameBodySize);
-
             self.readIndex = _inputByteBuf.readableBytes;
 //            NSData* frameBody = [_inputByteBuf readBytes:_inputByteBuf.readableBytes];
 //            NSLog(@"frameBody===%@====length====%ld",frameBody,frameBody.length);;
@@ -548,7 +538,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			[_adapter channelCanSendMore:self];
 		});
 		
-		return;
+//		return;
 	}
 	
 	if(frame.kind == FrameKindHeartbeat)
@@ -565,6 +555,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		if(!frame.hasPayload || frame.payload.payload == nil)
 			return;
 		sldispatch_async(self.adapter.queue, ^{
+            NSLog(@"11112222");
 			[self.adapter channel:self receivedFrame:frame.payload.payload WithProgress:progress];
 		});
 		

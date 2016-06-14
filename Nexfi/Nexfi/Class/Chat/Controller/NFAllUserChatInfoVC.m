@@ -254,7 +254,7 @@
     //播放动画
     [cell.voice startAnimating];
     //播放声音
-    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row timeStamps:msg.timeStamp];
+    [[FNAVAudioPlayer sharePlayer] playAudioWithvoiceData:[NSData dataWithBase64EncodedString:msg.voiceMessage.fileData] atIndex:indexPath.row];
     
 
     //设为已读

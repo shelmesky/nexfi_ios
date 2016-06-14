@@ -265,6 +265,10 @@
 			_suspended = false;
 			[_reach stop];
 			[_reach start];
+//            [_server stop];
+//            [_server start];
+//            [_browser stop];
+//            [_browser start];
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{
@@ -293,6 +297,10 @@
 			
 			[_reach stop];
 			[_reach start];
+//            [_server stop];
+//            [_server start];
+//            [_browser stop];
+//            [_browser start];
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{

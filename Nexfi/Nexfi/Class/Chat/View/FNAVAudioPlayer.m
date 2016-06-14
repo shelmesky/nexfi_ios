@@ -6,7 +6,7 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 #import <AVFoundation/AVFoundation.h>
-#import "VoiceConverter.h"
+
 #import "FNAVAudioPlayer.h"
 
 @interface FNAVAudioPlayer ()<AVAudioPlayerDelegate,AVAudioSessionDelegate>{
@@ -43,15 +43,15 @@
         //添加应用进入后台通知
         UIApplication *app = [UIApplication sharedApplication];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:UIApplicationWillResignActiveNotification object:app];
-//        [[NSNotificationCenter defaultCenter] addObserver: self
-//                                                 selector: @selector(handleInterruption:)
-//                                                     name:        AVAudioSessionInterruptionNotification
-//                                                   object:      [AVAudioSession sharedInstance]];
+        //        [[NSNotificationCenter defaultCenter] addObserver: self
+        //                                                 selector: @selector(handleInterruption:)
+        //                                                     name:        AVAudioSessionInterruptionNotification
+        //                                                   object:      [AVAudioSession sharedInstance]];
         
-//        _audioDataOperationQueue = [[NSOperationQueue alloc] init];
-//        _audioDataOperationQueue.name = @"com.XMFraker.XMNAVAudipPlayer.loadAudioDataQueue";
-//        
-//        _index = NSUIntegerMax;
+        //        _audioDataOperationQueue = [[NSOperationQueue alloc] init];
+        //        _audioDataOperationQueue.name = @"com.XMFraker.XMNAVAudipPlayer.loadAudioDataQueue";
+        //
+        //        _index = NSUIntegerMax;
         
     }
     return self;
@@ -72,7 +72,7 @@
     }
     
 }
-- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index timeStamps:(NSString*)timeStamps{
+- (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index{
     
     if (!voiceData) {
         return;
@@ -81,22 +81,22 @@
     //如果来自同一个URLString并且index相同,则直接取消
     if (self.index == index || _audioPlayer.isPlaying) {
         [self stopAudioPlayer];
-//        [self.delegate sendVoiceState:FNVoiceMessageStateCancel];
-//        return;
+        //        [self.delegate sendVoiceState:FNVoiceMessageStateCancel];
+        //        return;
     }
     
     self.index = index;
     
     //TODO 从URL中读取音频data
-    [self playAudioWithData:voiceData timeStamps:timeStamps];
+    [self playAudioWithData:voiceData];
     
 }
 #pragma mark - NSNotificationCenter Methods
 - (void)applicationWillResignActive:(UIApplication *)application {
     
-//    [self cancelOperation];
+    //    [self cancelOperation];
     [self stopAudioPlayer];
-//    [self setAudioPlayerState:XMNVoiceMessageStateCancel];
+    //    [self setAudioPlayerState:XMNVoiceMessageStateCancel];
     
 }
 - (void)playAudioWithPath:(NSString *)audioPath{
@@ -115,36 +115,14 @@
     //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
     [_audioPlayer play];
 }
-- (void)playAudioWithData:(NSData *)audioData timeStamps:(NSString *)timeStamps{
+- (void)playAudioWithData:(NSData *)audioData {
     
     NSError *audioPlayerError;
-    
-    NSString *amrDoPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/amr"];
-    NSString *amrPath = [amrDoPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.amr",timeStamps]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:amrPath]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:amrDoPath withIntermediateDirectories:YES attributes:nil error:nil];
-        
-        [audioData writeToFile:amrPath atomically:YES];
-    }
-
-    
-    NSString *wavDoPath = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject] stringByAppendingPathComponent:@"audio/wav"];
-    
-    NSString *wavPath = [wavDoPath stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.wav",timeStamps]];
-    
-    if (![[NSFileManager defaultManager] fileExistsAtPath:wavPath]) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:wavDoPath withIntermediateDirectories:YES attributes:nil error:nil];
-        
-        [VoiceConverter amrToWav:amrPath wavSavePath:wavPath];
-    }
-    
-    NSURL *wavUrl = [NSURL fileURLWithPath:wavPath];
-    
-    _audioPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:wavUrl error:&audioPlayerError];
-    if (!_audioPlayer || !wavUrl) {
+    _audioPlayer = [[AVAudioPlayer alloc] initWithData:audioData error:&audioPlayerError];
+    if (!_audioPlayer || !audioData) {
         return;
     }
+    
     
     //开启红外感应 !!! 有bug 暂时弃用
     //    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
@@ -153,17 +131,9 @@
     _audioPlayer.volume = 1.0f;
     _audioPlayer.delegate = self;
     [_audioPlayer prepareToPlay];
-//    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
+    //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
     [_audioPlayer play];
     
-}
-- (void)deleteFileWithPath:(NSString *)path
-{
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    if([fileManager removeItemAtPath:path error:nil])
-    {
-        NSLog(@"删除以前的mp3文件");
-    }
 }
 - (void)stopAudioPlayer {
     if (_audioPlayer) {
