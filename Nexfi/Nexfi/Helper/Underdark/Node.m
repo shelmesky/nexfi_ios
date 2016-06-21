@@ -30,7 +30,7 @@
         }
         
         _nodeId = buf;
-        
+        NSLog(@"hehenode=====%lld",_nodeId);
         
         //优先选择WIFI
         NSMutableArray *transportKinds = [[NSMutableArray alloc]initWithCapacity:0];
@@ -236,19 +236,13 @@
 - (void)transport:(id<UDTransport>)transport linkConnected:(id<UDLink>)link{
     [self.links addObject:link];
     
+    NSLog(@"link=====%lld",link.nodeId);
+    
     //请求用户信息接口
     [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo WithLink:link]];
     
     //更新用户数量
-    self.peersCount += 1;
-    
-    self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
-    self.neighbourVc.navigationItem.title = [NSString stringWithFormat:@"附近的人(%d)",self.peersCount];
-    
-    //    LogDebug(@"");
-    //    if (self.allUserChatVC) {
-    //        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-    //    }
+//    self.peersCount += 1;
     
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
@@ -257,13 +251,8 @@
         [self.links removeObject:link];
     }
     //更新用户数量
-    self.peersCount -= 1;
+//    self.peersCount -= 1;
     
-    self.neighbourVc.peesCount = [NSString stringWithFormat:@"%d",self.peersCount];
-    self.neighbourVc.navigationItem.title = [NSString stringWithFormat:@"附近的人(%d)",self.peersCount];
-    //    if (self.allUserChatVC) {
-    //        [self.allUserChatVC updatePeersCount:[NSString stringWithFormat:@"%d",self.peersCount]];
-    //    }
     
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
@@ -277,6 +266,8 @@
                 [self.neighbourVc.handleByUsers removeObject:user];
                 
             }
+            //显示多少人
+            self.neighbourVc.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)",self.neighbourVc.handleByUsers.count];
             
             [self.neighbourVc.usersTable reloadData];
             
@@ -299,12 +290,19 @@
         }
         case eMessageType_SendUserInfo://发送用户信息
         {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+
+            if (self.neighbourVc) {
+                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            }
+                        
             break;
         }
         case eMessageType_UpdateUserInfo://更新用户信息
         {
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userInfo" object:nil userInfo:@{@"user":dic,@"update":@"1",@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+
+            if (self.neighbourVc) {
+                [self.neighbourVc refreshTable:@{@"user":dic,@"update":@"1",@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            }
             
             UserModel *users = [UserModel mj_objectWithKeyValues:dic[@"userMessage"]];
             users.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];

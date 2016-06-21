@@ -64,7 +64,7 @@
     
     [self showProgress];
     //好友列表
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(refreshTable:) name:@"userInfo" object:nil];
 
     //检测蓝牙是否开启
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(blueToothMsgFail:) name:@"blueToothFail" object:nil];
@@ -87,57 +87,69 @@
     
 }
 #pragma -mark NSNotification 用户信息更新
-- (void)refreshTable:(NSNotification *)notify{
+- (void)refreshTable:(NSDictionary *)userJson{
+    
     //获取到进度 进度消失
     WGradientProgress *pro = [WGradientProgress sharedInstance];
     [pro hide];
     
-    NSDictionary *userDic = notify.userInfo[@"user"];
-    NSString *nodeId = notify.userInfo[@"nodeId"];
-    NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
-    
-    UserModel *users = [UserModel mj_objectWithKeyValues:user];
-    users.nodeId = nodeId;
-    //过滤多余的用户信息
-    NSString *update = notify.userInfo[@"update"];
-    if (update) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         
-        for (int i = 0; i < self.handleByUsers.count; i ++) {
-            UserModel *user = [self.handleByUsers objectAtIndex:i];
-            if ([user.userId isEqualToString:users.userId]) {
-                [self.handleByUsers replaceObjectAtIndex:i withObject:users];
-            }
+        NSDictionary *userDic = userJson[@"user"];
+        NSString *nodeId = userJson[@"nodeId"];
+        NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
+        //所有用户id集合
+        NSMutableArray *userIdList = [[NSMutableArray alloc]initWithCapacity:0];
+        for (UserModel *user in self.handleByUsers) {
+            [userIdList addObject:user.userId];
         }
-    }else{
+        
+        UserModel *users = [UserModel mj_objectWithKeyValues:user];
+        users.nodeId = nodeId;
+        //过滤多余的用户信息
+        NSString *update = userJson[@"update"];
+        if (update) {
+            for (int i = 0; i < self.handleByUsers.count; i ++) {
+                UserModel *user = [self.handleByUsers objectAtIndex:i];
+                if ([user.userId isEqualToString:users.userId]) {
+                    [self.handleByUsers replaceObjectAtIndex:i withObject:users];
+                }
+            }
+        }else{
+            if (self.handleByUsers.count == 0) {
+                [self.handleByUsers addObject:users];
+            }else{
+                if (![self.handleByUsers containsObject:users] && ![userIdList containsObject:users.userId]) {
+                    [self.handleByUsers addObject:users];
+                }
+            }
+            
+            self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
+            
+        }
+        
+        //获取所有用户的nodeId
+        [self getAllNodeId];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [self.usersTable reloadData];
+            NSLog(@"11111111111111111111111111111");
+            //设置用户上线动画
+            NSUInteger index = [self.handleByUsers indexOfObject:users];
+            NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+            [self playBounceAnimation:cell.nickNameLabel];
+            
+            //显示多少人
+            self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)",self.handleByUsers.count];
+            
+        });
+    });
+    
+    
     
 
-        if (self.handleByUsers.count == 0) {
-                [self.handleByUsers addObject:users];
-        }else{
-//            for (UserModel *user in self.handleByUsers) {
-//                if (![user.userId isEqualToString:users.userId] && ![self.handleByUsers containsObject:users]) {
-//                    [self.handleByUsers addObject:users];
-//                }
-//            }
-            if (![self.handleByUsers containsObject:users]) {
-                [self.handleByUsers addObject:users];
-            }
-        }
-        
-        self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
-        
-        
-    }
-    
-    //获取所有用户的nodeId
-    [self getAllNodeId];
-    
-    [self.usersTable reloadData];
-    
-    //设置用户上线动画
-    NSUInteger index = [self.handleByUsers indexOfObject:users];
-    NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-    [self playBounceAnimation:cell.nickNameLabel];
     
 }
 - (NSMutableArray *)getAllNodeId{

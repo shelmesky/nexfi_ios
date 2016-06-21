@@ -152,6 +152,8 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	{
 		[self stopImpl];
 	}
+    [self startImpl];
+    
 }
 
 #pragma mark - NSNetServiceDelegate

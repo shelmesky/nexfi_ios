@@ -162,7 +162,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	
 	LogWarn(@"link heartbeat timeout");
     //程序进入后台关闭流？
-	[self closeStreams];
+//	[self closeStreams];
 }
 
 #pragma mark - UDChannel
@@ -532,13 +532,13 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		_state = SLBnjStateConnected;
 		
 		_timeoutTimer = [MSWeakTimer scheduledTimerWithTimeInterval:configBonjourTimeoutInterval target:self selector:@selector(checkHeartbeat) userInfo:nil repeats:YES dispatchQueue:self.adapter.queue];
-		
+        
 		sldispatch_async(self.adapter.queue, ^{
 			[self.adapter channelConnected:self];
 			[_adapter channelCanSendMore:self];
 		});
 		
-//		return;
+		return;
 	}
 	
 	if(frame.kind == FrameKindHeartbeat)
@@ -561,14 +561,14 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		
 		return;
 	}
-    //失去连接 发送失败
-    if (_state == SLBnjStateDisconnected) {
-        sldispatch_async(self.adapter.queue, ^{
-            [self.adapter channel:self fail:nil];
-        });
-    }
     
-
+    //失去连接 发送失败
+//    if (_state == SLBnjStateDisconnected) {
+//        sldispatch_async(self.adapter.queue, ^{
+//            [self.adapter channel:self fail:nil];
+//        });
+//    }
+    
     
 } // processInputFrame
 

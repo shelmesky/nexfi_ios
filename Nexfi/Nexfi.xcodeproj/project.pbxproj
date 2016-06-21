@@ -1893,6 +1893,7 @@
 				TargetAttributes = {
 					0EBAE93E1CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = L44VF3A557;
 					};
 					0EBAE9571CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
@@ -2450,7 +2451,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "be1b8e17-1c41-4e31-80f2-b7d0ace1a8f7";
+				PROVISIONING_PROFILE = "344fae66-efcf-4bf2-adf9-5d4a3f2cffdf";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -2478,7 +2479,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "be1b8e17-1c41-4e31-80f2-b7d0ace1a8f7";
+				PROVISIONING_PROFILE = "344fae66-efcf-4bf2-adf9-5d4a3f2cffdf";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

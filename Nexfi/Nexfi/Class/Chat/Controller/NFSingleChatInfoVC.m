@@ -207,6 +207,7 @@
     OtherInfoVC *vc = [[OtherInfoVC alloc]init];
     vc.user = user;
     [self.navigationController pushViewController:vc animated:YES];
+    
 }
 //点击发送的图片
 - (void)clickPic:(NSUInteger)index{
@@ -373,6 +374,7 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showTableMsg:msg];
     });
+    
 }
 - (id<UDLink>)getUserLink{
     if ([UnderdarkUtil share].node.links.count == 0) {

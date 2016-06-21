@@ -19,4 +19,5 @@
 @property (nonatomic ,retain) NSString *peesCount;
 
 - (NSMutableArray *)getAllNodeId;
+- (void)refreshTable:(NSDictionary *)userJson;
 @end
