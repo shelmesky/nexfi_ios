@@ -130,23 +130,19 @@
 }
 -(void)showTableMsg:(PersonMessage *) msg
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-        [_textArray addObject:msg];
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    [_textArray addObject:msg];
 
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
-        [indexPaths addObject:indexPath];
-        dispatch_async(dispatch_get_main_queue(), ^{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
+    [indexPaths addObject:indexPath];
 
-            [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-            [_tableView endUpdates];
-            
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        
-        });
+//            [_tableView beginUpdates];
+    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+//            [_tableView endUpdates];
     
-    });
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+        
+    
 
 }
 #pragma mark -FNMsgCellDelegate

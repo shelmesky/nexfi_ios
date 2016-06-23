@@ -124,29 +124,25 @@
 }
 -(void)showTableMsg:(TribeMessage *) msg
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-        //消息重复不刷新表
-        for (int i = 0; i < _textArray.count; i++) {
-            TribeMessage *tMsg = _textArray[i];
-            if ([tMsg.msgId isEqualToString:msg.msgId]) {
-                return;
-            }
+    
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    //消息重复不刷新表
+    for (int i = 0; i < _textArray.count; i++) {
+        TribeMessage *tMsg = _textArray[i];
+        if ([tMsg.msgId isEqualToString:msg.msgId]) {
+            return;
         }
-        [_textArray addObject:msg];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
-        [indexPaths addObject:indexPath];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_tableView beginUpdates];
-            [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-            [_tableView endUpdates];
-            [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    }
+    [_textArray addObject:msg];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
+    [indexPaths addObject:indexPath];
+    
+//          [_tableView beginUpdates];
+    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
+//            [_tableView endUpdates];
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
             
-        });
-        
-    });
+    
 }
 #pragma mark --tableViewDelegate
 //因为tableView是继承于scrollView的，所以可以用srollView的代理方法

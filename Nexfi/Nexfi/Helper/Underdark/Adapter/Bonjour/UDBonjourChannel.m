@@ -412,11 +412,11 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		// Calculating how much data still must be appended to receive message body size.
 		const size_t frameHeaderSize = sizeof(uint32_t);
         
-        static NSUInteger readableBytes;
-        if (_inputByteBuf.readableBytes > 100) {
-            readableBytes = _inputByteBuf.readableBytes;
-
-        }
+//        static NSUInteger readableBytes;
+//        if (_inputByteBuf.readableBytes > 100) {
+//            readableBytes = _inputByteBuf.readableBytes;
+//
+//        }
 		
 		// If current buffer length is not enough to create frame header - so continue reading.
 		if(_inputByteBuf.readableBytes < frameHeaderSize)
@@ -432,7 +432,8 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
         //获取正值
 		frameBodySize = CFSwapInt32BigToHost(frameBodySize);
 		
-        float progress = (float)readableBytes/(float)frameBodySize;
+        //float progress = (float)readableBytes/(float)frameBodySize;
+        
 //        NSLog(@"progress=     ===%f",progress);
 
         
@@ -445,7 +446,8 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			[_inputByteBuf ensureWritable:frameSize - _inputByteBuf.readableBytes];
 			[_inputByteBuf trimWritable:frameSize - _inputByteBuf.readableBytes];
             
-            self.readIndex = _inputByteBuf.readableBytes;
+//            self.readIndex = _inputByteBuf.readableBytes;
+            
 //            NSData* frameBody = [_inputByteBuf readBytes:_inputByteBuf.readableBytes];
 //            NSLog(@"frameBody===%@====length====%ld",frameBody,frameBody.length);;
             
@@ -512,12 +514,12 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		{
 		}
 
-		[self processInputFrame:frame WithProgress:progress];
+		[self processInputFrame:frame];
 		
 	} // while
 } // formFrames
 
-- (void) processInputFrame:(Frame*)frame WithProgress:(float)progress
+- (void) processInputFrame:(Frame*)frame
 {
 	// Stream thread.
 	if(_state == SLBnjStateConnecting)
@@ -540,7 +542,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		
 		return;
 	}
-	
+	//
 	if(frame.kind == FrameKindHeartbeat)
 	{
 		if(!frame.hasHeartbeat)
@@ -556,7 +558,8 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			return;
 		sldispatch_async(self.adapter.queue, ^{
             NSLog(@"11112222");
-			[self.adapter channel:self receivedFrame:frame.payload.payload WithProgress:progress];
+            [self.adapter channel:self receivedFrame:frame.payload.payload];
+//			[self.adapter channel:self receivedFrame:frame.payload.payload WithProgress:progress];
 		});
 		
 		return;

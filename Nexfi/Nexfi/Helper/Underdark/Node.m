@@ -41,9 +41,7 @@
         
     }
     
-    
     return self;
-    
     
 }
 /**
@@ -278,7 +276,7 @@
 /**
  *用户接收消息接口  自定义消息类型区分不同类型的消息 messageType
  */
-- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData WithProgress:(float)progress{
+- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
     NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:frameData options:0 error:0];
     
     
@@ -290,23 +288,24 @@
         }
         case eMessageType_SendUserInfo://发送用户信息
         {
-
+            
             if (self.neighbourVc) {
                 [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
             }
-                        
+            NSLog(@"h22223333333333");
+            
             break;
         }
         case eMessageType_UpdateUserInfo://更新用户信息
         {
-
+            
             if (self.neighbourVc) {
                 [self.neighbourVc refreshTable:@{@"user":dic,@"update":@"1",@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
             }
             
             UserModel *users = [UserModel mj_objectWithKeyValues:dic[@"userMessage"]];
             users.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-//            [[UserManager shareManager]loginSuccessWithUser:users];
+            //            [[UserManager shareManager]loginSuccessWithUser:users];
             
             //更新数据库用户数据
             [[SqlManager shareInstance]updateUserName:users];
@@ -331,7 +330,7 @@
                 [[SqlManager shareInstance]addUnreadNum:[[UserManager shareManager]getUser].userId];
                 
             }
-
+            
             break;
         }
         case eMessageType_AllUserChat://群聊
@@ -366,11 +365,13 @@
             break;
     }
     
-}
-- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link fail:(NSString*)fail{
     
 }
-- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData{
+
+- (void)transport:(id<UDTransport>)transport link:(id<UDLink>)link didReceiveFrame:(NSData *)frameData WithProgress:(float)progress{
+    
+}
+- (void) transport:(id<UDTransport>)transport link:(id<UDLink>)link fail:(NSString*)fail{
     
 }
 @end

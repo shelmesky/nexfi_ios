@@ -45,6 +45,7 @@
 	_appId = appId;
 	_queue = queue;
 	_ioqueue = dispatch_queue_create("UDAggTransport", DISPATCH_QUEUE_SERIAL);
+//    _ioqueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
 	_delegate = delegate;
 	
 	_adapters = [NSMutableArray array];

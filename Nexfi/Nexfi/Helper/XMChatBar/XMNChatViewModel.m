@@ -35,7 +35,7 @@
     if ([super init]) {
         _dataArray = [NSMutableArray array];
         _parentVC = parentVC;
-//        _chatServer = [[XMNChatServerExample alloc] init];
+        //        _chatServer = [[XMNChatServerExample alloc] init];
         _chatServer.delegate = self;
     }
     return self;
@@ -44,7 +44,7 @@
 - (void)dealloc {
     
     [[XMNMessageStateManager shareManager] cleanState];
-//    [(XMNChatServerExample *)self.chatServer cancelTimer];
+    //    [(XMNChatServerExample *)self.chatServer cancelTimer];
 }
 
 #pragma mark - UITableViewDataSource & UITableViewDelegate
@@ -71,7 +71,7 @@
     
     NSDictionary *message = self.dataArray[indexPath.row];
     NSString *identifier = [XMNChatMessageCell cellIdentifierForMessageConfiguration:@{kXMNMessageConfigurationGroupKey:message[kXMNMessageConfigurationGroupKey],kXMNMessageConfigurationOwnerKey:message[kXMNMessageConfigurationOwnerKey],kXMNMessageConfigurationTypeKey:message[kXMNMessageConfigurationTypeKey]}];
-
+    
     return [tableView fd_heightForCellWithIdentifier:identifier cacheByIndexPath:indexPath configuration:^(XMNChatMessageCell *cell) {
         [cell configureCellWithData:message];
     }];
@@ -79,7 +79,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
     //设置正确的voiceMessageCell播放状态
     NSDictionary *message = self.dataArray[indexPath.row];
     if ([message[kXMNMessageConfigurationTypeKey] integerValue] == XMNMessageTypeVoice) {
@@ -140,7 +140,7 @@
         return;
     }
     _chatServer = chatServer;
-
+    
 }
 
 #pragma mark - Getters

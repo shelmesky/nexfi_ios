@@ -414,7 +414,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
 {
     if (self.fd_autoCacheInvalidationEnabled) {
         [self.fd_cellHeightCache buildHeightCachesAtIndexPathsIfNeeded:@[sourceIndexPath, destinationIndexPath]];
-
+        
         NSMutableArray *sourceRows = self.fd_cellHeightCache.sections[sourceIndexPath.section];
         NSMutableArray *destinationRows = self.fd_cellHeightCache.sections[destinationIndexPath.section];
         
@@ -451,7 +451,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     }
     
     CGFloat contentViewWidth = CGRectGetWidth(self.frame);
-
+    
     // If a cell has accessory view or system accessory type, its content view's width is smaller
     // than cell's by some fixed values.
     if (cell.accessoryView) {
@@ -468,10 +468,10 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     }
     
     CGSize fittingSize = CGSizeZero;
-
+    
     // If auto layout enabled, cell's contentView must have some constraints.
     BOOL autoLayoutEnabled = !cell.fd_enforceFrameLayout;
-//    BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 && !cell.fd_enforceFrameLayout;
+    //    BOOL autoLayoutEnabled = cell.contentView.constraints.count > 0 && !cell.fd_enforceFrameLayout;
     if (autoLayoutEnabled) {
         
         // Add a hard width constraint to make dynamic content views (like labels) expand vertically instead
@@ -513,7 +513,7 @@ static CGFloat const _FDTemplateLayoutCellHeightCacheAbsentValue = -1;
     } else {
         [self fd_debugLog:[NSString stringWithFormat:@"calculate using frame layout - %@", @(fittingSize.height)]];
     }
-
+    
     return fittingSize.height;
 }
 
