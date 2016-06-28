@@ -113,6 +113,7 @@
     }
     
     [self.tableView.header endRefreshing];
+    
 }
 -(void)showHistoryTableMsg:(TribeMessage *)msg{
     [_textArray insertObject:msg atIndex:0];

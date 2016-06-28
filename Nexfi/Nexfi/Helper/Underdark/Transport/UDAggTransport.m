@@ -201,8 +201,8 @@
 	}
 	
 	sldispatch_async(_queue, ^{
-//		[_delegate transport:self link:link didReceiveFrame:data];
-        [_delegate transport:self link:link didReceiveFrame:data WithProgress:progress];
+		[_delegate transport:self link:link didReceiveFrame:data];
+//        [_delegate transport:self link:link didReceiveFrame:data WithProgress:progress];
 	});
 }
 - (void) adapter:(id<UDAdapter>)adapter channel:(id<UDChannel>)channel fail:(NSString*)fail{
