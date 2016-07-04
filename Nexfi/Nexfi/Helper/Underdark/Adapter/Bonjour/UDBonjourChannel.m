@@ -162,7 +162,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	
 	LogWarn(@"link heartbeat timeout");
     //程序进入后台关闭流？
-//	[self closeStreams];
+	[self closeStreams];
 }
 
 #pragma mark - UDChannel

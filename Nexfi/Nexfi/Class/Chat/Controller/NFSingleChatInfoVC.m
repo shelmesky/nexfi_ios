@@ -85,7 +85,7 @@
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
     //获取历史数据
-    [self showHistoryMsgWithCount:0];
+    [self showHistoryMsg];
     [self setupDownRefresh];
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
@@ -93,6 +93,20 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 200;
+}
+#pragma -mark 刚进页面获取历史数据
+- (void)showHistoryMsg{
+    self.historyMsgs = [[SqlManager shareInstance]getChatHistory:self.to_user.userId withToId:self.to_user.userId withStartNum:0];
+    for (PersonMessage *msg in self.historyMsgs) {
+        
+        [_textArray insertObject:msg atIndex:0];
+        
+        [_tableView reloadData];
+            
+        [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height -self.tableView.bounds.size.height) animated:YES];
+            
+    }
+    
 }
 - (void)setupDownRefresh
 {
@@ -130,6 +144,14 @@
 }
 -(void)showTableMsg:(PersonMessage *) msg
 {
+    
+    [_textArray addObject:msg];
+    
+    [_tableView reloadData];
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    
+    /*
     NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     [_textArray addObject:msg];
 
@@ -141,7 +163,7 @@
 //            [_tableView endUpdates];
     
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-        
+    */
     
 
 }

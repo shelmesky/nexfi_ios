@@ -83,12 +83,25 @@
     
     
     //获取历史数据
-    [self showHistoryMsgWithCount:0];
+    [self showHistoryMsg];
     [self setupDownRefresh];
     
 }
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 200;
+}
+#pragma -mark 刚进页面获取历史数据
+- (void)showHistoryMsg{
+    self.historyMsgs = [[SqlManager shareInstance]getAllChatListWithNum:0];
+    for (TribeMessage *msg in self.historyMsgs) {
+        [_textArray insertObject:msg atIndex:0];
+        
+        [_tableView reloadData];
+        
+        [self.tableView setContentOffset:CGPointMake(0, self.tableView.contentSize.height -self.tableView.bounds.size.height) animated:YES];
+        
+    }
+
 }
 #pragma -mark 下拉刷新
 - (void)setupDownRefresh
@@ -112,21 +125,23 @@
         [self showHistoryTableMsg:msg];
     }
     
+    
     [self.tableView.header endRefreshing];
     
 }
 -(void)showHistoryTableMsg:(TribeMessage *)msg{
     [_textArray insertObject:msg atIndex:0];
-
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [_tableView reloadData];
-    });
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        [_tableView reloadData];
+        
+    });
 }
 -(void)showTableMsg:(TribeMessage *) msg
 {
     
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
+    
     //消息重复不刷新表
     for (int i = 0; i < _textArray.count; i++) {
         TribeMessage *tMsg = _textArray[i];
@@ -134,6 +149,16 @@
             return;
         }
     }
+    
+    [_textArray addObject:msg];
+    
+    [_tableView reloadData];
+    
+    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+    
+    
+    /*
+    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
     [_textArray addObject:msg];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
     [indexPaths addObject:indexPath];
@@ -143,6 +168,7 @@
 //            [_tableView endUpdates];
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
             
+     */
     
 }
 #pragma mark --tableViewDelegate

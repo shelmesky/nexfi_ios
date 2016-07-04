@@ -255,6 +255,7 @@
 - (void)applicationDidEnterBackground:(NSNotification*)notification
 {
 	// Main thread.
+    
 	sldispatch_async(self.queue, ^{
 		if(!_running)
 			return;
@@ -265,10 +266,7 @@
 			_suspended = false;
 			[_reach stop];
 			[_reach start];
-//            [_server stop];
-//            [_server start];
-//            [_browser stop];
-//            [_browser start];
+
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{
@@ -276,11 +274,30 @@
 			[_beacon startMonitoring];
 		});
 	});
+     
+    
+    /*
+    if(!_running)
+        return;
+    
+    if (_suspended) {
+        _suspended = false;
+    }
+    sldispatch_async(self.queue, ^{
+        if(!_running)
+            return;
+        [_reach stop];
+        [_server stop];
+        [_browser stop];
+    });
+     */
+
 }
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification
 {
 	// Main thread.
+    
 	if(!_running)
 		return;
 	
@@ -297,10 +314,7 @@
 			
 			[_reach stop];
 			[_reach start];
-//            [_server stop];
-//            [_server start];
-//            [_browser stop];
-//            [_browser start];
+
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{
@@ -308,6 +322,24 @@
 			[_beacon startAdvertising];
 		});
 	});
+     
+    
+    /*
+    if(!_running)
+        return;
+    
+    [_timeExtender cancel];
+    if (_suspended) {
+        _suspended = false;
+    }
+    sldispatch_async(self.queue, ^{
+        if(!_running)
+            return;
+        [_reach start];
+        [_server start];
+        [_browser start];
+    });
+     */
 }
 
 - (void)beaconDetected:(NSNotification*)notification

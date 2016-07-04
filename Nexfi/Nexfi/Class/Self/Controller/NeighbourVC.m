@@ -93,63 +93,52 @@
     WGradientProgress *pro = [WGradientProgress sharedInstance];
     [pro hide];
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        
-        NSDictionary *userDic = userJson[@"user"];
-        NSString *nodeId = userJson[@"nodeId"];
-        NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
-        //所有用户id集合
-        NSMutableArray *userIdList = [[NSMutableArray alloc]initWithCapacity:0];
-        for (UserModel *user in self.handleByUsers) {
-            [userIdList addObject:user.userId];
-        }
-        
-        UserModel *users = [UserModel mj_objectWithKeyValues:user];
-        users.nodeId = nodeId;
-        //过滤多余的用户信息
-        NSString *update = userJson[@"update"];
-        if (update) {
-            for (int i = 0; i < self.handleByUsers.count; i ++) {
-                UserModel *user = [self.handleByUsers objectAtIndex:i];
-                if ([user.userId isEqualToString:users.userId]) {
-                    [self.handleByUsers replaceObjectAtIndex:i withObject:users];
-                }
+    
+    NSDictionary *userDic = userJson[@"user"];
+    NSString *nodeId = userJson[@"nodeId"];
+    NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
+    //所有用户id集合
+    NSMutableArray *userIdList = [[NSMutableArray alloc]initWithCapacity:0];
+    for (UserModel *user in self.handleByUsers) {
+        [userIdList addObject:user.userId];
+    }
+    
+    UserModel *users = [UserModel mj_objectWithKeyValues:user];
+    users.nodeId = nodeId;
+    //过滤多余的用户信息
+    NSString *update = userJson[@"update"];
+    if (update) {
+        for (int i = 0; i < self.handleByUsers.count; i ++) {
+            UserModel *user = [self.handleByUsers objectAtIndex:i];
+            if ([user.userId isEqualToString:users.userId]) {
+                [self.handleByUsers replaceObjectAtIndex:i withObject:users];
             }
+        }
+    }else{
+        if (self.handleByUsers.count == 0) {
+            [self.handleByUsers addObject:users];
         }else{
-            if (self.handleByUsers.count == 0) {
+            if (![self.handleByUsers containsObject:users] && ![userIdList containsObject:users.userId]) {
                 [self.handleByUsers addObject:users];
-            }else{
-                if (![self.handleByUsers containsObject:users] && ![userIdList containsObject:users.userId]) {
-                    [self.handleByUsers addObject:users];
-                }
             }
-            
-            self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
-            
         }
         
-        //获取所有用户的nodeId
-        [self getAllNodeId];
+        self.handleByUsers = (NSMutableArray *)[[self.handleByUsers reverseObjectEnumerator]allObjects];
         
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            
-            [self.usersTable reloadData];
-            NSLog(@"11111111111111111111111111111");
-            //设置用户上线动画
-            NSUInteger index = [self.handleByUsers indexOfObject:users];
-            NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
-            [self playBounceAnimation:cell.nickNameLabel];
-            
-            //显示多少人
-            self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)",self.handleByUsers.count];
-            
-        });
-    });
+    }
     
+    //获取所有用户的nodeId
+    [self getAllNodeId];
     
+    [self.usersTable reloadData];
+    NSLog(@"11111111111111111111111111111");
+    //设置用户上线动画
+    NSUInteger index = [self.handleByUsers indexOfObject:users];
+    NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
+    [self playBounceAnimation:cell.nickNameLabel];
     
-
+    //显示多少人
+    self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)",self.handleByUsers.count];
     
 }
 - (NSMutableArray *)getAllNodeId{
