@@ -18,9 +18,9 @@
 
 @interface OtherInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
-@property (nonatomic, strong)UITableView *userInfoTable;
-@property (nonatomic, strong)NSArray *data;
-@property (nonatomic, strong)NFHeadView *headView;
+@property (nonatomic, strong)UITableView *userInfoTable;//用户信息table
+@property (nonatomic, strong)NSArray *data;//用户信息元素List
+@property (nonatomic, strong)NFHeadView *headView;//头像UI
 
 @end
 
@@ -34,9 +34,6 @@
     self.data = @[@"昵称",@"年龄",@"性别"];
     
     [self initView];
-    
-    
-    
     
 }
 - (void)initView{

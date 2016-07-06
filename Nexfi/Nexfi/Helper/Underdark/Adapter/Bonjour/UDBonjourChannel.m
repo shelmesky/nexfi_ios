@@ -387,7 +387,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 } // writeNextBytes
 
 #pragma mark - Boxing
-
 - (UDOutputItem*) frameHeaderForFrameData:(NSData*)frameData
 {
 	// Any thread.
@@ -715,7 +714,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			else if(len == 0)
 			{
 				LogError(@"Input stream EOF.");
-				shouldClose = true;
+//				shouldClose = true;
 				break;
 			}
 			else if(len < 0)

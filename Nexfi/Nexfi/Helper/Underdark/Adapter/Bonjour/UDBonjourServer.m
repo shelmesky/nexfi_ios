@@ -152,7 +152,12 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	{
 		[self stopImpl];
 	}
-    [self startImpl];
+    
+//    if (_state == UDBnjServerStateRunning) {
+//        [self startImpl];
+//    }else if (_state == UDBnjServerStateStopped){
+//        [self stopImpl];
+//    }
     
 }
 
@@ -202,7 +207,6 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 		return;
 	
 	LogDebug(@"bnj netServiceDidPublish");
-
 	_state = UDBnjServerStateRunning;
 	[self checkDesiredState];
 }
@@ -231,7 +235,7 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	if(sender != _service)
 		return;
 	
-	//LogDebug(@"bnj didAcceptConnection");
+	LogDebug(@"bnj didAcceptConnection");
 	
 	sldispatch_async(_adapter.queue, ^{
 		UDBonjourChannel* channel = [[UDBonjourChannel alloc] initWithAdapter:_adapter input:inputStream output:outputStream];

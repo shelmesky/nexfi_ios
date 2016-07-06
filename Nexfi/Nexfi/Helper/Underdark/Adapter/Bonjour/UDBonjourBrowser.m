@@ -97,6 +97,8 @@ typedef NS_ENUM(NSUInteger, UDBnjBrowserState)
 	//  Browser thread.
 	
 	_desiredState = UDBnjBrowserStateRunning;
+    
+    NSLog(@"desiredState ==== %d state====%d",_desiredState,_state);
 	
 	if(_state != UDBnjBrowserStateStopped)
 		return;
@@ -140,6 +142,13 @@ typedef NS_ENUM(NSUInteger, UDBnjBrowserState)
 	{
 		[self stopImpl];
 	}
+    
+//    if (_state == UDBnjBrowserStateRunning) {
+//        [self startImpl];
+//    }else if (_state == UDBnjBrowserStateStopped){
+//        [self stopImpl];
+//    }
+    
 }
 
 #pragma mark - NSNetServiceBrowserDelegate
@@ -238,7 +247,6 @@ typedef NS_ENUM(NSUInteger, UDBnjBrowserState)
 	// I/O thread.
 	
 	//LogDebug(@"netServiceBrowserWillSearch");
-	
 	_state = UDBnjBrowserStateRunning;
 	[self checkDesiredState];
 }

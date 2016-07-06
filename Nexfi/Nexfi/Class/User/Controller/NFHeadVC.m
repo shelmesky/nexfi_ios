@@ -12,7 +12,7 @@
 #import "FCHeadAddCollectionCell.h"
 @interface NFHeadVC ()<UICollectionViewDelegate,UICollectionViewDataSource>
 
-@property (nonatomic, strong)NSMutableArray *dataArr;
+@property (nonatomic, strong)NSMutableArray *dataArr;//数据List
 @property (nonatomic, assign)NSInteger nowRow;//标示 点击哪一个item
 
 @end
@@ -23,11 +23,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    
     [self initView];
     
     [self setBaseVCAttributesWith:@"头像" left:nil right:@"保存" WithInVC:self];
-    
     
     self.nowRow = -1;//区别于indexPath
     
@@ -50,7 +48,7 @@
     _collectionView.backgroundColor = [UIColor whiteColor];
     _collectionView.dataSource = self;
     [self.view addSubview:_collectionView];
-    
+    //添加图片List
     for (int i = 0; i < 14; i++) {
         UIImage *image;
         if (i<8) {
@@ -87,7 +85,6 @@
     }else{
         cell.backView.hidden = YES;
     }
-    //    cell.backgroundColor = [UIColor blueColor];
     cell.headImg.tag = 10000 + indexPath.item;
     
     UIImage *image = [_dataArr objectAtIndex:indexPath.item];
@@ -102,17 +99,14 @@
 {
     return  CGSizeMake(70, 70);
 }
+//点击头像方法
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
     
-    //    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    //    if (self.delegate&&[self.delegate respondsToSelector:@selector(imgClick:)]) {
-    //        [self.delegate imgClick:cell];
-    //    }
     //刷新和展示点击item 展示的状态
     [self refreshSelectStatusAndShowWithIndexPath:indexPath];
     
-    
 }
+//刷新头像被点击图片的状态
 - (void)refreshSelectStatusAndShowWithIndexPath:(NSIndexPath *)indexPath{
     
     for (int i = 0; i < _dataArr.count; i ++) {
@@ -159,18 +153,15 @@
     
     
 }
-
+//保存头像
 - (void)RightBarBtnClick:(id)sender{
     if (self.nowRow == -1) {
         [self.navigationController popViewControllerAnimated:YES];
         return;
     }
-    //    FCHeadCollectionCell *cell = (FCHeadCollectionCell *)[self.collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:self.nowRow inSection:0]];
+
     
     UserModel *user = [[UserManager shareManager]getUser];
-    //    NSData *data = UIImageJPEGRepresentation(cell.headImg.image, 1);
-    //    user.headImg = cell.headImg.image;
-    //    user.headImgStr = [data base64Encoding];
     if (self.nowRow<8) {
         user.userAvatar = [NSString stringWithFormat:@"img_head_0%ld",self.nowRow+2];
     }else{
@@ -179,7 +170,7 @@
     [[UserManager shareManager]loginSuccessWithUser:user];
     //更新数据库用户数据
     [[SqlManager shareInstance]updateUserName:user];
-    
+    //通知好友已经修改图片完毕
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
             id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];

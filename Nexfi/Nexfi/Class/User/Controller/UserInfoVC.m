@@ -17,9 +17,9 @@
 #import "NFHeadVC.h"
 @interface UserInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
-@property (nonatomic, strong)UITableView *userInfoTable;
-@property (nonatomic, strong)NSArray *data;
-@property (nonatomic, strong)NFHeadView *headView;
+@property (nonatomic, strong)UITableView *userInfoTable;//用户信息tableUI
+@property (nonatomic, strong)NSArray *data;//构建UI元素List
+@property (nonatomic, strong)NFHeadView *headView;//显示用户头像的UI
 
 @end
 
@@ -33,9 +33,8 @@
     
     [self initView];
     
-    
-    
 }
+//初始化UI
 - (void)initView{
     
     int width = SCREEN_SIZE.width;
@@ -53,6 +52,7 @@
     self.userInfoTable.tableHeaderView = _headView;
     
 }
+//选择头像
 - (void)imgClick:(id)sender{
     NFHeadVC *vc = [[NFHeadVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -60,8 +60,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
     if ([[UserManager shareManager]getUser].userId || [[UserManager shareManager]getUser].userAvatar) {
-        //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-        //        _headView.userImg.image = [UIImage imageWithData:data];
         UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
         _headView.userImg.image = img;
     }else{
@@ -88,7 +86,7 @@
             cells.selectionStyle = UITableViewCellSelectionStyleNone;
             
         }
-        
+        //填充数据
         cells.pTitle.text = _data[indexPath.row];
         cells.user = [[UserManager shareManager] getUser];
         
@@ -108,22 +106,6 @@
     goLab.textAlignment = NSTextAlignmentCenter;
     goLab.textColor = [UIColor blackColor];
     [cell.contentView addSubview:goLab];
-    
-    /*
-     FCPersonHeadCell *cell = [tableView dequeueReusableCellWithIdentifier:@"FCPersonHeadCell"];
-     if (!cell) {
-     cell =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonHeadCell" owner:self options:nil] objectAtIndex:0];
-     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-     }
-     
-     //第一行cell
-     cell.title.text = _data[indexPath.row];
-     UserModel *user = [[UserManager shareManager] getUser];
-     if (user.userHead) {
-     cell.pHead.image = [UIImage imageWithData:user.userHead];
-     }
-     */
-    
     
     return cell;
     
@@ -157,7 +139,7 @@
                 break;
         }
         
-    }else{
+    }else{//点击去看看
         UserModel *user = [[UserManager shareManager]getUser];
         if (!user.userAvatar) {
             
@@ -189,8 +171,6 @@
         }
     }
 }
-
-
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{
     return 0.1;
 }
@@ -207,7 +187,7 @@
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];
     
-    
+    //选择头像之后刷新UI
     _headView.userImg.image = image;
     
     [picker dismissViewControllerAnimated:YES completion:nil];

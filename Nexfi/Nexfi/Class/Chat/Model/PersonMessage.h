@@ -17,9 +17,9 @@
 
 @property (nonatomic, retain) NSString *receiver;//接收者
 
-@property (nonatomic, retain) TextMessage *textMessage;
-@property (nonatomic, retain) FileMessage *fileMessage;
-@property (nonatomic, retain) VoiceMessage *voiceMessage;
+@property (nonatomic, retain) TextMessage *textMessage;//文本
+@property (nonatomic, retain) FileMessage *fileMessage;//图片
+@property (nonatomic, retain) VoiceMessage *voiceMessage;//语音
 
 
 

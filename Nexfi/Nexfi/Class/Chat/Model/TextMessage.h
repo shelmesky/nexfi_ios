@@ -10,7 +10,7 @@
 
 @interface TextMessage : NSObject
 
-@property (nonatomic, retain) NSString *fileData;
+@property (nonatomic, retain) NSString *fileData;//文本数据
 @property (nonatomic, retain) NSString *isRead;//0未读 1已读
 
 @end

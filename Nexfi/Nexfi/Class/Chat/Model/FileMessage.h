@@ -9,8 +9,8 @@
 
 @interface FileMessage : NSObject
 
-@property (nonatomic ,retain)NSString *fileData;
-@property (nonatomic ,retain)NSString *filePath;
+@property (nonatomic ,retain)NSString *fileData;//图片数据
+@property (nonatomic ,retain)NSString *filePath;//路径
 @property (nonatomic, retain) NSString *isRead;//0未读 1已读
 
 @end

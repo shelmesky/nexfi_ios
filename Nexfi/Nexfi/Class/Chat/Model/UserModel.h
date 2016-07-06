@@ -10,22 +10,14 @@
 
 @interface UserModel : NSObject
 
-@property (nonatomic, retain) NSString *userId;//
-@property (nonatomic, retain) NSString *userNick;//
-@property (nonatomic, retain) NSString *userGender;//
-@property (nonatomic, assign) int userAge;
-//@property (nonatomic, retain) NSString *birthday;
-//@property (nonatomic, retain) NSString *headImgStr;
-@property (nonatomic, retain) NSString *userAvatar;
-@property (nonatomic, retain) NSString *nodeId;
-@property (nonatomic, retain) NSString *birthday;
+@property (nonatomic, retain) NSString *userId;//用户id
+@property (nonatomic, retain) NSString *userNick;//用户昵称
+@property (nonatomic, retain) NSString *userGender;//用户性别
+@property (nonatomic, assign) int userAge;//用户年龄
+@property (nonatomic, retain) NSString *userAvatar;//用户头像
+@property (nonatomic, retain) NSString *nodeId;//用户nodeId
+@property (nonatomic, retain) NSString *birthday;//用户生日
 
-//@property (nonatomic, retain) NSString *unreadnum;
-//@property (nonatomic, retain) NSString *lastmsg;
-//@property (nonatomic, retain) NSString *send_time;
-
-
-//@property (nonatomic, retain) UIImage *headImg;
 
 - (id)initWithaDic:(NSDictionary *)aDic;
 

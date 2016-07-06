@@ -46,8 +46,9 @@
     UserModel *user = [[UserManager shareManager] getUser];
     user.birthday = dateString;
     user.userAge = (int)[self getAgeWithBirthday:self.datePicker.date];
+    //更新数据库用户数据
     [[UserManager shareManager]loginSuccessWithUser:user];
-    
+    //通知好友已经修改信息完毕
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
             id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];

@@ -33,13 +33,12 @@
     
     BOOL sendOnce;
 }
-@property (nonatomic,strong) NSMutableArray *msgs;
-@property (nonatomic,strong) UITableView *tableView;
-@property (strong, nonatomic) XMChatBar *chatBar;
-@property (nonatomic, strong)NSMutableArray *mwPhotos;
-@property (nonatomic, strong)NSArray *historyMsgs;
-@property (nonatomic,strong) NSMutableArray *msgCellHeightList;
-//@property (nonatomic, strong) NFPeersView *peesView;
+@property (nonatomic,strong) NSMutableArray *msgs;//消息List
+@property (nonatomic,strong) UITableView *tableView;//展示UI
+@property (strong, nonatomic) XMChatBar *chatBar;//输入栏
+@property (nonatomic, strong)NSMutableArray *mwPhotos;//存放图片List
+@property (nonatomic, strong)NSArray *historyMsgs;//历史消息List
+@property (nonatomic,strong) NSMutableArray *msgCellHeightList;//存放图片高List
 
 @end
 
@@ -129,6 +128,7 @@
     [self.tableView.header endRefreshing];
     
 }
+//展示table数据并刷新
 -(void)showHistoryTableMsg:(TribeMessage *)msg{
     [_textArray insertObject:msg atIndex:0];
     
@@ -138,6 +138,7 @@
         
     });
 }
+//刷新数据
 -(void)showTableMsg:(TribeMessage *) msg
 {
     
@@ -155,20 +156,7 @@
     [_tableView reloadData];
     
     [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-    
-    
-    /*
-    NSMutableArray *indexPaths = [[NSMutableArray alloc] init];
-    [_textArray addObject:msg];
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[_textArray count]-1 inSection:0];
-    [indexPaths addObject:indexPath];
-    
-//          [_tableView beginUpdates];
-    [_tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationBottom];
-//            [_tableView endUpdates];
-    [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_textArray.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
-            
-     */
+
     
 }
 #pragma mark --tableViewDelegate
@@ -251,10 +239,6 @@
         }
     }
     return nil;
-}
-
--(void)onSelect:(UIView*)sender{
-    
 }
 #pragma mark -FNMsgCellDelegate
 - (void)msgCellTappedBlank:(ChatCell *)msgCell{
@@ -340,10 +324,6 @@
     NFTribeInfoVC *vc = [[NFTribeInfoVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
 }
-//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return [self.msgCellHeightList[indexPath.row] floatValue];
-//}
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(TribeMessage *)msg{
     
@@ -411,13 +391,13 @@
         {
             
             TextMessage *textMessage = [[TextMessage alloc]init];
-            textMessage.fileData = data;
-            textMessage.isRead = @"1";
+            textMessage.fileData = data;//消息数据
+            textMessage.isRead = @"1";//已读未读
             msg.textMessage = textMessage;
             
             msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-            msg.messageBodyType = eMessageBodyType_Text;
-            msg.msgId = deviceUDID;
+            msg.messageBodyType = eMessageBodyType_Text;//文本类型
+            msg.msgId = deviceUDID;//msgId
             
             
             msg.userMessage = [[UserManager shareManager]getUser];//json
@@ -440,14 +420,14 @@
             [picData writeToFile:fullPath atomically:YES];
             
             FileMessage *fileMessage = [[FileMessage alloc]init];
-            fileMessage.fileData = [picData base64Encoding];
-            fileMessage.filePath = imgPath;
-            fileMessage.isRead = @"1";
+            fileMessage.fileData = [picData base64Encoding];//消息数据
+            fileMessage.filePath = imgPath;//图片路径
+            fileMessage.isRead = @"1";//已读未读
             msg.fileMessage = fileMessage;
             
             msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-            msg.messageBodyType = eMessageBodyType_Image;
-            msg.msgId = deviceUDID;
+            msg.messageBodyType = eMessageBodyType_Image;//文本类型
+            msg.msgId = deviceUDID;//msgId
             
             msg.userMessage = [[UserManager shareManager]getUser];//json
             
@@ -471,17 +451,17 @@
             NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
             
             VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
-            voiceMessage.isRead = @"0";
-            voiceMessage.fileData = [voiceData base64Encoding];
-            voiceMessage.durational = voicePro[@"voiceSec"];
+            voiceMessage.isRead = @"0";//已读未读
+            voiceMessage.fileData = [voiceData base64Encoding];//消息数据
+            voiceMessage.durational = voicePro[@"voiceSec"];//语音时间
             
             
             
             msg.voiceMessage = voiceMessage;
             
             msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
-            msg.messageBodyType = eMessageBodyType_Voice;
-            msg.msgId = deviceUDID;
+            msg.messageBodyType = eMessageBodyType_Voice;//文本类型
+            msg.msgId = deviceUDID;//msgId
             
             msg.userMessage = [[UserManager shareManager]getUser];//json
             
@@ -538,6 +518,7 @@
     return _chatBar;
 }
 #pragma mark -NodeDelegate
+//发送群聊消息失败
 - (void)AllUserChatSendFailWithInfo:(NSString *)failMsg{
     [HudTool showErrorHudWithText:failMsg inView:self.view duration:2];
 }
@@ -545,7 +526,7 @@
     
 }
 #pragma mark - XMChatBarDelegate
-
+//发送文本
 - (void)chatBar:(XMChatBar *)chatBar sendMessage:(NSString *)message{
     
     sendOnce = YES;
@@ -555,6 +536,7 @@
     
     
 }
+//发送语音
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds{
     sendOnce = YES;
     NSDictionary *voicePro = @{@"voiceName":voiceFileName,@"voiceSec":@((int)seconds)};
@@ -562,7 +544,7 @@
     [[UnderdarkUtil share].node allUserChatWithFrame:source];
 
 }
-
+//发送图片
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
     for (int i = 0; i < pictures.count; i ++) {
@@ -576,17 +558,9 @@
 }
 
 - (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{
-    //    NSMutableDictionary *locationMessageDict = [NSMutableDictionary dictionary];
-    //    locationMessageDict[kXMNMessageConfigurationTypeKey] = @(XMNMessageTypeLocation);
-    //    locationMessageDict[kXMNMessageConfigurationOwnerKey] = @(XMNMessageOwnerSelf);
-    //    locationMessageDict[kXMNMessageConfigurationGroupKey] = @(self.messageChatType);
-    //    locationMessageDict[kXMNMessageConfigurationNicknameKey] = kSelfName;
-    //    locationMessageDict[kXMNMessageConfigurationAvatarKey] = kSelfThumb;
-    //    locationMessageDict[kXMNMessageConfigurationLocationKey]=locationText;
-    //    [self addMessage:locationMessageDict];
     
 }
-
+//工具栏的位置更新
 - (void)chatBarFrameDidChange:(XMChatBar *)chatBar frame:(CGRect)frame{
     if (frame.origin.y == self.tableView.frame.size.height) {
         return;
@@ -596,7 +570,7 @@
     } completion:nil];
 }
 #pragma mark - MWPhotoBrowserDelegate
-
+//图片数
 - (NSUInteger)numberOfPhotosInPhotoBrowser:(MWPhotoBrowser *)photoBrowser {
     return self.mwPhotos.count;
 }

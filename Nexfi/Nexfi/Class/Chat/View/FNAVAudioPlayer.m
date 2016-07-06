@@ -64,6 +64,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIDeviceProximityStateDidChangeNotification object:nil];
     
 }
+//清除语音路径
 - (void)cleanAudioCache {
     
     NSArray *files = [[NSFileManager defaultManager] subpathsAtPath:self.cachePath];
@@ -72,6 +73,7 @@
     }
     
 }
+//播放语音
 - (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index{
     
     if (!voiceData) {
@@ -99,6 +101,7 @@
     //    [self setAudioPlayerState:XMNVoiceMessageStateCancel];
     
 }
+//播放语音
 - (void)playAudioWithPath:(NSString *)audioPath{
     NSError *audioPlaerError;
     _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:[NSURL fileURLWithPath:audioPath] error:&audioPlaerError];
@@ -115,6 +118,7 @@
     //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
     [_audioPlayer play];
 }
+//播放语音
 - (void)playAudioWithData:(NSData *)audioData {
     
     NSError *audioPlayerError;
@@ -135,6 +139,7 @@
     [_audioPlayer play];
     
 }
+//停止播放
 - (void)stopAudioPlayer {
     if (_audioPlayer) {
         _audioPlayer.playing ? [_audioPlayer stop] : nil;

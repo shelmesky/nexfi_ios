@@ -20,9 +20,9 @@
 
 @interface SelfVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
-@property (nonatomic, strong)UITableView *userInfoTable;
-@property (nonatomic, strong)NSArray *data;
-@property (nonatomic, strong)NFHeadView *headView;
+@property (nonatomic, strong)UITableView *userInfoTable;//用户信息table
+@property (nonatomic, strong)NSArray *data;//用户信息List
+@property (nonatomic, strong)NFHeadView *headView;//头像UI
 
 @end
 
@@ -39,6 +39,7 @@
     
     
 }
+//初始化UI
 - (void)initView{
     
     int width = SCREEN_SIZE.width;
@@ -56,6 +57,7 @@
     self.userInfoTable.tableHeaderView = _headView;
     
 }
+//点击图片
 - (void)imgClick:(id)sender{
     NFHeadVC *vc = [[NFHeadVC alloc]init];
     [self.navigationController pushViewController:vc animated:YES];
@@ -63,8 +65,6 @@
 - (void)viewWillAppear:(BOOL)animated{
     [self.userInfoTable reloadData];
     if ([[UserManager shareManager]getUser]) {
-        //        NSData *data = [[NSData alloc]initWithBase64EncodedString:[[UserManager shareManager]getUser].headImgStr];
-        //        _headView.userImg.image = [UIImage imageWithData:data];
         UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
         _headView.userImg.image = img;
     }

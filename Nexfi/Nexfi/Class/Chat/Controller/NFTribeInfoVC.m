@@ -18,12 +18,7 @@
 @end
 
 @implementation NFTribeInfoVC
-//- (NSMutableArray *)handleByUsers{
-//    if (!_handleByUsers) {
-//        _handleByUsers = [[NSMutableArray alloc]initWithCapacity:0];
-//    }
-//    return _handleByUsers;
-//}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -42,6 +37,7 @@
     
     [super viewWillAppear:animated];
 }
+//获取好友群里所有的好友
 - (void)getHandleUsers{
     
     for (UIViewController *vc in self.navigationController.viewControllers) {

@@ -6,6 +6,7 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 
+
 #import "NFHeadView.h"
 
 @implementation NFHeadView
@@ -20,7 +21,7 @@
         headImg.contentMode = UIViewContentModeScaleAspectFill;
         [self addSubview:headImg];
         
-        //图标
+        //显示头像控件
         self.userImg = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"img_head_01"]];
         self.userImg.bounds = CGRectMake(0, 0, 90, 90);
         self.userImg.userInteractionEnabled = YES;
@@ -28,13 +29,14 @@
         self.userImg.layer.cornerRadius = self.userImg.frame.size.width/2;
         self.userImg.center = CGPointMake((SCREEN_SIZE.width)/2, headImg.frame.size.height/2);
         [headImg addSubview:self.userImg];
-        
+        //手势
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
         [headImg addGestureRecognizer:tap];
         [self setup];
     }
     return self;
 }
+//点击头像事件
 - (void)tap:(UITapGestureRecognizer *)tap{
     if (self.delegate &&[self.delegate respondsToSelector:@selector(imgClick:)]) {
         [self.delegate imgClick:tap];

@@ -102,6 +102,7 @@ static NexfiUtil *_util;
     theNavigationController.tabBarItem.image = [[UIImage imageNamed:itemImage] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     return theNavigationController;
 }
+//model转dic
 +(NSDictionary*)getObjectData:(id)obj
 {
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
@@ -168,6 +169,7 @@ static NexfiUtil *_util;
     return [self getObjectData:obj];
     
 }
+//自动生成uuid
 + (NSString*) uuid {
     
     CFUUIDRef puuid = CFUUIDCreate( nil );
@@ -184,6 +186,7 @@ static NexfiUtil *_util;
     return [msg.userMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId];
     
 }
+//获取临时文件前缀
 - (NSString *)pathForTemporaryFileWithPrefix:(NSString *)prefix
 
 {
@@ -211,8 +214,9 @@ static NexfiUtil *_util;
     CFRelease(uuid);
     
     return result;
-    
+   
 }
+//配置tabbar
 - (void)configureTabVC{
     NexfiNavigationController *neighbouVC = [self newNavigationControllerForClass:[NeighbourVC class]
                                                                             title:@"附近"
@@ -235,6 +239,7 @@ static NexfiUtil *_util;
     window.rootViewController = tabbar;
     
 }
+//计算字符数
 +(int)convertToInt:(NSString*)strtemp {
     
     int strlength = 0;
@@ -249,11 +254,5 @@ static NexfiUtil *_util;
         }
     }
     return strlength;
-}
-- (void)toUpdateUserInfo{
-    //    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
-    //        id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
-    //        [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:6]];
-    //    }
 }
 @end
