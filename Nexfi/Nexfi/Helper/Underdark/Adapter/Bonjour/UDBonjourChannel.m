@@ -349,6 +349,8 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		else
 		{
 			result = 0;
+            //自己加的
+            return;
 		}
 		
 		if(result < 0)

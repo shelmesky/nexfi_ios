@@ -18,6 +18,7 @@
         self.userAge = [aDic[@"userAge"] intValue];
         self.nodeId = aDic[@"nodeId"];
         self.userAvatar = aDic[@"userAvatar"];
+        self.phoneNumber = aDic[@"phoneNumber"];
     }
     return self;
 }
@@ -30,7 +31,7 @@
         self.userAge = [[aDecoder decodeObjectForKey:@"userAge"] intValue];
         self.nodeId = [aDecoder decodeObjectForKey:@"nodeId"];
         self.userAvatar = [aDecoder decodeObjectForKey:@"userAvatar"];
-        
+        self.phoneNumber = [aDecoder decodeObjectForKey:@"phoneNumber"];
     }
     return self;
 }
@@ -42,6 +43,7 @@
     [aCoder encodeObject:self.userId forKey:@"userId"];
     [aCoder encodeObject:self.nodeId forKey:@"nodeId"];
     [aCoder encodeObject:self.userAvatar forKey:@"userAvatar"];
+    [aCoder encodeObject:self.phoneNumber forKey:@"phoneNumber"];
 }
 
 - (NSString *)description{

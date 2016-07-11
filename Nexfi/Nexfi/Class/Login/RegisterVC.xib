@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterVC">
+            <connections>
+                <outlet property="getCode" destination="pNT-gr-b3B" id="8M3-wx-czA"/>
+                <outlet property="phoneTe" destination="x3m-fK-O0m" id="eqZ-Ff-jVC"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x3m-fK-O0m" customClass="LooseTextField">
+                    <rect key="frame" x="31" y="211" width="352" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="8vR-uC-Z6A"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNT-gr-b3B">
+                    <rect key="frame" x="31" y="280" width="352" height="40"/>
+                    <color key="backgroundColor" red="0.20784313725490197" green="0.56862745098039214" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="获取手机验证码">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="getCodeClick:" destination="-1" eventType="touchUpInside" id="HTe-1F-6EU"/>
+                    </connections>
+                </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NexFiIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-sf-piT">
+                    <rect key="frame" x="161" y="91" width="90" height="90"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="90" id="1UT-l7-i4R"/>
+                        <constraint firstAttribute="width" constant="90" id="N3R-Fb-hD5"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="x3m-fK-O0m" firstAttribute="top" secondItem="ZaG-sf-piT" secondAttribute="bottom" constant="30" id="3rd-os-8hJ"/>
+                <constraint firstItem="pNT-gr-b3B" firstAttribute="top" secondItem="x3m-fK-O0m" secondAttribute="bottom" constant="29" id="51u-3w-tOp"/>
+                <constraint firstItem="pNT-gr-b3B" firstAttribute="height" secondItem="x3m-fK-O0m" secondAttribute="height" id="Gex-ZX-05H"/>
+                <constraint firstAttribute="trailing" secondItem="x3m-fK-O0m" secondAttribute="trailing" constant="31" id="HMu-Vf-A8L"/>
+                <constraint firstItem="ZaG-sf-piT" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KXW-QR-75C"/>
+                <constraint firstItem="x3m-fK-O0m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="31" id="M1l-eS-xtv"/>
+                <constraint firstItem="pNT-gr-b3B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="31" id="VIW-kA-Uzn"/>
+                <constraint firstAttribute="trailing" secondItem="pNT-gr-b3B" secondAttribute="trailing" constant="31" id="e06-N1-Y5B"/>
+                <constraint firstItem="ZaG-sf-piT" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="91" id="exs-g2-W8J"/>
+                <constraint firstItem="x3m-fK-O0m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="31" id="udy-v9-xjx"/>
+                <constraint firstAttribute="trailing" secondItem="x3m-fK-O0m" secondAttribute="trailing" constant="31" id="vn4-NT-p87"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="M1l-eS-xtv"/>
+                    <exclude reference="vn4-NT-p87"/>
+                </mask>
+            </variation>
+            <point key="canvasLocation" x="244.5" y="251.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="NexFiIcon.png" width="60" height="60"/>
+    </resources>
+</document>

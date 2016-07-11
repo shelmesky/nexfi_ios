@@ -10,6 +10,13 @@
 #import <objc/runtime.h>
 #import <Foundation/Foundation.h>
 
+
+#import <SMS_SDK/SMSSDK.h>
+#import <SMS_SDK/Extend/SMSSDKCountryAndAreaCode.h>
+#import <SMS_SDK/Extend/SMSSDK+DeprecatedMethods.h>
+#import <SMS_SDK/Extend/SMSSDK+ExtexdMethods.h>
+#import <MOBFoundation/MOBFoundation.h>
+
 @interface NexfiUtil : NSObject
 
 -(NSString *)switchDate:(NSString *)date returnType:(NSUInteger)type;
@@ -37,6 +44,8 @@
  *计算字体个数
  */
 +(int)convertToInt:(NSString*)strtemp;
+//验证短信
++ (BOOL)getVerificationCodeByMethod:(SMSGetCodeMethod)getCodeMethod phoneNumber:(NSString *)phoneNumber zone:(NSString *)zone;
 
 //-(void)toUpdateUserInfo;
 @end

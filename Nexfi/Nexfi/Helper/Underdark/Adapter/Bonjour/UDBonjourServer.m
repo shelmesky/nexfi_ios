@@ -187,6 +187,8 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	LogDebug(@"bnj didUpdateTXTRecordData");
 	
 	//[_service publishWithOptions:NSNetServiceListenForConnections];
+    
+    
 }
 
 - (void)netServiceWillPublish:(NSNetService *)sender

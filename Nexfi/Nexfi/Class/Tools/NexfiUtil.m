@@ -11,6 +11,9 @@
 #import "NeighbourVC.h"
 #import "NexfiNavigationController.h"
 #import "UserInfoVC.h"
+
+
+
 @implementation NexfiUtil
 static NexfiUtil *_util;
 + (instancetype)shareUtil{
@@ -255,4 +258,40 @@ static NexfiUtil *_util;
     }
     return strlength;
 }
+
++ (BOOL)getVerificationCodeByMethod:(SMSGetCodeMethod)getCodeMethod phoneNumber:(NSString *)phoneNumber zone:(NSString *)zone
+{
+    __block BOOL isSuccess = NO;
+    if (getCodeMethod == SMSGetCodeMethodSMS) {
+        
+        [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodSMS phoneNumber:phoneNumber
+                                       zone:zone
+                           customIdentifier:nil
+                                     result:^(NSError *error)
+         {
+             if (!error) {
+                 isSuccess = YES;
+             }
+             
+         }];
+        
+    }
+    else if (getCodeMethod == SMSGetCodeMethodVoice)
+    {
+        [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:phoneNumber
+                                       zone:zone
+                           customIdentifier:nil
+                                     result:^(NSError *error)
+         {
+             if (!error) {
+                 isSuccess = YES;
+             }
+             
+         }];
+    }
+    
+    return isSuccess;
+}
+
+
 @end

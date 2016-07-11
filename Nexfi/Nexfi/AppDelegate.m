@@ -12,7 +12,7 @@
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
 #import "NFSingleChatInfoVC.h"
-
+#import <SMS_SDK/SMSSDK.h>
 
 @interface AppDelegate ()
 
@@ -28,6 +28,10 @@
     if ([[UserManager shareManager]getUser].userId) {
         [[SqlManager shareInstance]creatTable];
     }
+    
+    //初始化应用，appKey和appSecret从后台申请得
+    [SMSSDK registerApp:@"14cf8332203fa"
+             withSecret:@"3749334724b29bdbad573fa76c514ef8"];
     
     //清除语音缓存
     [self clearVoiceCache];

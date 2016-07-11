@@ -13,6 +13,7 @@
 #import "NeighbourVC.h"
 #import "NexfiNavigationController.h"
 #import "UserInfoVC.h"
+#import "RegisterVC.h"
 @interface ViewController ()
 
 @property (nonatomic, strong) UIWindow *window;
@@ -41,14 +42,16 @@
 }
 - (void)isAutoLogin{
     NSString *userId = [[UserManager shareManager]getUser].userId;
-    if (userId) {//登录直接获取数据
+//    NSString *phoneNum = [[UserManager shareManager]getUser].phoneNumber;
+    if (userId ) {//登录直接获取数据
         [[NexfiUtil shareUtil] layOutTheApp];
     }else{
         [self loginAction];
     }
 }
 - (void)loginAction{
-    UserInfoVC *vc = [[UserInfoVC alloc]init];
+    RegisterVC *vc = [[RegisterVC alloc]init];
+//    UserInfoVC *vc = [[UserInfoVC alloc]init];
     NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
 //    nav.navigationBarHidden = YES;
     UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];

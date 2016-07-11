@@ -302,6 +302,22 @@
 		0EBAE9521CB3824000361D18 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE9501CB3824000361D18 /* LaunchScreen.storyboard */; };
 		0EBAE95D1CB3824000361D18 /* NexfiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE95C1CB3824000361D18 /* NexfiTests.m */; };
 		0EBAE9681CB3824000361D18 /* NexfiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9671CB3824000361D18 /* NexfiUITests.m */; };
+		0EFC78D41D336D7700789ADD /* RegisterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78D21D336D7700789ADD /* RegisterVC.m */; };
+		0EFC78D51D336D7700789ADD /* RegisterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EFC78D31D336D7700789ADD /* RegisterVC.xib */; };
+		0EFC78D71D33704700789ADD /* NexFiIcon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0EFC78D61D33704700789ADD /* NexFiIcon@3x.png */; };
+		0EFC78DC1D3375EA00789ADD /* RegisterVertifyCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78DA1D3375EA00789ADD /* RegisterVertifyCodeVC.m */; };
+		0EFC78DD1D3375EA00789ADD /* RegisterVertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0EFC78DB1D3375EA00789ADD /* RegisterVertifyCodeVC.xib */; };
+		0EFC78E31D3383A800789ADD /* UIButton+ClickBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E01D3383A800789ADD /* UIButton+ClickBlock.m */; };
+		0EFC78E41D3383A800789ADD /* UITapGestureRecognizer+block.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */; };
+		0EFC78E71D3384C000789ADD /* LooseTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E61D3384C000789ADD /* LooseTextField.m */; };
+		0EFC78EA1D338C8100789ADD /* JKCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E91D338C8100789ADD /* JKCountDownButton.m */; };
+		0EFC78F31D3393D900789ADD /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F11D3393D900789ADD /* MOBFoundation.framework */; };
+		0EFC78F41D3393D900789ADD /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F21D3393D900789ADD /* SMS_SDK.framework */; };
+		0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F51D3393ED00789ADD /* libz.tbd */; };
+		0EFC78F81D3393F900789ADD /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F71D3393F900789ADD /* libicucore.tbd */; };
+		0EFC78FA1D33940100789ADD /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F91D33940100789ADD /* MessageUI.framework */; };
+		0EFC78FC1D33940900789ADD /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78FB1D33940900789ADD /* JavaScriptCore.framework */; };
+		0EFC78FE1D33941200789ADD /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78FD1D33941200789ADD /* libstdc++.tbd */; };
 		36390C63D010916D8AAA6077 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC21E929A7E4E0B407312757 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -664,14 +680,14 @@
 		0E9E77F51CC62B9400EE2272 /* HudTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HudTool.m; sourceTree = "<group>"; };
 		0E9E77F61CC62B9400EE2272 /* NexfiNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NexfiNavigationController.h; sourceTree = "<group>"; };
 		0E9E77F71CC62B9400EE2272 /* NexfiNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NexfiNavigationController.m; sourceTree = "<group>"; };
-		0E9E77F81CC62B9400EE2272 /* NSDataEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSDataEx.h; sourceTree = "<group>"; };
-		0E9E77F91CC62B9400EE2272 /* NSDataEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataEx.m; sourceTree = "<group>"; };
-		0E9E79641CC62B9500EE2272 /* StringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringHelper.h; sourceTree = "<group>"; };
-		0E9E79651CC62B9500EE2272 /* StringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringHelper.m; sourceTree = "<group>"; };
-		0E9E79661CC62B9500EE2272 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+Hex.h"; sourceTree = "<group>"; };
-		0E9E79671CC62B9500EE2272 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Hex.m"; sourceTree = "<group>"; };
-		0E9E79681CC62B9500EE2272 /* UIView_extra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIView_extra.h; sourceTree = "<group>"; };
-		0E9E79691CC62B9500EE2272 /* UIView_extra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIView_extra.m; sourceTree = "<group>"; };
+		0E9E77F81CC62B9400EE2272 /* NSDataEx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NSDataEx.h; path = ../NSDataEx.h; sourceTree = "<group>"; };
+		0E9E77F91CC62B9400EE2272 /* NSDataEx.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = NSDataEx.m; path = ../NSDataEx.m; sourceTree = "<group>"; };
+		0E9E79641CC62B9500EE2272 /* StringHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringHelper.h; path = ../StringHelper.h; sourceTree = "<group>"; };
+		0E9E79651CC62B9500EE2272 /* StringHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StringHelper.m; path = ../StringHelper.m; sourceTree = "<group>"; };
+		0E9E79661CC62B9500EE2272 /* UIColor+Hex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor+Hex.h"; path = "../UIColor+Hex.h"; sourceTree = "<group>"; };
+		0E9E79671CC62B9500EE2272 /* UIColor+Hex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor+Hex.m"; path = "../UIColor+Hex.m"; sourceTree = "<group>"; };
+		0E9E79681CC62B9500EE2272 /* UIView_extra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UIView_extra.h; path = ../UIView_extra.h; sourceTree = "<group>"; };
+		0E9E79691CC62B9500EE2272 /* UIView_extra.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UIView_extra.m; path = ../UIView_extra.m; sourceTree = "<group>"; };
 		0E9E796E1CC62B9500EE2272 /* UDBtBeacon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDBtBeacon.h; sourceTree = "<group>"; };
 		0E9E796F1CC62B9500EE2272 /* UDBtBeacon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UDBtBeacon.m; sourceTree = "<group>"; };
 		0E9E79711CC62B9500EE2272 /* UDNsdAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDNsdAdapter.h; sourceTree = "<group>"; };
@@ -795,6 +811,28 @@
 		0EBAE9671CB3824000361D18 /* NexfiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NexfiUITests.m; sourceTree = "<group>"; };
 		0EBAE9691CB3824000361D18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EBAECBD1CB3849600361D18 /* Nexfi.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nexfi.pch; sourceTree = "<group>"; };
+		0EFC78D11D336D7700789ADD /* RegisterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterVC.h; sourceTree = "<group>"; };
+		0EFC78D21D336D7700789ADD /* RegisterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterVC.m; sourceTree = "<group>"; };
+		0EFC78D31D336D7700789ADD /* RegisterVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterVC.xib; sourceTree = "<group>"; };
+		0EFC78D61D33704700789ADD /* NexFiIcon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "NexFiIcon@3x.png"; sourceTree = "<group>"; };
+		0EFC78D91D3375EA00789ADD /* RegisterVertifyCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterVertifyCodeVC.h; sourceTree = "<group>"; };
+		0EFC78DA1D3375EA00789ADD /* RegisterVertifyCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterVertifyCodeVC.m; sourceTree = "<group>"; };
+		0EFC78DB1D3375EA00789ADD /* RegisterVertifyCodeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterVertifyCodeVC.xib; sourceTree = "<group>"; };
+		0EFC78DF1D3383A800789ADD /* UIButton+ClickBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+ClickBlock.h"; sourceTree = "<group>"; };
+		0EFC78E01D3383A800789ADD /* UIButton+ClickBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+ClickBlock.m"; sourceTree = "<group>"; };
+		0EFC78E11D3383A800789ADD /* UITapGestureRecognizer+block.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITapGestureRecognizer+block.h"; sourceTree = "<group>"; };
+		0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITapGestureRecognizer+block.m"; sourceTree = "<group>"; };
+		0EFC78E51D3384C000789ADD /* LooseTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LooseTextField.h; sourceTree = "<group>"; };
+		0EFC78E61D3384C000789ADD /* LooseTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LooseTextField.m; sourceTree = "<group>"; };
+		0EFC78E81D338C8100789ADD /* JKCountDownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKCountDownButton.h; sourceTree = "<group>"; };
+		0EFC78E91D338C8100789ADD /* JKCountDownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKCountDownButton.m; sourceTree = "<group>"; };
+		0EFC78F11D3393D900789ADD /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
+		0EFC78F21D3393D900789ADD /* SMS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SMS_SDK.framework; sourceTree = "<group>"; };
+		0EFC78F51D3393ED00789ADD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		0EFC78F71D3393F900789ADD /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		0EFC78F91D33940100789ADD /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		0EFC78FB1D33940900789ADD /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		0EFC78FD1D33941200789ADD /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		8C46A9998135D78B6AC18670 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		BB99C2D7709B8608003F2070 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FC21E929A7E4E0B407312757 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -805,9 +843,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EFC78FE1D33941200789ADD /* libstdc++.tbd in Frameworks */,
+				0EFC78FC1D33940900789ADD /* JavaScriptCore.framework in Frameworks */,
+				0EFC78FA1D33940100789ADD /* MessageUI.framework in Frameworks */,
+				0EFC78F81D3393F900789ADD /* libicucore.tbd in Frameworks */,
+				0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */,
+				0EFC78F31D3393D900789ADD /* MOBFoundation.framework in Frameworks */,
 				0E03BF501D0E560C00F08070 /* libmp3lame.a in Frameworks */,
 				0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */,
 				0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */,
+				0EFC78F41D3393D900789ADD /* SMS_SDK.framework in Frameworks */,
 				0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */,
 				36390C63D010916D8AAA6077 /* libPods.a in Frameworks */,
 			);
@@ -833,6 +878,7 @@
 		0E0281D91D05308900348523 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0EFC78D61D33704700789ADD /* NexFiIcon@3x.png */,
 				0E0281DA1D05308900348523 /* 041@2x.png */,
 				0E0281DB1D05308900348523 /* 054@2x.png */,
 				0E0281DC1D05308900348523 /* 057@2x.png */,
@@ -1170,6 +1216,7 @@
 		0E9E76C61CC62AD100EE2272 /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				0EFC78D01D336D6100789ADD /* Login */,
 				0E9E76C71CC62AD100EE2272 /* Chat */,
 				0E9E77481CC62AD100EE2272 /* Self */,
 				0E9E77541CC62AD100EE2272 /* Tools */,
@@ -1472,6 +1519,8 @@
 		0E9E77EF1CC62B9400EE2272 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0EFC78F01D3393D900789ADD /* SMS_SDK */,
+				0EFC78DE1D33839C00789ADD /* Catagory */,
 				0E0282481D056C8100348523 /* MJCommonTool */,
 				0E9E77F01CC62B9400EE2272 /* ConFunc */,
 				0E03BEA51D0D6B1C00F08070 /* libopencore-amr */,
@@ -1480,16 +1529,12 @@
 				0E9E77F31CC62B9400EE2272 /* Header.h */,
 				0E9E77F41CC62B9400EE2272 /* HudTool.h */,
 				0E9E77F51CC62B9400EE2272 /* HudTool.m */,
+				0EFC78E81D338C8100789ADD /* JKCountDownButton.h */,
+				0EFC78E91D338C8100789ADD /* JKCountDownButton.m */,
+				0EFC78E51D3384C000789ADD /* LooseTextField.h */,
+				0EFC78E61D3384C000789ADD /* LooseTextField.m */,
 				0E9E77F61CC62B9400EE2272 /* NexfiNavigationController.h */,
 				0E9E77F71CC62B9400EE2272 /* NexfiNavigationController.m */,
-				0E9E77F81CC62B9400EE2272 /* NSDataEx.h */,
-				0E9E77F91CC62B9400EE2272 /* NSDataEx.m */,
-				0E9E79641CC62B9500EE2272 /* StringHelper.h */,
-				0E9E79651CC62B9500EE2272 /* StringHelper.m */,
-				0E9E79661CC62B9500EE2272 /* UIColor+Hex.h */,
-				0E9E79671CC62B9500EE2272 /* UIColor+Hex.m */,
-				0E9E79681CC62B9500EE2272 /* UIView_extra.h */,
-				0E9E79691CC62B9500EE2272 /* UIView_extra.m */,
 				0E9E796A1CC62B9500EE2272 /* Underdark */,
 				0E9E79D61CC62B9500EE2272 /* WGradientProgress */,
 			);
@@ -1805,6 +1850,47 @@
 			path = NexfiUITests;
 			sourceTree = "<group>";
 		};
+		0EFC78D01D336D6100789ADD /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC78D11D336D7700789ADD /* RegisterVC.h */,
+				0EFC78D21D336D7700789ADD /* RegisterVC.m */,
+				0EFC78D31D336D7700789ADD /* RegisterVC.xib */,
+				0EFC78D91D3375EA00789ADD /* RegisterVertifyCodeVC.h */,
+				0EFC78DA1D3375EA00789ADD /* RegisterVertifyCodeVC.m */,
+				0EFC78DB1D3375EA00789ADD /* RegisterVertifyCodeVC.xib */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		0EFC78DE1D33839C00789ADD /* Catagory */ = {
+			isa = PBXGroup;
+			children = (
+				0E9E79661CC62B9500EE2272 /* UIColor+Hex.h */,
+				0E9E79671CC62B9500EE2272 /* UIColor+Hex.m */,
+				0E9E79681CC62B9500EE2272 /* UIView_extra.h */,
+				0E9E79691CC62B9500EE2272 /* UIView_extra.m */,
+				0E9E79641CC62B9500EE2272 /* StringHelper.h */,
+				0E9E79651CC62B9500EE2272 /* StringHelper.m */,
+				0E9E77F81CC62B9400EE2272 /* NSDataEx.h */,
+				0E9E77F91CC62B9400EE2272 /* NSDataEx.m */,
+				0EFC78DF1D3383A800789ADD /* UIButton+ClickBlock.h */,
+				0EFC78E01D3383A800789ADD /* UIButton+ClickBlock.m */,
+				0EFC78E11D3383A800789ADD /* UITapGestureRecognizer+block.h */,
+				0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */,
+			);
+			path = Catagory;
+			sourceTree = "<group>";
+		};
+		0EFC78F01D3393D900789ADD /* SMS_SDK */ = {
+			isa = PBXGroup;
+			children = (
+				0EFC78F11D3393D900789ADD /* MOBFoundation.framework */,
+				0EFC78F21D3393D900789ADD /* SMS_SDK.framework */,
+			);
+			path = SMS_SDK;
+			sourceTree = "<group>";
+		};
 		6D578634953324AB332DD9B0 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1817,6 +1903,11 @@
 		B98D2616E8A210408156426C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0EFC78FD1D33941200789ADD /* libstdc++.tbd */,
+				0EFC78FB1D33940900789ADD /* JavaScriptCore.framework */,
+				0EFC78F91D33940100789ADD /* MessageUI.framework */,
+				0EFC78F71D3393F900789ADD /* libicucore.tbd */,
+				0EFC78F51D3393ED00789ADD /* libz.tbd */,
 				0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */,
 				FC21E929A7E4E0B407312757 /* libPods.a */,
 			);
@@ -1942,6 +2033,7 @@
 				0E9E77EA1CC62AD100EE2272 /* FCHeadAddCollectionCell.xib in Resources */,
 				0E0282141D05308900348523 /* btn-shouye@2x.png in Resources */,
 				0E02823B1D05308900348523 /* message_voice_sender_normal@3x.png in Resources */,
+				0EFC78D51D336D7700789ADD /* RegisterVC.xib in Resources */,
 				0E9E77BE1CC62AD100EE2272 /* write_face_5.png in Resources */,
 				0E9E77AF1CC62AD100EE2272 /* write_face_36.png in Resources */,
 				0EBAE9521CB3824000361D18 /* LaunchScreen.storyboard in Resources */,
@@ -2001,6 +2093,7 @@
 				0E0282311D05308900348523 /* wode01.png in Resources */,
 				0E0282861D06ADE900348523 /* SenderAvatarCell.xib in Resources */,
 				0E9E77AB1CC62AD100EE2272 /* write_face_32.png in Resources */,
+				0EFC78DD1D3375EA00789ADD /* RegisterVertifyCodeVC.xib in Resources */,
 				0E02823D1D05308900348523 /* message_voice_sender_playing_2@3x.png in Resources */,
 				0E9E779C1CC62AD100EE2272 /* write_face_19.png in Resources */,
 				0E02821B1D05308900348523 /* img_head_02@2x.png in Resources */,
@@ -2030,6 +2123,7 @@
 				0E0282171D05308900348523 /* check34.png in Resources */,
 				0E0282841D06ADE900348523 /* ReceiverVoiceCell.xib in Resources */,
 				0E0282181D05308900348523 /* fujin01.png in Resources */,
+				0EFC78D71D33704700789ADD /* NexFiIcon@3x.png in Resources */,
 				0E9E77DA1CC62AD100EE2272 /* NeighbourVC.xib in Resources */,
 				0E0282211D05308900348523 /* img_head_08@2x.png in Resources */,
 				0E0282101D05308900348523 /* 102@2x.png in Resources */,
@@ -2144,6 +2238,7 @@
 				0E9E77E51CC62AD100EE2272 /* NFHeadVC.m in Sources */,
 				0EA30B551CF44243008860BF /* TextMessage.m in Sources */,
 				0E9E7B401CC62B9500EE2272 /* UDFrameData.m in Sources */,
+				0EFC78DC1D3375EA00789ADD /* RegisterVertifyCodeVC.m in Sources */,
 				0E9E7B441CC62B9500EE2272 /* UDJackLogger.m in Sources */,
 				0E9E7B2F1CC62B9500EE2272 /* UDCompositeBuffer.m in Sources */,
 				0E03BF5A1D0E560C00F08070 /* XMNChatSystemMessageCell.m in Sources */,
@@ -2160,8 +2255,10 @@
 				0E9E7B571CC6318D00EE2272 /* JXImageView.m in Sources */,
 				0E9E77DD1CC62AD100EE2272 /* NexfiUtil.m in Sources */,
 				0E9E77D61CC62AD100EE2272 /* NFTribeInfoCell.m in Sources */,
+				0EFC78E71D3384C000789ADD /* LooseTextField.m in Sources */,
 				0E03BF4F1D0E560C00F08070 /* SwipeView.m in Sources */,
 				0E03BF431D0E560C00F08070 /* NSString+MD5.m in Sources */,
+				0EFC78D41D336D7700789ADD /* RegisterVC.m in Sources */,
 				0E9E77EE1CC62AD100EE2272 /* NFHeadView.m in Sources */,
 				0E9E7B461CC62B9500EE2272 /* UDLogging.m in Sources */,
 				0EA30B541CF44243008860BF /* FileMessage.m in Sources */,
@@ -2179,6 +2276,7 @@
 				0E03BF411D0E560C00F08070 /* View+MASAdditions.m in Sources */,
 				0E9E77C61CC62AD100EE2272 /* JXEmoji.m in Sources */,
 				0E03BF5F1D0E560C00F08070 /* XMNFacePageView.m in Sources */,
+				0EFC78E31D3383A800789ADD /* UIButton+ClickBlock.m in Sources */,
 				0E03BF5D1D0E560C00F08070 /* XMNContentView.m in Sources */,
 				0E0282851D06ADE900348523 /* SenderAvatarCell.m in Sources */,
 				0E9E7B301CC62B9500EE2272 /* UDDataBuffer.m in Sources */,
@@ -2260,6 +2358,8 @@
 				0E03BF521D0E560C00F08070 /* XMLocationManager.m in Sources */,
 				0E03BF3E1D0E560C00F08070 /* MASViewConstraint.m in Sources */,
 				0E9E7B241CC62B9500EE2272 /* UDNsdServer.m in Sources */,
+				0EFC78EA1D338C8100789ADD /* JKCountDownButton.m in Sources */,
+				0EFC78E41D3383A800789ADD /* UITapGestureRecognizer+block.m in Sources */,
 				0E9E7B361CC62B9500EE2272 /* UDTimeExtender.m in Sources */,
 				0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */,
 				0E9E79DF1CC62B9500EE2272 /* NexfiNavigationController.m in Sources */,
@@ -2438,6 +2538,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Nexfi/Helper/SMS_SDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;
@@ -2466,6 +2570,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Nexfi/Helper/SMS_SDK",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
 				INFOPLIST_FILE = Nexfi/Info.plist;

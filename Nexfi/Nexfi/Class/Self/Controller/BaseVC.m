@@ -10,6 +10,7 @@
 #import "IQKeyboardManager.h"
 #import "NFAllUserChatInfoVC.h"
 #import "NFSingleChatInfoVC.h"
+#import "UserInfoVC.h"
 
 #define NAVIGATION_BAR_HEIGHT self.navigationController.navigationBar.frame.size.height
 #define BUTTONMarginX    10

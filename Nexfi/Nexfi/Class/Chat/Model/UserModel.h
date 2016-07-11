@@ -18,6 +18,8 @@
 @property (nonatomic, retain) NSString *nodeId;//用户nodeId
 @property (nonatomic, retain) NSString *birthday;//用户生日
 
+@property (nonatomic,retain) NSString *phoneNumber;//手机号
+
 
 - (id)initWithaDic:(NSDictionary *)aDic;
 

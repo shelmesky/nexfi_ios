@@ -33,7 +33,9 @@
 #import "UIView+Frame.h"
 #import "MJCommonHeader.h"
 #import "MJCommonFooter.h"
-
+#import "LooseTextField.h"
+#import "UITapGestureRecognizer+block.h"
+#import "UIButton+ClickBlock.h"
 
 #import "Message.h"
 
