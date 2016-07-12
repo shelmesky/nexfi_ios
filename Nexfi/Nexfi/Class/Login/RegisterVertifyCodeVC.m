@@ -10,6 +10,7 @@
 #import "JKCountDownButton.h"
 #import "UserInfoVC.h"
 #import "RegisterVC.h"
+#import "NeighbourVC.h"
 
 #import <SMS_SDK/SMSSDK.h>
 #import <SMS_SDK/Extend/SMSSDKCountryAndAreaCode.h>
@@ -108,14 +109,32 @@
     
 }
 - (IBAction)finishClick:(id)sender {
-//    [SMSSDK commitVerificationCode:self.codeInput.text phoneNumber:self.phone zone:@"86" result:^(NSError *error) {
-//        if (!error) {
-//            NSLog(@"验证成功");
-//        }
-//    }];
-    
-    UserInfoVC *vc = [[UserInfoVC alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+    [SMSSDK commitVerificationCode:self.codeInput.text phoneNumber:self.phone zone:@"86" result:^(NSError *error) {
+        if (!error) {
+            NSLog(@"验证成功");
+            NSMutableArray *vcs = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+            BOOL hasUserInfo = NO;
+            UIViewController *neighbourVC;
+            for (UIViewController *v in vcs) {
+                if ([v isKindOfClass:[NeighbourVC class]]) {//有用户信息 没注册
+                    hasUserInfo = YES;
+                    neighbourVC = v;
+                }
+            }
+            if (hasUserInfo) {//有用户信息 注册成功之后返回到首页
+                UserModel *user = [[UserManager shareManager]getUser];
+                user.phoneNumber = self.phone;
+                [[UserManager shareManager]loginSuccessWithUser:user];
+                [self.navigationController popToViewController:neighbourVC animated:YES];
+            }else{//没有用户信息  注册成功之后去完善用户信息
+                UserModel *user = [[UserManager shareManager]getUser];
+                user.phoneNumber = self.phone;
+                [[UserManager shareManager]loginSuccessWithUser:user];
+                UserInfoVC *vc = [[UserInfoVC alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+    }];
 
 }
 

@@ -36,6 +36,7 @@
 #import "LooseTextField.h"
 #import "UITapGestureRecognizer+block.h"
 #import "UIButton+ClickBlock.h"
+#import "Reachability.h"
 
 #import "Message.h"
 

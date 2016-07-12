@@ -505,11 +505,11 @@ static CGRect keyboardFrame = (CGRect){{0.0f, 0.0f}, {0.0f, 0.0f}};
 
 - (void)tapped:(UITapGestureRecognizer *)t {
     if (CGRectContainsPoint(self.contentView.bounds, [t locationInView:self.contentView])) {
-        if (self.tapOnHUDViewBlock) {
+        if (self.tapOnHUDViewBlock != nil) {
             self.tapOnHUDViewBlock(self);
         }
     }
-    else if (self.tapOutsideBlock) {
+    else if (self.tapOutsideBlock != nil) {
         self.tapOutsideBlock(self);
     }
 }
@@ -550,6 +550,38 @@ NS_INLINE UIViewAnimationOptions UIViewAnimationOptionsFromUIViewAnimationCurve(
     }
 }
 
+- (void)updateMotionOnHUDView {
+    if (iOS7) {
+        BOOL reduceMotionEnabled = (iOS8 && UIAccessibilityIsReduceMotionEnabled());
+        
+        BOOL wantsParallax = ((self.parallaxMode == JGProgressHUDParallaxModeDevice && !reduceMotionEnabled) || self.parallaxMode == JGProgressHUDParallaxModeAlwaysOn);
+        BOOL hasParallax = (_HUDViewHost.motionEffects.count > 0);
+        
+        if (wantsParallax == hasParallax) {
+            return;
+        }
+        
+        if (!wantsParallax) {
+            _HUDViewHost.motionEffects = @[];
+        }
+        else {
+            UIInterpolatingMotionEffect *x = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
+            
+            CGFloat maxMovement = 20.0f;
+            
+            x.minimumRelativeValue = @(-maxMovement);
+            x.maximumRelativeValue = @(maxMovement);
+            
+            UIInterpolatingMotionEffect *y = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
+            
+            y.minimumRelativeValue = @(-maxMovement);
+            y.maximumRelativeValue = @(maxMovement);
+            
+            _HUDViewHost.motionEffects = @[x, y];
+        }
+    }
+}
+
 - (void)animationDidFinish:(BOOL)presenting {
     if (presenting) {
         [self cleanUpAfterPresentation];
@@ -568,6 +600,8 @@ NS_INLINE UIViewAnimationOptions UIViewAnimationOptionsFromUIViewAnimationCurve(
 - (UIView *)HUDView {
     if (!_HUDView) {
         if (iOS8) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateMotionOnHUDView) name:UIAccessibilityReduceMotionStatusDidChangeNotification object:nil];
+            
             UIBlurEffectStyle effect = 0;
             
             if (self.style == JGProgressHUDStyleDark) {
@@ -598,21 +632,7 @@ NS_INLINE UIViewAnimationOptions UIViewAnimationOptionsFromUIViewAnimationCurve(
             }
         }
         
-        if (iOS7) {
-            UIInterpolatingMotionEffect *x = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.x" type:UIInterpolatingMotionEffectTypeTiltAlongHorizontalAxis];
-            
-            CGFloat maxMovement = 20.0f;
-            
-            x.minimumRelativeValue = @(-maxMovement);
-            x.maximumRelativeValue = @(maxMovement);
-            
-            UIInterpolatingMotionEffect *y = [[UIInterpolatingMotionEffect alloc] initWithKeyPath:@"center.y" type:UIInterpolatingMotionEffectTypeTiltAlongVerticalAxis];
-            
-            y.minimumRelativeValue = @(-maxMovement);
-            y.maximumRelativeValue = @(maxMovement);
-            
-            _HUDView.motionEffects = @[x, y];
-        }
+        [self updateMotionOnHUDView];
         
         [_HUDViewHost addSubview:_HUDView];
         
@@ -701,6 +721,16 @@ NS_INLINE UIViewAnimationOptions UIViewAnimationOptionsFromUIViewAnimationCurve(
     _animation = animation;
     
     _animation.progressHUD = self;
+}
+
+- (void)setParallaxMode:(JGProgressHUDParallaxMode)parallaxMode {
+    if (self.parallaxMode == parallaxMode) {
+        return;
+    }
+    
+    _parallaxMode = parallaxMode;
+    
+    [self updateMotionOnHUDView];
 }
 
 - (void)setPosition:(JGProgressHUDPosition)position {
@@ -816,6 +846,10 @@ NS_INLINE UIViewAnimationOptions UIViewAnimationOptionsFromUIViewAnimationCurve(
 }
 
 - (void)removeObservers {
+    if (iOS8) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:UIAccessibilityReduceMotionStatusDidChangeNotification object:nil];
+    }
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidChangeStatusBarFrameNotification object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];

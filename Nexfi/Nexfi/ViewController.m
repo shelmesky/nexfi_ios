@@ -26,6 +26,16 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    //网络检测通知
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityChanged:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    //网络监测
+    Reachability *reach =[Reachability reachabilityWithHostname:@"www.apple.com"];
+
+    [reach startNotifier];
     
     UserModel *user = [[UserManager shareManager]getUser];
     if (!user) {
@@ -33,29 +43,50 @@
         [[UserManager shareManager]loginSuccessWithUser:user];
     }
 
-    /*
-     判断是否自动登录
-     */
-    [self isAutoLogin];
-    
 
 }
-- (void)isAutoLogin{
-    NSString *userId = [[UserManager shareManager]getUser].userId;
-//    NSString *phoneNum = [[UserManager shareManager]getUser].phoneNumber;
-    if (userId ) {//登录直接获取数据
-        [[NexfiUtil shareUtil] layOutTheApp];
+- (void)reachabilityChanged: (NSNotification *)notification{
+    Reachability *reach = [notification object];
+    
+    if (reach.isReachable) {
+        /*
+         判断是否自动登录
+         */
+        [self isAutoLoginWithwifi];
     }else{
-        [self loginAction];
+        /*
+         判断是否自动登录
+         */
+        [self isAutoLoginWithNoWifi];
     }
 }
-- (void)loginAction{
-    RegisterVC *vc = [[RegisterVC alloc]init];
-//    UserInfoVC *vc = [[UserInfoVC alloc]init];
-    NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
-//    nav.navigationBarHidden = YES;
-    UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
-    window.rootViewController = nav;
+- (void)isAutoLoginWithwifi{
+    NSString *userId = [[UserManager shareManager]getUser].userId;
+    NSString *phoneNum = [[UserManager shareManager]getUser].phoneNumber;
+    if (userId && phoneNum) {//登录直接获取数据
+        [[NexfiUtil shareUtil] layOutTheApp];
+    }else if (phoneNum){//只注册手机号 没有用户信息
+        UserInfoVC *vc = [[UserInfoVC alloc]init];
+        NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
+        UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
+        window.rootViewController = nav;
+    }else{
+        RegisterVC *vc = [[RegisterVC alloc]init];
+        NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
+        UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
+        window.rootViewController = nav;
+    }
+}
+- (void)isAutoLoginWithNoWifi{
+    NSString *userId = [[UserManager shareManager]getUser].userId;
+    if (userId) {//登录直接获取数据
+        [[NexfiUtil shareUtil] layOutTheApp];
+    }else{
+        UserInfoVC *vc = [[UserInfoVC alloc]init];
+        NexfiNavigationController *nav = [[NexfiNavigationController alloc]initWithRootViewController:vc];
+        UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
+        window.rootViewController = nav;
+    }
 }
 - (void)pushToChat:(id)sender{
     NFSingleChatInfoVC *vc = [[NFSingleChatInfoVC alloc]init];

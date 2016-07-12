@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterVC">
             <connections>
                 <outlet property="getCode" destination="pNT-gr-b3B" id="8M3-wx-czA"/>
+                <outlet property="icon" destination="ZaG-sf-piT" id="MGk-Js-3bF"/>
                 <outlet property="phoneTe" destination="x3m-fK-O0m" id="eqZ-Ff-jVC"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -36,7 +37,7 @@
                         <action selector="getCodeClick:" destination="-1" eventType="touchUpInside" id="HTe-1F-6EU"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NexFiIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-sf-piT">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NexFiIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-sf-piT">
                     <rect key="frame" x="161" y="91" width="90" height="90"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="1UT-l7-i4R"/>
@@ -50,7 +51,7 @@
                 <constraint firstItem="pNT-gr-b3B" firstAttribute="top" secondItem="x3m-fK-O0m" secondAttribute="bottom" constant="29" id="51u-3w-tOp"/>
                 <constraint firstItem="pNT-gr-b3B" firstAttribute="height" secondItem="x3m-fK-O0m" secondAttribute="height" id="Gex-ZX-05H"/>
                 <constraint firstAttribute="trailing" secondItem="x3m-fK-O0m" secondAttribute="trailing" constant="31" id="HMu-Vf-A8L"/>
-                <constraint firstItem="ZaG-sf-piT" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="KXW-QR-75C"/>
+                <constraint firstItem="ZaG-sf-piT" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-1" id="KXW-QR-75C"/>
                 <constraint firstItem="x3m-fK-O0m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="31" id="M1l-eS-xtv"/>
                 <constraint firstItem="pNT-gr-b3B" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="31" id="VIW-kA-Uzn"/>
                 <constraint firstAttribute="trailing" secondItem="pNT-gr-b3B" secondAttribute="trailing" constant="31" id="e06-N1-Y5B"/>

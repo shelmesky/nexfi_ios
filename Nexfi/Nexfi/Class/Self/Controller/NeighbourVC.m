@@ -11,8 +11,11 @@
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
 #import "OtherInfoVC.h"
+#import "VertifyCodeVC.h"
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
+
+@property (nonatomic, assign)BOOL reachable;
 
 @end
 
@@ -40,6 +43,25 @@
     // Do any additional setup after loading the view from its nib.
 
     [self setBaseVCAttributesWith:@"附近的人" left:nil right:@"群聊" WithInVC:self];
+    
+    Reachability *reach = [Reachability reachabilityWithHostname:@"www.apple.com"];
+    
+    //网络可用
+    reach.reachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.reachable = YES;
+        });
+    };
+    //网络不可用
+    reach.unreachableBlock = ^(Reachability * reachability)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.reachable = NO;
+        });
+    };
+    
+    [reach startNotifier];
 
     
     [[UnderdarkUtil share].node start];
@@ -158,10 +180,17 @@
 }
 #pragma -mark 私聊
 - (void)nearbyUserCellDidClickChatButtonForIndexPath:(NSIndexPath *)indexPath{
-    UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
-    NFSingleChatInfoVC *chat = [[NFSingleChatInfoVC alloc]init];
-    chat.to_user = to_user;
-    [self.navigationController pushViewController:chat animated:YES];
+    UserModel *user = [[UserManager shareManager]getUser];
+    if (user.phoneNumber) {//已经注册直接去私聊
+        UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
+        NFSingleChatInfoVC *chat = [[NFSingleChatInfoVC alloc]init];
+        chat.to_user = to_user;
+        [self.navigationController pushViewController:chat animated:YES];
+    }else{
+        VertifyCodeVC *vc = [[VertifyCodeVC alloc]init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }
+
 }
 #pragma mark - table
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section{

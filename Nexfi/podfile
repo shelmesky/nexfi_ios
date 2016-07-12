@@ -12,3 +12,4 @@ pod 'MWPhotoBrowser', '~> 2.1.1'
 pod 'MJExtension', '~> 3.0.10'
 pod 'ZYQAssetPickerController', '~> 1.0.0'
 pod 'MJRefresh', '~> 2.4.7'
+pod 'Reachability', '~> 3.0.0’

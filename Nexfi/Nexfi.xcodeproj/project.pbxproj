@@ -119,6 +119,8 @@
 		0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E03C01A1D0EA26C00F08070 /* libopencore-amrnb.a */; };
 		0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E03C01B1D0EA26C00F08070 /* libopencore-amrwb.a */; };
 		0E03C0281D0EA26C00F08070 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E03C0231D0EA26C00F08070 /* VoiceConverter.mm */; };
+		0E05CEC61D34BC9100959B75 /* VertifyCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */; };
+		0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */; };
 		0E2BF1CB1CDC7465005989B1 /* UDBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E79821CC62B9500EE2272 /* UDBonjourBrowser.m */; };
 		0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */; };
 		0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */; };
@@ -514,6 +516,9 @@
 		0E03C0211D0EA26C00F08070 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
 		0E03C0221D0EA26C00F08070 /* VoiceConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceConverter.h; sourceTree = "<group>"; };
 		0E03C0231D0EA26C00F08070 /* VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceConverter.mm; sourceTree = "<group>"; };
+		0E05CEC31D34BC9100959B75 /* VertifyCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertifyCodeVC.h; sourceTree = "<group>"; };
+		0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertifyCodeVC.m; sourceTree = "<group>"; };
+		0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VertifyCodeVC.xib; sourceTree = "<group>"; };
 		0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAVAudioPlayer.h; sourceTree = "<group>"; };
 		0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAVAudioPlayer.m; sourceTree = "<group>"; };
 		0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
@@ -1859,6 +1864,9 @@
 				0EFC78D91D3375EA00789ADD /* RegisterVertifyCodeVC.h */,
 				0EFC78DA1D3375EA00789ADD /* RegisterVertifyCodeVC.m */,
 				0EFC78DB1D3375EA00789ADD /* RegisterVertifyCodeVC.xib */,
+				0E05CEC31D34BC9100959B75 /* VertifyCodeVC.h */,
+				0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */,
+				0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -2042,6 +2050,7 @@
 				0E0282331D05308900348523 /* message_receiver_background_highlight@3x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
 				0E03BF481D0E560C00F08070 /* chatBar.xcassets in Resources */,
+				0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */,
 				0E0282271D05308900348523 /* img_head_14@2x.png in Resources */,
 				0E9E778F1CC62AD100EE2272 /* write_face_07.png in Resources */,
 				0E02821F1D05308900348523 /* img_head_06@2x.png in Resources */,
@@ -2371,6 +2380,7 @@
 				0E9E7B281CC62B9500EE2272 /* UDBonjourBrowser.m in Sources */,
 				0E9E7B2D1CC62B9500EE2272 /* UDBuffer.m in Sources */,
 				0E0282831D06ADE900348523 /* ReceiverVoiceCell.m in Sources */,
+				0E05CEC61D34BC9100959B75 /* VertifyCodeVC.m in Sources */,
 				0E9E7B261CC62B9500EE2272 /* UDNsdUtil.m in Sources */,
 				0E03BF421D0E560C00F08070 /* ViewController+MASAdditions.m in Sources */,
 				0E03BF5B1D0E560C00F08070 /* XMNChatTextMessageCell.m in Sources */,

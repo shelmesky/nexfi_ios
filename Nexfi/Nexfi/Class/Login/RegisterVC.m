@@ -18,6 +18,7 @@
 @interface RegisterVC ()
 @property (weak, nonatomic) IBOutlet LooseTextField *phoneTe;
 @property (weak, nonatomic) IBOutlet UIButton *getCode;
+@property (weak, nonatomic) IBOutlet UIImageView *icon;
 
 @end
 
@@ -30,6 +31,8 @@
     
     [self setBaseVCAttributesWith:@"注册" left:nil right:nil WithInVC:self];
 
+    self.icon.layer.cornerRadius = 5;
+    
     self.phoneTe.layer.cornerRadius = 5;
     self.phoneTe.layer.borderColor = [UIColor lightGrayColor].CGColor;
     self.phoneTe.layer.borderWidth = 1;
@@ -46,6 +49,7 @@
     return isPhoneNumber;
 }
 - (IBAction)getCodeClick:(id)sender {
+    
     if ([self isPhoneNumber]) {
     
         [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:self.phoneTe.text
@@ -67,6 +71,11 @@
         [alert show];
         
     }
+    
+    
+//    RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
+//    vertifyCodeVc.phone = self.phoneTe.text;
+//    [self.navigationController pushViewController:vertifyCodeVc animated:YES];
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
     if (buttonIndex == 0) {

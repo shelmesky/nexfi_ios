@@ -87,14 +87,14 @@
 /**
  A block to be invoked when the HUD view is tapped.
  
- @note The interaction type of the HUD must be JGProgressHUDInteractionTypeBlockTouchesOnHUDView or JGProgressHUDInteractionTypeBlockNoTouches, if not this block won't be fired.
+ @note The interaction type of the HUD must be @c JGProgressHUDInteractionTypeBlockTouchesOnHUDView or @c JGProgressHUDInteractionTypeBlockAllTouches, otherwise this block won't be fired.
  */
 @property (nonatomic, copy) void (^tapOnHUDViewBlock)(JGProgressHUD *HUD);
 
 /**
  A block to be invoked when the area outside of the HUD view is tapped.
  
- @note The interaction type of the HUD must be JGProgressHUDInteractionTypeBlockNoTouches, if not this block won't be fired.
+ @note The interaction type of the HUD must be @c JGProgressHUDInteractionTypeBlockAllTouches, otherwise this block won't be fired.
  */
 @property (nonatomic, copy) void (^tapOutsideBlock)(JGProgressHUD *HUD);
 
@@ -126,13 +126,22 @@
 @property (nonatomic, strong) JGProgressHUDIndicatorView *indicatorView;
 
 /**
- Interaction type of the HUD.
+ Interaction type of the HUD. Determines whether touches should be let through to the views behind the HUD.
  
  @sa JGProgressHUDInteractionType.
  
  @b Default: JGProgressHUDInteractionTypeBlockAllTouches.
  */
 @property (nonatomic, assign) JGProgressHUDInteractionType interactionType;
+
+/**
+ Parallax mode for the HUD. This setting determines whether the HUD should have a parallax (@c UIDeviceMotion) effect.
+ 
+ @sa JGProgressHUDParallaxMode.
+ 
+ @b Default: JGProgressHUDParallaxModeDevice.
+ */
+@property (nonatomic, assign) JGProgressHUDParallaxMode parallaxMode;
 
 /**
  The appearance style of the HUD.
@@ -220,10 +229,11 @@
 @property (nonatomic, assign) NSTimeInterval minimumDisplayTime;
 
 /**
- Determines whether voiceover announcements should be made upon displaying the HUD.
+ Determines whether Voice Over announcements should be made upon displaying the HUD (if Voice Over is active).
  @b Default: YES
  */
 @property (nonatomic, assign) BOOL voiceOverEnabled;
+
 
 
 /**
