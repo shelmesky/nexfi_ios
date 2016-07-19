@@ -12,7 +12,7 @@
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
 #import "NFSingleChatInfoVC.h"
-#import <SMS_SDK/SMSSDK.h>
+//#import <SMS_SDK/SMSSDK.h>
 
 @interface AppDelegate ()
 
@@ -30,8 +30,8 @@
     }
     
     //初始化应用，appKey和appSecret从后台申请得
-    [SMSSDK registerApp:@"14cf8332203fa"
-             withSecret:@"3749334724b29bdbad573fa76c514ef8"];
+//    [SMSSDK registerApp:@"14cf8332203fa"
+//             withSecret:@"3749334724b29bdbad573fa76c514ef8"];
     
     //清除语音缓存
     [self clearVoiceCache];
@@ -88,6 +88,11 @@
     return UIStatusBarStyleLightContent;
 }
 - (BOOL)prefersStatusBarHidden
+{
+    return NO;
+}
+//是否设备自动旋转
+- (BOOL)shouldAutorotate
 {
     return NO;
 }
@@ -185,10 +190,62 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+    
+    
+    //后台运行
+    __block UIBackgroundTaskIdentifier background_task;
+    
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^ {
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        while(TRUE)
+        {
+            [NSThread sleepForTimeInterval:1];
+            
+            //编写执行任务代码
+            NSLog(@"1");
+            
+        }
+        
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    });
+    
+    
+    
+    
+//    UIApplication*   app = [UIApplication sharedApplication];
+//    __block    UIBackgroundTaskIdentifier bgTask;
+//    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (bgTask != UIBackgroundTaskInvalid)
+//            {
+//                bgTask = UIBackgroundTaskInvalid;
+//            }
+//        });
+//    }];
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (bgTask != UIBackgroundTaskInvalid)
+//            {
+//                bgTask = UIBackgroundTaskInvalid;
+//            }
+//        });
+//    });
+    
+    
+    
+    
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    [[UIApplication sharedApplication] clearKeepAliveTimeout];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

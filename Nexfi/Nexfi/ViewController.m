@@ -26,6 +26,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    /*
     //网络检测通知
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(reachabilityChanged:)
@@ -36,14 +37,16 @@
     Reachability *reach =[Reachability reachabilityWithHostname:@"www.apple.com"];
 
     [reach startNotifier];
+     */
     
     UserModel *user = [[UserManager shareManager]getUser];
     if (!user) {
         UserModel *user = [[UserModel alloc]init];
         [[UserManager shareManager]loginSuccessWithUser:user];
     }
-
-
+    
+    [self isAutoLoginWithNoWifi];
+    
 }
 - (void)reachabilityChanged: (NSNotification *)notification{
     Reachability *reach = [notification object];

@@ -41,7 +41,6 @@
 //    NSLog(@"int deltaTime%.d",(int)deltaTime);
 //    NSLog(@"%d",(int)(deltaTime+0.5));
     
-    
     if (_second< 0.0)
     {
         [self stop];

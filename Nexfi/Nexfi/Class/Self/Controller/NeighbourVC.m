@@ -180,6 +180,7 @@
 }
 #pragma -mark 私聊
 - (void)nearbyUserCellDidClickChatButtonForIndexPath:(NSIndexPath *)indexPath{
+    /*
     UserModel *user = [[UserManager shareManager]getUser];
     if (user.phoneNumber) {//已经注册直接去私聊
         UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
@@ -190,6 +191,12 @@
         VertifyCodeVC *vc = [[VertifyCodeVC alloc]init];
         [self.navigationController pushViewController:vc animated:YES];
     }
+     */
+    
+    UserModel *to_user = [self.handleByUsers objectAtIndex:indexPath.row];
+    NFSingleChatInfoVC *chat = [[NFSingleChatInfoVC alloc]init];
+    chat.to_user = to_user;
+    [self.navigationController pushViewController:chat animated:YES];
 
 }
 #pragma mark - table

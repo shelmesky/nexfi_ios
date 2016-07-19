@@ -590,20 +590,20 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 {
 	// Stream thread.
 	
-	//LogDebug(@"output %@", [self stringForStreamEvent:eventCode]);
+//	LogDebug(@"output %@", [self stringForStreamEvent:eventCode]);
 	
 	bool shouldClose = false;
 	
 	switch (eventCode)
 	{
-		case NSStreamEventNone:
+		case NSStreamEventNone:// 无事件
 		{
 			LogError(@"output NSStreamEventNone (cannot connect to server): %@", [stream streamError]);
 			shouldClose = true;
 			break;
 		}
 			
-		case NSStreamEventOpenCompleted:
+		case NSStreamEventOpenCompleted: // 建立连接完成
 		{
 			//LogDebug(@"output NSStreamEventOpenCompleted");
 			
@@ -631,12 +631,12 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			break;
 		}
 			
-		case NSStreamEventHasBytesAvailable:
+		case NSStreamEventHasBytesAvailable:// 有可读的字节，接收到了数据，可以读了
 		{
 			break;
 		}
 			
-		case NSStreamEventHasSpaceAvailable:
+		case NSStreamEventHasSpaceAvailable:// 可以使用输出流的空间，此时可以发送数据给服务器
 		{
 			//LogDebug(@"NSStreamEventHasSpaceAvailable");
 			_outputCanWriteToStream = true;
@@ -644,14 +644,14 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			break;
 		}
 			
-		case NSStreamEventErrorOccurred:
+		case NSStreamEventErrorOccurred:// 发生错误
 		{
 			LogError(@"output NSStreamEventErrorOccurred (cannot connect to server): %@", [stream streamError]);
 			shouldClose = true;
 			break;
 		}
 			
-		case NSStreamEventEndEncountered:
+		case NSStreamEventEndEncountered:// 流结束事件，在此事件中负责做销毁工作
 		{
 			LogDebug(@"output NSStreamEventEndEncountered (connection closed by server): %@", [stream streamError]);
 			shouldClose = true;

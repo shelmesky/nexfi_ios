@@ -9,11 +9,11 @@
 #import "VertifyCodeVC.h"
 #import "RegisterVertifyCodeVC.h"
 
-#import <SMS_SDK/SMSSDK.h>
-#import <SMS_SDK/Extend/SMSSDKCountryAndAreaCode.h>
-#import <SMS_SDK/Extend/SMSSDK+DeprecatedMethods.h>
-#import <SMS_SDK/Extend/SMSSDK+ExtexdMethods.h>
-#import <MOBFoundation/MOBFoundation.h>
+//#import <SMS_SDK/SMSSDK.h>
+//#import <SMS_SDK/Extend/SMSSDKCountryAndAreaCode.h>
+//#import <SMS_SDK/Extend/SMSSDK+DeprecatedMethods.h>
+//#import <SMS_SDK/Extend/SMSSDK+ExtexdMethods.h>
+//#import <MOBFoundation/MOBFoundation.h>
 
 @interface VertifyCodeVC ()
 @property (weak, nonatomic) IBOutlet LooseTextField *phoneTe;
@@ -42,32 +42,28 @@
 }
 - (IBAction)sendCodeClick:(id)sender {
     
-     if ([self isPhoneNumber]) {
-     
-     [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:self.phoneTe.text
-     zone:@"86"
-     customIdentifier:nil
-     result:^(NSError *error)
-     {
-     if (!error) {
-     NSLog(@"语音短信验证码发送成功");
-     RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
-     vertifyCodeVc.phone = self.phoneTe.text;
-     [self.navigationController pushViewController:vertifyCodeVc animated:YES];
-     }
-     
-     }];
-     
-     }else{
-     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"无效手机号" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-     [alert show];
-     
-     }
-     
+//     if ([self isPhoneNumber]) {
+//     
+//     [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:self.phoneTe.text
+//     zone:@"86"
+//     customIdentifier:nil
+//     result:^(NSError *error)
+//     {
+//     if (!error) {
+//     NSLog(@"语音短信验证码发送成功");
+//     RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
+//     vertifyCodeVc.phone = self.phoneTe.text;
+//     [self.navigationController pushViewController:vertifyCodeVc animated:YES];
+//     }
+//     
+//     }];
+//     
+//     }else{
+//     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"无效手机号" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//     [alert show];
+//     
+//     }
     
-//    RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
-//    vertifyCodeVc.phone = self.phoneTe.text;
-//    [self.navigationController pushViewController:vertifyCodeVc animated:YES];
 }
 
 - (void)didReceiveMemoryWarning {

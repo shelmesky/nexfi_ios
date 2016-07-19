@@ -313,8 +313,6 @@
 		0EFC78E41D3383A800789ADD /* UITapGestureRecognizer+block.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */; };
 		0EFC78E71D3384C000789ADD /* LooseTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E61D3384C000789ADD /* LooseTextField.m */; };
 		0EFC78EA1D338C8100789ADD /* JKCountDownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFC78E91D338C8100789ADD /* JKCountDownButton.m */; };
-		0EFC78F31D3393D900789ADD /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F11D3393D900789ADD /* MOBFoundation.framework */; };
-		0EFC78F41D3393D900789ADD /* SMS_SDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F21D3393D900789ADD /* SMS_SDK.framework */; };
 		0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F51D3393ED00789ADD /* libz.tbd */; };
 		0EFC78F81D3393F900789ADD /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F71D3393F900789ADD /* libicucore.tbd */; };
 		0EFC78FA1D33940100789ADD /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EFC78F91D33940100789ADD /* MessageUI.framework */; };
@@ -831,8 +829,6 @@
 		0EFC78E61D3384C000789ADD /* LooseTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LooseTextField.m; sourceTree = "<group>"; };
 		0EFC78E81D338C8100789ADD /* JKCountDownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKCountDownButton.h; sourceTree = "<group>"; };
 		0EFC78E91D338C8100789ADD /* JKCountDownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKCountDownButton.m; sourceTree = "<group>"; };
-		0EFC78F11D3393D900789ADD /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
-		0EFC78F21D3393D900789ADD /* SMS_SDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SMS_SDK.framework; sourceTree = "<group>"; };
 		0EFC78F51D3393ED00789ADD /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		0EFC78F71D3393F900789ADD /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		0EFC78F91D33940100789ADD /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -853,11 +849,9 @@
 				0EFC78FA1D33940100789ADD /* MessageUI.framework in Frameworks */,
 				0EFC78F81D3393F900789ADD /* libicucore.tbd in Frameworks */,
 				0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */,
-				0EFC78F31D3393D900789ADD /* MOBFoundation.framework in Frameworks */,
 				0E03BF501D0E560C00F08070 /* libmp3lame.a in Frameworks */,
 				0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */,
 				0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */,
-				0EFC78F41D3393D900789ADD /* SMS_SDK.framework in Frameworks */,
 				0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */,
 				36390C63D010916D8AAA6077 /* libPods.a in Frameworks */,
 			);
@@ -1524,7 +1518,6 @@
 		0E9E77EF1CC62B9400EE2272 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				0EFC78F01D3393D900789ADD /* SMS_SDK */,
 				0EFC78DE1D33839C00789ADD /* Catagory */,
 				0E0282481D056C8100348523 /* MJCommonTool */,
 				0E9E77F01CC62B9400EE2272 /* ConFunc */,
@@ -1888,15 +1881,6 @@
 				0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */,
 			);
 			path = Catagory;
-			sourceTree = "<group>";
-		};
-		0EFC78F01D3393D900789ADD /* SMS_SDK */ = {
-			isa = PBXGroup;
-			children = (
-				0EFC78F11D3393D900789ADD /* MOBFoundation.framework */,
-				0EFC78F21D3393D900789ADD /* SMS_SDK.framework */,
-			);
-			path = SMS_SDK;
 			sourceTree = "<group>";
 		};
 		6D578634953324AB332DD9B0 /* Pods */ = {
@@ -2545,8 +2529,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2577,8 +2561,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
