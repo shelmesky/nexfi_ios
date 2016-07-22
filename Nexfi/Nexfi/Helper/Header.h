@@ -37,6 +37,7 @@
 #import "UITapGestureRecognizer+block.h"
 #import "UIButton+ClickBlock.h"
 #import "Reachability.h"
+#import "KxMenu.h"
 
 #import "Message.h"
 

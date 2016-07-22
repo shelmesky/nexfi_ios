@@ -24,4 +24,7 @@
 
 - (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index;//- (void)playAudioWithData:(NSData *)audioData;
 - (void)stopAudioPlayer;
+
+//播放后台语音
+- (void)playBackgroudSound;
 @end

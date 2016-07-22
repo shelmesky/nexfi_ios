@@ -31,7 +31,7 @@
         }else if (user.userGender.intValue == 2) {
             self.pDsecirp.text = @"女";
         }else{
-            self.pDsecirp.text = @"未设置";
+            self.pDsecirp.text = @"";
         }
     }
 }

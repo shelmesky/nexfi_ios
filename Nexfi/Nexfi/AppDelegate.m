@@ -12,9 +12,17 @@
 #import "NeighbourVC.h"
 #import "NFAllUserChatInfoVC.h"
 #import "NFSingleChatInfoVC.h"
+#import "FNAVAudioPlayer.h"
 //#import <SMS_SDK/SMSSDK.h>
 
 @interface AppDelegate ()
+
+
+@property (assign, nonatomic) UIBackgroundTaskIdentifier bgTask;
+@property (strong, nonatomic) dispatch_block_t expirationHandler;
+@property (assign, nonatomic) BOOL background;
+@property (assign, nonatomic) BOOL jobExpired;
+
 
 @end
 
@@ -47,18 +55,45 @@
     
 
     
-//    NeighbourVC *v = [[NeighbourVC alloc]init];
-//    UINavigationController *nav =[[ UINavigationController alloc]initWithRootViewController:v];
-////
-//    self.window.rootViewController = nav;
-    
 //    UIDevice *myDevice = [UIDevice currentDevice];
-//    
 //    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
 
+    NSError *setCategoryErr = nil;
+    NSError *activationErr  = nil;
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryErr];
+    [[AVAudioSession sharedInstance]setActive: YES error: &activationErr];
+    
+    
+    
+    //保持后台~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"isPlayFinish"];
+    [[NSUserDefaults standardUserDefaults]synchronize];
+    
+    UIApplication* app = [UIApplication sharedApplication];
+    typeof(self) __weak weakSelf = self;
+    self.expirationHandler = ^{  //创建后台自唤醒，当180s时间结束的时候系统会调用这里面的方法
+        [app endBackgroundTask:weakSelf.bgTask];
+        weakSelf.bgTask = UIBackgroundTaskInvalid;
+        weakSelf.bgTask = [app beginBackgroundTaskWithExpirationHandler:weakSelf.expirationHandler];
+        NSLog(@"Expired");
+        weakSelf.jobExpired = YES;
+        while(weakSelf.jobExpired)
+        {
+            // spin while we wait for the task to actually end.
+            NSLog(@"等待180s循环进程的结束");
+            [NSThread sleepForTimeInterval:1];
+        }
+        // Restart the background task so we can run forever.
+        [weakSelf startBackgroundTask];
+    };
+    self.bgTask = [[UIApplication sharedApplication]beginBackgroundTaskWithExpirationHandler:self.expirationHandler];
+    
+    NSLog(@"Entered background");
+    //开启后台进程循环
+    [self monitorBatteryStateInBackground];
+    //保持后台~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-//    self.window.rootViewController = nav;
     
     return YES;
 }
@@ -90,6 +125,47 @@
 - (BOOL)prefersStatusBarHidden
 {
     return NO;
+}
+- (void)startBackgroundTask{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // When the job expires it still keeps running since we never exited it. Thus have the expiration handler
+        // set a flag that the job expired and use that to exit the while loop and end the task.
+        NSInteger count=0;
+        
+        while(self.background && !self.jobExpired)
+        {
+            NSLog(@"进入后台进程循环");
+            [NSThread sleepForTimeInterval:1];
+            count++;
+            if(count>30)//每60s进行一次开启定位，刷新后台时间，//60秒后播一次语音如何
+            {
+                NSLog(@"播一次语音~~~");
+                NSUserDefaults * def = [NSUserDefaults standardUserDefaults];
+                NSString * flagStr = [def objectForKey:@"isPlayFinish"];
+                NSLog(@"flagStr---%@",flagStr);
+                if (![flagStr isEqualToString:@"1"])//后台没有播放
+                {
+                    [[NSUserDefaults standardUserDefaults]setObject:@"1" forKey:@"isPlayFinish"];
+                    [[NSUserDefaults standardUserDefaults]synchronize];
+                    [[FNAVAudioPlayer sharePlayer]playBackgroudSound];
+                }
+                
+                count=0;
+            }
+
+            NSTimeInterval backgroundTimeRemaining = [[UIApplication sharedApplication] backgroundTimeRemaining];
+            NSLog(@"Background Time Remaining = %.02f Seconds",backgroundTimeRemaining);
+            
+        }
+        self.jobExpired = NO;
+    });
+}
+
+- (void)monitorBatteryStateInBackground
+{
+    NSLog(@"这里是干嘛");
+    self.background = YES;
+    [self startBackgroundTask];
 }
 //是否设备自动旋转
 - (BOOL)shouldAutorotate
@@ -191,7 +267,44 @@
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
     
+    /*
+    __block UIBackgroundTaskIdentifier background_task;
     
+    background_task = [application beginBackgroundTaskWithExpirationHandler:^ {
+        [application endBackgroundTask: background_task];
+        background_task = UIBackgroundTaskInvalid;
+    }];
+    */
+    UIApplication*   app = [UIApplication sharedApplication];
+    __block    UIBackgroundTaskIdentifier bgTask;
+    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid)
+            {
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    }];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (bgTask != UIBackgroundTaskInvalid)
+            {
+                bgTask = UIBackgroundTaskInvalid;
+            }
+        });
+    });
+
+    
+    /*
+    self.bgTask = [[UIApplication sharedApplication]beginBackgroundTaskWithExpirationHandler:self.expirationHandler];
+    
+    NSLog(@"Entered background");
+    //开启后台进程循环
+    [self monitorBatteryStateInBackground];
+    */
+    
+    
+    /*
     //后台运行
     __block UIBackgroundTaskIdentifier background_task;
     
@@ -214,38 +327,17 @@
         background_task = UIBackgroundTaskInvalid;
     });
     
-    
-    
-    
-//    UIApplication*   app = [UIApplication sharedApplication];
-//    __block    UIBackgroundTaskIdentifier bgTask;
-//    bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if (bgTask != UIBackgroundTaskInvalid)
-//            {
-//                bgTask = UIBackgroundTaskInvalid;
-//            }
-//        });
-//    }];
-//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            if (bgTask != UIBackgroundTaskInvalid)
-//            {
-//                bgTask = UIBackgroundTaskInvalid;
-//            }
-//        });
-//    });
-    
-    
-    
-    
-
+    */
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+     
     
-    [[UIApplication sharedApplication] clearKeepAliveTimeout];
+    self.background = NO;
+    [application endBackgroundTask:self.bgTask];
+    self.bgTask = UIBackgroundTaskInvalid;
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

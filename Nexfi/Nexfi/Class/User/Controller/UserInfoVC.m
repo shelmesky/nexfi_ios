@@ -159,10 +159,14 @@
 //        else if (!user.userAge){
 //            [HudTool showErrorHudWithText:@"请设置年龄" inView:self.view duration:1];
 //        }
-        else if(!user.userGender){
-            [HudTool showErrorHudWithText:@"请设置性别" inView:self.view duration:1];
-        }else{
+//        else if(!user.userGender){
+//            [HudTool showErrorHudWithText:@"请设置性别" inView:self.view duration:1];
+//        }
+        else{
             user.userId = [NexfiUtil uuid];
+            if (!user.userGender) {
+                user.userGender = @"0";
+            }
             [[UserManager shareManager]loginSuccessWithUser:user];
             //同时创建数据库
             [[SqlManager shareInstance]creatTable];
@@ -224,6 +228,8 @@
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
             FCPersonCell *cell = [self.userInfoTable cellForRowAtIndexPath:indexpath];
             cell.user = user;
+            
+            
         });
         
     }

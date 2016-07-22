@@ -39,6 +39,10 @@
     [reach startNotifier];
      */
     
+    //无限播放音乐
+//    [self runloopPlayMusic];
+    
+    
     UserModel *user = [[UserManager shareManager]getUser];
     if (!user) {
         UserModel *user = [[UserModel alloc]init];
@@ -46,6 +50,9 @@
     }
     
     [self isAutoLoginWithNoWifi];
+    
+    
+    
     
 }
 - (void)reachabilityChanged: (NSNotification *)notification{
@@ -90,6 +97,40 @@
         UIWindow *window = [[[UIApplication sharedApplication]windows] objectAtIndex:0];
         window.rootViewController = nav;
     }
+}
+- (void)runloopPlayMusic{    
+    dispatch_queue_t dispatchQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(dispatchQueue, ^(void) {
+        NSError *audioSessionError = nil;
+        AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+        if ([audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError]){
+            NSLog(@"Successfully set the audio session.");
+        } else {
+            NSLog(@"Could not set the audio session");
+        }
+        [[AVAudioSession sharedInstance]setActive:YES error:nil];
+        
+        
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        NSString *filePath = [mainBundle pathForResource:@"backgroundSound" ofType:@"mp3"];
+        NSData *fileData = [NSData dataWithContentsOfFile:filePath];
+        NSError *error = nil;
+        
+        AVAudioPlayer *audioPlayer = [[AVAudioPlayer alloc] initWithData:fileData error:&error];
+        
+        if (audioPlayer != nil){
+            audioPlayer.delegate = self;
+            
+            [audioPlayer setNumberOfLoops:-1];
+            if ([audioPlayer prepareToPlay] && [audioPlayer play]){
+                NSLog(@"Successfully started playing...");
+            } else {
+                NSLog(@"Failed to play.");
+            }
+        } else {
+            
+        }
+    });
 }
 - (void)pushToChat:(id)sender{
     NFSingleChatInfoVC *vc = [[NFSingleChatInfoVC alloc]init];

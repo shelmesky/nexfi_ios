@@ -13,6 +13,7 @@
 #import "Message.h"
 #import "NFChatCacheFileUtil.h"
 #import "OtherInfoVC.h"
+#import "NFReportObjectVC.h"
 
 #import "SenderTextCell.h"
 #import "SenderAvatarCell.h"
@@ -57,6 +58,9 @@
     
     [self setBaseVCAttributesWith:self.to_user.userNick left:nil right:nil WithInVC:self];
     
+    UIBarButtonItem *addNew = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(jumpToAddressBookVc)];
+    self.navigationItem.rightBarButtonItem = addNew;
+    
     _textArray=[[NSMutableArray alloc]init];
     
     [UnderdarkUtil share].node.singleVC = self;
@@ -81,6 +85,37 @@
     //清除该用户的未读消息
     [[SqlManager shareInstance]clearUnreadNum:self.to_user.userId];
     
+}
+- (void)jumpToAddressBookVc{
+    NSArray *menuItems;
+    
+    menuItems =
+    @[
+      [KxMenuItem menuItem:@"ta的信息"
+                     image:nil
+                    target:self
+                    action:@selector(userInfos:)],
+      [KxMenuItem menuItem:@"投诉"
+                     image:nil
+                    target:self
+                    action:@selector(complaint:)],
+      ];
+    
+    [KxMenu showMenuInView:self.view
+                  fromRect:CGRectMake(SCREEN_SIZE.width - 64, - 28, 74.0f, 34.0f)
+                 menuItems:menuItems];
+    
+}
+//个人信息
+- (void)userInfos:(id)sender{
+    OtherInfoVC *otherVc= [[OtherInfoVC alloc]init];
+    otherVc.user = self.to_user;
+    [self.navigationController pushViewController:otherVc animated:YES];
+}
+//举报
+- (void)complaint:(id)sender{
+    NFReportObjectVC *reportVc = [[NFReportObjectVC alloc]init];
+    [self.navigationController pushViewController:reportVc animated:YES];
 }
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 200;

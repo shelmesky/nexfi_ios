@@ -17,6 +17,7 @@
 #import "FCTabHeadView.h"
 #import "NFHeadView.h"
 #import "NFHeadVC.h"
+#import "UnderdarkUtil.h"
 
 @interface SelfVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
@@ -197,6 +198,14 @@
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
             FCPersonCell *cell = [self.userInfoTable cellForRowAtIndexPath:indexpath];
             cell.user = user;
+            
+            //通知好友已经修改性别完毕
+            if ([UnderdarkUtil share].node.links.count > 0) {
+                for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+                    id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+                    [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UpdateUserInfo WithLink:myLink]];
+                }
+            }
         });
         
     }

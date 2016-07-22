@@ -18,6 +18,7 @@
 + (id)showLoadingHudWithText:(NSString *)text inView:(UIView *)view{
     JGProgressHUD *hud = [JGProgressHUD progressHUDWithStyle:JGProgressHUDStyleExtraLight];
     hud.interactionType = JGProgressHUDInteractionTypeBlockAllTouches;
+    [hud dismissAfterDelay:2];
     if (text.length) {
         hud.textLabel.text = text;
     }

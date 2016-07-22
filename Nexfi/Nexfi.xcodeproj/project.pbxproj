@@ -123,6 +123,11 @@
 		0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */; };
 		0E2BF1CB1CDC7465005989B1 /* UDBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E79821CC62B9500EE2272 /* UDBonjourBrowser.m */; };
 		0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */; };
+		0E33E4851D407F0A008D74C2 /* NFReportObjectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E4831D407F0A008D74C2 /* NFReportObjectVC.m */; };
+		0E33E4861D407F0A008D74C2 /* NFReportObjectVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E33E4841D407F0A008D74C2 /* NFReportObjectVC.xib */; };
+		0E33E48A1D4080A0008D74C2 /* NFReportTipsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E4881D4080A0008D74C2 /* NFReportTipsVC.m */; };
+		0E33E48B1D4080A0008D74C2 /* NFReportTipsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */; };
+		0E33E48F1D409E96008D74C2 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E48E1D409E96008D74C2 /* KxMenu.m */; };
 		0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */; };
 		0E9E777A1CC62AD100EE2272 /* NFAllUserChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */; };
 		0E9E777B1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E76CE1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib */; };
@@ -519,6 +524,14 @@
 		0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VertifyCodeVC.xib; sourceTree = "<group>"; };
 		0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAVAudioPlayer.h; sourceTree = "<group>"; };
 		0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAVAudioPlayer.m; sourceTree = "<group>"; };
+		0E33E4821D407F0A008D74C2 /* NFReportObjectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFReportObjectVC.h; sourceTree = "<group>"; };
+		0E33E4831D407F0A008D74C2 /* NFReportObjectVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFReportObjectVC.m; sourceTree = "<group>"; };
+		0E33E4841D407F0A008D74C2 /* NFReportObjectVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFReportObjectVC.xib; sourceTree = "<group>"; };
+		0E33E4871D4080A0008D74C2 /* NFReportTipsVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFReportTipsVC.h; sourceTree = "<group>"; };
+		0E33E4881D4080A0008D74C2 /* NFReportTipsVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFReportTipsVC.m; sourceTree = "<group>"; };
+		0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFReportTipsVC.xib; sourceTree = "<group>"; };
+		0E33E48D1D409E96008D74C2 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
+		0E33E48E1D409E96008D74C2 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0E9E76CC1CC62AD100EE2272 /* NFAllUserChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAllUserChatInfoVC.h; sourceTree = "<group>"; };
 		0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAllUserChatInfoVC.m; sourceTree = "<group>"; };
@@ -1212,6 +1225,22 @@
 			path = "opencore-amrwb";
 			sourceTree = "<group>";
 		};
+		0E33E48C1D409E96008D74C2 /* KxMenu */ = {
+			isa = PBXGroup;
+			children = (
+				0E33E48D1D409E96008D74C2 /* KxMenu.h */,
+				0E33E48E1D409E96008D74C2 /* KxMenu.m */,
+			);
+			path = KxMenu;
+			sourceTree = "<group>";
+		};
+		0E36A2AB1D3F22280020E690 /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Libs;
+			sourceTree = "<group>";
+		};
 		0E9E76C61CC62AD100EE2272 /* Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -1252,6 +1281,12 @@
 				0E9E76D81CC62AD100EE2272 /* OtherInfoVC.h */,
 				0E9E76D91CC62AD100EE2272 /* OtherInfoVC.m */,
 				0E9E76DA1CC62AD100EE2272 /* OtherInfoVC.xib */,
+				0E33E4821D407F0A008D74C2 /* NFReportObjectVC.h */,
+				0E33E4831D407F0A008D74C2 /* NFReportObjectVC.m */,
+				0E33E4841D407F0A008D74C2 /* NFReportObjectVC.xib */,
+				0E33E4871D4080A0008D74C2 /* NFReportTipsVC.h */,
+				0E33E4881D4080A0008D74C2 /* NFReportTipsVC.m */,
+				0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1524,6 +1559,7 @@
 				0E03BEA51D0D6B1C00F08070 /* libopencore-amr */,
 				0E03BED61D0E560C00F08070 /* Masonry */,
 				0E03BEF01D0E560C00F08070 /* XMChatBar */,
+				0E33E48C1D409E96008D74C2 /* KxMenu */,
 				0E9E77F31CC62B9400EE2272 /* Header.h */,
 				0E9E77F41CC62B9400EE2272 /* HudTool.h */,
 				0E9E77F51CC62B9400EE2272 /* HudTool.m */,
@@ -1810,6 +1846,7 @@
 				0E0281D91D05308900348523 /* ImageSource */,
 				0E9E77EF1CC62B9400EE2272 /* Helper */,
 				0E9E76C61CC62AD100EE2272 /* Class */,
+				0E36A2AB1D3F22280020E690 /* Libs */,
 				0EBAE9481CB3824000361D18 /* ViewController.h */,
 				0EBAE9491CB3824000361D18 /* ViewController.m */,
 				0EBAECBD1CB3849600361D18 /* Nexfi.pch */,
@@ -2050,6 +2087,7 @@
 				0E9E77A61CC62AD100EE2272 /* write_face_28.png in Resources */,
 				0E02823A1D05308900348523 /* message_voice_receiver_playing_3@3x.png in Resources */,
 				0E9E77A91CC62AD100EE2272 /* write_face_30.png in Resources */,
+				0E33E4861D407F0A008D74C2 /* NFReportObjectVC.xib in Resources */,
 				0E0282321D05308900348523 /* wode02.png in Resources */,
 				0E9E77BB1CC62AD100EE2272 /* write_face_47.png in Resources */,
 				0E9E779B1CC62AD100EE2272 /* write_face_18.png in Resources */,
@@ -2101,6 +2139,7 @@
 				0E9E77B01CC62AD100EE2272 /* write_face_37.png in Resources */,
 				0E0282191D05308900348523 /* fujin02.png in Resources */,
 				0E0282251D05308900348523 /* img_head_12@2x.png in Resources */,
+				0E33E48B1D4080A0008D74C2 /* NFReportTipsVC.xib in Resources */,
 				0E0282151D05308900348523 /* btn-账本1@2x.png in Resources */,
 				0E02822C1D05308900348523 /* ReceiverTextNodeBkgHL@2x.png in Resources */,
 				0E02823C1D05308900348523 /* message_voice_sender_playing_1@3x.png in Resources */,
@@ -2254,6 +2293,7 @@
 				0EFC78D41D336D7700789ADD /* RegisterVC.m in Sources */,
 				0E9E77EE1CC62AD100EE2272 /* NFHeadView.m in Sources */,
 				0E9E7B461CC62B9500EE2272 /* UDLogging.m in Sources */,
+				0E33E48F1D409E96008D74C2 /* KxMenu.m in Sources */,
 				0EA30B541CF44243008860BF /* FileMessage.m in Sources */,
 				0E02824E1D056C8100348523 /* MJCommonHeader.m in Sources */,
 				0E9E77E01CC62AD100EE2272 /* UserManager.m in Sources */,
@@ -2261,6 +2301,7 @@
 				0E9E7B2B1CC62B9500EE2272 /* UDBtReach.m in Sources */,
 				0E03BF561D0E560C00F08070 /* XMChatMoreView.m in Sources */,
 				0E03BF401D0E560C00F08070 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				0E33E48A1D4080A0008D74C2 /* NFReportTipsVC.m in Sources */,
 				0E0282811D06ADE900348523 /* ReceiverAvatarCell.m in Sources */,
 				0E9E7B251CC62B9500EE2272 /* UDNsdService.m in Sources */,
 				0E9E77D21CC62AD100EE2272 /* FNSendImageView.m in Sources */,
@@ -2368,6 +2409,7 @@
 				0E9E7B261CC62B9500EE2272 /* UDNsdUtil.m in Sources */,
 				0E03BF421D0E560C00F08070 /* ViewController+MASAdditions.m in Sources */,
 				0E03BF5B1D0E560C00F08070 /* XMNChatTextMessageCell.m in Sources */,
+				0E33E4851D407F0A008D74C2 /* NFReportObjectVC.m in Sources */,
 				0E9E7B2A1CC62B9500EE2272 /* UDBonjourServer.m in Sources */,
 				0E03C0281D0EA26C00F08070 /* VoiceConverter.mm in Sources */,
 				0E0282901D06ADF300348523 /* ChatCell.m in Sources */,
@@ -2530,7 +2572,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2562,7 +2604,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

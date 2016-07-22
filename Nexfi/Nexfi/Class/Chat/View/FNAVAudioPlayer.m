@@ -73,6 +73,28 @@
     }
     
 }
+//播放后台语音
+- (void)playBackgroudSound{
+    
+    NSString *backgroudSoundPath = [[NSBundle mainBundle]pathForResource:@"backgroundSound" ofType:@"mp3"];
+    NSURL *url = [NSURL fileURLWithPath:backgroudSoundPath];
+    NSError *error;
+    _audioPlayer = [[AVAudioPlayer alloc]initWithContentsOfURL:url error:&error];
+    if (!_audioPlayer || error) {
+        return;
+    }
+    
+    _audioPlayer.volume = 1.0f;
+    _audioPlayer.delegate = self;
+    [_audioPlayer prepareToPlay];
+    //    [self setAudioPlayerState:XMNVoiceMessageStatePlaying];
+    [_audioPlayer play];
+    
+    //设置锁屏仍能继续播放
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error:nil];//表示对于用户切换静音模式或者锁屏 都不理睬，继续播放音乐。并且不播放来自其他app的音乐，当然你可以设置
+    [[AVAudioSession sharedInstance] setActive: YES error: nil];
+    
+}
 //播放语音
 - (void)playAudioWithvoiceData:(id )voiceData atIndex:(NSUInteger)index{
     
@@ -147,5 +169,13 @@
         _audioPlayer = nil;
     }
 }
+//#pragma mark - 播放器代理方法
+//-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag{
+//    NSLog(@"音乐播放完成...");
+//    [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"isPlayFinish"];
+//    [[NSUserDefaults standardUserDefaults]synchronize];
+//    //根据实际情况播放完成可以将会话关闭，其他音频应用继续播放
+//    [[AVAudioSession sharedInstance]setActive:NO error:nil];
+//}
 
 @end

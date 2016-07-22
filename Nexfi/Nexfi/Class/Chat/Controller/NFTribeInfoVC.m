@@ -9,6 +9,7 @@
 #import "NFTribeInfoCell.h"
 #import "NeighbourVC.h"
 #import "OtherInfoVC.h"
+#import "NFReportObjectVC.h"
 @interface NFTribeInfoVC ()<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic, retain)UITableView *tribeTable;
@@ -30,6 +31,14 @@
     self.tribeTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.tribeTable];
     
+    UIBarButtonItem *addNew = [[UIBarButtonItem alloc]initWithTitle:@"投诉" style:UIBarButtonItemStylePlain target:self action:@selector(jumpToAddressBookVc)];
+    self.navigationItem.rightBarButtonItem = addNew;
+    
+}
+//举报
+- (void)jumpToAddressBookVc{
+    NFReportObjectVC *reportVc = [[NFReportObjectVC alloc]init];
+    [self.navigationController pushViewController:reportVc animated:YES];
 }
 - (void)viewWillAppear:(BOOL)animated{
     
