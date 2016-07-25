@@ -53,17 +53,16 @@
 //    [[IQKeyboardManager sharedManager] disableToolbarInViewControllerClass:[NFAllUserChatInfoVC class]];
 
     
-
-    
 //    UIDevice *myDevice = [UIDevice currentDevice];
 //    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
-
+    
+    //后台可播放音乐
     NSError *setCategoryErr = nil;
     NSError *activationErr  = nil;
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryErr];
     [[AVAudioSession sharedInstance]setActive: YES error: &activationErr];
     
-    
+    /*
     
     //保持后台~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
@@ -94,6 +93,8 @@
     [self monitorBatteryStateInBackground];
     //保持后台~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+     */
+    
     
     return YES;
 }
@@ -275,6 +276,7 @@
         background_task = UIBackgroundTaskInvalid;
     }];
     */
+    
     UIApplication*   app = [UIApplication sharedApplication];
     __block    UIBackgroundTaskIdentifier bgTask;
     bgTask = [app beginBackgroundTaskWithExpirationHandler:^{
@@ -294,6 +296,7 @@
         });
     });
 
+    
     
     /*
     self.bgTask = [[UIApplication sharedApplication]beginBackgroundTaskWithExpirationHandler:self.expirationHandler];
