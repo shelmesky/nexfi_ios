@@ -255,6 +255,20 @@
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
     }
+    /*
+    NSDictionary *repeatUser = [[NSUserDefaults standardUserDefaults]objectForKey:@"repeatUser"];
+    NSMutableDictionary *repeatUsers = [[NSMutableDictionary alloc]initWithDictionary:repeatUser];
+    NSArray *userList = [repeatUsers allKeysForObject:[NSString stringWithFormat:@"%lld",link.nodeId]];
+    if (userList.count != 1 && userList.count == 0) {
+        return;
+    }
+    NSString *node = userList[0];
+    NSMutableArray *nodeList = [[NSMutableArray alloc]initWithArray:repeatUsers[node]];
+    if (nodeList.count > 1 && [nodeList containsObject:[NSString stringWithFormat:@"%lld",link.nodeId]]) {
+        [nodeList removeObject:[NSString stringWithFormat:@"%lld",link.nodeId]];
+        [repeatUsers setObject:nodeList forKey:node];
+    }
+     */
     //更新附近的人页面用户
     [self.neighbourVc.handleByUsers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         UserModel *user = obj;

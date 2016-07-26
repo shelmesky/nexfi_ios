@@ -14,7 +14,7 @@
 #import "NexfiNavigationController.h"
 #import "UserInfoVC.h"
 #import "RegisterVC.h"
-@interface ViewController ()
+@interface ViewController ()<AVAudioPlayerDelegate>
 
 @property (nonatomic, strong) UIWindow *window;
 
@@ -51,8 +51,9 @@
     
     [self isAutoLoginWithNoWifi];
     
-    
-    
+
+}
+- (void)getSomeComplaint:(id)sender{
     
 }
 - (void)reachabilityChanged: (NSNotification *)notification{

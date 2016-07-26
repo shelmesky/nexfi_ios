@@ -40,10 +40,7 @@
         [self.layer setBorderWidth: 1];
         [self.layer setBorderColor: [UIColor colorWithWhite:0.1 alpha:0.2].CGColor];
         //    [layer setBorderColor: [UIColor colorWithWhite:0.1 alpha:0.2].CGColor];
-        
         [self.layer setCornerRadius:3.0];
-        
-        
     }
     return self;
 }

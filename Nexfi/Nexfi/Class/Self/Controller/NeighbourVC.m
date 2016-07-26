@@ -118,14 +118,21 @@
     NSDictionary *userDic = userJson[@"user"];
     NSString *nodeId = userJson[@"nodeId"];
     NSMutableDictionary *user = [[NSMutableDictionary alloc]initWithDictionary:userDic[@"userMessage"]];
-    //所有用户id集合
-    NSMutableArray *userIdList = [[NSMutableArray alloc]initWithCapacity:0];
-    for (UserModel *user in self.handleByUsers) {
-        [userIdList addObject:user.userId];
-    }
+
     
     UserModel *users = [UserModel mj_objectWithKeyValues:user];
     users.nodeId = nodeId;
+    
+    //所有用户id集合
+    NSMutableArray *userIdList = [[NSMutableArray alloc]initWithCapacity:0];
+    //所有nodeId的集合
+    NSMutableArray *nodeIdList = [[NSMutableArray alloc]initWithCapacity:0];
+    for (UserModel *user in self.handleByUsers) {
+        [userIdList addObject:user.userId];
+        [nodeIdList addObject:user.nodeId];
+        NSLog(@"userId === %@===nodeId ===== %@",user.userId,user.nodeId);
+    }
+    NSLog(@"usersId=====%@====nodesId=====%@",users.userId,users.nodeId);
     //过滤多余的用户信息
     NSString *update = userJson[@"update"];
     if (update) {
@@ -141,6 +148,24 @@
         }else{
             if (![self.handleByUsers containsObject:users] && ![userIdList containsObject:users.userId]) {
                 [self.handleByUsers addObject:users];
+            }else if (![self.handleByUsers containsObject:users] && [userIdList containsObject:users.userId]){//蓝牙和wifi 同时开启 一个用户 两个nodeId
+                
+                /*
+                NSDictionary *repeatUser = [[NSUserDefaults standardUserDefaults]objectForKey:@"repeatUser"];
+                NSMutableDictionary *repeatUsers = [[NSMutableDictionary alloc]initWithDictionary:repeatUser];
+                NSMutableArray *nodes = repeatUsers[users.userId];
+                if (!nodes) {
+                    nodes = [NSMutableArray array];
+                    [nodes addObject:users.nodeId];
+                    repeatUsers[users.userId] = nodes;
+                }else{
+                    [nodes addObject:users.nodeId];
+                    repeatUsers[users.userId] = nodes;
+                }
+                
+                [[NSUserDefaults standardUserDefaults]setObject:repeatUsers forKey:@"repeatUser"];
+                 */
+                
             }
         }
         

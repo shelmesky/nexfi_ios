@@ -65,6 +65,7 @@ static id<UDLogger> underdarkLogger = nil;
 		
 		[transport addAdapter:adapter];
 	}
+    
 	
 	if([kinds containsObject:@(UDTransportKindBluetooth)])
 	{
