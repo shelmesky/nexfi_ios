@@ -223,6 +223,17 @@
             
             data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
             
+        }else if (type == eMessageType_UserLocationUpdate){
+            UserModel *user = [[UserManager shareManager]getUser];
+            user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
+            
+            NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+            
+            [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
+            
+            [usersDic setObject:@(eMessageType_UserLocationUpdate) forKey:@"messageType"];
+            
+            data = [NSJSONSerialization dataWithJSONObject:usersDic options:0 error:0];
         }
         return data;
         
@@ -251,10 +262,10 @@
     //更新用户数量
 //    self.peersCount -= 1;
     
-    
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
     }
+    
     /*
     NSDictionary *repeatUser = [[NSUserDefaults standardUserDefaults]objectForKey:@"repeatUser"];
     NSMutableDictionary *repeatUsers = [[NSMutableDictionary alloc]initWithDictionary:repeatUser];
@@ -269,6 +280,7 @@
         [repeatUsers setObject:nodeList forKey:node];
     }
      */
+    
     //更新附近的人页面用户
     [self.neighbourVc.handleByUsers enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         UserModel *user = obj;
@@ -301,6 +313,16 @@
             break;
         }
         case eMessageType_SendUserInfo://发送用户信息
+        {
+            
+            if (self.neighbourVc) {
+                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+            }
+            NSLog(@"h22223333333333");
+            
+            break;
+        }
+        case eMessageType_UserLocationUpdate://更新用户定位信息
         {
             
             if (self.neighbourVc) {

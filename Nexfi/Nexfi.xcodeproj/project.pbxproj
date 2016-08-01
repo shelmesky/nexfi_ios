@@ -128,6 +128,16 @@
 		0E33E48A1D4080A0008D74C2 /* NFReportTipsVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E4881D4080A0008D74C2 /* NFReportTipsVC.m */; };
 		0E33E48B1D4080A0008D74C2 /* NFReportTipsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */; };
 		0E33E48F1D409E96008D74C2 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E48E1D409E96008D74C2 /* KxMenu.m */; };
+		0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */; };
+		0E3FE25F1D4B320A007188B1 /* NFUserLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */; };
+		0E3FE2601D4B320A007188B1 /* NFUserLocationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */; };
+		0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */; };
+		0E3FE26D1D4B3C59007188B1 /* CustomCalloutView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE26C1D4B3C59007188B1 /* CustomCalloutView.m */; };
+		0E3FE26F1D4B4175007188B1 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE26E1D4B4175007188B1 /* CoreTelephony.framework */; };
+		0E3FE2731D4B46A6007188B1 /* AMapFoundationKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2701D4B46A6007188B1 /* AMapFoundationKit.framework */; };
+		0E3FE2741D4B46A6007188B1 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */; };
+		0E3FE2751D4B46A6007188B1 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */; };
+		0E3FE2771D4B46E3007188B1 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE2761D4B46E3007188B1 /* AMap.bundle */; };
 		0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */; };
 		0E9E777A1CC62AD100EE2272 /* NFAllUserChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */; };
 		0E9E777B1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E76CE1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib */; };
@@ -532,6 +542,19 @@
 		0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFReportTipsVC.xib; sourceTree = "<group>"; };
 		0E33E48D1D409E96008D74C2 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		0E33E48E1D409E96008D74C2 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
+		0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundSound.mp3; sourceTree = "<group>"; };
+		0E3FE25C1D4B320A007188B1 /* NFUserLocationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFUserLocationVC.h; sourceTree = "<group>"; };
+		0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFUserLocationVC.m; sourceTree = "<group>"; };
+		0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFUserLocationVC.xib; sourceTree = "<group>"; };
+		0E3FE2681D4B3AD6007188B1 /* CustomAnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAnnotationView.h; sourceTree = "<group>"; };
+		0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomAnnotationView.m; sourceTree = "<group>"; };
+		0E3FE26B1D4B3C59007188B1 /* CustomCalloutView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomCalloutView.h; sourceTree = "<group>"; };
+		0E3FE26C1D4B3C59007188B1 /* CustomCalloutView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomCalloutView.m; sourceTree = "<group>"; };
+		0E3FE26E1D4B4175007188B1 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		0E3FE2701D4B46A6007188B1 /* AMapFoundationKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapFoundationKit.framework; sourceTree = "<group>"; };
+		0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
+		0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
+		0E3FE2761D4B46E3007188B1 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
 		0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0E9E76CC1CC62AD100EE2272 /* NFAllUserChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAllUserChatInfoVC.h; sourceTree = "<group>"; };
 		0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAllUserChatInfoVC.m; sourceTree = "<group>"; };
@@ -857,11 +880,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3FE26F1D4B4175007188B1 /* CoreTelephony.framework in Frameworks */,
+				0E3FE2731D4B46A6007188B1 /* AMapFoundationKit.framework in Frameworks */,
+				0E3FE2751D4B46A6007188B1 /* MAMapKit.framework in Frameworks */,
 				0EFC78FE1D33941200789ADD /* libstdc++.tbd in Frameworks */,
 				0EFC78FC1D33940900789ADD /* JavaScriptCore.framework in Frameworks */,
 				0EFC78FA1D33940100789ADD /* MessageUI.framework in Frameworks */,
 				0EFC78F81D3393F900789ADD /* libicucore.tbd in Frameworks */,
 				0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */,
+				0E3FE2741D4B46A6007188B1 /* AMapSearchKit.framework in Frameworks */,
 				0E03BF501D0E560C00F08070 /* libmp3lame.a in Frameworks */,
 				0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */,
 				0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */,
@@ -1237,8 +1264,20 @@
 		0E36A2AB1D3F22280020E690 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */,
 			);
 			path = Libs;
+			sourceTree = "<group>";
+		};
+		0E3FE2611D4B3357007188B1 /* MaMapKit */ = {
+			isa = PBXGroup;
+			children = (
+				0E3FE2761D4B46E3007188B1 /* AMap.bundle */,
+				0E3FE2701D4B46A6007188B1 /* AMapFoundationKit.framework */,
+				0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */,
+				0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */,
+			);
+			path = MaMapKit;
 			sourceTree = "<group>";
 		};
 		0E9E76C61CC62AD100EE2272 /* Class */ = {
@@ -1287,6 +1326,9 @@
 				0E33E4871D4080A0008D74C2 /* NFReportTipsVC.h */,
 				0E33E4881D4080A0008D74C2 /* NFReportTipsVC.m */,
 				0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */,
+				0E3FE25C1D4B320A007188B1 /* NFUserLocationVC.h */,
+				0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */,
+				0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1337,6 +1379,10 @@
 				0E9E77471CC62AD100EE2272 /* NFTribeInfoCell.xib */,
 				0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */,
 				0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */,
+				0E3FE2681D4B3AD6007188B1 /* CustomAnnotationView.h */,
+				0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */,
+				0E3FE26B1D4B3C59007188B1 /* CustomCalloutView.h */,
+				0E3FE26C1D4B3C59007188B1 /* CustomCalloutView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1553,6 +1599,7 @@
 		0E9E77EF1CC62B9400EE2272 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0E3FE2611D4B3357007188B1 /* MaMapKit */,
 				0EFC78DE1D33839C00789ADD /* Catagory */,
 				0E0282481D056C8100348523 /* MJCommonTool */,
 				0E9E77F01CC62B9400EE2272 /* ConFunc */,
@@ -1932,6 +1979,7 @@
 		B98D2616E8A210408156426C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E3FE26E1D4B4175007188B1 /* CoreTelephony.framework */,
 				0EFC78FD1D33941200789ADD /* libstdc++.tbd */,
 				0EFC78FB1D33940900789ADD /* JavaScriptCore.framework */,
 				0EFC78F91D33940100789ADD /* MessageUI.framework */,
@@ -2070,6 +2118,7 @@
 				0E9E77B51CC62AD100EE2272 /* write_face_41.png in Resources */,
 				0E0282331D05308900348523 /* message_receiver_background_highlight@3x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
+				0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */,
 				0E03BF481D0E560C00F08070 /* chatBar.xcassets in Resources */,
 				0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */,
 				0E0282271D05308900348523 /* img_head_14@2x.png in Resources */,
@@ -2109,6 +2158,7 @@
 				0E9E77B11CC62AD100EE2272 /* write_face_38.png in Resources */,
 				0E9E77A01CC62AD100EE2272 /* write_face_22.png in Resources */,
 				0E9E77A31CC62AD100EE2272 /* write_face_25.png in Resources */,
+				0E3FE2771D4B46E3007188B1 /* AMap.bundle in Resources */,
 				0E9E77931CC62AD100EE2272 /* write_face_10.png in Resources */,
 				0E9E778C1CC62AD100EE2272 /* write_face_04.png in Resources */,
 				0E0282241D05308900348523 /* img_head_11@2x.png in Resources */,
@@ -2179,6 +2229,7 @@
 				0E9E77B21CC62AD100EE2272 /* write_face_39.png in Resources */,
 				0E0282361D05308900348523 /* message_sender_background_normal@3x.png in Resources */,
 				0E9E77901CC62AD100EE2272 /* write_face_08.png in Resources */,
+				0E3FE2601D4B320A007188B1 /* NFUserLocationVC.xib in Resources */,
 				0E02822A1D05308900348523 /* otherChat.png in Resources */,
 				0E0282111D05308900348523 /* 3.png in Resources */,
 				0E0282121D05308900348523 /* bg-xxxx@2x.png in Resources */,
@@ -2284,6 +2335,7 @@
 				0E03BF4E1D0E560C00F08070 /* XMNMessageStateManager.m in Sources */,
 				0E03C0251D0EA26C00F08070 /* wav.mm in Sources */,
 				0E9E77CA1CC62AD100EE2272 /* menuImageView.m in Sources */,
+				0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */,
 				0E9E7B571CC6318D00EE2272 /* JXImageView.m in Sources */,
 				0E9E77DD1CC62AD100EE2272 /* NexfiUtil.m in Sources */,
 				0E9E77D61CC62AD100EE2272 /* NFTribeInfoCell.m in Sources */,
@@ -2301,6 +2353,7 @@
 				0E9E7B2B1CC62B9500EE2272 /* UDBtReach.m in Sources */,
 				0E03BF561D0E560C00F08070 /* XMChatMoreView.m in Sources */,
 				0E03BF401D0E560C00F08070 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				0E3FE25F1D4B320A007188B1 /* NFUserLocationVC.m in Sources */,
 				0E33E48A1D4080A0008D74C2 /* NFReportTipsVC.m in Sources */,
 				0E0282811D06ADE900348523 /* ReceiverAvatarCell.m in Sources */,
 				0E9E7B251CC62B9500EE2272 /* UDNsdService.m in Sources */,
@@ -2344,6 +2397,7 @@
 				0EBAE94A1CB3824000361D18 /* ViewController.m in Sources */,
 				0E9E77EB1CC62AD100EE2272 /* FCHeadCollectionCell.m in Sources */,
 				0E9E77DE1CC62AD100EE2272 /* NFChatCacheFileUtil.m in Sources */,
+				0E3FE26D1D4B3C59007188B1 /* CustomCalloutView.m in Sources */,
 				0E9E77E71CC62AD100EE2272 /* UserInfoVC.m in Sources */,
 				0E9E7B3A1CC62B9500EE2272 /* Packet+Builders.m in Sources */,
 				0E9E77851CC62AD100EE2272 /* PersonMessage.m in Sources */,
@@ -2571,12 +2625,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Nexfi/Helper/SMS_SDK",
+					"$(PROJECT_DIR)/Nexfi/Helper/MaMapKit",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;
@@ -2603,12 +2658,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Minghua Liu (GZFX35QBWH)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Nexfi/Helper/SMS_SDK",
+					"$(PROJECT_DIR)/Nexfi/Helper/MaMapKit",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = Nexfi/Nexfi.pch;

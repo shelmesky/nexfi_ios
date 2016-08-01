@@ -49,29 +49,29 @@
     return isPhoneNumber;
 }
 - (IBAction)getCodeClick:(id)sender {
+    /*
+    if ([self isPhoneNumber]) {
     
-//    if ([self isPhoneNumber]) {
-//    
-//        [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:self.phoneTe.text
-//                                       zone:@"86"
-//                           customIdentifier:nil
-//                                     result:^(NSError *error)
-//         {
-//             if (!error) {
-//                 NSLog(@"语音短信验证码发送成功");
-//                 RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
-//                 vertifyCodeVc.phone = self.phoneTe.text;
-//                 [self.navigationController pushViewController:vertifyCodeVc animated:YES];
-//             }
-//             
-//         }];
-//
-//    }else{
-//        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"无效手机号" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-//        [alert show];
-//        
-//    }
-    
+        [SMSSDK getVerificationCodeByMethod:SMSGetCodeMethodVoice phoneNumber:self.phoneTe.text
+                                       zone:@"86"
+                           customIdentifier:nil
+                                     result:^(NSError *error)
+         {
+             if (!error) {
+                 NSLog(@"语音短信验证码发送成功");
+                 RegisterVertifyCodeVC *vertifyCodeVc = [[RegisterVertifyCodeVC alloc]init];
+                 vertifyCodeVc.phone = self.phoneTe.text;
+                 [self.navigationController pushViewController:vertifyCodeVc animated:YES];
+             }
+             
+         }];
+
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"无效手机号" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+        
+    }
+    */
     
 }
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{

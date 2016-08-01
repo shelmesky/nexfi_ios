@@ -64,6 +64,7 @@ static id<UDLogger> underdarkLogger = nil;
 		id<UDAdapter> adapter = [[UDBonjourAdapter alloc] initWithAppId:appId nodeId:nodeId delegate:transport queue:transport.ioqueue peerToPeer:false];
 		
 		[transport addAdapter:adapter];
+        
 	}
     
 	

@@ -20,6 +20,9 @@
 
 @property (nonatomic,retain) NSString *phoneNumber;//手机号
 
+@property (nonatomic,retain) NSString *lattitude;//纬度
+@property (nonatomic,retain) NSString *longitude;//经度
+
 
 - (id)initWithaDic:(NSDictionary *)aDic;
 

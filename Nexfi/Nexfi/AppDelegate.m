@@ -14,6 +14,7 @@
 #import "NFSingleChatInfoVC.h"
 #import "FNAVAudioPlayer.h"
 //#import <SMS_SDK/SMSSDK.h>
+#import <AMapFoundationKit/AMapFoundationKit.h>
 
 @interface AppDelegate ()
 
@@ -44,6 +45,9 @@
     //清除语音缓存
     [self clearVoiceCache];
     
+    //高德
+    [AMapServices sharedServices].apiKey = @"56e2afd4d54a42ecba325a0b738f1fac";
+
     
     [IQKeyboardManager sharedManager].enable = NO;
 //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;

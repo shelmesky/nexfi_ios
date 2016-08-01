@@ -131,8 +131,6 @@
             UIBarButtonItem *leftBarBtn = [[UIBarButtonItem alloc]initWithTitle:nameLeft style:UIBarButtonItemStylePlain target:self action:@selector(leftBarBtnClick:)];
             vc.navigationItem.leftBarButtonItem = leftBarBtn;
             
-            
-            
         }
         
     }

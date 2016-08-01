@@ -156,7 +156,6 @@
         [self showHistoryTableMsg:msg];
     }
 
-    
     [self.tableView.header endRefreshing];
 }
 //获取最新数据并刷新UI
@@ -254,7 +253,6 @@
     BOOL autoPlayOnAppear = NO;
     self.mwPhotos = [[NSMutableArray alloc]initWithCapacity:0];
     NSUInteger currentIndex = 0;
-    
     
     for (int i = 0; i < _textArray.count; i ++) {
         PersonMessage *msg = _textArray[i];
