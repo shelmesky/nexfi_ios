@@ -327,7 +327,6 @@
 #pragma -mark 获取所有cell高度的数组
 - (id)getMsgCellHeightWithMsg:(TribeMessage *)msg{
     
-    
     int n = msg.messageBodyType ;
     if (n == eMessageBodyType_Image) {
         
@@ -362,7 +361,6 @@
             return @(rect.size.height + 40 + 20 + 15 + 10);//rect.size.height + 40 = bubbleY 15 = timeY 20 = nickY 10 = 拓展
         }
     }
-    
 }
 
 #pragma -mark 获取接收到的数据

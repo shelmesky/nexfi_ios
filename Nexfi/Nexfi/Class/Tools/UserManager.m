@@ -29,6 +29,7 @@ static UserManager *_userManager;
     NSString *acountPath = [self getPathWithFileName:@"account.data"];
     NSData *accountData = [NSKeyedArchiver archivedDataWithRootObject:user];
     [accountData writeToFile:acountPath atomically:YES];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 //用户退出登陆
 - (void)logout{

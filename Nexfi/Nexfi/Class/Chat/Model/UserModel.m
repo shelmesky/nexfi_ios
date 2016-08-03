@@ -19,6 +19,8 @@
         self.nodeId = aDic[@"nodeId"];
         self.userAvatar = aDic[@"userAvatar"];
         self.phoneNumber = aDic[@"phoneNumber"];
+        self.lattitude = aDic[@"lattitude"];
+        self.longitude = aDic[@"longitude"];
     }
     return self;
 }
@@ -32,6 +34,8 @@
         self.nodeId = [aDecoder decodeObjectForKey:@"nodeId"];
         self.userAvatar = [aDecoder decodeObjectForKey:@"userAvatar"];
         self.phoneNumber = [aDecoder decodeObjectForKey:@"phoneNumber"];
+        self.lattitude = [aDecoder decodeObjectForKey:@"lattitude"];
+        self.longitude = [aDecoder decodeObjectForKey:@"longitude"];
     }
     return self;
 }
@@ -44,6 +48,9 @@
     [aCoder encodeObject:self.nodeId forKey:@"nodeId"];
     [aCoder encodeObject:self.userAvatar forKey:@"userAvatar"];
     [aCoder encodeObject:self.phoneNumber forKey:@"phoneNumber"];
+    [aCoder encodeObject:self.lattitude forKey:@"lattitude"];
+    [aCoder encodeObject:self.longitude forKey:@"longitude"];
+
 }
 
 - (NSString *)description{

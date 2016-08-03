@@ -35,6 +35,11 @@
     CLLocationCoordinate2D coorinate = [self.annotation coordinate];
     
     NSLog(@"coordinate = {%f, %f}", coorinate.latitude, coorinate.longitude);
+    if (self.customDelegate && [self.customDelegate respondsToSelector:@selector(chatToSb:)]) {
+    
+        [self.customDelegate chatToSb:self];
+        
+    }
 }
 
 #pragma mark - Override
@@ -76,24 +81,29 @@
         if (self.calloutView == nil)
         {
             /* Construct custom callout. */
-            self.calloutView = [[CustomCalloutView alloc] initWithFrame:CGRectMake(0, 0, kCalloutWidth, kCalloutHeight)];
+            self.calloutView = [[CustomCalloutView alloc] initWithFrame:CGRectMake(0, 0, 70, 60)];
             self.calloutView.center = CGPointMake(CGRectGetWidth(self.bounds) / 2.f + self.calloutOffset.x,
                                                   -CGRectGetHeight(self.calloutView.bounds) / 2.f + self.calloutOffset.y);
             
             UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-            btn.frame = CGRectMake(10, 10, 40, 40);
-            [btn setTitle:@"Test" forState:UIControlStateNormal];
+            btn.frame = CGRectMake(10, 10, 50, 30);
+            [btn setTitle:@"私聊" forState:UIControlStateNormal];
+            btn.titleLabel.font = [UIFont systemFontOfSize:15.0];
             [btn setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-            [btn setBackgroundColor:[UIColor whiteColor]];
+            UIColor *c = [UIColor colorWithRed:81/255.0 green:186/255.0 blue:77/255.0 alpha:1];
+            [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            btn.backgroundColor = c;
             [btn addTarget:self action:@selector(btnAction) forControlEvents:UIControlEventTouchUpInside];
             
             [self.calloutView addSubview:btn];
             
-            UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 100, 30)];
-            name.backgroundColor = [UIColor clearColor];
-            name.textColor = [UIColor whiteColor];
-            name.text = @"Hello Amap!";
-            [self.calloutView addSubview:name];
+            
+            
+//            UILabel *name = [[UILabel alloc] initWithFrame:CGRectMake(60, 10, 100, 30)];
+//            name.backgroundColor = [UIColor clearColor];
+//            name.textColor = [UIColor whiteColor];
+//            name.text = @"Hello Amap!";
+//            [self.calloutView addSubview:name];
         }
         
         [self addSubview:self.calloutView];
@@ -129,7 +139,7 @@
     
     if (self)
     {
-        self.bounds = CGRectMake(0.f, 0.f, kWidth, kHeight);
+        self.bounds = CGRectMake(0.f, 0.f, 60, 80);
         
         self.backgroundColor = [UIColor grayColor];
         
@@ -138,15 +148,20 @@
         [self addSubview:self.portraitImageView];
         
         /* Create name label. */
-        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPortraitWidth + kHoriMargin,
-                                                                   kVertMargin,
-                                                                   kWidth - kPortraitWidth - kHoriMargin,
-                                                                   kHeight - 2 * kVertMargin)];
+//        self.nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(kPortraitWidth + kHoriMargin,
+//                                                                   kVertMargin,
+//                                                                   kWidth - kPortraitWidth - kHoriMargin,
+//                                                                   kHeight - 2 * kVertMargin)];
+        self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(kHoriMargin, CGRectGetMaxY(self.portraitImageView.frame), CGRectGetWidth(self.portraitImageView.frame), 20)];
         self.nameLabel.backgroundColor  = [UIColor clearColor];
         self.nameLabel.textAlignment    = NSTextAlignmentCenter;
         self.nameLabel.textColor        = [UIColor whiteColor];
-        self.nameLabel.font             = [UIFont systemFontOfSize:15.f];
+        self.nameLabel.font             = [UIFont systemFontOfSize:12.f];
+        self.nameLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:self.nameLabel];
+//        [self addSubview:self.nameLabel];
+        
+        
     }
     
     return self;

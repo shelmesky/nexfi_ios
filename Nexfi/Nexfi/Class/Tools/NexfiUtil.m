@@ -258,7 +258,18 @@ static NexfiUtil *_util;
     }
     return strlength;
 }
-
++ (id)getVC_objectWithClassName:(NSString *)name{
+    const char *className = [name cStringUsingEncoding:NSASCIIStringEncoding];
+    Class newClass = objc_getClass(className);
+    
+    if (!className) {
+        Class superClass = [NSObject class];
+        newClass = objc_allocateClassPair(superClass, className, 0);
+        objc_registerClassPair(newClass);
+    }
+    
+    return newClass;
+}
 
 
 @end

@@ -228,7 +228,7 @@
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
             
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
-            
+            NSLog(@"mj====%@",user.mj_keyValues);
             [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
             
             [usersDic setObject:@(eMessageType_UserLocationUpdate) forKey:@"messageType"];
@@ -326,7 +326,7 @@
         {
             
             if (self.neighbourVc) {
-                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId]}];
+                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"updateLocation":@"1"}];
             }
             NSLog(@"h22223333333333");
             

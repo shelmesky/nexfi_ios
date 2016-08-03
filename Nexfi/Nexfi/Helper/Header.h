@@ -155,28 +155,9 @@
  */
 #define DEF_SCREEN_FRAME  [UIScreen mainScreen].applicationFrame
 
-/**
- *	生成RGB颜色
- *
- *	@param 	red 	red值（0~255）
- *	@param 	green 	green值（0~255）
- *	@param 	blue 	blue值（0~255）
- *
- *	@return	UIColor对象
- */
-#define DEF_RGB_COLOR(_red, _green, _blue) [UIColor colorWithRed:(_red)/255.0f green:(_green)/255.0f blue:(_blue)/255.0f alpha:1]
-
-/**
- *	生成RGBA颜色
- *
- *	@param 	red 	red值（0~255）
- *	@param 	green 	green值（0~255）
- *	@param 	blue 	blue值（0~255）
- *	@param 	alpha 	blue值（0~1）
- *
- *	@return	UIColor对象
- */
-#define DEF_RGBA_COLOR(_red, _green, _blue, _alpha) [UIColor colorWithRed:(_red)/255.0f green:(_green)/255.0f blue:(_blue)/255.0f alpha:(_alpha)]
+// 颜色(RGB)
+#define RGBCOLOR(r, g, b)       [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:1]
+#define RGBACOLOR(r, g, b, a)   [UIColor colorWithRed:(r)/255.0f green:(g)/255.0f blue:(b)/255.0f alpha:(a)]
 
 
 /**
@@ -220,56 +201,20 @@
 //警告框
 #define alert(title,msg,cancel) [[[UIAlertView alloc]initWithTitle:nil message:msg delegate:nil cancelButtonTitle:@"ok" otherButtonTitles:nil, nil] show];
 
-//字体颜色
 
-#define RGBAColor(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:a];
 
+// 微软雅黑
+#define YC_YAHEI_FONT(FONTSIZE) [UIFont fontWithName:@"MicrosoftYaHei" size:(FONTSIZE)]
+
+// 当前语言
+#define CURRENTLANGUAGE         ([[NSLocale preferredLanguages] objectAtIndex:0])
 
 
 #define COLOR_f2f0f0  [UIColor colorWithHexString:@"#f2f0f0"]   //我的cell颜色  首页背景颜色
 #define COLOR_fafafa  [UIColor colorWithHexString:@"#fafafa"]   //周围共有20份订单 背景
 #define COLOR_f1f1f1  [UIColor colorWithHexString:@"#f1f1f1"]   //接单弹出框 背景
 #define COLOR_f7f6f6  [UIColor colorWithHexString:@"#f7f6f6"]   //发单tabBar 颜色
-#define COLOR_fb6934  [UIColor colorWithHexString:@"#fb6934"]
-#define COLOR_e3908d  [UIColor colorWithHexString:@"#e3908d"]
-#define COLOR_87c785  [UIColor colorWithHexString:@"#87c785"]
-#define COLOR_E8E8E8  [UIColor colorWithHexString:@"#e8e8e8"]
-#define COLOR_7C7C7C  [UIColor colorWithHexString:@"#7c7c7c"]
-#define COLOR_A2A2A2  [UIColor colorWithHexString:@"#a2a2a2"]
-#define COLOR_F9B000  [UIColor colorWithHexString:@"#f9b000"]
-#define COLOR_7BB1EF  [UIColor colorWithHexString:@"#7bb1ef"]
-#define COLOR_333333  [UIColor colorWithHexString:@"#333333"]
-#define COLOR_0059BE  [UIColor colorWithHexString:@"#0059be"]
-#define COLOR_000000  [UIColor colorWithHexString:@"#000000"]
-#define COLOR_FFFFFF  [UIColor colorWithHexString:@"#FFFFFF"]
-#define COLOR_DF8D2D  [UIColor colorWithHexString:@"#DF8D2D"]
-#define COLOR_749DBB  [UIColor colorWithHexString:@"#749dbb"]
-#define COLOR_959494  [UIColor colorWithHexString:@"#959494"]
-#define COLOR_8C8C8C  [UIColor colorWithHexString:@"#8c8c8c"]
-#define COLOR_808080  [UIColor colorWithHexString:@"#808080"]
-#define COLOR_A3A3A3  [UIColor colorWithHexString:@"#a3a3a3"]
-#define COLOR_B9B9B9  [UIColor colorWithHexString:@"#b9b9b9"]
-#define COLOR_EAC244  [UIColor colorWithHexString:@"#EAC244"]
-#define COLOR_737373  [UIColor colorWithHexString:@"#737373"]
-#define COLOR_478EDE  [UIColor colorWithHexString:@"#478ede"]
-#define COLOR_BEBEBE  [UIColor colorWithHexString:@"#bebebe"]
-#define COLOR_2AAA32  [UIColor colorWithHexString:@"#2AAA32"]
-#define COLOR_424242  [UIColor colorWithHexString:@"#424242"]
-#define COLOR_4D4D4D  [UIColor colorWithHexString:@"#4D4D4D"]
-#define COLOR_F3999C  [UIColor colorWithHexString:@"#F3999C"]
-#define COLOR_7BC8E3  [UIColor colorWithHexString:@"#7BC8E3"]
-#define COLOR_6DC1A0  [UIColor colorWithHexString:@"#6DC1A0"]   //主绿色
-#define COLOR_6DC4E6  [UIColor colorWithHexString:@"#6DC4E6"]
-#define COLOR_6BCAA5  [UIColor colorWithHexString:@"#6BCAA5"]
-#define COLOR_6EC3E7  [UIColor colorWithHexString:@"#6EC3E7"]   //主蓝色
-#define COLOR_717171  [UIColor colorWithHexString:@"#717171"]
-#define COLOR_666666  [UIColor colorWithHexString:@"#666666"]   //商品地址颜色
-#define COLOR_999999  [UIColor colorWithHexString:@"#999999"] //生成订单酬金 地址字体颜色
-#define COLOR_464747  [UIColor colorWithHexString:@"#464747"] //生成电话字体颜色
-#define COLOR_C1282D  [UIColor colorWithHexString:@"#C1282D"]
-#define COLOR_CCCCCC  [UIColor colorWithHexString:@"#CCCCCC"]
-#define COLOR_E83F4C  [UIColor colorWithHexString:@"#E83F4C"]  //确认支付按钮
-#define COLOR_D4522A  [UIColor colorWithHexString:@"#D4522A"]  //账户余额字体颜色
-#define COLOR_3D3D39  [UIColor colorWithHexString:@"#3d3a39"]   //操作提示页面背景色
+
+
 
 #endif

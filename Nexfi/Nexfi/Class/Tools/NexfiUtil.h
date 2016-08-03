@@ -39,7 +39,7 @@
  *计算字体个数
  */
 +(int)convertToInt:(NSString*)strtemp;
-
-
+//创建一个类
++ (id)getVC_objectWithClassName:(NSString *)name;
 //-(void)toUpdateUserInfo;
 @end
