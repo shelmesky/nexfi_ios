@@ -65,6 +65,16 @@
     
     [UnderdarkUtil share].node.allUserChatVC = self;
     [UnderdarkUtil share].node.delegate = self;
+    //背景图片
+    UIImageView *backImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64 - kMinHeight)];
+    backImg.image = [UIImage imageNamed:@"1465808627942"];
+    backImg.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:backImg];
+    //毛玻璃
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithFrame:backImg.frame];
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    effectView.effect = effect;
+    [self.view addSubview:effectView];
     
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0,  0, SCREEN_SIZE.width, SCREEN_SIZE.height- kMinHeight - 64) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -73,6 +83,7 @@
     _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     
     //为了让下面的图片显示出来，把背景颜色置为cleanColor
+    _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
     [self.view addSubview:self.chatBar];
     
@@ -175,6 +186,7 @@
 {
     TribeMessage *msg=[_textArray objectAtIndex:indexPath.row];
     ChatCell *cell = [self getCellWithMsg:msg];
+    cell.backgroundColor = [UIColor clearColor];
     cell.index = indexPath.row;
     cell.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

@@ -114,13 +114,11 @@
 		0E03BF5F1D0E560C00F08070 /* XMNFacePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BF321D0E560C00F08070 /* XMNFacePageView.m */; };
 		0E03BF601D0E560C00F08070 /* XMProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BF341D0E560C00F08070 /* XMProgressHUD.m */; };
 		0E03BF611D0E560C00F08070 /* XMNChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BF381D0E560C00F08070 /* XMNChatViewModel.m */; };
-		0E03C0241D0EA26C00F08070 /* amrFileCodec.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E03C0161D0EA26C00F08070 /* amrFileCodec.mm */; };
-		0E03C0251D0EA26C00F08070 /* wav.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E03C0181D0EA26C00F08070 /* wav.mm */; };
-		0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E03C01A1D0EA26C00F08070 /* libopencore-amrnb.a */; };
-		0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E03C01B1D0EA26C00F08070 /* libopencore-amrwb.a */; };
-		0E03C0281D0EA26C00F08070 /* VoiceConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0E03C0231D0EA26C00F08070 /* VoiceConverter.mm */; };
 		0E05CEC61D34BC9100959B75 /* VertifyCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */; };
 		0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */; };
+		0E1DB3721D5440A400BD60C5 /* 060@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1DB3711D5440A400BD60C5 /* 060@2x.png */; };
+		0E1DB3761D54415700BD60C5 /* 067@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1DB3751D54415700BD60C5 /* 067@2x.png */; };
+		0E1DB3FE1D548D8000BD60C5 /* 1465808627942.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E1DB3FD1D548D8000BD60C5 /* 1465808627942.png */; };
 		0E2BF1CB1CDC7465005989B1 /* UDBonjourBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E79821CC62B9500EE2272 /* UDBonjourBrowser.m */; };
 		0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */; };
 		0E33E4851D407F0A008D74C2 /* NFReportObjectVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E4831D407F0A008D74C2 /* NFReportObjectVC.m */; };
@@ -517,21 +515,12 @@
 		0E03BF361D0E560C00F08070 /* XMNChatUntiles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMNChatUntiles.h; sourceTree = "<group>"; };
 		0E03BF371D0E560C00F08070 /* XMNChatViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMNChatViewModel.h; sourceTree = "<group>"; };
 		0E03BF381D0E560C00F08070 /* XMNChatViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMNChatViewModel.m; sourceTree = "<group>"; };
-		0E03C0151D0EA26C00F08070 /* amrFileCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = amrFileCodec.h; sourceTree = "<group>"; };
-		0E03C0161D0EA26C00F08070 /* amrFileCodec.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = amrFileCodec.mm; sourceTree = "<group>"; };
-		0E03C0171D0EA26C00F08070 /* wav.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wav.h; sourceTree = "<group>"; };
-		0E03C0181D0EA26C00F08070 /* wav.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = wav.mm; sourceTree = "<group>"; };
-		0E03C01A1D0EA26C00F08070 /* libopencore-amrnb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrnb.a"; sourceTree = "<group>"; };
-		0E03C01B1D0EA26C00F08070 /* libopencore-amrwb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "libopencore-amrwb.a"; sourceTree = "<group>"; };
-		0E03C01D1D0EA26C00F08070 /* interf_dec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_dec.h; sourceTree = "<group>"; };
-		0E03C01E1D0EA26C00F08070 /* interf_enc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = interf_enc.h; sourceTree = "<group>"; };
-		0E03C0201D0EA26C00F08070 /* dec_if.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = dec_if.h; sourceTree = "<group>"; };
-		0E03C0211D0EA26C00F08070 /* if_rom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = if_rom.h; sourceTree = "<group>"; };
-		0E03C0221D0EA26C00F08070 /* VoiceConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VoiceConverter.h; sourceTree = "<group>"; };
-		0E03C0231D0EA26C00F08070 /* VoiceConverter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VoiceConverter.mm; sourceTree = "<group>"; };
 		0E05CEC31D34BC9100959B75 /* VertifyCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertifyCodeVC.h; sourceTree = "<group>"; };
 		0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertifyCodeVC.m; sourceTree = "<group>"; };
 		0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VertifyCodeVC.xib; sourceTree = "<group>"; };
+		0E1DB3711D5440A400BD60C5 /* 060@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "060@2x.png"; sourceTree = "<group>"; };
+		0E1DB3751D54415700BD60C5 /* 067@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "067@2x.png"; sourceTree = "<group>"; };
+		0E1DB3FD1D548D8000BD60C5 /* 1465808627942.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1465808627942.png; sourceTree = "<group>"; };
 		0E2BF1EC1CE1D42D005989B1 /* FNAVAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FNAVAudioPlayer.h; sourceTree = "<group>"; };
 		0E2BF1ED1CE1D42D005989B1 /* FNAVAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNAVAudioPlayer.m; sourceTree = "<group>"; };
 		0E33E4821D407F0A008D74C2 /* NFReportObjectVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFReportObjectVC.h; sourceTree = "<group>"; };
@@ -890,8 +879,6 @@
 				0EFC78F61D3393ED00789ADD /* libz.tbd in Frameworks */,
 				0E3FE2741D4B46A6007188B1 /* AMapSearchKit.framework in Frameworks */,
 				0E03BF501D0E560C00F08070 /* libmp3lame.a in Frameworks */,
-				0E03C0271D0EA26C00F08070 /* libopencore-amrwb.a in Frameworks */,
-				0E03C0261D0EA26C00F08070 /* libopencore-amrnb.a in Frameworks */,
 				0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */,
 				36390C63D010916D8AAA6077 /* libPods.a in Frameworks */,
 			);
@@ -917,6 +904,9 @@
 		0E0281D91D05308900348523 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0E1DB3FD1D548D8000BD60C5 /* 1465808627942.png */,
+				0E1DB3751D54415700BD60C5 /* 067@2x.png */,
+				0E1DB3711D5440A400BD60C5 /* 060@2x.png */,
 				0EFC78D61D33704700789ADD /* NexFiIcon@3x.png */,
 				0E0281DA1D05308900348523 /* 041@2x.png */,
 				0E0281DB1D05308900348523 /* 054@2x.png */,
@@ -1017,14 +1007,6 @@
 				0E0282801D06ADE900348523 /* TextCell.xib */,
 			);
 			path = ChatCell;
-			sourceTree = "<group>";
-		};
-		0E03BEA51D0D6B1C00F08070 /* libopencore-amr */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C0131D0EA26C00F08070 /* VoiceConvert */,
-			);
-			path = "libopencore-amr";
 			sourceTree = "<group>";
 		};
 		0E03BED61D0E560C00F08070 /* Masonry */ = {
@@ -1199,57 +1181,6 @@
 				0E03BF301D0E560C00F08070 /* XMNSendImageView.m */,
 			);
 			path = XMNChatMessageCell;
-			sourceTree = "<group>";
-		};
-		0E03C0131D0EA26C00F08070 /* VoiceConvert */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C0141D0EA26C00F08070 /* amrwapper */,
-				0E03C0191D0EA26C00F08070 /* lib */,
-				0E03C01C1D0EA26C00F08070 /* opencore-amrnb */,
-				0E03C01F1D0EA26C00F08070 /* opencore-amrwb */,
-				0E03C0221D0EA26C00F08070 /* VoiceConverter.h */,
-				0E03C0231D0EA26C00F08070 /* VoiceConverter.mm */,
-			);
-			path = VoiceConvert;
-			sourceTree = "<group>";
-		};
-		0E03C0141D0EA26C00F08070 /* amrwapper */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C0151D0EA26C00F08070 /* amrFileCodec.h */,
-				0E03C0161D0EA26C00F08070 /* amrFileCodec.mm */,
-				0E03C0171D0EA26C00F08070 /* wav.h */,
-				0E03C0181D0EA26C00F08070 /* wav.mm */,
-			);
-			path = amrwapper;
-			sourceTree = "<group>";
-		};
-		0E03C0191D0EA26C00F08070 /* lib */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C01A1D0EA26C00F08070 /* libopencore-amrnb.a */,
-				0E03C01B1D0EA26C00F08070 /* libopencore-amrwb.a */,
-			);
-			path = lib;
-			sourceTree = "<group>";
-		};
-		0E03C01C1D0EA26C00F08070 /* opencore-amrnb */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C01D1D0EA26C00F08070 /* interf_dec.h */,
-				0E03C01E1D0EA26C00F08070 /* interf_enc.h */,
-			);
-			path = "opencore-amrnb";
-			sourceTree = "<group>";
-		};
-		0E03C01F1D0EA26C00F08070 /* opencore-amrwb */ = {
-			isa = PBXGroup;
-			children = (
-				0E03C0201D0EA26C00F08070 /* dec_if.h */,
-				0E03C0211D0EA26C00F08070 /* if_rom.h */,
-			);
-			path = "opencore-amrwb";
 			sourceTree = "<group>";
 		};
 		0E33E48C1D409E96008D74C2 /* KxMenu */ = {
@@ -1603,7 +1534,6 @@
 				0EFC78DE1D33839C00789ADD /* Catagory */,
 				0E0282481D056C8100348523 /* MJCommonTool */,
 				0E9E77F01CC62B9400EE2272 /* ConFunc */,
-				0E03BEA51D0D6B1C00F08070 /* libopencore-amr */,
 				0E03BED61D0E560C00F08070 /* Masonry */,
 				0E03BEF01D0E560C00F08070 /* XMChatBar */,
 				0E33E48C1D409E96008D74C2 /* KxMenu */,
@@ -2104,6 +2034,7 @@
 				0E03BF4B1D0E560C00F08070 /* face.plist in Resources */,
 				0E9E778B1CC62AD100EE2272 /* write_face_03.png in Resources */,
 				0E9E77A81CC62AD100EE2272 /* write_face_3.png in Resources */,
+				0E1DB3721D5440A400BD60C5 /* 060@2x.png in Resources */,
 				0E02822D1D05308900348523 /* SenderTextNodeBkg@2x.png in Resources */,
 				0E9E77B61CC62AD100EE2272 /* write_face_42.png in Resources */,
 				0E9E778E1CC62AD100EE2272 /* write_face_06.png in Resources */,
@@ -2117,7 +2048,9 @@
 				0E02822E1D05308900348523 /* SenderTextNodeBkgHL@2x.png in Resources */,
 				0E9E77B51CC62AD100EE2272 /* write_face_41.png in Resources */,
 				0E0282331D05308900348523 /* message_receiver_background_highlight@3x.png in Resources */,
+				0E1DB3761D54415700BD60C5 /* 067@2x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
+				0E1DB3FE1D548D8000BD60C5 /* 1465808627942.png in Resources */,
 				0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */,
 				0E03BF481D0E560C00F08070 /* chatBar.xcassets in Resources */,
 				0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */,
@@ -2333,7 +2266,6 @@
 				0E9E77861CC62AD100EE2272 /* TribeMessage.m in Sources */,
 				0E9E7B211CC62B9500EE2272 /* UDNsdAdvertiser.m in Sources */,
 				0E03BF4E1D0E560C00F08070 /* XMNMessageStateManager.m in Sources */,
-				0E03C0251D0EA26C00F08070 /* wav.mm in Sources */,
 				0E9E77CA1CC62AD100EE2272 /* menuImageView.m in Sources */,
 				0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */,
 				0E9E7B571CC6318D00EE2272 /* JXImageView.m in Sources */,
@@ -2367,7 +2299,6 @@
 				0E03BF5D1D0E560C00F08070 /* XMNContentView.m in Sources */,
 				0E0282851D06ADE900348523 /* SenderAvatarCell.m in Sources */,
 				0E9E7B301CC62B9500EE2272 /* UDDataBuffer.m in Sources */,
-				0E03C0241D0EA26C00F08070 /* amrFileCodec.mm in Sources */,
 				0E9E77D51CC62AD100EE2272 /* NFPeersView.m in Sources */,
 				0E02828B1D06ADE900348523 /* TextCell.m in Sources */,
 				0E9E77C51CC62AD100EE2272 /* gifViewController.m in Sources */,
@@ -2465,7 +2396,6 @@
 				0E03BF5B1D0E560C00F08070 /* XMNChatTextMessageCell.m in Sources */,
 				0E33E4851D407F0A008D74C2 /* NFReportObjectVC.m in Sources */,
 				0E9E7B2A1CC62B9500EE2272 /* UDBonjourServer.m in Sources */,
-				0E03C0281D0EA26C00F08070 /* VoiceConverter.mm in Sources */,
 				0E0282901D06ADF300348523 /* ChatCell.m in Sources */,
 				0E9E7B491CC62B9500EE2272 /* UDRunLoopThread.m in Sources */,
 				0E9E77801CC62AD100EE2272 /* NFTribeInfoVC.m in Sources */,

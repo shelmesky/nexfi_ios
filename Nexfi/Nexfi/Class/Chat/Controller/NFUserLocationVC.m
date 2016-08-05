@@ -32,6 +32,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [self setBaseVCAttributesWith:@"附近的人" left:nil right:nil WithInVC:self];
+    
     [self initMapView];
     [self initSearch];
 
@@ -52,6 +54,7 @@
 }
 -(void)addAnnotationWithUserModel:(UserModel *)user
 {
+    
     MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
     CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
     annotation.coordinate = coordinate;
@@ -62,24 +65,18 @@
     
     [self.mapView addAnnotation:annotation];
     
-    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
+//    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
 
 }
 - (void)initSearch
 {
-    
-    
     self.search = [[AMapSearchAPI alloc]init];
     self.search.delegate = self;
 
-    
-    
 }
 - (void)initMapView
 {
     self.mapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-    
-    
     self.mapView.showsCompass = NO;   //是否显示罗盘
     self.mapView.delegate = self;
     self.mapView.userTrackingMode = MAUserTrackingModeFollow;  //跟随模式  持续更新用户定位
@@ -89,8 +86,6 @@
 //    self.mapView.zoomLevel = self.mapView.minZoomLevel;  //最小缩放级别
     //    [self.mapView setCompassImage:[UIImage imageNamed:@"bg-x@2x"]];//罗盘图片
     [self.view addSubview:self.mapView];
-    
-    
     
 }
 - (UserModel *)getUserFromAnnotationWithUserId:(NSString *)userId{
@@ -173,7 +168,6 @@
         annotationView.calloutOffset = CGPointMake(0, -5);
 //        annotationView.portrait = [UIImage imageNamed:@"NexFiIcon"];
         UserModel *user = [self getUserFromAnnotationWithUserId:annotation.subtitle];
-        NSLog(@"user==%@",user.mj_keyValues);
         annotationView.portrait = [UIImage imageNamed:user.userAvatar];
         annotationView.name     = user.userNick;
         

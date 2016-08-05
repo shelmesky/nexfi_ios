@@ -25,7 +25,6 @@
 }
 @property (nonatomic,strong)UILabel *titleLabel;
 
-@property (nonatomic,strong)UILabel *tipLabel;
 
 
 @end
@@ -43,13 +42,7 @@
     }
 
     
-    self.tipLabel = [[UILabel alloc]init];
-    self.tipLabel.backgroundColor = [UIColor colorWithWhite:0.1 alpha:0.65];
-    self.tipLabel.font = [UIFont systemFontOfSize:16.0];
-    self.tipLabel.textColor = [UIColor whiteColor];
-    self.tipLabel.textAlignment = NSTextAlignmentCenter;
-    self.tipLabel.layer.cornerRadius = 3.f;
-    [self.view addSubview:self.tipLabel];
+    
     
 //    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60)
 //                                                         forBarMetrics:UIBarMetricsDefault];
@@ -123,7 +116,7 @@
         {
             
             
-            UIBarButtonItem *leftBarBtn = [[UIBarButtonItem alloc]initWithImage:[[UIImage imageNamed:nameLeft] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(leftBarBtnClick:)];
+            UIBarButtonItem *leftBarBtn = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:nameLeft]  style:UIBarButtonItemStylePlain target:self action:@selector(leftBarBtnClick:)];
             vc.navigationItem.leftBarButtonItem = leftBarBtn;
         }
         else

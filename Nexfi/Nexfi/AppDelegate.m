@@ -60,14 +60,15 @@
 //    UIDevice *myDevice = [UIDevice currentDevice];
 //    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
     
+    /*
     //后台可播放音乐
     NSError *setCategoryErr = nil;
     NSError *activationErr  = nil;
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error: &setCategoryErr];
     [[AVAudioSession sharedInstance]setActive: YES error: &activationErr];
+    */
     
     /*
-    
     //保持后台~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     [[NSUserDefaults standardUserDefaults]setObject:@"0" forKey:@"isPlayFinish"];
@@ -340,10 +341,9 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
      
-    
-    self.background = NO;
-    [application endBackgroundTask:self.bgTask];
-    self.bgTask = UIBackgroundTaskInvalid;
+//    self.background = NO;
+//    [application endBackgroundTask:self.bgTask];
+//    self.bgTask = UIBackgroundTaskInvalid;
     
 }
 

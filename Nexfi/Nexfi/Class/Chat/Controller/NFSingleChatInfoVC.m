@@ -65,6 +65,16 @@
     
     [UnderdarkUtil share].node.singleVC = self;
     [UnderdarkUtil share].node.delegate = self;
+    //背景图片
+    UIImageView *backImg = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64 - kMinHeight)];
+    backImg.image = [UIImage imageNamed:@"1465808627942"];
+    backImg.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view addSubview:backImg];
+    //毛玻璃
+    UIVisualEffectView *effectView = [[UIVisualEffectView alloc]initWithFrame:backImg.frame];
+    UIBlurEffect *effect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+    effectView.effect = effect;
+    [self.view addSubview:effectView];
     
     _tableView=[[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height-64 -kMinHeight) style:UITableViewStylePlain];
     _tableView.delegate=self;
@@ -294,6 +304,7 @@
 {
     PersonMessage *msg=[_textArray objectAtIndex:indexPath.row];
     ChatCell *cell = [self getCellWithMsg:msg];
+    cell.backgroundColor = [UIColor clearColor];
     cell.index = indexPath.row;
     cell.delegate = self;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;

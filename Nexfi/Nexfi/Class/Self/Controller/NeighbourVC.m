@@ -18,6 +18,7 @@
 
 @property (nonatomic, assign)BOOL reachable;
 @property (nonatomic, assign)BOOL isNeedUpdate;;
+@property (nonatomic, strong) dispatch_source_t timer;
 @end
 
 @implementation NeighbourVC
@@ -43,7 +44,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 
-    [self setBaseVCAttributesWith:@"附近的人" left:@"地图" right:@"群聊" WithInVC:self];
+    [self setBaseVCAttributesWith:@"附近的人" left:@"067.png" right:@"060.png" WithInVC:self];
     
     [self initMapView];
     
@@ -80,8 +81,8 @@
     [self.view addSubview:self.usersTable];
     
     [self.usersTable registerNib:[UINib nibWithNibName:@"NFNearbyUserCell" bundle:nil] forCellReuseIdentifier:@"NFNearbyUserCell"];
-    
-
+    //10分钟发送一次位置
+    [self updateLocation];
     
     //展示进度
     WGradientProgress *gradProg = [WGradientProgress sharedInstance];
@@ -95,12 +96,16 @@
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(blueToothMsgFail:) name:@"blueToothFail" object:nil];
     
     
+
+}
+#pragma -mark 创建定时器 10分钟发送一次位置
+- (void)updateLocation{
     __block int count = 0;
     // 获得队列
     dispatch_queue_t queue = dispatch_get_main_queue();
     
     // 创建一个定时器(dispatch_source_t本质还是个OC对象)
-    dispatch_source_t timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
     
     // 设置定时器的各种属性（几时开始任务，每隔多长时间执行一次）
     // GCD的时间参数，一般是纳秒（1秒 == 10的9次方纳秒）
@@ -108,51 +113,53 @@
     // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
     dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
     uint64_t interval = (uint64_t)(600.0 * NSEC_PER_SEC);
-    dispatch_source_set_timer(timer, start, interval, 0);
-    
+    dispatch_source_set_timer(self.timer, start, interval, 0);
     
     // 设置回调
-    dispatch_source_set_event_handler(timer, ^{
+    dispatch_source_set_event_handler(self.timer, ^{
         NSLog(@"------------%@", [NSThread currentThread]);
         count ++ ;
-        UserModel *user = [[UserManager shareManager]getUser];
-        NSDictionary *locaiotn = [[NSUserDefaults standardUserDefaults]objectForKey:@"location"];
-//        user.lattitude = locaiotn[@"lattitude"];
-//        user.longitude = locaiotn[@"longitude"];
-        NSArray *arr = @[
-        @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
-        @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
-        @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
-        @{@"lattitude":@"31.208633",@"longitude":@"121.52142"}];
         
-        NSDictionary *d = arr[arc4random_uniform(4)];
+        /*
+         UserModel *user = [[UserManager shareManager]getUser];
+         NSDictionary *locaiotn = [[NSUserDefaults standardUserDefaults]objectForKey:@"location"];
+         //        user.lattitude = locaiotn[@"lattitude"];
+         //        user.longitude = locaiotn[@"longitude"];
+         NSArray *arr = @[
+         @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
+         @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
+         @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
+         @{@"lattitude":@"31.208633",@"longitude":@"121.52142"}];
+         
+         NSDictionary *d = arr[arc4random_uniform(4)];
+         
+         user.lattitude = d[@"lattitude"];
+         
+         user.longitude = d[@"longitude"];
+         [[UserManager shareManager]loginSuccessWithUser:user];
+         NSLog(@"us====%@",user.mj_keyValues);
+         */
         
-        user.lattitude = d[@"lattitude"];
         
-        user.longitude = d[@"longitude"];
-        [[UserManager shareManager]loginSuccessWithUser:user];
-        
-        NSLog(@"us====%@",user.mj_keyValues);
         if ([UnderdarkUtil share].node.links.count > 0) {
             for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
                 id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
                 [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
             }
         }
-        
-        
-        
+
         if (count == 0) {
-        //                // 取消定时器
-        dispatch_cancel(timer);
-        //                self.timer = nil;
+            //                // 取消定时器
+            dispatch_cancel(self.timer);
+            //                self.timer = nil;
         }
         self.isNeedUpdate = YES;
+        self.mapView.userTrackingMode = MAUserTrackingModeFollow;
         
     });
     
     // 启动定时器
-    dispatch_resume(timer);
+    dispatch_resume(self.timer);
 }
 - (void)showProgress{
     WGradientProgress *pro = [WGradientProgress sharedInstance];
@@ -387,8 +394,8 @@
 }
 - (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation{
     
-    //    self.mapView.userTrackingMode = MAUserTrackingModeNone;  //不追踪用户的location更新
-    
+    self.mapView.userTrackingMode = MAUserTrackingModeNone;  //不追踪用户的location更新
+    NSLog(@"hehe==");
     
     //10分钟发送一次定位位置
     if (self.isNeedUpdate) {
@@ -398,10 +405,14 @@
         user.lattitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
         user.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
         [[UserManager shareManager]loginSuccessWithUser:user];
-
-        
     }
     
+}
+- (void)dealloc{
+    if (self.timer) {
+        dispatch_cancel(self.timer);
+        self.timer = nil;
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
