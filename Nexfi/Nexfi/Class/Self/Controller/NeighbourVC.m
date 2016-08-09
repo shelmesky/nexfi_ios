@@ -14,6 +14,8 @@
 #import "VertifyCodeVC.h"
 #import "NFUserLocationVC.h"
 
+
+
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate,MAMapViewDelegate>
 
 @property (nonatomic, assign)BOOL reachable;
@@ -45,9 +47,8 @@
     // Do any additional setup after loading the view from its nib.
 
     [self setBaseVCAttributesWith:@"附近的人" left:@"067.png" right:@"060.png" WithInVC:self];
-    
+    //配置地图
     [self initMapView];
-    
     
     Reachability *reach = [Reachability reachabilityWithHostname:@"www.apple.com"];
     
@@ -98,6 +99,29 @@
     
 
 }
+#pragma -mark 检查好友是否根连接数相等
+- (void)inqueryFriend{
+    
+    double delayInSeconds = 100.0;
+    //创建一个调度时间,相对于默认时钟或修改现有的调度时间。
+    dispatch_time_t delayInNanoSeconds =dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+
+    dispatch_queue_t concurrentQueue =dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_after(delayInNanoSeconds, concurrentQueue, ^(void){
+        NSLog(@"Grand Center Dispatch!");
+        if (self.handleByUsers.count == [UnderdarkUtil share].node.links.count) {
+            return;
+        }
+        for (id<UDLink>myLink in [UnderdarkUtil share].node.links) {
+            for (UserModel *user in self.handleByUsers) {
+                if (![user.nodeId isEqualToString:[NSString stringWithFormat:@"%lld",myLink.nodeId]]) {//如果有连接没显示好友 再请求一下
+                    [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_requestUserInfo WithLink:myLink]];
+                }
+            }
+        }
+    });
+    
+}
 #pragma -mark 创建定时器 10分钟发送一次位置
 - (void)updateLocation{
     __block int count = 0;
@@ -112,7 +136,7 @@
     // 何时开始执行第一个任务
     // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
     dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-    uint64_t interval = (uint64_t)(600.0 * NSEC_PER_SEC);
+    uint64_t interval = (uint64_t)(300.0 * NSEC_PER_SEC);
     dispatch_source_set_timer(self.timer, start, interval, 0);
     
     // 设置回调
@@ -140,13 +164,6 @@
          NSLog(@"us====%@",user.mj_keyValues);
          */
         
-        
-        if ([UnderdarkUtil share].node.links.count > 0) {
-            for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
-                id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
-                [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
-            }
-        }
 
         if (count == 0) {
             //                // 取消定时器
@@ -226,6 +243,7 @@
     //过滤多余的用户信息
     NSString *update = userJson[@"update"];
     NSString *updateLocation = userJson[@"updateLocation"];
+    
     if (update) {
         for (int i = 0; i < self.handleByUsers.count; i ++) {
             UserModel *user = [self.handleByUsers objectAtIndex:i];
@@ -234,6 +252,7 @@
             }
         }
         if (updateLocation) {//更新位置之后  不用再做刷新动画
+            NSLog(@"return");
             return;
         }
     }else{
@@ -278,7 +297,11 @@
     [self playBounceAnimation:cell.nickNameLabel];
     
     //显示多少人
-    self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)",self.handleByUsers.count];
+    self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)%ld",self.handleByUsers.count,[UnderdarkUtil share].node.peersCount];
+    
+    
+    //延迟100秒查询好友是否残缺
+    [self inqueryFriend];
     
 }
 - (NSMutableArray *)getAllNodeId{
@@ -405,6 +428,14 @@
         user.lattitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
         user.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
         [[UserManager shareManager]loginSuccessWithUser:user];
+        
+        
+        if ([UnderdarkUtil share].node.links.count > 0) {
+            for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+                id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+                [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
+            }
+        }
     }
     
 }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E009A181D59CDEF00A6731B /* BackGroundTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E009A171D59CDEF00A6731B /* BackGroundTask.m */; };
+		0E009A1B1D59CE8F00A6731B /* BackGroundLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E009A1A1D59CE8F00A6731B /* BackGroundLocation.m */; };
 		0E02820D1D05308900348523 /* 041@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0281DA1D05308900348523 /* 041@2x.png */; };
 		0E02820E1D05308900348523 /* 054@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0281DB1D05308900348523 /* 054@2x.png */; };
 		0E02820F1D05308900348523 /* 057@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E0281DC1D05308900348523 /* 057@2x.png */; };
@@ -352,6 +354,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E009A161D59CDEF00A6731B /* BackGroundTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGroundTask.h; sourceTree = "<group>"; };
+		0E009A171D59CDEF00A6731B /* BackGroundTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackGroundTask.m; sourceTree = "<group>"; };
+		0E009A191D59CE8F00A6731B /* BackGroundLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackGroundLocation.h; sourceTree = "<group>"; };
+		0E009A1A1D59CE8F00A6731B /* BackGroundLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackGroundLocation.m; sourceTree = "<group>"; };
 		0E0281DA1D05308900348523 /* 041@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "041@2x.png"; sourceTree = "<group>"; };
 		0E0281DB1D05308900348523 /* 054@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "054@2x.png"; sourceTree = "<group>"; };
 		0E0281DC1D05308900348523 /* 057@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "057@2x.png"; sourceTree = "<group>"; };
@@ -901,6 +907,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E009A151D59CDD500A6731B /* BackGroundLocation */ = {
+			isa = PBXGroup;
+			children = (
+				0E009A161D59CDEF00A6731B /* BackGroundTask.h */,
+				0E009A171D59CDEF00A6731B /* BackGroundTask.m */,
+				0E009A191D59CE8F00A6731B /* BackGroundLocation.h */,
+				0E009A1A1D59CE8F00A6731B /* BackGroundLocation.m */,
+			);
+			path = BackGroundLocation;
+			sourceTree = "<group>";
+		};
 		0E0281D91D05308900348523 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
@@ -1530,6 +1547,7 @@
 		0E9E77EF1CC62B9400EE2272 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0E009A151D59CDD500A6731B /* BackGroundLocation */,
 				0E3FE2611D4B3357007188B1 /* MaMapKit */,
 				0EFC78DE1D33839C00789ADD /* Catagory */,
 				0E0282481D056C8100348523 /* MJCommonTool */,
@@ -2266,6 +2284,7 @@
 				0E9E77861CC62AD100EE2272 /* TribeMessage.m in Sources */,
 				0E9E7B211CC62B9500EE2272 /* UDNsdAdvertiser.m in Sources */,
 				0E03BF4E1D0E560C00F08070 /* XMNMessageStateManager.m in Sources */,
+				0E009A181D59CDEF00A6731B /* BackGroundTask.m in Sources */,
 				0E9E77CA1CC62AD100EE2272 /* menuImageView.m in Sources */,
 				0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */,
 				0E9E7B571CC6318D00EE2272 /* JXImageView.m in Sources */,
@@ -2377,6 +2396,7 @@
 				0E03BF521D0E560C00F08070 /* XMLocationManager.m in Sources */,
 				0E03BF3E1D0E560C00F08070 /* MASViewConstraint.m in Sources */,
 				0E9E7B241CC62B9500EE2272 /* UDNsdServer.m in Sources */,
+				0E009A1B1D59CE8F00A6731B /* BackGroundLocation.m in Sources */,
 				0EFC78EA1D338C8100789ADD /* JKCountDownButton.m in Sources */,
 				0EFC78E41D3383A800789ADD /* UITapGestureRecognizer+block.m in Sources */,
 				0E9E7B361CC62B9500EE2272 /* UDTimeExtender.m in Sources */,

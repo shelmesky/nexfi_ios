@@ -97,9 +97,7 @@ typedef NS_ENUM(NSUInteger, UDBnjBrowserState)
 	//  Browser thread.
 	
 	_desiredState = UDBnjBrowserStateRunning;
-    
-    NSLog(@"desiredState ==== %d state====%d",_desiredState,_state);
-	
+    	
 	if(_state != UDBnjBrowserStateStopped)
 		return;
 	

@@ -28,10 +28,10 @@
     
     
     //网络检测通知
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reachabilityChanged:)
-                                                 name:kReachabilityChangedNotification
-                                               object:nil];
+//    [[NSNotificationCenter defaultCenter] addObserver:self
+//                                             selector:@selector(reachabilityChanged:)
+//                                                 name:kReachabilityChangedNotification
+//                                               object:nil];
     
     //网络监测
     

@@ -251,7 +251,7 @@
     [link sendData:[self sendMsgWithMessageType:eMessageType_requestUserInfo WithLink:link]];
     
     //更新用户数量
-//    self.peersCount += 1;
+    self.peersCount += 1;
     
 }
 - (void)transport:(id<UDTransport>)transport linkDisconnected:(id<UDLink>)link{
@@ -260,7 +260,7 @@
         [self.links removeObject:link];
     }
     //更新用户数量
-//    self.peersCount -= 1;
+    self.peersCount -= 1;
     
     if (self.neighbourVc.handleByUsers.count == 0) {
         return;
@@ -291,7 +291,7 @@
                 
             }
             //显示多少人
-            self.neighbourVc.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)",self.neighbourVc.handleByUsers.count];
+            self.neighbourVc.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)%ld",self.neighbourVc.handleByUsers.count,_links.count];
             
             [self.neighbourVc.usersTable reloadData];
             
@@ -326,7 +326,7 @@
         {
             
             if (self.neighbourVc) {
-                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"updateLocation":@"1"}];
+                [self.neighbourVc refreshTable:@{@"user":dic,@"nodeId":[NSString stringWithFormat:@"%lld",link.nodeId],@"updateLocation":@"1",@"update":@"1"}];
             }
             NSLog(@"h22223333333333");
             
