@@ -38,6 +38,7 @@
 #import "UIButton+ClickBlock.h"
 #import "Reachability.h"
 #import "KxMenu.h"
+#import "UIView+Tap.h"
 
 #import "Message.h"
 
@@ -58,6 +59,7 @@
 
 #define RGBACOLOR(r,g,b,a)   [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
+#define USER_D [NSUserDefaults standardUserDefaults]
 
 
 //判断iphone 4s
@@ -193,6 +195,7 @@
 
 #define NAV_HEIGHT IOS7?64:44
 
+#define WEAKSELF typeof(self) __weak weakSelf = self;
 
 //由角度获取弧度 有弧度获取角度
 #define degreesToRadian(x) (M_PI * (x) / 180.0)

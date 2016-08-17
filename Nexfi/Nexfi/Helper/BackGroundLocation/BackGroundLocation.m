@@ -8,10 +8,13 @@
 
 #import "BackGroundLocation.h"
 #import "BackGroundTask.h"
+#import "UnderdarkUtil.h"
 @interface BackGroundLocation()
 {
     BOOL isCollect;
+    BOOL isNeedUpdate;
 }
+@property (strong , nonatomic) dispatch_source_t timer; //后台任务
 @property (strong , nonatomic) BackGroundTask *bgTask; //后台任务
 @property (strong , nonatomic) NSTimer *restarTimer; //重新开启后台任务定时器
 @property (strong , nonatomic) NSTimer *closeCollectLocationTimer; //关闭定位定时器 （减少耗电）
@@ -29,6 +32,19 @@
         isCollect = NO;
         //监听进入后台通知
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
+        
+//        //刚进入页面也要调用
+//        CLLocationManager *locationManager = [BackGroundLocation shareBGLocation];
+//        locationManager.delegate = self;
+//        locationManager.distanceFilter = kCLDistanceFilterNone; // 不移动也可以后台刷新回调
+//        if ([[UIDevice currentDevice].systemVersion floatValue]>= 8.0) {
+//            [locationManager requestAlwaysAuthorization];
+//        }
+//        [locationManager startUpdatingLocation];
+//        
+//        [self updateLocation];
+        
+
     }
     return self;
 }
@@ -43,6 +59,40 @@
         _locationManager.pausesLocationUpdatesAutomatically = NO;
     });
     return _locationManager;
+}
+#pragma -mark 创建定时器 10分钟发送一次位置
+- (void)updateLocation{
+    __block int count = 0;
+    // 获得队列
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    
+    // 创建一个定时器(dispatch_source_t本质还是个OC对象)
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    
+    // 设置定时器的各种属性（几时开始任务，每隔多长时间执行一次）
+    // GCD的时间参数，一般是纳秒（1秒 == 10的9次方纳秒）
+    // 何时开始执行第一个任务
+    // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
+    dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+    uint64_t interval = (uint64_t)(10.0 * NSEC_PER_SEC);
+    dispatch_source_set_timer(self.timer, start, interval, 0);
+    
+    // 设置回调
+    dispatch_source_set_event_handler(self.timer, ^{
+        count ++ ;
+        
+        if (count == 0) {
+            // 取消定时器
+            dispatch_cancel(self.timer);
+            //                self.timer = nil;
+        }
+        isNeedUpdate = YES;
+        //        self.mapView.userTrackingMode = MAUserTrackingModeFollow;
+        
+    });
+    
+    // 启动定时器
+    dispatch_resume(self.timer);
 }
 //后台监听方法
 -(void)applicationEnterBackground
@@ -141,6 +191,28 @@
             break;
     }
 }
-
+// 定位成功，获取定位到的经纬度
+- (void)locationManager:(CLLocationManager *)manager didUpdateToLocation:(CLLocation *)newLocation fromLocation:(CLLocation *)oldLocation{
+    NSLog(@"location has got -------> latitude: %f , longitude: %f", newLocation.coordinate.latitude, newLocation.coordinate.longitude);
+    //10分钟发送一次定位位置
+    if (isNeedUpdate) {
+        NSLog(@"11");
+        isNeedUpdate = NO;
+        //更新用户信息
+        UserModel *user = [[UserManager shareManager]getUser];
+        user.lattitude = [NSString stringWithFormat:@"%f",newLocation.coordinate.latitude];
+        user.longitude = [NSString stringWithFormat:@"%f",newLocation.coordinate.longitude];
+        [[UserManager shareManager]loginSuccessWithUser:user];
+        
+        
+        if ([UnderdarkUtil share].node.links.count > 0) {
+            for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+                id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+                [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
+            }
+        }
+    }
+    
+}
 
 @end

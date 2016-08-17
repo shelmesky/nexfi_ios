@@ -150,8 +150,6 @@
         }
         [self presentViewController:picker animated:YES completion:nil];
     }
-    
-    
 }
 //保存头像
 - (void)RightBarBtnClick:(id)sender{

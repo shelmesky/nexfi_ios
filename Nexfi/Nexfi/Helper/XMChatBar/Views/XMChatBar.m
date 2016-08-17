@@ -175,6 +175,7 @@
 }
 
 - (void)sendLocation:(CLPlacemark *)placemark{
+    NSLog(@"cl===%@",placemark);
     [self cancelLocation];
     if (self.delegate && [self.delegate respondsToSelector:@selector(chatBar:sendLocation:locationText:)]) {
         [self.delegate chatBar:self sendLocation:placemark.location.coordinate locationText:placemark.name];
@@ -251,7 +252,7 @@
 }
 
 - (NSArray *)titlesOfMoreView:(XMChatMoreView *)moreView{
-//    return @[@"拍摄",@"照片",@"位置"];
+//    return @[@"拍摄",@"照片",@"位置共享"];
     return @[@"拍摄",@"照片"];
 
 }

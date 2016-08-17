@@ -121,6 +121,7 @@
     OtherInfoVC *otherVc= [[OtherInfoVC alloc]init];
     otherVc.user = self.to_user;
     [self.navigationController pushViewController:otherVc animated:YES];
+    
 }
 //举报
 - (void)complaint:(id)sender{

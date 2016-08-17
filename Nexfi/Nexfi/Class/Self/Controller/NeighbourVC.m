@@ -14,13 +14,11 @@
 #import "VertifyCodeVC.h"
 #import "NFUserLocationVC.h"
 
-
+#import "AppDelegate.h"
 
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate,MAMapViewDelegate>
 
 @property (nonatomic, assign)BOOL reachable;
-@property (nonatomic, assign)BOOL isNeedUpdate;;
-@property (nonatomic, strong) dispatch_source_t timer;
 @end
 
 @implementation NeighbourVC
@@ -48,7 +46,7 @@
 
     [self setBaseVCAttributesWith:@"附近的人" left:@"067.png" right:@"060.png" WithInVC:self];
     //配置地图
-    [self initMapView];
+//    [self initMapView];
     
     Reachability *reach = [Reachability reachabilityWithHostname:@"www.apple.com"];
     
@@ -82,8 +80,6 @@
     [self.view addSubview:self.usersTable];
     
     [self.usersTable registerNib:[UINib nibWithNibName:@"NFNearbyUserCell" bundle:nil] forCellReuseIdentifier:@"NFNearbyUserCell"];
-    //10分钟发送一次位置
-    [self updateLocation];
     
     //展示进度
     WGradientProgress *gradProg = [WGradientProgress sharedInstance];
@@ -120,88 +116,11 @@
             }
         }
     });
-    
-}
-#pragma -mark 创建定时器 10分钟发送一次位置
-- (void)updateLocation{
-    __block int count = 0;
-    // 获得队列
-    dispatch_queue_t queue = dispatch_get_main_queue();
-    
-    // 创建一个定时器(dispatch_source_t本质还是个OC对象)
-    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
-    
-    // 设置定时器的各种属性（几时开始任务，每隔多长时间执行一次）
-    // GCD的时间参数，一般是纳秒（1秒 == 10的9次方纳秒）
-    // 何时开始执行第一个任务
-    // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
-    dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-    uint64_t interval = (uint64_t)(300.0 * NSEC_PER_SEC);
-    dispatch_source_set_timer(self.timer, start, interval, 0);
-    
-    // 设置回调
-    dispatch_source_set_event_handler(self.timer, ^{
-        NSLog(@"------------%@", [NSThread currentThread]);
-        count ++ ;
-        
-        /*
-         UserModel *user = [[UserManager shareManager]getUser];
-         NSDictionary *locaiotn = [[NSUserDefaults standardUserDefaults]objectForKey:@"location"];
-         //        user.lattitude = locaiotn[@"lattitude"];
-         //        user.longitude = locaiotn[@"longitude"];
-         NSArray *arr = @[
-         @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
-         @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
-         @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
-         @{@"lattitude":@"31.208633",@"longitude":@"121.52142"}];
-         
-         NSDictionary *d = arr[arc4random_uniform(4)];
-         
-         user.lattitude = d[@"lattitude"];
-         
-         user.longitude = d[@"longitude"];
-         [[UserManager shareManager]loginSuccessWithUser:user];
-         NSLog(@"us====%@",user.mj_keyValues);
-         */
-        
-
-        if (count == 0) {
-            //                // 取消定时器
-            dispatch_cancel(self.timer);
-            //                self.timer = nil;
-        }
-        self.isNeedUpdate = YES;
-        self.mapView.userTrackingMode = MAUserTrackingModeFollow;
-        
-    });
-    
-    // 启动定时器
-    dispatch_resume(self.timer);
 }
 - (void)showProgress{
     WGradientProgress *pro = [WGradientProgress sharedInstance];
 
     [pro setProgress:1.0];
-    
-}
-#pragma -mark 初始化MapView
-- (void)initMapView
-{
-    self.mapView = [[MAMapView alloc] initWithFrame:self.view.bounds];
-    
-    
-    self.mapView.showsCompass = NO;   //是否显示罗盘
-    self.mapView.delegate = self;
-    self.mapView.userTrackingMode = MAUserTrackingModeFollow;  //跟随模式  持续更新用户定位
-    self.mapView.showsUserLocation = YES;
-    self.mapView.zoomEnabled = YES; //是否支持缩放
-    //    self.mapView.zoomLevel = 12.0; //缩放级别
-    //    self.mapView.zoomLevel = self.mapView.minZoomLevel;  //最小缩放级别
-    //    [self.mapView setCompassImage:[UIImage imageNamed:@"bg-x@2x"]];//罗盘图片
-    [self.view addSubview:self.mapView];
-    
-    //需要开启定位
-    self.isNeedUpdate = YES;
     
 }
 #pragma -mark  蓝牙打开失败信息
@@ -211,7 +130,6 @@
         UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"蓝牙开启请求" message:@"此app需要通过蓝牙和其他用户进行通信" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
     });
-
     
 }
 #pragma -mark NSNotification 用户信息更新
@@ -237,9 +155,7 @@
     for (UserModel *user in self.handleByUsers) {
         [userIdList addObject:user.userId];
         [nodeIdList addObject:user.nodeId];
-        NSLog(@"userId === %@===nodeId ===== %@",user.userId,user.nodeId);
     }
-    NSLog(@"usersId=====%@====nodesId=====%@",users.userId,users.nodeId);
     //过滤多余的用户信息
     NSString *update = userJson[@"update"];
     NSString *updateLocation = userJson[@"updateLocation"];
@@ -253,6 +169,8 @@
         }
         if (updateLocation) {//更新位置之后  不用再做刷新动画
             NSLog(@"return");
+            //更新地图里面好友位置
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"updateFriendInfo" object:nil];
             return;
         }
     }else{
@@ -290,14 +208,15 @@
     [self getAllNodeId];
     
     [self.usersTable reloadData];
-    NSLog(@"11111111111111111111111111111");
     //设置用户上线动画
     NSUInteger index = [self.handleByUsers indexOfObject:users];
     NFNearbyUserCell *cell = (NFNearbyUserCell *)[self.usersTable cellForRowAtIndexPath:[NSIndexPath indexPathForRow:index inSection:0]];
     [self playBounceAnimation:cell.nickNameLabel];
     
+
+    
     //显示多少人
-    self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%d)%ld",self.handleByUsers.count,[UnderdarkUtil share].node.peersCount];
+    self.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)",self.handleByUsers.count];
     
     
     //延迟100秒查询好友是否残缺
@@ -389,61 +308,6 @@
     NFUserLocationVC *vc = [[NFUserLocationVC alloc]init];
     vc.friendList = [[NSMutableArray alloc]initWithArray:self.handleByUsers];
     [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma -mark 地理位置编码
-- (void)getFGocode:(NSString*)address{
-    
-}
-#pragma mark - AMapSearchDelegate  地理位置编码  回调方法
-- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
-{
-    
-}
-#pragma -mark 反地理位置编码
-- (void)searchReGeocodeWithCoordinate:(CLLocationCoordinate2D)coordinate
-{
-    
-}
-#pragma -mark 反地理位置编码  回调方法
-- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
-{
-    //response.regeocode
-}
-#pragma mark - MAMapViewDelegate
-- (void)mapView:(MAMapView *)mapView didChangeUserTrackingMode:(MAUserTrackingMode)mode animated:(BOOL)animated
-{
-    
-}
-- (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation{
-    
-    self.mapView.userTrackingMode = MAUserTrackingModeNone;  //不追踪用户的location更新
-    NSLog(@"hehe==");
-    
-    //10分钟发送一次定位位置
-    if (self.isNeedUpdate) {
-        self.isNeedUpdate = NO;
-        //更新用户信息
-        UserModel *user = [[UserManager shareManager]getUser];
-        user.lattitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.latitude];
-        user.longitude = [NSString stringWithFormat:@"%f",userLocation.coordinate.longitude];
-        [[UserManager shareManager]loginSuccessWithUser:user];
-        
-        
-        if ([UnderdarkUtil share].node.links.count > 0) {
-            for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
-                id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
-                [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
-            }
-        }
-    }
-    
-}
-- (void)dealloc{
-    if (self.timer) {
-        dispatch_cancel(self.timer);
-        self.timer = nil;
-    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

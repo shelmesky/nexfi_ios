@@ -185,7 +185,6 @@
             
             UserModel *user = [[UserManager shareManager]getUser];
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-//            [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
             
@@ -199,7 +198,6 @@
             
             UserModel *user = [[UserManager shareManager]getUser];
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-//            [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
             
@@ -213,7 +211,6 @@
             
             UserModel *user = [[UserManager shareManager]getUser];
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
-//            [[UserManager shareManager]loginSuccessWithUser:user];
             
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
             
@@ -228,7 +225,6 @@
             user.nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
             
             NSMutableDictionary *usersDic = [[NSMutableDictionary alloc]initWithCapacity:0];
-            NSLog(@"mj====%@",user.mj_keyValues);
             [usersDic setObject:user.mj_keyValues forKey:@"userMessage"];
             
             [usersDic setObject:@(eMessageType_UserLocationUpdate) forKey:@"messageType"];
@@ -291,7 +287,7 @@
                 
             }
             //显示多少人
-            self.neighbourVc.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)%ld",self.neighbourVc.handleByUsers.count,_links.count];
+            self.neighbourVc.navigationItem.title =  [NSString stringWithFormat:@"附近的人(%ld)",self.neighbourVc.handleByUsers.count];
             
             [self.neighbourVc.usersTable reloadData];
             

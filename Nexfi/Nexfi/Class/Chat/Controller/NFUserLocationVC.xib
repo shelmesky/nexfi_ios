@@ -1,19 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFUserLocationVC">
             <connections>
+                <outlet property="mapTypeBtn" destination="9nJ-aK-7pm" id="6Q2-Cz-snS"/>
+                <outlet property="trafficBtn" destination="huK-Rg-q2c" id="97z-1X-biR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="huK-Rg-q2c">
+                    <rect key="frame" x="316" y="65" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="X9Q-5u-3z9"/>
+                        <constraint firstAttribute="width" constant="40" id="xDs-Cg-wki"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="traffic_close.png"/>
+                    <connections>
+                        <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="X9Q-Vu-KXp"/>
+                    </connections>
+                </button>
+                <button opaque="NO" tag="1002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nJ-aK-7pm">
+                    <rect key="frame" x="316" y="121" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Va9-hc-A9e"/>
+                        <constraint firstAttribute="width" constant="40" id="kPc-DX-BJ1"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="map_switch.png"/>
+                    <connections>
+                        <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="wMY-5H-S0U"/>
+                    </connections>
+                </button>
+            </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="huK-Rg-q2c" secondAttribute="trailing" constant="19" id="L85-Ff-8yz"/>
+                <constraint firstAttribute="trailing" secondItem="9nJ-aK-7pm" secondAttribute="trailing" constant="19" id="U1p-qd-bC8"/>
+                <constraint firstItem="9nJ-aK-7pm" firstAttribute="top" secondItem="huK-Rg-q2c" secondAttribute="bottom" constant="16" id="kv3-Vb-i9N"/>
+                <constraint firstItem="huK-Rg-q2c" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="psk-Cu-1DQ"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
         </view>
     </objects>
+    <resources>
+        <image name="map_switch.png" width="40" height="40"/>
+        <image name="traffic_close.png" width="40" height="40"/>
+    </resources>
 </document>

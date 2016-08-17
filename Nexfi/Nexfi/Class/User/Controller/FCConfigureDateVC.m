@@ -35,6 +35,7 @@
     self.datePicker.date = birthday;
     self.datePicker.maximumDate = [NSDate date];
     [self.datePicker addTarget:self action:@selector(dateChanged:) forControlEvents:UIControlEventValueChanged];
+    
 }
 
 - (void)RightBarBtnClick:(id)sender{

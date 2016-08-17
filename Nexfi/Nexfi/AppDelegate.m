@@ -21,6 +21,8 @@
 #import "BackGroundTask.h"
 #import "BackGroundLocation.h"
 
+#import "UnderdarkUtil.h"
+
 @interface AppDelegate ()
 
 //后台定位用
@@ -28,9 +30,12 @@
 @property (strong , nonatomic) BackGroundTask *task;
 @property (strong , nonatomic) NSTimer *bgTimer;
 @property (strong , nonatomic) BackGroundLocation *bgLocation;
-@property (strong , nonatomic) CLLocationManager *location;
 
 
+@property (nonatomic, strong) dispatch_source_t timer;
+@property (nonatomic, assign)BOOL isNeedUpdate;
+
+@property (nonatomic, retain)NSMutableArray *locationList;
 
 @end
 
@@ -44,6 +49,8 @@
     if ([[UserManager shareManager]getUser].userId) {
         [[SqlManager shareInstance]creatTable];
     }
+    self.locationList = [[NSMutableArray alloc]initWithCapacity:0];
+    
     
     //初始化应用，appKey和appSecret从后台申请得
 //    [SMSSDK registerApp:@"14cf8332203fa"
@@ -67,6 +74,7 @@
 //    UIDevice *myDevice = [UIDevice currentDevice];
 //    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
     
+    [self updateLocation];
     
     _task = [BackGroundTask shareBGTask];
     UIAlertView *alert;
@@ -87,6 +95,12 @@
         [self.bgLocation startLocation];
 //        [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(log) userInfo:nil repeats:YES];
     }
+    
+    self.location = [[CLLocationManager alloc] init];
+    self.location.delegate = self;
+    self.location.pausesLocationUpdatesAutomatically = NO;
+    [self.location startUpdatingLocation];
+    self.isNeedUpdate = YES;
     
     return YES;
     
@@ -156,5 +170,91 @@
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
+#pragma -mark 创建定时器 10分钟发送一次位置
+- (void)updateLocation{
+    __block int count = 0;
+    // 获得队列
+    dispatch_queue_t queue = dispatch_get_main_queue();
+    
+    // 创建一个定时器(dispatch_source_t本质还是个OC对象)
+    self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    
+    // 设置定时器的各种属性（几时开始任务，每隔多长时间执行一次）
+    // GCD的时间参数，一般是纳秒（1秒 == 10的9次方纳秒）
+    // 何时开始执行第一个任务
+    // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
+    dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
+    uint64_t interval = (uint64_t)(180.0 * NSEC_PER_SEC);
+    dispatch_source_set_timer(self.timer, start, interval, 0);
+    
+    // 设置回调
+    dispatch_source_set_event_handler(self.timer, ^{
+        count ++ ;
+        NSLog(@"1111");
+        if (count == 0) {
+            // 取消定时器
+            dispatch_cancel(self.timer);
+            //                self.timer = nil;
+        }
+        self.isNeedUpdate = YES;
+        //        self.mapView.userTrackingMode = MAUserTrackingModeFollow;
+        
+    });
+    
+    // 启动定时器
+    dispatch_resume(self.timer);
+}
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error//当定位服务不可用出错时，系统会自动调用该函数
+{
+    NSLog(@"定位服务出错");
+    if([error code]==kCLErrorDenied)//通过error的code来判断错误类型
+    {
+        //Access denied by user
+        NSLog(@"定位服务未打开");
+        //        [InterfaceFuncation ShowAlertWithMessage:@"错误" AlertMessage:@"未开启定位服务\n客户端保持后台功能需要调用系统的位置服务\n请到设置中打开位置服务" ButtonTitle:@"好"];
+    }
+}
 
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations//当用户位置改变时，系统会自动调用，这里必须写一点儿代码，否则后台时间刷新不管用
+{
+    NSLog(@"位置改变，必须做点儿事情才能刷新后台时间");
+    CLLocation *loc = [locations lastObject];
+    //NSTimeInterval backgroundTimeRemaining = [[UIApplication sharedApplication] backgroundTimeRemaining];
+    //NSLog(@"Background Time Remaining = %.02f Seconds",backgroundTimeRemaining);
+    // Lat/Lon
+    float latitudeMe = loc.coordinate.latitude;
+    float longitudeMe = loc.coordinate.longitude;
+    
+    //10分钟发送一次定位位置
+    if (self.isNeedUpdate) {
+        self.isNeedUpdate = NO;
+        //更新用户信息
+        UserModel *user = [[UserManager shareManager]getUser];
+        user.lattitude = [NSString stringWithFormat:@"%f",loc.coordinate.latitude];
+        user.longitude = [NSString stringWithFormat:@"%f",loc.coordinate.longitude];
+        [[UserManager shareManager]loginSuccessWithUser:user];
+        /*
+        NSArray *arr = @[
+                         @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
+                         @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
+                         @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
+                         @{@"lattitude":@"31.208633",@"longitude":@"121.52142"}];
+        
+        NSDictionary *d = arr[arc4random_uniform(4)];
+        
+        user.lattitude = d[@"lattitude"];
+        
+        user.longitude = d[@"longitude"];
+        [[UserManager shareManager]loginSuccessWithUser:user];
+        */
+        
+        
+        if ([UnderdarkUtil share].node.links.count > 0) {
+            for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {
+                id<UDLink>myLink = [[UnderdarkUtil share].node.links objectAtIndex:i];
+                [myLink sendData:[[UnderdarkUtil share].node sendMsgWithMessageType:eMessageType_UserLocationUpdate WithLink:myLink]];
+            }
+        }
+    }
+}
 @end

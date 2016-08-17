@@ -129,6 +129,17 @@
 		0E33E48B1D4080A0008D74C2 /* NFReportTipsVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E33E4891D4080A0008D74C2 /* NFReportTipsVC.xib */; };
 		0E33E48F1D409E96008D74C2 /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E33E48E1D409E96008D74C2 /* KxMenu.m */; };
 		0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */; };
+		0E391D471D5DAD300049797B /* satellite_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D431D5DAD300049797B /* satellite_hover@2x.png */; };
+		0E391D481D5DAD300049797B /* satellite@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D441D5DAD300049797B /* satellite@2x.png */; };
+		0E391D491D5DAD300049797B /* traffic_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D451D5DAD300049797B /* traffic_close@2x.png */; };
+		0E391D4A1D5DAD300049797B /* traffic_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D461D5DAD300049797B /* traffic_open@2x.png */; };
+		0E391D4D1D5DB2640049797B /* MapTypeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E391D4C1D5DB2640049797B /* MapTypeView.m */; };
+		0E391D501D5DB3170049797B /* UIView+Tap.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E391D4F1D5DB3170049797B /* UIView+Tap.m */; };
+		0E391D551D5DB5EE0049797B /* close_carStatus_tip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D511D5DB5EE0049797B /* close_carStatus_tip@2x.png */; };
+		0E391D561D5DB5EE0049797B /* close_map_Type_tip@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D521D5DB5EE0049797B /* close_map_Type_tip@2x.png */; };
+		0E391D571D5DB5EE0049797B /* plane_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D531D5DB5EE0049797B /* plane_hover@2x.png */; };
+		0E391D581D5DB5EE0049797B /* plane@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D541D5DB5EE0049797B /* plane@2x.png */; };
+		0E391D5A1D5DC0320049797B /* map_switch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D591D5DC0320049797B /* map_switch@2x.png */; };
 		0E3FE25F1D4B320A007188B1 /* NFUserLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */; };
 		0E3FE2601D4B320A007188B1 /* NFUserLocationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */; };
 		0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */; };
@@ -538,6 +549,19 @@
 		0E33E48D1D409E96008D74C2 /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		0E33E48E1D409E96008D74C2 /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = backgroundSound.mp3; sourceTree = "<group>"; };
+		0E391D431D5DAD300049797B /* satellite_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "satellite_hover@2x.png"; sourceTree = "<group>"; };
+		0E391D441D5DAD300049797B /* satellite@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "satellite@2x.png"; sourceTree = "<group>"; };
+		0E391D451D5DAD300049797B /* traffic_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "traffic_close@2x.png"; sourceTree = "<group>"; };
+		0E391D461D5DAD300049797B /* traffic_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "traffic_open@2x.png"; sourceTree = "<group>"; };
+		0E391D4B1D5DB2640049797B /* MapTypeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapTypeView.h; sourceTree = "<group>"; };
+		0E391D4C1D5DB2640049797B /* MapTypeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapTypeView.m; sourceTree = "<group>"; };
+		0E391D4E1D5DB3170049797B /* UIView+Tap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Tap.h"; sourceTree = "<group>"; };
+		0E391D4F1D5DB3170049797B /* UIView+Tap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Tap.m"; sourceTree = "<group>"; };
+		0E391D511D5DB5EE0049797B /* close_carStatus_tip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_carStatus_tip@2x.png"; sourceTree = "<group>"; };
+		0E391D521D5DB5EE0049797B /* close_map_Type_tip@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "close_map_Type_tip@2x.png"; sourceTree = "<group>"; };
+		0E391D531D5DB5EE0049797B /* plane_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane_hover@2x.png"; sourceTree = "<group>"; };
+		0E391D541D5DB5EE0049797B /* plane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane@2x.png"; sourceTree = "<group>"; };
+		0E391D591D5DC0320049797B /* map_switch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_switch@2x.png"; sourceTree = "<group>"; };
 		0E3FE25C1D4B320A007188B1 /* NFUserLocationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFUserLocationVC.h; sourceTree = "<group>"; };
 		0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFUserLocationVC.m; sourceTree = "<group>"; };
 		0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFUserLocationVC.xib; sourceTree = "<group>"; };
@@ -921,6 +945,15 @@
 		0E0281D91D05308900348523 /* ImageSource */ = {
 			isa = PBXGroup;
 			children = (
+				0E391D431D5DAD300049797B /* satellite_hover@2x.png */,
+				0E391D441D5DAD300049797B /* satellite@2x.png */,
+				0E391D591D5DC0320049797B /* map_switch@2x.png */,
+				0E391D451D5DAD300049797B /* traffic_close@2x.png */,
+				0E391D461D5DAD300049797B /* traffic_open@2x.png */,
+				0E391D511D5DB5EE0049797B /* close_carStatus_tip@2x.png */,
+				0E391D521D5DB5EE0049797B /* close_map_Type_tip@2x.png */,
+				0E391D531D5DB5EE0049797B /* plane_hover@2x.png */,
+				0E391D541D5DB5EE0049797B /* plane@2x.png */,
 				0E1DB3FD1D548D8000BD60C5 /* 1465808627942.png */,
 				0E1DB3751D54415700BD60C5 /* 067@2x.png */,
 				0E1DB3711D5440A400BD60C5 /* 060@2x.png */,
@@ -1309,6 +1342,8 @@
 				0E9E76E51CC62AD100EE2272 /* emojl */,
 				0E9E77361CC62AD100EE2272 /* FCMsgCell.h */,
 				0E9E77371CC62AD100EE2272 /* FCMsgCell.m */,
+				0E391D4B1D5DB2640049797B /* MapTypeView.h */,
+				0E391D4C1D5DB2640049797B /* MapTypeView.m */,
 				0E9E77381CC62AD100EE2272 /* FCPersonCell.h */,
 				0E9E77391CC62AD100EE2272 /* FCPersonCell.m */,
 				0E9E773A1CC62AD100EE2272 /* FCPersonCell.xib */,
@@ -1901,6 +1936,8 @@
 			children = (
 				0E9E79661CC62B9500EE2272 /* UIColor+Hex.h */,
 				0E9E79671CC62B9500EE2272 /* UIColor+Hex.m */,
+				0E391D4E1D5DB3170049797B /* UIView+Tap.h */,
+				0E391D4F1D5DB3170049797B /* UIView+Tap.m */,
 				0E9E79681CC62B9500EE2272 /* UIView_extra.h */,
 				0E9E79691CC62B9500EE2272 /* UIView_extra.m */,
 				0E9E79641CC62B9500EE2272 /* StringHelper.h */,
@@ -2057,16 +2094,19 @@
 				0E9E77B61CC62AD100EE2272 /* write_face_42.png in Resources */,
 				0E9E778E1CC62AD100EE2272 /* write_face_06.png in Resources */,
 				0E9E77EA1CC62AD100EE2272 /* FCHeadAddCollectionCell.xib in Resources */,
+				0E391D4A1D5DAD300049797B /* traffic_open@2x.png in Resources */,
 				0E0282141D05308900348523 /* btn-shouye@2x.png in Resources */,
 				0E02823B1D05308900348523 /* message_voice_sender_normal@3x.png in Resources */,
 				0EFC78D51D336D7700789ADD /* RegisterVC.xib in Resources */,
 				0E9E77BE1CC62AD100EE2272 /* write_face_5.png in Resources */,
 				0E9E77AF1CC62AD100EE2272 /* write_face_36.png in Resources */,
 				0EBAE9521CB3824000361D18 /* LaunchScreen.storyboard in Resources */,
+				0E391D571D5DB5EE0049797B /* plane_hover@2x.png in Resources */,
 				0E02822E1D05308900348523 /* SenderTextNodeBkgHL@2x.png in Resources */,
 				0E9E77B51CC62AD100EE2272 /* write_face_41.png in Resources */,
 				0E0282331D05308900348523 /* message_receiver_background_highlight@3x.png in Resources */,
 				0E1DB3761D54415700BD60C5 /* 067@2x.png in Resources */,
+				0E391D471D5DAD300049797B /* satellite_hover@2x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
 				0E1DB3FE1D548D8000BD60C5 /* 1465808627942.png in Resources */,
 				0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */,
@@ -2081,6 +2121,7 @@
 				0E9E77951CC62AD100EE2272 /* write_face_12.png in Resources */,
 				0E9E77D41CC62AD100EE2272 /* NFNearbyUserCell.xib in Resources */,
 				0E0282381D05308900348523 /* message_voice_receiver_playing_1@3x.png in Resources */,
+				0E391D481D5DAD300049797B /* satellite@2x.png in Resources */,
 				0EBAE94F1CB3824000361D18 /* Assets.xcassets in Resources */,
 				0E9E77A11CC62AD100EE2272 /* write_face_23.png in Resources */,
 				0E0282911D06ADF300348523 /* ChatCell.xib in Resources */,
@@ -2101,6 +2142,7 @@
 				0E9E77B91CC62AD100EE2272 /* write_face_45.png in Resources */,
 				0E9E77AC1CC62AD100EE2272 /* write_face_33.png in Resources */,
 				0E0282301D05308900348523 /* VoiceNodeUnread@2x.png in Resources */,
+				0E391D581D5DB5EE0049797B /* plane@2x.png in Resources */,
 				0E02820F1D05308900348523 /* 057@2x.png in Resources */,
 				0E9E77911CC62AD100EE2272 /* write_face_09.png in Resources */,
 				0E9E77AA1CC62AD100EE2272 /* write_face_31.png in Resources */,
@@ -2120,6 +2162,7 @@
 				0E9E77A71CC62AD100EE2272 /* write_face_29.png in Resources */,
 				0E9E77E61CC62AD100EE2272 /* NFHeadVC.xib in Resources */,
 				0E9E77CF1CC62AD100EE2272 /* FCPersonCell.xib in Resources */,
+				0E391D551D5DB5EE0049797B /* close_carStatus_tip@2x.png in Resources */,
 				0E9E779F1CC62AD100EE2272 /* write_face_21.png in Resources */,
 				0E0282221D05308900348523 /* img_head_09@2x.png in Resources */,
 				0E0282311D05308900348523 /* wode01.png in Resources */,
@@ -2138,6 +2181,7 @@
 				0E9E77A21CC62AD100EE2272 /* write_face_24.png in Resources */,
 				0E9E779E1CC62AD100EE2272 /* write_face_20.png in Resources */,
 				0E9E77B01CC62AD100EE2272 /* write_face_37.png in Resources */,
+				0E391D561D5DB5EE0049797B /* close_map_Type_tip@2x.png in Resources */,
 				0E0282191D05308900348523 /* fujin02.png in Resources */,
 				0E0282251D05308900348523 /* img_head_12@2x.png in Resources */,
 				0E33E48B1D4080A0008D74C2 /* NFReportTipsVC.xib in Resources */,
@@ -2174,6 +2218,7 @@
 				0E9E77941CC62AD100EE2272 /* write_face_11.png in Resources */,
 				0E9E77AE1CC62AD100EE2272 /* write_face_35.png in Resources */,
 				0E0282821D06ADE900348523 /* ReceiverAvatarCell.xib in Resources */,
+				0E391D491D5DAD300049797B /* traffic_close@2x.png in Resources */,
 				0E9E77BF1CC62AD100EE2272 /* write_face_50.png in Resources */,
 				0E0282261D05308900348523 /* img_head_13@2x.png in Resources */,
 				0E9E779D1CC62AD100EE2272 /* write_face_2.png in Resources */,
@@ -2194,6 +2239,7 @@
 				0E9E77B71CC62AD100EE2272 /* write_face_43.png in Resources */,
 				0E9E77D11CC62AD100EE2272 /* FCPersonHeadCell.xib in Resources */,
 				0E02828C1D06ADE900348523 /* TextCell.xib in Resources */,
+				0E391D5A1D5DC0320049797B /* map_switch@2x.png in Resources */,
 				0E02821E1D05308900348523 /* img_head_05@2x.png in Resources */,
 				0E9E777D1CC62AD100EE2272 /* NFSingleChatInfoVC.xib in Resources */,
 			);
@@ -2325,6 +2371,7 @@
 				0E9E7B421CC62B9500EE2272 /* UDAggTransport.m in Sources */,
 				0E03BF531D0E560C00F08070 /* XMChatBar.m in Sources */,
 				0E9E77DB1CC62AD100EE2272 /* SelfVC.m in Sources */,
+				0E391D4D1D5DB2640049797B /* MapTypeView.m in Sources */,
 				0E9E7B1D1CC62B9500EE2272 /* UIColor+Hex.m in Sources */,
 				0E9E77CD1CC62AD100EE2272 /* FCMsgCell.m in Sources */,
 				0E03BF3A1D0E560C00F08070 /* MASConstraint.m in Sources */,
@@ -2387,6 +2434,7 @@
 				0E9E7B431CC62B9500EE2272 /* UDOutputItem.m in Sources */,
 				0E03BF441D0E560C00F08070 /* UIImageView+XMWebImage.m in Sources */,
 				0E03BF541D0E560C00F08070 /* XMChatFaceView.m in Sources */,
+				0E391D501D5DB3170049797B /* UIView+Tap.m in Sources */,
 				0E03BF451D0E560C00F08070 /* UITableView+FDTemplateLayoutCell.m in Sources */,
 				0E9E777E1CC62AD100EE2272 /* NFTribeChatInfoVC.m in Sources */,
 				0E9E7B411CC62B9500EE2272 /* UDAggLink.m in Sources */,
@@ -2596,7 +2644,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
+				PROVISIONING_PROFILE = "6c08380c-8443-457d-aa61-ea9851597063";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -2629,7 +2677,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
+				PROVISIONING_PROFILE = "6c08380c-8443-457d-aa61-ea9851597063";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
