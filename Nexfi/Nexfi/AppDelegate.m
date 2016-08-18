@@ -58,7 +58,7 @@
     
     //清除语音缓存
 //    [self clearVoiceCache];
-    
+    //18502569914
     //高德
     [AMapServices sharedServices].apiKey = @"56e2afd4d54a42ecba325a0b738f1fac";
 
