@@ -18,10 +18,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setBaseVCAttributesWith:@"个人信息" left:nil right:@"保存" WithInVC:self];
+    
     //获取用户信息
     UserModel *account = [[UserManager shareManager] getUser];
     self.nickName.text = account.userNick;
     self.nickName.delegate = self;
+    
 }
 
 - (void)viewDidAppear:(BOOL)animated{

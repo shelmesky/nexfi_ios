@@ -75,6 +75,7 @@
 		0E02828C1D06ADE900348523 /* TextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E0282801D06ADE900348523 /* TextCell.xib */; };
 		0E0282901D06ADF300348523 /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E02828E1D06ADF300348523 /* ChatCell.m */; };
 		0E0282911D06ADF300348523 /* ChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E02828F1D06ADF300348523 /* ChatCell.xib */; };
+		0E034FC51D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E034FC41D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m */; };
 		0E03BF391D0E560C00F08070 /* MASCompositeConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BED81D0E560C00F08070 /* MASCompositeConstraint.m */; };
 		0E03BF3A1D0E560C00F08070 /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BEDB1D0E560C00F08070 /* MASConstraint.m */; };
 		0E03BF3B1D0E560C00F08070 /* MASConstraintMaker.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BEDD1D0E560C00F08070 /* MASConstraintMaker.m */; };
@@ -444,6 +445,8 @@
 		0E02828D1D06ADF300348523 /* ChatCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatCell.h; sourceTree = "<group>"; };
 		0E02828E1D06ADF300348523 /* ChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatCell.m; sourceTree = "<group>"; };
 		0E02828F1D06ADF300348523 /* ChatCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatCell.xib; sourceTree = "<group>"; };
+		0E034FC31D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+YBAttributeTextTapAction.h"; sourceTree = "<group>"; };
+		0E034FC41D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+YBAttributeTextTapAction.m"; sourceTree = "<group>"; };
 		0E03BED71D0E560C00F08070 /* MASCompositeConstraint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MASCompositeConstraint.h; sourceTree = "<group>"; };
 		0E03BED81D0E560C00F08070 /* MASCompositeConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASCompositeConstraint.m; sourceTree = "<group>"; };
 		0E03BED91D0E560C00F08070 /* MASConstraint+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MASConstraint+Private.h"; sourceTree = "<group>"; };
@@ -1946,6 +1949,8 @@
 				0E9E77F91CC62B9400EE2272 /* NSDataEx.m */,
 				0EFC78DF1D3383A800789ADD /* UIButton+ClickBlock.h */,
 				0EFC78E01D3383A800789ADD /* UIButton+ClickBlock.m */,
+				0E034FC31D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.h */,
+				0E034FC41D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m */,
 				0EFC78E11D3383A800789ADD /* UITapGestureRecognizer+block.h */,
 				0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */,
 			);
@@ -2452,6 +2457,7 @@
 				0E9E79DF1CC62B9500EE2272 /* NexfiNavigationController.m in Sources */,
 				0E9E77841CC62AD100EE2272 /* Message.m in Sources */,
 				0E9E7B4A1CC62B9500EE2272 /* UIView+Frame.m in Sources */,
+				0E034FC51D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m in Sources */,
 				0E9E79DD1CC62B9500EE2272 /* ConFunc.m in Sources */,
 				0E0282891D06ADE900348523 /* SenderVoiceCell.m in Sources */,
 				0E9E77D81CC62AD100EE2272 /* BaseVC.m in Sources */,
@@ -2644,7 +2650,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6c08380c-8443-457d-aa61-ea9851597063";
+				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -2677,7 +2683,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "6c08380c-8443-457d-aa61-ea9851597063";
+				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

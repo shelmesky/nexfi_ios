@@ -106,6 +106,7 @@
     [self refreshSelectStatusAndShowWithIndexPath:indexPath];
     
 }
+
 //刷新头像被点击图片的状态
 - (void)refreshSelectStatusAndShowWithIndexPath:(NSIndexPath *)indexPath{
     
@@ -124,6 +125,7 @@
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:@"修改头像" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"相册", nil];
     [sheet showInView:self.view];
 }
+
 #pragma mark - image
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];

@@ -228,8 +228,6 @@
             NSIndexPath *indexpath = [NSIndexPath indexPathForRow:2 inSection:0];
             FCPersonCell *cell = [self.userInfoTable cellForRowAtIndexPath:indexpath];
             cell.user = user;
-            
-            
         });
         
     }
