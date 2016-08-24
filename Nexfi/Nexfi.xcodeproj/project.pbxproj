@@ -150,6 +150,12 @@
 		0E3FE2741D4B46A6007188B1 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */; };
 		0E3FE2751D4B46A6007188B1 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */; };
 		0E3FE2771D4B46E3007188B1 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE2761D4B46E3007188B1 /* AMap.bundle */; };
+		0E4531EF1D6D4D5400AF044C /* DoucmentListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531ED1D6D4D5400AF044C /* DoucmentListVC.m */; };
+		0E4531F01D6D4D5400AF044C /* DoucmentListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4531EE1D6D4D5400AF044C /* DoucmentListVC.xib */; };
+		0E4531F31D6D50DC00AF044C /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531F21D6D50DC00AF044C /* FileModel.m */; };
+		0E4531F71D6D6CFE00AF044C /* DocumentLoadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */; };
+		0E4531F81D6D6CFE00AF044C /* DocumentLoadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */; };
+		0E4531FA1D6D820F00AF044C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4531F91D6D820F00AF044C /* WebKit.framework */; };
 		0E5493951CB3B05F00DE40E8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */; };
 		0E9E777A1CC62AD100EE2272 /* NFAllUserChatInfoVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */; };
 		0E9E777B1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E76CE1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib */; };
@@ -577,6 +583,15 @@
 		0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
 		0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
 		0E3FE2761D4B46E3007188B1 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
+		0E4531EC1D6D4D5400AF044C /* DoucmentListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoucmentListVC.h; sourceTree = "<group>"; };
+		0E4531ED1D6D4D5400AF044C /* DoucmentListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoucmentListVC.m; sourceTree = "<group>"; };
+		0E4531EE1D6D4D5400AF044C /* DoucmentListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoucmentListVC.xib; sourceTree = "<group>"; };
+		0E4531F11D6D50DC00AF044C /* FileModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileModel.h; sourceTree = "<group>"; };
+		0E4531F21D6D50DC00AF044C /* FileModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileModel.m; sourceTree = "<group>"; };
+		0E4531F41D6D6CFE00AF044C /* DocumentLoadVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DocumentLoadVC.h; sourceTree = "<group>"; };
+		0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentLoadVC.m; sourceTree = "<group>"; };
+		0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentLoadVC.xib; sourceTree = "<group>"; };
+		0E4531F91D6D820F00AF044C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		0E5493941CB3B05F00DE40E8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		0E9E76CC1CC62AD100EE2272 /* NFAllUserChatInfoVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFAllUserChatInfoVC.h; sourceTree = "<group>"; };
 		0E9E76CD1CC62AD100EE2272 /* NFAllUserChatInfoVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFAllUserChatInfoVC.m; sourceTree = "<group>"; };
@@ -902,6 +917,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E4531FA1D6D820F00AF044C /* WebKit.framework in Frameworks */,
 				0E3FE26F1D4B4175007188B1 /* CoreTelephony.framework in Frameworks */,
 				0E3FE2731D4B46A6007188B1 /* AMapFoundationKit.framework in Frameworks */,
 				0E3FE2751D4B46A6007188B1 /* MAMapKit.framework in Frameworks */,
@@ -1482,6 +1498,12 @@
 			children = (
 				0E9E774A1CC62AD100EE2272 /* BaseVC.h */,
 				0E9E774B1CC62AD100EE2272 /* BaseVC.m */,
+				0E4531EC1D6D4D5400AF044C /* DoucmentListVC.h */,
+				0E4531ED1D6D4D5400AF044C /* DoucmentListVC.m */,
+				0E4531EE1D6D4D5400AF044C /* DoucmentListVC.xib */,
+				0E4531F41D6D6CFE00AF044C /* DocumentLoadVC.h */,
+				0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */,
+				0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */,
 				0E9E774C1CC62AD100EE2272 /* NeighbourVC.h */,
 				0E9E774D1CC62AD100EE2272 /* NeighbourVC.m */,
 				0E9E774E1CC62AD100EE2272 /* NeighbourVC.xib */,
@@ -1495,6 +1517,8 @@
 		0E9E77521CC62AD100EE2272 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0E4531F11D6D50DC00AF044C /* FileModel.h */,
+				0E4531F21D6D50DC00AF044C /* FileModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1969,6 +1993,7 @@
 		B98D2616E8A210408156426C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E4531F91D6D820F00AF044C /* WebKit.framework */,
 				0E3FE26E1D4B4175007188B1 /* CoreTelephony.framework */,
 				0EFC78FD1D33941200789ADD /* libstdc++.tbd */,
 				0EFC78FB1D33940900789ADD /* JavaScriptCore.framework */,
@@ -2114,6 +2139,7 @@
 				0E391D471D5DAD300049797B /* satellite_hover@2x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
 				0E1DB3FE1D548D8000BD60C5 /* 1465808627942.png in Resources */,
+				0E4531F81D6D6CFE00AF044C /* DocumentLoadVC.xib in Resources */,
 				0E35B9A31D489D3900BB07DE /* backgroundSound.mp3 in Resources */,
 				0E03BF481D0E560C00F08070 /* chatBar.xcassets in Resources */,
 				0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */,
@@ -2175,6 +2201,7 @@
 				0E9E77AB1CC62AD100EE2272 /* write_face_32.png in Resources */,
 				0EFC78DD1D3375EA00789ADD /* RegisterVertifyCodeVC.xib in Resources */,
 				0E02823D1D05308900348523 /* message_voice_sender_playing_2@3x.png in Resources */,
+				0E4531F01D6D4D5400AF044C /* DoucmentListVC.xib in Resources */,
 				0E9E779C1CC62AD100EE2272 /* write_face_19.png in Resources */,
 				0E02821B1D05308900348523 /* img_head_02@2x.png in Resources */,
 				0E02828A1D06ADE900348523 /* SenderVoiceCell.xib in Resources */,
@@ -2348,6 +2375,7 @@
 				0E9E77EE1CC62AD100EE2272 /* NFHeadView.m in Sources */,
 				0E9E7B461CC62B9500EE2272 /* UDLogging.m in Sources */,
 				0E33E48F1D409E96008D74C2 /* KxMenu.m in Sources */,
+				0E4531EF1D6D4D5400AF044C /* DoucmentListVC.m in Sources */,
 				0EA30B541CF44243008860BF /* FileMessage.m in Sources */,
 				0E02824E1D056C8100348523 /* MJCommonHeader.m in Sources */,
 				0E9E77E01CC62AD100EE2272 /* UserManager.m in Sources */,
@@ -2390,6 +2418,7 @@
 				0E9E7B2E1CC62B9500EE2272 /* UDByteBuf.m in Sources */,
 				0E03BF511D0E560C00F08070 /* Mp3Recorder.m in Sources */,
 				0E9E7B3D1CC62B9500EE2272 /* UDRouter.m in Sources */,
+				0E4531F31D6D50DC00AF044C /* FileModel.m in Sources */,
 				0E03BF5E1D0E560C00F08070 /* XMNSendImageView.m in Sources */,
 				0E03BF4C1D0E560C00F08070 /* XMFaceManager.m in Sources */,
 				0E9E77D31CC62AD100EE2272 /* NFNearbyUserCell.m in Sources */,
@@ -2456,6 +2485,7 @@
 				0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */,
 				0E9E79DF1CC62B9500EE2272 /* NexfiNavigationController.m in Sources */,
 				0E9E77841CC62AD100EE2272 /* Message.m in Sources */,
+				0E4531F71D6D6CFE00AF044C /* DocumentLoadVC.m in Sources */,
 				0E9E7B4A1CC62B9500EE2272 /* UIView+Frame.m in Sources */,
 				0E034FC51D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m in Sources */,
 				0E9E79DD1CC62B9500EE2272 /* ConFunc.m in Sources */,

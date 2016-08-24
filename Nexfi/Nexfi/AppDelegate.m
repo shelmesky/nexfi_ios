@@ -23,6 +23,10 @@
 
 #import "UnderdarkUtil.h"
 
+#import "DocumentLoadVC.h"
+#import "NexfiNavigationController.h"
+#import "FileModel.h"
+
 @interface AppDelegate ()
 
 //后台定位用
@@ -102,8 +106,45 @@
     [self.location startUpdatingLocation];
     self.isNeedUpdate = YES;
     
+    // 跳转三方；
+    if (launchOptions) {
+        NSURL *url = launchOptions[UIApplicationLaunchOptionsURLKey];
+        //返回的url， 转换成nsstring;
+        NSString *appfilePath =[[[url description] componentsSeparatedByString:@"file:///private"] lastObject];
+        appfilePath = [appfilePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        //        DocListViewController *doc = [[DocListViewController alloc] init];
+        //        doc.appFilePath = appfilePath;
+        //        [_nav pushViewController:doc animated:YES];
+    }
+    
     return YES;
     
+}
+- (BOOL)application:(UIApplication *)application openURL:(nonnull NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
+    if (options) {
+        //        NSString *str = [NSString stringWithFormat:@"\n发送请求的应用程序的 Bundle ID：%@\n\n文件的NSURL：%@", options[UIApplicationOpenURLOptionsSourceApplicationKey], url];
+        // 返回的url， 例如这样；
+        //    	@"file:///private/var/mobile/Containers/Data/Application/A2E0485F-1341-48A3-BD40-6D09CB8559F5/Documents/Inbox/2-6.pptx"
+        // 返回的url， 转换成nsstring;
+        NSString *appfilePath = [[[url description] componentsSeparatedByString:@"file:///private"] lastObject];
+        //        appfilePath = [appfilePath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        appfilePath =  [appfilePath stringByRemovingPercentEncoding];
+        NSLog(@"appfilePath:%@", appfilePath);
+        //获取当前页面的nav
+        NexfiNavigationController *nav = self.tabbar.viewControllers[self.tabbar.selectedIndex];
+        DocumentLoadVC *destinVc = [[DocumentLoadVC alloc]init];
+        //配置参数
+        FileModel *model = [[FileModel alloc] init];
+        model.fileName  = [[appfilePath componentsSeparatedByString:@"/"] lastObject];
+        model.fileAbsolutePath = appfilePath;
+        
+        destinVc.currentFileModel = model;
+        destinVc.title = model.fileName;
+        
+        [nav pushViewController:destinVc animated:YES];
+        
+    }
+    return YES;
 }
 -(void)log
 {
@@ -217,7 +258,7 @@
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations//当用户位置改变时，系统会自动调用，这里必须写一点儿代码，否则后台时间刷新不管用
 {
-    NSLog(@"位置改变，必须做点儿事情才能刷新后台时间");
+//    NSLog(@"位置改变，必须做点儿事情才能刷新后台时间");
     CLLocation *loc = [locations lastObject];
     //NSTimeInterval backgroundTimeRemaining = [[UIApplication sharedApplication] backgroundTimeRemaining];
     //NSLog(@"Background Time Remaining = %.02f Seconds",backgroundTimeRemaining);

@@ -19,6 +19,8 @@
 #import "NFHeadVC.h"
 #import "UnderdarkUtil.h"
 
+#import "DoucmentListVC.h"
+
 @interface SelfVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
 @property (nonatomic, strong)UITableView *userInfoTable;//用户信息table
@@ -32,13 +34,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self setBaseVCAttributesWith:@"我的信息" left:nil right:nil WithInVC:self];
+    [self setBaseVCAttributesWith:@"我的信息" left:@"历史文件" right:nil WithInVC:self];
     self.data = @[@"昵称",@"年龄",@"性别"];
     
     [self initView];
-    
-    
-    
+
 }
 //初始化UI
 - (void)initView{
@@ -209,6 +209,9 @@
         });
         
     }
+}
+- (void)leftBarBtnClick:(id)sender{
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

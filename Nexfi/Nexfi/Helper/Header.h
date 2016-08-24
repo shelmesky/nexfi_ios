@@ -76,6 +76,8 @@
 
 #define IOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
+#define IOS9 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 9.0)
+
 #define IPHONE4 ([[[UIDeviceHardware share]deviceName]isEqualToString:@"iPhone 4"])
 
 //当前屏幕大小

@@ -72,6 +72,7 @@
 - (void)updateLabelsWithDate:(NSDate *)date{
     self.ageLabel.text = [NSString stringWithFormat:@"%ld岁",[self getAgeWithBirthday:date]];
     //NSLog(@"相差：%ld年,%ld月,%ld日",cmps.year,cmps.month,cmps.day);
+    
 }
 
 //根据日期差计算年龄

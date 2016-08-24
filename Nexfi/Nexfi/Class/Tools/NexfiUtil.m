@@ -11,7 +11,7 @@
 #import "NeighbourVC.h"
 #import "NexfiNavigationController.h"
 #import "UserInfoVC.h"
-
+#import "AppDelegate.h"
 
 
 @implementation NexfiUtil
@@ -90,7 +90,9 @@ static NexfiUtil *_util;
     
     tabbar.viewControllers = @[neighbouVC,selfVC];
     UIWindow *window = [UIApplication sharedApplication].windows[0];
-    window.rootViewController = tabbar;
+    AppDelegate *app = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    app.tabbar = tabbar;
+    window.rootViewController = app.tabbar;
 }
 - (NexfiNavigationController *)newNavigationControllerForClass:(Class)controllerClass
                                                          title:(NSString *)title
@@ -270,6 +272,34 @@ static NexfiUtil *_util;
     
     return newClass;
 }
-
-
+//移除所有png文件
+- (void)removeTypeFile:(NSString *)type{
+    NSString *extension = @"png";
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+    
+    NSArray *contents = [fileManager contentsOfDirectoryAtPath:documentsDirectory error:nil];
+    NSEnumerator *enumerator = [contents objectEnumerator];
+    NSString *filename;
+    while ((filename = [enumerator nextObject])) {
+        if ([[filename pathExtension] isEqualToString:extension]) {
+            [fileManager removeItemAtPath:[documentsDirectory stringByAppendingPathComponent:filename] error:nil];
+        }
+    }
+}
+//移除所有文件
+- (void)removeAllFile{
+    NSString *DocumentsPath = [NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:DocumentsPath];
+    for (NSString *fileName in enumerator) {
+        [[NSFileManager defaultManager] removeItemAtPath:[DocumentsPath stringByAppendingPathComponent:fileName] error:nil];
+    }
+}
+//获取所有文件
+- (void)getAllFile{
+    NSString *string = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *tempFileList = [[NSArray alloc] initWithArray:[fileManager contentsOfDirectoryAtPath:string error:nil]];
+}
 @end
