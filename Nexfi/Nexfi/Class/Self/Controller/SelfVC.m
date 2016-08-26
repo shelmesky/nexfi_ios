@@ -34,12 +34,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-    [self setBaseVCAttributesWith:@"我的信息" left:@"历史文件" right:nil WithInVC:self];
+
     self.data = @[@"昵称",@"年龄",@"性别"];
     
     [self initView];
 
 }
+
 //初始化UI
 - (void)initView{
     
@@ -64,6 +65,12 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)viewWillAppear:(BOOL)animated{
+    //确定leftBar是否存在
+    NSArray *historyFiles = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+    NSString *leftStr;
+    leftStr = historyFiles.count == 0?nil:@"历史文件";
+    [self setBaseVCAttributesWith:@"我的信息" left:leftStr right:nil WithInVC:self];
+    //刷新页面数据
     [self.userInfoTable reloadData];
     if ([[UserManager shareManager]getUser]) {
         UIImage *img = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
@@ -211,7 +218,8 @@
     }
 }
 - (void)leftBarBtnClick:(id)sender{
-    
+    DoucmentListVC *vc = [[DoucmentListVC alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

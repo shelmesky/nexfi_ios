@@ -29,6 +29,8 @@
         _fileTable.delegate = self;
         _fileTable.dataSource = self;
         [_fileTable registerClass:[UITableViewCell class] forCellReuseIdentifier:@"cell"];
+        
+        _fileTable.tableFooterView = [[UIView alloc]init];
     }
     return _fileTable;
 }
@@ -49,9 +51,49 @@
     vc.currentFileModel = model;
     [self.navigationController pushViewController:vc animated:YES];
 }
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
+    return YES;
+}
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return UITableViewCellEditingStyleDelete;
+}
+- (nullable NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath{
+    return @"删除";
+}
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    FileModel *model = self.fileList[indexPath.row];
+ 
+    //移除数据源
+    [self.fileList removeObject:model];
+    
+    //删除本地
+    if (model.fileAbsolutePath) {
+        [[NSFileManager defaultManager]removeItemAtPath:model.fileAbsolutePath error:nil];
+        //删除本地文件记录
+//        NSArray *saveFiles = [NSArray arrayWithArray:self.fileList];
+        
+        NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
+        for (FileModel *file in self.fileList) {
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:file];
+            [files addObject:data];
+        }
+        NSArray *historyFiles = [NSArray arrayWithArray:files];
+
+        [[NSUserDefaults standardUserDefaults]setObject:historyFiles forKey:@"historyFiles"];
+        
+    }
+
+    //移除tableView中的数据
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+}
+- (void)viewWillAppear:(BOOL)animated{
+    
+    [super viewWillAppear:animated];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    [self setBaseVCAttributesWith:@"历史文件" left:nil right:nil WithInVC:self];
     
     [self docLsCreateSourceData];
     
@@ -61,12 +103,16 @@
 - (void)docLsCreateSourceData {
     // 如果是 从appDelegate里面，跳转过来， 主要用于打开别的软件的共享过来的文档；
     [self.view addSubview:self.fileTable];
-    if (_appFilePath.length) {
-        FileModel *model = [[FileModel alloc] init];
-        model.fileName  = [[_appFilePath componentsSeparatedByString:@"/"] lastObject];
-        model.fileAbsolutePath = _appFilePath;
-        [self.fileList addObject:model];
+
+    NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
+    NSArray *historyFiles = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+    for (NSData *data in historyFiles) {
+        FileModel *file = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+        [files addObject:file];
     }
+    
+    self.fileList = files;
+    
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

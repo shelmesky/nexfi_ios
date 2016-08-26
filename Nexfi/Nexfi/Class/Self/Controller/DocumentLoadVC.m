@@ -87,7 +87,6 @@
     
     self.documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
     self.documentController.delegate = self;
-    
     [self.view addSubview:self.otherOpenButton];
     
 }

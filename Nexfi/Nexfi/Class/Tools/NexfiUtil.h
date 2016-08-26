@@ -42,4 +42,8 @@
 //创建一个类
 + (id)getVC_objectWithClassName:(NSString *)name;
 //-(void)toUpdateUserInfo;
+/**
+ *获取共享的文件路径和文件名字
+ */
++ (NSMutableArray *)getShareFileList;
 @end

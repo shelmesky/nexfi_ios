@@ -157,7 +157,6 @@
         if (user && user.lattitude && user.longitude) {
             [self addAnnotationWithUserModel:user];
             
-            NSLog(@"user===%@=====long====%@===%@",user.lattitude,user.longitude,user.userNick);
         }
     }
     

@@ -137,7 +137,24 @@
         FileModel *model = [[FileModel alloc] init];
         model.fileName  = [[appfilePath componentsSeparatedByString:@"/"] lastObject];
         model.fileAbsolutePath = appfilePath;
+        //取
+        NSArray *files = [[NSUserDefaults standardUserDefaults] objectForKey:@"historyFiles"];
         
+        //归档 NSKeyedArchiver
+        NSData *data = [NSKeyedArchiver archivedDataWithRootObject:model];
+        //历史文件列表
+        if (files.count == 0) {
+            NSMutableArray *addFiles = [[NSMutableArray alloc]initWithCapacity:0];
+            [addFiles addObject:data];
+            NSArray *saveFiles = [NSArray arrayWithArray:addFiles];
+            [[NSUserDefaults standardUserDefaults]setObject:saveFiles forKey:@"historyFiles"];
+        }else{
+            NSArray *historyFiles = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+            NSMutableArray *addFiles = [[NSMutableArray alloc]initWithArray:historyFiles];
+            [addFiles addObject:data];
+            NSArray *saveFiles = [NSArray arrayWithArray:addFiles];
+            [[NSUserDefaults standardUserDefaults]setObject:saveFiles forKey:@"historyFiles"];
+        }
         destinVc.currentFileModel = model;
         destinVc.title = model.fileName;
         

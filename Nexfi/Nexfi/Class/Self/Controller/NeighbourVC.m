@@ -92,8 +92,6 @@
     //检测蓝牙是否开启
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(blueToothMsgFail:) name:@"blueToothFail" object:nil];
     
-    
-
 }
 #pragma -mark 检查好友是否根连接数相等
 - (void)inqueryFriend{

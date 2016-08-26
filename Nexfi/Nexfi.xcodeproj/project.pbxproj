@@ -150,6 +150,7 @@
 		0E3FE2741D4B46A6007188B1 /* AMapSearchKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */; };
 		0E3FE2751D4B46A6007188B1 /* MAMapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */; };
 		0E3FE2771D4B46E3007188B1 /* AMap.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE2761D4B46E3007188B1 /* AMap.bundle */; };
+		0E44159E1D6E9C4600DCA92E /* NSFileManager+Handle.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E44159D1D6E9C4600DCA92E /* NSFileManager+Handle.m */; };
 		0E4531EF1D6D4D5400AF044C /* DoucmentListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531ED1D6D4D5400AF044C /* DoucmentListVC.m */; };
 		0E4531F01D6D4D5400AF044C /* DoucmentListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4531EE1D6D4D5400AF044C /* DoucmentListVC.xib */; };
 		0E4531F31D6D50DC00AF044C /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531F21D6D50DC00AF044C /* FileModel.m */; };
@@ -583,6 +584,8 @@
 		0E3FE2711D4B46A6007188B1 /* AMapSearchKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AMapSearchKit.framework; sourceTree = "<group>"; };
 		0E3FE2721D4B46A6007188B1 /* MAMapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MAMapKit.framework; sourceTree = "<group>"; };
 		0E3FE2761D4B46E3007188B1 /* AMap.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AMap.bundle; sourceTree = "<group>"; };
+		0E44159C1D6E9C4600DCA92E /* NSFileManager+Handle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Handle.h"; sourceTree = "<group>"; };
+		0E44159D1D6E9C4600DCA92E /* NSFileManager+Handle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Handle.m"; sourceTree = "<group>"; };
 		0E4531EC1D6D4D5400AF044C /* DoucmentListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DoucmentListVC.h; sourceTree = "<group>"; };
 		0E4531ED1D6D4D5400AF044C /* DoucmentListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DoucmentListVC.m; sourceTree = "<group>"; };
 		0E4531EE1D6D4D5400AF044C /* DoucmentListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DoucmentListVC.xib; sourceTree = "<group>"; };
@@ -1977,6 +1980,8 @@
 				0E034FC41D66B6C000C9657F /* UILabel+YBAttributeTextTapAction.m */,
 				0EFC78E11D3383A800789ADD /* UITapGestureRecognizer+block.h */,
 				0EFC78E21D3383A800789ADD /* UITapGestureRecognizer+block.m */,
+				0E44159C1D6E9C4600DCA92E /* NSFileManager+Handle.h */,
+				0E44159D1D6E9C4600DCA92E /* NSFileManager+Handle.m */,
 			);
 			path = Catagory;
 			sourceTree = "<group>";
@@ -2429,6 +2434,7 @@
 				0E9E77EB1CC62AD100EE2272 /* FCHeadCollectionCell.m in Sources */,
 				0E9E77DE1CC62AD100EE2272 /* NFChatCacheFileUtil.m in Sources */,
 				0E3FE26D1D4B3C59007188B1 /* CustomCalloutView.m in Sources */,
+				0E44159E1D6E9C4600DCA92E /* NSFileManager+Handle.m in Sources */,
 				0E9E77E71CC62AD100EE2272 /* UserInfoVC.m in Sources */,
 				0E9E7B3A1CC62B9500EE2272 /* Packet+Builders.m in Sources */,
 				0E9E77851CC62AD100EE2272 /* PersonMessage.m in Sources */,

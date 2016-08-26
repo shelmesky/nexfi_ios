@@ -12,7 +12,7 @@
 #import "NexfiNavigationController.h"
 #import "UserInfoVC.h"
 #import "AppDelegate.h"
-
+#import "FileModel.h"
 
 @implementation NexfiUtil
 static NexfiUtil *_util;
@@ -271,6 +271,23 @@ static NexfiUtil *_util;
     }
     
     return newClass;
+}
+//获取共享的文件路径和文件名字
++ (NSMutableArray *)getShareFileList{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *DocumentDirectory = [paths objectAtIndex:0];
+    NSDirectoryEnumerator *enumerator = [fileManager enumeratorAtPath:DocumentDirectory];
+    NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
+    for (NSString *fileName in enumerator) {
+        if (fileName.pathExtension && ![fileName.pathExtension isEqualToString:@""]) {
+            FileModel *file = [[FileModel alloc]init];
+            file.fileName = [[fileName componentsSeparatedByString:@"/"] lastObject];
+            file.fileAbsolutePath = [DocumentDirectory stringByAppendingPathComponent:fileName];
+            [files addObject:file];
+        }
+    }
+    return files;
 }
 //移除所有png文件
 - (void)removeTypeFile:(NSString *)type{

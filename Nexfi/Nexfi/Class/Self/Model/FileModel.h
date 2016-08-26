@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface FileModel : NSObject
+@interface FileModel : NSObject<NSCoding>
 
 
 @property (nonatomic, copy) NSString *fileId;

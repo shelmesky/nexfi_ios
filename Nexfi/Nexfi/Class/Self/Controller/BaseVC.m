@@ -126,6 +126,8 @@
             
         }
         
+    }else{
+        vc.navigationItem.leftBarButtonItem = nil;
     }
     
     
