@@ -242,7 +242,7 @@
     // 何时开始执行第一个任务
     // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
     dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-    uint64_t interval = (uint64_t)(180.0 * NSEC_PER_SEC);
+    uint64_t interval = (uint64_t)(20.0 * NSEC_PER_SEC);
     dispatch_source_set_timer(self.timer, start, interval, 0);
     
     // 设置回调
@@ -288,15 +288,23 @@
         self.isNeedUpdate = NO;
         //更新用户信息
         UserModel *user = [[UserManager shareManager]getUser];
+        /*
         user.lattitude = [NSString stringWithFormat:@"%f",loc.coordinate.latitude];
         user.longitude = [NSString stringWithFormat:@"%f",loc.coordinate.longitude];
         [[UserManager shareManager]loginSuccessWithUser:user];
-        /*
+         */
+        
         NSArray *arr = @[
                          @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
                          @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
                          @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
-                         @{@"lattitude":@"31.208633",@"longitude":@"121.52142"}];
+                         @{@"lattitude":@"31.208633",@"longitude":@"121.52142"},
+                         @{@"lattitude":@"31.208632",@"longitude":@"121.52141"},
+                         @{@"lattitude":@"31.208630",@"longitude":@"121.52139"},
+                         @{@"lattitude":@"31.208628",@"longitude":@"121.52137"},
+                         @{@"lattitude":@"31.208626",@"longitude":@"121.52135"},
+                         @{@"lattitude":@"31.208624",@"longitude":@"121.52133"},
+                         @{@"lattitude":@"31.208622",@"longitude":@"121.52131"}];
         
         NSDictionary *d = arr[arc4random_uniform(4)];
         
@@ -304,8 +312,6 @@
         
         user.longitude = d[@"longitude"];
         [[UserManager shareManager]loginSuccessWithUser:user];
-        */
-        
         
         if ([UnderdarkUtil share].node.links.count > 0) {
             for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

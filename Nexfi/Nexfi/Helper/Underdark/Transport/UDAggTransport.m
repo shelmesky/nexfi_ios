@@ -146,6 +146,9 @@
 
 - (void) adapter:(id<UDAdapter>)adapter channelCanSendMore:(id<UDChannel>)channel
 {
+    if (!_linksConnected || !channel) {
+        return;
+    }
 	UDAggLink* link = _linksConnected[@(channel.nodeId)];
 	if(!link)
 	{

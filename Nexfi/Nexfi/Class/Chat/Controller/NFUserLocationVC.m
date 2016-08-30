@@ -28,10 +28,18 @@
 @property (nonatomic, retain)NSMutableArray *indexes;
 @property (nonatomic, retain)NSMutableArray *speedColors;
 @property (nonatomic, retain)NSMutableArray *polyLines;
+@property (nonatomic, retain)NSMutableArray *headOverLines;
 @property (nonatomic, strong) MapTypeView *mapTypeView;
+@property (nonatomic, strong) MAHeatMapTileOverlay *heatMapTileOverlay;
 @end
 
 @implementation NFUserLocationVC
+- (NSMutableArray *)headOverLines{
+    if (!_headOverLines) {
+        _headOverLines = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _headOverLines;
+}
 - (NSMutableArray *)polyLines{
     if (!_polyLines) {
         _polyLines = [[NSMutableArray alloc]initWithCapacity:0];
@@ -67,11 +75,8 @@
     // Do any additional setup after loading the view from its nib.
     
     self.isNeedUpdate = YES;
-    
-//    [self getUserLocation];
-    
+        
     [self initMapView];
-    
     
     [self configureTrifficAndMap];
 
@@ -89,81 +94,112 @@
 - (void)updateFriendInfo{
     [self showMyFriendLocation];
 }
+#pragma mark -初始化数据
 - (void)configureTrifficAndMap{
     NSString *trafficStr =[USER_D objectForKey:@"showTraffic"];
-    if (trafficStr.length>0) {
-        if ([trafficStr isEqualToString:@"YES"]) {
-            self.mapView.showTraffic = YES;
-            UIButton *trafficBtn = (UIButton *)[self.view viewWithTag:1001];
-            [trafficBtn setBackgroundImage:[UIImage imageNamed:@"traffic_open"] forState:0];
-        }else{
-            self.mapView.showTraffic = NO;
-        }
+    if ([trafficStr isEqualToString:@"YES"]) {
+        self.mapView.showTraffic = YES;
+        UIButton *trafficBtn = (UIButton *)[self.view viewWithTag:1001];
+        [trafficBtn setBackgroundImage:[UIImage imageNamed:@"traffic_close"] forState:0];
+    }else{
+        self.mapView.showTraffic = NO;
     }
+    
     NSString *typeStr = [USER_D objectForKey:@"MAMapType"];
-    if (typeStr.length>0)
-    {
-        if ([typeStr isEqualToString:@"卫星图"]) {
-            self.mapView.mapType = MAMapTypeSatellite;
-        }else{
-            self.mapView.mapType = MAMapTypeStandard;
-        }
+    if ([typeStr isEqualToString:@"卫星图"]) {
+        self.mapView.mapType = MAMapTypeSatellite;
     }else{
         self.mapView.mapType = MAMapTypeStandard;
     }
     
+    NSString *headOverlay = [USER_D objectForKey:@"showHeatOverlay"];
+    if ([headOverlay isEqualToString:@"YES"]) {
+        [self addHeatOverlay];
+        UIButton *heatOverlayBtn = (UIButton *)[self.view viewWithTag:1003];
+        [heatOverlayBtn setBackgroundImage:[UIImage imageNamed:@"traffic_close"] forState:0];
+    }else{
+        [self showMyFriendLocation];
+    }
+    
     [self.view bringSubviewToFront:self.trafficBtn];
     [self.view bringSubviewToFront:self.mapTypeBtn];
+    [self.view bringSubviewToFront:self.mapOverLayBtn];
 }
+#pragma mark -画线轨迹
 - (void)showMyPolyLine{
     
-     //移除标注
-     [self.mapView removeAnnotations:self.annotations];
-     
-     CLLocationCoordinate2D *coordinateArray = (CLLocationCoordinate2D *)malloc(self.runningCoords.count * sizeof(CLLocationCoordinate2D));
+    //移除标注
+    [self.mapView removeAnnotations:self.annotations];
+    [self.mapView removeOverlays:self.headOverLines];
+    [self.annotations removeAllObjects];
+    [self.headOverLines removeAllObjects];
+    //刷新用户数据
+    [self refreshUserData];
+    
+    CLLocationCoordinate2D *coordinateArray = (CLLocationCoordinate2D *)malloc(self.runningCoords.count * sizeof(CLLocationCoordinate2D));
     
     
-     for (int i = 0; i < self.runningCoords.count; i ++) {
-     CLLocation *location = self.runningCoords[i];
-     coordinateArray[i] = location.coordinate;
-     }
+    for (int i = 0; i < self.runningCoords.count; i ++) {
+    CLLocation *location = self.runningCoords[i];
+    coordinateArray[i] = location.coordinate;
+    }
+    
+    MAPolyline *line = [MAPolyline polylineWithCoordinates:coordinateArray count:self.runningCoords.count];
      
-     MAPolyline *line = [MAPolyline polylineWithCoordinates:coordinateArray count:self.runningCoords.count];
+    [self.polyLines addObject:line];
      
-     [self.polyLines addObject:line];
+    [self.mapView addOverlay:line];
      
-     [self.mapView addOverlay:line];
-     
-     const CGFloat screenEdgeInset = 20;
-     UIEdgeInsets inset = UIEdgeInsetsMake(screenEdgeInset, screenEdgeInset, screenEdgeInset, screenEdgeInset);
-     [self.mapView setVisibleMapRect:line.boundingMapRect edgePadding:inset animated:NO];
+    const CGFloat screenEdgeInset = 20;
+    UIEdgeInsets inset = UIEdgeInsetsMake(screenEdgeInset, screenEdgeInset, screenEdgeInset, screenEdgeInset);
+    [self.mapView setVisibleMapRect:line.boundingMapRect edgePadding:inset animated:NO];
      
 
 }
-- (void)showMyFriendLocation{
-    
-    //移除画线
-    [self.mapView removeOverlays:self.polyLines];
-    [self.mapView removeAnnotations:self.annotations];
-    
+#pragma mark -刷新用户数据
+- (void)refreshUserData{
     for (UIViewController *v in self.navigationController.viewControllers) {
         if ([v isKindOfClass:[NeighbourVC class]]) {
             NeighbourVC *neighbourVc = (NeighbourVC *)v;
             self.friendList = [[NSMutableArray alloc]initWithArray:neighbourVc.handleByUsers];
         }
     }
+}
+#pragma mark -展示所有用户位置
+- (void)showMyFriendLocation{
     
-    for (UserModel *user in self.friendList) {
-        if (user && user.lattitude && user.longitude) {
-            [self addAnnotationWithUserModel:user];
-            
-        }
-    }
+    //移除画线
+    [self.mapView removeOverlays:self.polyLines];
+    [self.mapView removeAnnotations:self.annotations];
+    [self.mapView removeOverlays:self.headOverLines];
+    [self.headOverLines removeAllObjects];
+    [self.annotations removeAllObjects];
     
-    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
+    //刷新用户数据
+    [self refreshUserData];
+    
+    //在地图上添加标注
+    [self addAnnotation];
+
     
 }
+#pragma mark -是否显示热力图
+- (void)showHeadMapOverLay:(UIButton *)btn{
+    NSString *str =[USER_D objectForKey:@"showHeatOverlay"];
+    NSString *trafficString;
+    if ([str isEqualToString:@"YES"]) {
+        trafficString = @"NO";
+        [self showMyFriendLocation];
+        [btn setBackgroundImage:[UIImage imageNamed:@"traffic_close"] forState:0];
+    }else{
+        [self addHeatOverlay];
+        trafficString = @"YES";
+        [btn setBackgroundImage:[UIImage imageNamed:@"traffic_open"] forState:0];
+    }
 
+    [USER_D setObject:trafficString forKey:@"showHeatOverlay"];
+    [USER_D synchronize];
+}
 #pragma mark -是否显示路况
 - (void)showTrafficEvent:(UIButton *)btn
 {
@@ -218,6 +254,12 @@
             [_mapTypeBtn setBackgroundImage:[UIImage imageNamed:@"close_map_Type_tip"] forState:0];
         }
             break;
+        case 1003:
+            
+        {
+            [self showHeadMapOverLay:button];
+        }
+            break;
             
         default:
             break;
@@ -253,20 +295,57 @@
 
     
 }
--(void)addAnnotationWithUserModel:(UserModel *)user
+#pragma mark -配置热力图
+- (void)addHeatOverlay{
+    
+    [self.mapView removeOverlays:self.polyLines];
+    [self.mapView removeAnnotations:self.annotations];
+    [self.annotations removeAllObjects];
+    
+    //刷新用户数据
+    [self refreshUserData];
+    
+    for (UserModel *user in self.friendList) {
+        if (user && user.lattitude && user.longitude) {
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+            //热力图标注
+            MAHeatMapNode *node = [[MAHeatMapNode alloc]init];
+            node.coordinate = coordinate;
+            node.intensity = 1;
+            
+            [self.headOverLines addObject:node];
+        }
+    }
+    
+    self.heatMapTileOverlay.data = self.headOverLines;
+    [self.mapView addOverlay:self.heatMapTileOverlay];
+    //设置热力图半径
+    [self.heatMapTileOverlay setRadius:25.0];
+    //设置热力图颜色
+    [self.heatMapTileOverlay
+     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[[UIColor blueColor], [UIColor greenColor],[UIColor redColor]] andWithStartPoints:@[@(0.2), @(0.5),@(0.9)]]];
+    MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:self.heatMapTileOverlay];
+    [render reloadData];
+    
+}
+#pragma mark -配置标注
+-(void)addAnnotation
 {
-    
-    MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
-    annotation.coordinate = coordinate;
-    annotation.title    = user.userNick;
-    annotation.subtitle = user.userId;
-    
-    [self.annotations addObject:annotation];
-    
-    [self.mapView addAnnotation:annotation];
-    
-//    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
+    for (UserModel *user in self.friendList) {
+        if (user && user.lattitude && user.longitude) {
+            //标注
+            MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+            annotation.coordinate = coordinate;
+            annotation.title    = user.userNick;
+            annotation.subtitle = user.userId;
+            
+            [self.annotations addObject:annotation];
+
+        }
+    }
+    [self.mapView addAnnotations:self.annotations];
+    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
 
 }
 - (void)initSearch
@@ -289,6 +368,8 @@
 //    self.mapView.zoomLevel = self.mapView.minZoomLevel;  //最小缩放级别
     //    [self.mapView setCompassImage:[UIImage imageNamed:@"bg-x@2x"]];//罗盘图片
     [self.view addSubview:self.mapView];
+    
+    self.heatMapTileOverlay = [[MAHeatMapTileOverlay alloc]init];
     
 }
 - (UserModel *)getUserFromAnnotationWithUserId:(NSString *)userId{
@@ -340,19 +421,23 @@
 }
 - (MAOverlayRenderer *)mapView:(MAMapView *)mapView rendererForOverlay:(id <MAOverlay>)overlay
 {
+    //画线
+    
     if ([overlay isKindOfClass:[MAPolyline class]])
     {
-//        MAMultiColoredPolylineRenderer * polylineRenderer = [[MAMultiColoredPolylineRenderer alloc] initWithMultiPolyline:overlay];
-//        
-//        polylineRenderer.lineWidth = 8.f;
-//        polylineRenderer.strokeColors = _speedColors;
-//        polylineRenderer.gradient = YES;
-        
         MAPolylineRenderer *po = [[MAPolylineRenderer alloc]initWithPolyline:overlay];
         po.lineWidth = 8;
         po.strokeColor = [UIColor blueColor];
         
         return po;
+    }
+    
+    //热力图
+    if ([overlay isKindOfClass:[MATileOverlay class]])
+    {
+        MATileOverlayRenderer *render = [[MATileOverlayRenderer alloc] initWithTileOverlay:overlay];
+        
+        return render;
     }
     
     return nil;
@@ -387,7 +472,7 @@
 }
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation
 {
-    
+    NSLog(@"11111");
     if ([annotation isKindOfClass:[MAPointAnnotation class]]) {
         static NSString *identifier = @"customViewId";
         CustomAnnotationView *annotationView = [[CustomAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:identifier];
@@ -398,6 +483,7 @@
         annotationView.calloutOffset = CGPointMake(0, -5);
 //        annotationView.portrait = [UIImage imageNamed:@"NexFiIcon"];
         UserModel *user = [self getUserFromAnnotationWithUserId:annotation.subtitle];
+        NSLog(@"ann===%@===",annotation.title);
         annotationView.portrait = [UIImage imageNamed:user.userAvatar];
         annotationView.name     = user.userNick;
         

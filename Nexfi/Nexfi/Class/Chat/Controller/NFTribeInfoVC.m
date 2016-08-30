@@ -56,8 +56,6 @@
         }
     }
     
-    
-
     if (![self.handleByUsers containsObject:[[UserManager shareManager]getUser]]) {
         [self.handleByUsers addObject:[[UserManager shareManager]getUser]];
     }

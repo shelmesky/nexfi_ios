@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFUserLocationVC">
             <connections>
+                <outlet property="mapOverLayBtn" destination="vhM-L9-8xg" id="jC0-77-EAt"/>
                 <outlet property="mapTypeBtn" destination="9nJ-aK-7pm" id="6Q2-Cz-snS"/>
                 <outlet property="trafficBtn" destination="huK-Rg-q2c" id="97z-1X-biR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -39,11 +40,24 @@
                         <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="wMY-5H-S0U"/>
                     </connections>
                 </button>
+                <button opaque="NO" tag="1003" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhM-L9-8xg">
+                    <rect key="frame" x="316" y="176" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="TVc-qC-6Qs"/>
+                        <constraint firstAttribute="width" constant="40" id="p48-iu-Bmy"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="traffic_close.png"/>
+                    <connections>
+                        <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="oj3-T2-J3d"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="vhM-L9-8xg" firstAttribute="top" secondItem="9nJ-aK-7pm" secondAttribute="bottom" constant="15" id="31p-wq-ted"/>
                 <constraint firstAttribute="trailing" secondItem="huK-Rg-q2c" secondAttribute="trailing" constant="19" id="L85-Ff-8yz"/>
                 <constraint firstAttribute="trailing" secondItem="9nJ-aK-7pm" secondAttribute="trailing" constant="19" id="U1p-qd-bC8"/>
+                <constraint firstAttribute="trailing" secondItem="vhM-L9-8xg" secondAttribute="trailing" constant="19" id="ewE-tJ-DQi"/>
                 <constraint firstItem="9nJ-aK-7pm" firstAttribute="top" secondItem="huK-Rg-q2c" secondAttribute="bottom" constant="16" id="kv3-Vb-i9N"/>
                 <constraint firstItem="huK-Rg-q2c" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="psk-Cu-1DQ"/>
             </constraints>

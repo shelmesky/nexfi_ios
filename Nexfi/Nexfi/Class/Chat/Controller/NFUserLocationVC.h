@@ -21,4 +21,5 @@
 @property (nonatomic, strong) NSMutableArray *friendList;
 @property (weak, nonatomic) IBOutlet UIButton *mapTypeBtn;
 @property (weak, nonatomic) IBOutlet UIButton *trafficBtn;
+@property (weak, nonatomic) IBOutlet UIButton *mapOverLayBtn;
 @end

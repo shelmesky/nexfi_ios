@@ -97,7 +97,6 @@
     if (!cells) {
         cells =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonCell" owner:self options:nil] objectAtIndex:0];
         cells.selectionStyle = UITableViewCellSelectionStyleNone;
-        //        cells.accessoryType = UITableViewCellAccessoryNone;
         
     }
     
@@ -158,7 +157,6 @@
 #pragma mark - image
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];
-    
     
     _headView.userImg.image = image;
     
