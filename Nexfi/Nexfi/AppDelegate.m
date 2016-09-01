@@ -17,7 +17,7 @@
 #import <AMapFoundationKit/AMapFoundationKit.h>
 
 #import <CoreLocation/CoreLocation.h>
-
+#import "NexfiUtil.h"
 #import "BackGroundTask.h"
 #import "BackGroundLocation.h"
 
@@ -142,6 +142,7 @@
         
         //归档 NSKeyedArchiver
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:model];
+        /*
         //历史文件列表
         if (files.count == 0) {
             NSMutableArray *addFiles = [[NSMutableArray alloc]initWithCapacity:0];
@@ -159,6 +160,68 @@
         destinVc.title = model.fileName;
         
         [nav pushViewController:destinVc animated:YES];
+        */
+        
+        //{@"文档":[文档1的data，文档1的data]}
+        NSDictionary *fileDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+        
+        NSMutableDictionary *currentFileDic = fileDic?[[NSMutableDictionary alloc]initWithDictionary:fileDic]:[[NSMutableDictionary alloc]initWithCapacity:0];
+        BOOL isExecutive = NO;
+        //判断是否有重复文件
+        for (NSArray *arr in currentFileDic.allValues) {
+            for (NSData *data in arr) {
+                
+                FileModel *file = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                //获取本地存储的路径 并进行拼接  Documents Library 目录下的都要做判断
+                NSString *documentPath =[NSHomeDirectory() stringByAppendingPathComponent:@"Documents"];
+                NSString *fileSuffix = [[file.fileAbsolutePath componentsSeparatedByString:@"/Documents/"] lastObject];
+                NSString *libraryPath =[NSHomeDirectory() stringByAppendingPathComponent:@"Library"];
+                NSString *fileSuffixL = [[file.fileAbsolutePath componentsSeparatedByString:@"/Library/"] lastObject];
+                NSString *documentSubPath = [documentPath stringByAppendingPathComponent:fileSuffix];
+                NSString *LibrarySubPath = [libraryPath stringByAppendingPathComponent:fileSuffixL];
+                //如果已经存在此文件不需要存储 直接去查看
+                if ([[NSFileManager defaultManager]contentsEqualAtPath:documentSubPath andPath:model.fileAbsolutePath] || [[NSFileManager defaultManager]contentsEqualAtPath:LibrarySubPath andPath:model.fileAbsolutePath]) {
+                    //移除本地文件
+                    [[NSFileManager defaultManager]removeItemAtPath:model.fileAbsolutePath error:nil];
+                    
+                    destinVc.currentFileModel = file;
+                    destinVc.title = file.fileName;
+                    
+                    isExecutive = YES;
+                    
+                    [nav pushViewController:destinVc animated:YES];
+                    
+                    
+                }
+            }
+        }
+
+        //没有重复文件继续执行
+        if (!isExecutive) {
+            //分割文件路径 doc
+            NSString *pathExtation = [[model.fileName componentsSeparatedByString:@"."] lastObject];
+            //归类 比如文档 音频 视频
+            NSString *fileSuffix = [NexfiUtil getFileTypeWithFileSuffix:pathExtation];
+            NSMutableArray *currentFileArr = currentFileDic[fileSuffix];
+            if (!currentFileArr) {
+                currentFileArr = [[NSMutableArray alloc]initWithCapacity:0];
+                [currentFileArr addObject:data];
+                currentFileDic[fileSuffix] = currentFileArr;
+            }else{
+                NSMutableArray *finallyFileArr = [[NSMutableArray alloc]initWithArray:currentFileArr];
+                [finallyFileArr addObject:data];
+                currentFileDic[fileSuffix] = finallyFileArr;
+            }
+            //{@"文档":[文档1的data，文档1的data]}
+            NSDictionary *finallyFileDic = [NSDictionary dictionaryWithDictionary:currentFileDic];
+            
+            [[NSUserDefaults standardUserDefaults]setObject:finallyFileDic forKey:@"historyFiles"];
+            
+            destinVc.currentFileModel = model;
+            destinVc.title = model.fileName;
+            
+            [nav pushViewController:destinVc animated:YES];
+        }
         
     }
     return YES;

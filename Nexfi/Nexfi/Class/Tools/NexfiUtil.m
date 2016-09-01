@@ -319,4 +319,24 @@ static NexfiUtil *_util;
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *tempFileList = [[NSArray alloc] initWithArray:[fileManager contentsOfDirectoryAtPath:string error:nil]];
 }
+//获取文件类型
++ (NSString *)getFileTypeWithFileSuffix:(NSString *)suffix{
+    NSString *upperSuffix = [suffix uppercaseString];
+    NSString *path = [[NSBundle mainBundle]pathForResource:@"file" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+    for (NSString *key in json.allKeys) {
+        NSArray *fileTypes = json[key];
+        if ([fileTypes containsObject:upperSuffix]) {
+            if ([key isEqualToString:@"Audio"]) {
+                return @"音频";
+            }else if ([key isEqualToString:@"Video"]){
+                return @"视频";
+            }else if ([key isEqualToString:@"File"]){
+                return @"文档";
+            }
+        }
+    }
+    return @"其他";
+}
 @end

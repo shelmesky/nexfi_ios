@@ -46,4 +46,8 @@
  *获取共享的文件路径和文件名字
  */
 + (NSMutableArray *)getShareFileList;
+/**
+ *获取文件类型
+ */
++ (NSString *)getFileTypeWithFileSuffix:(NSString *)suffix;
 @end

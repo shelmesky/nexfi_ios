@@ -12,7 +12,7 @@
 
 
 @property (nonatomic, copy) NSString *fileId;
-@property (nonatomic, copy) NSString *vFileName;
+//@property (nonatomic, copy) NSString *vFileName;
 @property (nonatomic, copy) NSString *vContentType;
 @property (nonatomic, copy) NSString *vUrl;
 @property (nonatomic, copy) NSString *fileName;

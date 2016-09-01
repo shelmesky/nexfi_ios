@@ -321,9 +321,11 @@
     [self.mapView addOverlay:self.heatMapTileOverlay];
     //设置热力图半径
     [self.heatMapTileOverlay setRadius:25.0];
+    //设置热力图透明度
+    [self.heatMapTileOverlay setOpacity:0.5];
     //设置热力图颜色
     [self.heatMapTileOverlay
-     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[[UIColor blueColor], [UIColor greenColor],[UIColor redColor]] andWithStartPoints:@[@(0.2), @(0.5),@(0.9)]]];
+     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[[UIColor purpleColor], [UIColor purpleColor],[UIColor purpleColor]] andWithStartPoints:@[@(0.2), @(0.5),@(0.9)]]];
     MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:self.heatMapTileOverlay];
     [render reloadData];
     
