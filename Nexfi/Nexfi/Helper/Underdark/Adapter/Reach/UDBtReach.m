@@ -83,12 +83,8 @@
 - (void)centralManagerDidUpdateState:(CBCentralManager *)central
 {
 	CBCentralManagerState state = central.state;
-    
-    if (state == 2 || state == 3 || state == 4) {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"blueToothFail" object:nil];
-    }
 	
-	if(state == CBCentralManagerStateUnknown)//初始化
+	if(state == CBCentralManagerStateUnknown)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnknown");
 		if(_reachable)
@@ -98,7 +94,7 @@
 		}
 	}
 	
-	if(state == CBCentralManagerStateResetting) //设备不支持状态，重置
+	if(state == CBCentralManagerStateResetting)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateResetting");
 		if(_reachable)
@@ -108,7 +104,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStateUnsupported)//不支持
+	if(state == CBCentralManagerStateUnsupported)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnsupported");
 		if(_reachable)
@@ -118,7 +114,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStateUnauthorized)//未授权
+	if(state == CBCentralManagerStateUnauthorized)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStateUnauthorized");
 		if(_reachable)
@@ -128,7 +124,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStatePoweredOff)//尚未打开蓝牙
+	if(state == CBCentralManagerStatePoweredOff)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStatePoweredOff");
 		if(_reachable)
@@ -138,7 +134,7 @@
 		}
 	}
 
-	if(state == CBCentralManagerStatePoweredOn)//蓝牙开启
+	if(state == CBCentralManagerStatePoweredOn)
 	{
 		//LogDebug(@"bt-reach CBCentralManagerStatePoweredOn");
 		if(!_reachable)
@@ -148,20 +144,4 @@
 		}
 	}
 } // centralManagerDidUpdateState
-- (void)centralManager:(CBCentralManager *)central willRestoreState:(NSDictionary<NSString *, id> *)dict{
-    
-}
-- (void)centralManager:(CBCentralManager *)central didDisconnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error{
-    
-}
-- (void)centralManager:(CBCentralManager *)central didFailToConnectPeripheral:(CBPeripheral *)peripheral error:(nullable NSError *)error{
-    
-}
-- (void)centralManager:(CBCentralManager *)central didConnectPeripheral:(CBPeripheral *)peripheral{
-    
-}
-- (void)centralManager:(CBCentralManager *)central didDiscoverPeripheral:(CBPeripheral *)peripheral advertisementData:(NSDictionary<NSString *, id> *)advertisementData RSSI:(NSNumber *)RSSI{
-    
-}
-
 @end

@@ -5,7 +5,7 @@
 //  Created by fyc on 16/7/29.
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
-
+#import <MapKit/MapKit.h>
 #import "NFUserLocationVC.h"
 #import "CustomAnnotationView.h"
 #import "NFSingleChatInfoVC.h"
@@ -70,6 +70,13 @@
     }
     return _annotations;
 }
+- (void)viewWillDisappear:(BOOL)animated{
+    [USER_D setObject:@"NO" forKey:@"showHeatOverlay"];
+    [USER_D setObject:@"NO" forKey:@"showTraffic"];
+    [USER_D synchronize];
+    
+    [super viewWillDisappear:animated];
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
@@ -88,7 +95,7 @@
     
     [self showMyFriendLocation];
     //3分钟更新下用户位置
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFriendInfo) name:@"updateFriendInfo" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFriendInfo) name:@"updateFriendInfo" object:nil];
     
 }
 - (void)updateFriendInfo{
@@ -133,6 +140,8 @@
     [self.mapView removeOverlays:self.headOverLines];
     [self.annotations removeAllObjects];
     [self.headOverLines removeAllObjects];
+    [self.heatMapTileOverlay setOpacity:0];
+
     //刷新用户数据
     [self refreshUserData];
     
@@ -174,6 +183,7 @@
     [self.mapView removeOverlays:self.headOverLines];
     [self.headOverLines removeAllObjects];
     [self.annotations removeAllObjects];
+    [self.heatMapTileOverlay setOpacity:0];
     
     //刷新用户数据
     [self refreshUserData];
@@ -291,9 +301,6 @@
     /* Add a annotation on map center. */
 //    [self addAnnotationWithCooordinate:self.mapView.centerCoordinate];
     
-    
-
-    
 }
 #pragma mark -配置热力图
 - (void)addHeatOverlay{
@@ -301,53 +308,104 @@
     [self.mapView removeOverlays:self.polyLines];
     [self.mapView removeAnnotations:self.annotations];
     [self.annotations removeAllObjects];
-    
+    [self.heatMapTileOverlay setOpacity:1.0];
     //刷新用户数据
     [self refreshUserData];
+    int i = 0;
+    NSMutableArray *distanceArr = [[NSMutableArray alloc]initWithCapacity:0];
+    //计算两点之间的距离 放到distanceArr
+    UserModel *mySelf = [[UserManager shareManager]getUser];
+    MAMapPoint point1 = MAMapPointForCoordinate(CLLocationCoordinate2DMake(mySelf.lattitude.floatValue,mySelf.longitude.floatValue));
+    for (UserModel *user in self.friendList) {
+        if (user && user.lattitude && user.longitude) {
+            i++;
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+            
+            MAMapPoint point2 = MAMapPointForCoordinate(coordinate);
+            //计算两点之间的距离
+            CLLocationDistance distance = MAMetersBetweenMapPoints(point1,point2);
+            NSDictionary *userDistance = @{@"distance":@(distance),@"userId":user.userId,@"lattitude":user.lattitude,@"longitude":user.longitude};
+            [distanceArr addObject:userDistance];
+
+        }
+    }
+    //判断两个点之间距离是否小于300 如果小于 放到needIntensityEqual1 并将它的热点intensity 设置为1 否则设置0.3
+    NSMutableArray *needIntensityEqual1 = [[NSMutableArray alloc]initWithCapacity:0];
+    for (int i = 0; i < distanceArr.count - 1; i ++) {
+        for (int j = i + 1; j < distanceArr.count - 1; j ++) {
+            NSDictionary *d1 = distanceArr[i];
+            NSDictionary *d2 = distanceArr[j];
+
+            if (fabsf([d1[@"distance"] floatValue] - [d2[@"distance"] floatValue]) < 300) {
+                if (![needIntensityEqual1 containsObject:d1[@"userId"]]) {
+                    [needIntensityEqual1 addObject:d1[@"userId"]];
+                }
+                if (![needIntensityEqual1 containsObject:d2[@"userId"]]) {
+                    [needIntensityEqual1 addObject:d2[@"userId"]];
+                }
+            }
+        }
+    }
     
     for (UserModel *user in self.friendList) {
         if (user && user.lattitude && user.longitude) {
+            
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+
             //热力图标注
             MAHeatMapNode *node = [[MAHeatMapNode alloc]init];
             node.coordinate = coordinate;
-            node.intensity = 1;
-            
+            //点的强度 如果两点之间小于300 让两点的强度都设置100
+            if ([needIntensityEqual1 containsObject:user.userId]) {
+                node.intensity = 1;
+            }else{
+                node.intensity = 0.3;
+            }
+            NSLog(@"intens====%f",node.intensity);
             [self.headOverLines addObject:node];
+            
         }
     }
     
     self.heatMapTileOverlay.data = self.headOverLines;
+    
+//    self.heatMapTileOverlay.boundingMapRect = MAMapRectMake(31.203223, 121.52322, 200, 100);;
+    NSLog(@"haha=====%@",NSStringFromCGSize(self.heatMapTileOverlay.tileSize));
     [self.mapView addOverlay:self.heatMapTileOverlay];
     //设置热力图半径
-    [self.heatMapTileOverlay setRadius:25.0];
+    [self.heatMapTileOverlay setRadius:15.0];
     //设置热力图透明度
-    [self.heatMapTileOverlay setOpacity:0.5];
+    [self.heatMapTileOverlay setOpacity:0.7];
     //设置热力图颜色
     [self.heatMapTileOverlay
-     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[[UIColor purpleColor], [UIColor purpleColor],[UIColor purpleColor]] andWithStartPoints:@[@(0.2), @(0.5),@(0.9)]]];
+     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[RGBACOLOR(238, 177, 183, 1), RGBACOLOR(233, 125, 152, 1),RGBACOLOR(234, 67, 115, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)] andWithStartPoints:@[@(0.2), @(0.3),@(0.4),@(0.7),@(0.9)]]];
     MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:self.heatMapTileOverlay];
+    self.heatMapTileOverlay.allowRetinaAdapting = YES;
+
     [render reloadData];
     
 }
 #pragma mark -配置标注
 -(void)addAnnotation
 {
+
     for (UserModel *user in self.friendList) {
         if (user && user.lattitude && user.longitude) {
             //标注
             MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+
+            
             annotation.coordinate = coordinate;
             annotation.title    = user.userNick;
             annotation.subtitle = user.userId;
-            
+//            NSLog(@"la====%@===lo====%@====distance====%f",user.lattitude,user.longitude,distance);
             [self.annotations addObject:annotation];
 
         }
     }
     [self.mapView addAnnotations:self.annotations];
-    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 100, 100) animated:YES];
+    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 10, 10) animated:YES];
 
 }
 - (void)initSearch
@@ -372,7 +430,6 @@
     [self.view addSubview:self.mapView];
     
     self.heatMapTileOverlay = [[MAHeatMapTileOverlay alloc]init];
-    
 }
 - (UserModel *)getUserFromAnnotationWithUserId:(NSString *)userId{
     UserModel *getUser;
@@ -477,17 +534,28 @@
     NSLog(@"11111");
     if ([annotation isKindOfClass:[MAPointAnnotation class]]) {
         static NSString *identifier = @"customViewId";
+        
         CustomAnnotationView *annotationView = [[CustomAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:identifier];
         //必须设置no 不然没法设置自定义弹出view
         annotationView.canShowCallout = NO;
         annotationView.customDelegate = self;
         annotationView.draggable = YES;
-        annotationView.calloutOffset = CGPointMake(0, -5);
+//        annotationView.calloutOffset = CGPointMake(0, -5);
 //        annotationView.portrait = [UIImage imageNamed:@"NexFiIcon"];
         UserModel *user = [self getUserFromAnnotationWithUserId:annotation.subtitle];
         NSLog(@"ann===%@===",annotation.title);
         annotationView.portrait = [UIImage imageNamed:user.userAvatar];
         annotationView.name     = user.userNick;
+         
+        /*
+        MAPinAnnotationView *annotationView = [[MAPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:identifier];
+        annotationView.canShowCallout               = YES;
+        annotationView.animatesDrop                 = YES;
+        annotationView.draggable                    = YES;
+        annotationView.rightCalloutAccessoryView    = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+        NSLog(@"ann===%@===",annotation.title);
+        return annotationView;
+         */
         
         return annotationView;
     }

@@ -33,6 +33,7 @@
     [aCoder encodeObject:self.fileId forKey:@"fileId"];
 //    [aCoder encodeObject:self.vFileName forKey:@"vFileName"];
     [aCoder encodeObject:self.vContentType forKey:@"vContentType"];
+    [aCoder encodeObject:self.partPath forKey:@"partPath"];
     [aCoder encodeObject:self.vUrl forKey:@"vUrl"];
     [aCoder encodeObject:self.fileName forKey:@"fileName"];
     [aCoder encodeObject:self.vFileId forKey:@"vFileId"];
@@ -51,6 +52,7 @@
         self.vContentType = [aDecoder decodeObjectForKey:@"vContentType"];
         self.vUrl = [aDecoder decodeObjectForKey:@"vUrl"];
         self.fileName = [aDecoder decodeObjectForKey:@"fileName"];
+        self.partPath = [aDecoder decodeObjectForKey:@"partPath"];
         self.vFileId = [aDecoder decodeObjectForKey:@"vFileId"];
         self.contentType = [aDecoder decodeObjectForKey:@"contentType"];
         self.url = [aDecoder decodeObjectForKey:@"url"];

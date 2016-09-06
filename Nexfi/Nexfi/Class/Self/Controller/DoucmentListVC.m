@@ -113,11 +113,15 @@
         }];
         
     }else{
-        //    DocumentLoadVC *vc = [[DocumentLoadVC alloc]init];
-        //    FileModel *model = self.fileList[indexPath.row];
-        //    vc.title = model.fileName;
-        //    vc.currentFileModel = model;
-        //    [self.navigationController pushViewController:vc animated:YES];
+        
+        DocumentLoadVC *vc = [[DocumentLoadVC alloc]init];
+        FileModel *model = [self.fileDic allValues][indexPath.section][indexPath.row];
+        vc.title = model.fileName;
+        model.fileAbsolutePath = [NSHomeDirectory() stringByAppendingPathComponent:model.partPath];
+        vc.currentFileModel = model;
+        NSLog(@"nod=====%@",model.fileAbsolutePath);
+        [self.navigationController pushViewController:vc animated:YES];
+        
     }
 }
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -139,6 +143,51 @@
     return @"";
 }
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+    FileModel *model = [self.fileDic allValues][indexPath.section][indexPath.row];
+    NSData *fileData = [NSKeyedArchiver archivedDataWithRootObject:model];
+    //移除数据源
+    for (int i = 0; i < self.fileDic.allKeys.count; i ++ ) {
+        NSString *key = [[self.fileDic allKeys] objectAtIndex:i];
+        NSArray *temArr = [self.fileDic objectForKey:key];
+        if ([temArr containsObject:model]) {
+            NSMutableArray *temA = [[NSMutableArray alloc]initWithArray:temArr];
+            [temA removeObject:model];
+            [self.fileDic removeObjectForKey:key];
+            if (temA.count != 0) {
+                [self.fileDic setObject:temA forKey:key];
+            }
+        }
+    }
+    //删除本地
+    NSDictionary *fileDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+    
+    NSMutableDictionary *files = fileDic?[[NSMutableDictionary alloc]initWithDictionary:fileDic]:[[NSMutableDictionary alloc]initWithCapacity:0];
+    
+    //查询本地要删除的文件 并作删除
+    [files.allKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSArray *fileDataArr = files[obj];
+        for (NSData *data in fileDataArr) {
+            if ([fileData isEqualToData:data]) {
+                NSMutableArray *fileArr = [[NSMutableArray alloc]initWithArray:fileDataArr];
+                [fileArr removeObject:data];
+                [files removeObjectForKey:obj];
+                if (fileArr.count != 0) {
+                    [files setObject:fileArr forKey:obj];
+                }
+            }
+        }
+        
+    }];
+    //存储最终删除的数据
+    NSDictionary *finallyFileDic = [NSDictionary dictionaryWithDictionary:files];
+    
+    [[NSUserDefaults standardUserDefaults]setObject:finallyFileDic forKey:@"historyFiles"];
+    
+    //移除tableView中的数据
+//    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    [tableView reloadData];
+    [self.fileKindTable reloadData];
     
     /*
      

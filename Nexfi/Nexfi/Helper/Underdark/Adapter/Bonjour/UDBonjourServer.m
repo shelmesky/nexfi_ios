@@ -98,8 +98,6 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	
 	_state = UDBnjServerStateStarting;
 	
-    
-    //通过NSNetService发布socket
 	_service = [[NSNetService alloc] initWithDomain:@"" type:_adapter.serviceType name:@(_adapter.nodeId).description port:0];
 	if(!_service)
 	{
@@ -152,13 +150,6 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	{
 		[self stopImpl];
 	}
-    
-//    if (_state == UDBnjServerStateRunning) {
-//        [self startImpl];
-//    }else if (_state == UDBnjServerStateStopped){
-//        [self stopImpl];
-//    }
-    
 }
 
 #pragma mark - NSNetServiceDelegate
@@ -187,8 +178,6 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	LogDebug(@"bnj didUpdateTXTRecordData");
 	
 	//[_service publishWithOptions:NSNetServiceListenForConnections];
-    
-    
 }
 
 - (void)netServiceWillPublish:(NSNetService *)sender
@@ -209,6 +198,7 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 		return;
 	
 	LogDebug(@"bnj netServiceDidPublish");
+
 	_state = UDBnjServerStateRunning;
 	[self checkDesiredState];
 }
@@ -221,6 +211,7 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 		return;
 	
 	LogDebug(@"bnj netServiceDidNotPublish %@", errorDict[NSNetServicesErrorCode]);
+	
 	_service = nil;
 	_state = UDBnjServerStateStopped;
 	_desiredState = UDBnjServerStateStopped;
@@ -237,7 +228,7 @@ typedef NS_ENUM(NSUInteger, UDBnjServerState)
 	if(sender != _service)
 		return;
 	
-	LogDebug(@"bnj didAcceptConnection");
+	//LogDebug(@"bnj didAcceptConnection");
 	
 	sldispatch_async(_adapter.queue, ^{
 		UDBonjourChannel* channel = [[UDBonjourChannel alloc] initWithAdapter:_adapter input:inputStream output:outputStream];

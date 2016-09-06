@@ -26,13 +26,16 @@
         self.userImg.bounds = CGRectMake(0, 0, 90, 90);
         self.userImg.userInteractionEnabled = YES;
         self.userImg.clipsToBounds = YES;
+        self.userImg.userInteractionEnabled = YES;
         self.userImg.layer.cornerRadius = self.userImg.frame.size.width/2;
         self.userImg.center = CGPointMake((SCREEN_SIZE.width)/2, headImg.frame.size.height/2);
         [headImg addSubview:self.userImg];
+        
         //手势
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tap:)];
         [headImg addGestureRecognizer:tap];
         [self setup];
+        
     }
     return self;
 }

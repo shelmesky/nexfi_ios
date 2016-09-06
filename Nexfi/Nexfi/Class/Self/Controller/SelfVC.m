@@ -51,12 +51,16 @@
     _headView = [[NFHeadView alloc]initWithFrame:CGRectMake(0, 0, width, height)];
     _headView.exclusiveTouch = YES;
     _headView.delegate = self;
+    _headView.userImg.userInteractionEnabled = YES;
     
     self.userInfoTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64 - 49) style:UITableViewStyleGrouped];
     self.userInfoTable.delegate = self;
     self.userInfoTable.dataSource = self;
     [self.view addSubview:self.userInfoTable];
     self.userInfoTable.tableHeaderView = _headView;
+    
+    
+
     
 }
 //点击图片

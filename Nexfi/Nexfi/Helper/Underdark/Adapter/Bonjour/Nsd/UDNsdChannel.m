@@ -392,7 +392,7 @@ typedef NS_ENUM(NSUInteger, UDNsdState)
 	// Writing to NSOutputStream:
 	// http://stackoverflow.com/a/23001691/1449965
 	// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/WritingOutputStreams.html
-	//将 buffer 中的数据写入流中，返回实际写入的字节数。
+	
 	NSInteger result = [_outputStream write:bytes maxLength:len];
 	if(result < 0)
 	{
@@ -470,7 +470,6 @@ typedef NS_ENUM(NSUInteger, UDNsdState)
 			_heartbeatReceived = true;
 			
 			//LogDebug(@"input NSStreamEventHasBytesAvailable");
-            //从流中读取数据到 buffer 中，buffer 的长度不应少于 len，该接口返回实际读取的数据长度（该长度最大为 len）。
 			NSInteger len = [stream read:_inputBuffer maxLength:sizeof(_inputBuffer)];
 			
 			if(len > 0)

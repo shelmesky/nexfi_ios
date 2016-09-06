@@ -139,12 +139,12 @@
     
     if (self)
     {
-        self.bounds = CGRectMake(0.f, 0.f, 60, 80);
+        self.bounds = CGRectMake(0.f, 0.f, 20, 20);
         
         self.backgroundColor = [UIColor grayColor];
         
         /* Create portrait image view and add to view hierarchy. */
-        self.portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(kHoriMargin, kVertMargin, kPortraitWidth, kPortraitHeight)];
+        self.portraitImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [self addSubview:self.portraitImageView];
         
         /* Create name label. */
@@ -152,6 +152,7 @@
 //                                                                   kVertMargin,
 //                                                                   kWidth - kPortraitWidth - kHoriMargin,
 //                                                                   kHeight - 2 * kVertMargin)];
+        /*
         self.nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(kHoriMargin, CGRectGetMaxY(self.portraitImageView.frame), CGRectGetWidth(self.portraitImageView.frame), 20)];
         self.nameLabel.backgroundColor  = [UIColor clearColor];
         self.nameLabel.textAlignment    = NSTextAlignmentCenter;
@@ -159,6 +160,7 @@
         self.nameLabel.font             = [UIFont systemFontOfSize:12.f];
         self.nameLabel.adjustsFontSizeToFitWidth = YES;
         [self addSubview:self.nameLabel];
+         */
 //        [self addSubview:self.nameLabel];
         
         

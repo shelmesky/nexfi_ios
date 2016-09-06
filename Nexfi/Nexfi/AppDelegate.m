@@ -78,7 +78,8 @@
 //    UIDevice *myDevice = [UIDevice currentDevice];
 //    NSString *deviceUDID = [[myDevice identifierForVendor] UUIDString];
     
-    [self updateLocation];
+    //更新位置
+//    [self updateLocation];
     
     _task = [BackGroundTask shareBGTask];
     UIAlertView *alert;
@@ -133,12 +134,31 @@
         //获取当前页面的nav
         NexfiNavigationController *nav = self.tabbar.viewControllers[self.tabbar.selectedIndex];
         DocumentLoadVC *destinVc = [[DocumentLoadVC alloc]init];
+        
+        //CC460527-FFE7-459E-8B02-504890D00588/Documents/nexfi_BDD3E379-C24D-4D1D-AC37-63E4F3DE2468.db
+        NSString *partPath = [[appfilePath componentsSeparatedByString:@"/Application/"] lastObject];
+   
+        NSArray *a = [partPath componentsSeparatedByString:@"/"];
+        
+        NSMutableString *finallyPartPath = [[NSMutableString alloc]initWithCapacity:0];
+        for (int i = 0; i < a.count; i ++) {
+            NSString *ss = a[i];
+            if (i != 0) {
+                [finallyPartPath appendString:ss];
+                if (i != a.count - 1) {
+                    [finallyPartPath appendString:@"/"];
+                }
+            }
+        }
+        
+        //Documents/nexfi_BDD3E379-C24D-4D1D-AC37-63E4F3DE2468.db
+        
         //配置参数
         FileModel *model = [[FileModel alloc] init];
         model.fileName  = [[appfilePath componentsSeparatedByString:@"/"] lastObject];
         model.fileAbsolutePath = appfilePath;
-        //取
-        NSArray *files = [[NSUserDefaults standardUserDefaults] objectForKey:@"historyFiles"];
+        model.partPath = finallyPartPath;
+        
         
         //归档 NSKeyedArchiver
         NSData *data = [NSKeyedArchiver archivedDataWithRootObject:model];
@@ -177,6 +197,7 @@
                 NSString *fileSuffix = [[file.fileAbsolutePath componentsSeparatedByString:@"/Documents/"] lastObject];
                 NSString *libraryPath =[NSHomeDirectory() stringByAppendingPathComponent:@"Library"];
                 NSString *fileSuffixL = [[file.fileAbsolutePath componentsSeparatedByString:@"/Library/"] lastObject];
+                //文件路径
                 NSString *documentSubPath = [documentPath stringByAppendingPathComponent:fileSuffix];
                 NSString *LibrarySubPath = [libraryPath stringByAppendingPathComponent:fileSuffixL];
                 //如果已经存在此文件不需要存储 直接去查看
@@ -190,8 +211,7 @@
                     isExecutive = YES;
                     
                     [nav pushViewController:destinVc animated:YES];
-                    
-                    
+
                 }
             }
         }
@@ -305,7 +325,7 @@
     // 何时开始执行第一个任务
     // dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC) 比当前时间晚3秒
     dispatch_time_t start = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC));
-    uint64_t interval = (uint64_t)(20.0 * NSEC_PER_SEC);
+    uint64_t interval = (uint64_t)(180.0 * NSEC_PER_SEC);
     dispatch_source_set_timer(self.timer, start, interval, 0);
     
     // 设置回调
@@ -345,6 +365,7 @@
     // Lat/Lon
     float latitudeMe = loc.coordinate.latitude;
     float longitudeMe = loc.coordinate.longitude;
+    NSLog(@"la====%f====lo====%f",latitudeMe,longitudeMe);
     
     //10分钟发送一次定位位置
     if (self.isNeedUpdate) {
@@ -362,14 +383,15 @@
                          @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
                          @{@"lattitude":@"31.212513",@"longitude":@"121.42932"},
                          @{@"lattitude":@"31.208633",@"longitude":@"121.52142"},
-                         @{@"lattitude":@"31.208632",@"longitude":@"121.52141"},
-                         @{@"lattitude":@"31.208630",@"longitude":@"121.52139"},
-                         @{@"lattitude":@"31.208628",@"longitude":@"121.52137"},
-                         @{@"lattitude":@"31.208626",@"longitude":@"121.52135"},
-                         @{@"lattitude":@"31.208624",@"longitude":@"121.52133"},
-                         @{@"lattitude":@"31.208622",@"longitude":@"121.52131"}];
+                         @{@"lattitude":@"31.207632",@"longitude":@"121.52141"},
+                         @{@"lattitude":@"31.218630",@"longitude":@"121.52139"},
+                         @{@"lattitude":@"31.219628",@"longitude":@"121.52137"},
+                         @{@"lattitude":@"31.203626",@"longitude":@"121.52135"},
+                         @{@"lattitude":@"31.205624",@"longitude":@"121.52133"},
+                         @{@"lattitude":@"31.206622",@"longitude":@"121.52131"}];
         
-        NSDictionary *d = arr[arc4random_uniform(4)];
+//        NSDictionary *d = arr[arc4random_uniform(0)];
+        NSDictionary *d = arr[9];
         
         user.lattitude = d[@"lattitude"];
         

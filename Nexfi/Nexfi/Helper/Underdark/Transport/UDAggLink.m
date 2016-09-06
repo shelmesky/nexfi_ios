@@ -131,9 +131,6 @@
 		return;
 	
 	_preparedFrame = [_transport.cache frameDataWithData:_outputQueue.firstObject];
-    if (_outputQueue.count == 0 || !_outputQueue.firstObject) {
-        return;
-    }
 	[_outputQueue removeObjectAtIndex:0];
 	
 	[_preparedFrame retrieve:^(NSData * _Nullable data) {

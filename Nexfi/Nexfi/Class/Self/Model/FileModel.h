@@ -21,6 +21,8 @@
 @property (nonatomic, copy) NSString *url;
 @property (nonatomic, copy) NSString *fileType;
 
+@property (nonatomic, copy) NSString *partPath;
+
 // 注意这里一定要是：KB,MB,GB,Bytes
 @property (nonatomic, copy) NSString *fileSize;
 @property (nonatomic, copy) NSString *attachmentFileSize;

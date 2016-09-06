@@ -161,7 +161,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	}
 	
 	LogWarn(@"link heartbeat timeout");
-    //程序进入后台关闭流？
 	[self closeStreams];
 }
 
@@ -264,7 +263,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 - (void) sendFrame:(nonnull UDOutputItem*)frameData
 {
 	// Transport queue.
-
+	
 	UDOutputItem* frameHeader = [self frameHeaderForFrameData:frameData.data];
 	[self performSelector:@selector(enqueueItem:) onThread:self.adapter.ioThread withObject:frameHeader waitUntilDone:NO];
 
@@ -274,6 +273,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 - (void) sendLinkFrame:(Frame*)frame
 {
 	// Any queue.
+
 	UDOutputItem* frameBody = [[UDOutputItem alloc] initWithData:[frame data] frameData:nil];
 
 	sldispatch_async(_adapter.queue, ^{
@@ -301,7 +301,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	// Otherwise add item to output queue.
 	[_outputQueue addObject:item];
 }
-#pragma -mark 写入数据到输出流
+
 - (void) writeNextBytes
 {
 	// Stream thread.
@@ -334,7 +334,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		bytes += _outputDataOffset;
 		
 		NSInteger len = (NSInteger) MIN(512, _outputItem.data.length - _outputDataOffset);
-
+		
 		// Writing to NSOutputStream:
 		// http://stackoverflow.com/a/23001691/1449965
 		// https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Streams/Articles/WritingOutputStreams.html
@@ -349,8 +349,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		else
 		{
 			result = 0;
-            //自己加的
-            return;
 		}
 		
 		if(result < 0)
@@ -389,11 +387,11 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 } // writeNextBytes
 
 #pragma mark - Boxing
+
 - (UDOutputItem*) frameHeaderForFrameData:(NSData*)frameData
 {
 	// Any thread.
 	NSMutableData* headerData = [NSMutableData data];
- 
 	uint32_t frameBodySize = CFSwapInt32HostToBig((uint32_t)frameData.length);
 	[headerData appendBytes:&frameBodySize length:sizeof(frameBodySize)];
 	
@@ -401,7 +399,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 	
 	return outitem;
 }
-#pragma -mark  从输入流读取数据
+
 - (void)formFrames
 {
 	// Stream thread.
@@ -412,12 +410,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		
 		// Calculating how much data still must be appended to receive message body size.
 		const size_t frameHeaderSize = sizeof(uint32_t);
-        
-//        static NSUInteger readableBytes;
-//        if (_inputByteBuf.readableBytes > 100) {
-//            readableBytes = _inputByteBuf.readableBytes;
-//
-//        }
 		
 		// If current buffer length is not enough to create frame header - so continue reading.
 		if(_inputByteBuf.readableBytes < frameHeaderSize)
@@ -426,76 +418,23 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			break;
 		}
 		
- 
 		// Calculating frame body size.
 		uint32_t frameBodySize =  *( ((const uint32_t*)(_inputByteBuf.data.bytes + _inputByteBuf.readerIndex)) + 0) ;
-        
-        //获取正值
 		frameBodySize = CFSwapInt32BigToHost(frameBodySize);
 		
-        //float progress = (float)readableBytes/(float)frameBodySize;
-        
-//        NSLog(@"progress=     ===%f",progress);
-
-        
 		size_t frameSize = frameHeaderSize + frameBodySize;
 		
 		// We don't have full frame in input buffer - so continue reading.
 		if(frameSize > _inputByteBuf.readableBytes)
 		{
-            
 			[_inputByteBuf ensureWritable:frameSize - _inputByteBuf.readableBytes];
 			[_inputByteBuf trimWritable:frameSize - _inputByteBuf.readableBytes];
-            
-//            self.readIndex = _inputByteBuf.readableBytes;
-            
-//            NSData* frameBody = [_inputByteBuf readBytes:_inputByteBuf.readableBytes];
-//            NSLog(@"frameBody===%@====length====%ld",frameBody,frameBody.length);;
-            
-            /*
-//            if (_inputByteBuf.readableBytes > 0 && progress < 1.1) {
-            
-                [_inputByteBuf skipBytes:frameHeaderSize];
-
-                
-                NSData *frameBody = [_inputByteBuf bytes:0 length:_inputByteBuf.readableBytes];
-//                            NSData* frameBody = [_inputByteBuf readBytes:_inputByteBuf.readableBytes];
-
-                [_inputByteBuf discardReadBytes];
-
-                
-                if(frameBody.length == 0)
-                    continue;
-                
-                Frame* frame;
-                
-                @try
-                {
-                    frame = [Frame parseFromData:frameBody];
-                    
-                }
-                @catch (NSException *exception)
-                {
-                    continue;
-                }
-                @finally
-                {
-                }
-                //
-                [self processInputFrame:frame WithProgress:progress];
-
-                
-//            }
-             */
-            
-            
 			break;
 		}
-
+		
 		[_inputByteBuf skipBytes:frameHeaderSize];
-
 		NSData* frameBody = [_inputByteBuf readBytes:frameBodySize];
-        
+		
 		[_inputByteBuf discardReadBytes];
 		
 		if(frameBody.length == 0)
@@ -514,7 +453,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		@finally
 		{
 		}
-
+		
 		[self processInputFrame:frame];
 		
 	} // while
@@ -523,6 +462,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 - (void) processInputFrame:(Frame*)frame
 {
 	// Stream thread.
+	
 	if(_state == SLBnjStateConnecting)
 	{
 		if(frame.kind != FrameKindHello || !frame.hasHello)
@@ -535,7 +475,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		_state = SLBnjStateConnected;
 		
 		_timeoutTimer = [MSWeakTimer scheduledTimerWithTimeInterval:configBonjourTimeoutInterval target:self selector:@selector(checkHeartbeat) userInfo:nil repeats:YES dispatchQueue:self.adapter.queue];
-        
+		
 		sldispatch_async(self.adapter.queue, ^{
 			[self.adapter channelConnected:self];
 			[_adapter channelCanSendMore:self];
@@ -543,7 +483,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		
 		return;
 	}
-	//
+	
 	if(frame.kind == FrameKindHeartbeat)
 	{
 		if(!frame.hasHeartbeat)
@@ -552,28 +492,18 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		//LogDebug(@"link heartbeat");
 		return;
 	}
-
+	
 	if(frame.kind == FrameKindPayload)
 	{
 		if(!frame.hasPayload || frame.payload.payload == nil)
 			return;
+		
 		sldispatch_async(self.adapter.queue, ^{
-            NSLog(@"11112222");
-            [self.adapter channel:self receivedFrame:frame.payload.payload];
-//			[self.adapter channel:self receivedFrame:frame.payload.payload WithProgress:progress];
+			[self.adapter channel:self receivedFrame:frame.payload.payload];
 		});
 		
 		return;
 	}
-    
-    //失去连接 发送失败
-//    if (_state == SLBnjStateDisconnected) {
-//        sldispatch_async(self.adapter.queue, ^{
-//            [self.adapter channel:self fail:nil];
-//        });
-//    }
-    
-    
 } // processInputFrame
 
 #pragma mark - NSStreamDelegate
@@ -590,20 +520,20 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 {
 	// Stream thread.
 	
-//	LogDebug(@"output %@", [self stringForStreamEvent:eventCode]);
+	//LogDebug(@"output %@", [self stringForStreamEvent:eventCode]);
 	
 	bool shouldClose = false;
 	
 	switch (eventCode)
 	{
-		case NSStreamEventNone:// 无事件
+		case NSStreamEventNone:
 		{
 			LogError(@"output NSStreamEventNone (cannot connect to server): %@", [stream streamError]);
 			shouldClose = true;
 			break;
 		}
 			
-		case NSStreamEventOpenCompleted: // 建立连接完成
+		case NSStreamEventOpenCompleted:
 		{
 			//LogDebug(@"output NSStreamEventOpenCompleted");
 			
@@ -631,12 +561,12 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			break;
 		}
 			
-		case NSStreamEventHasBytesAvailable:// 有可读的字节，接收到了数据，可以读了
+		case NSStreamEventHasBytesAvailable:
 		{
 			break;
 		}
 			
-		case NSStreamEventHasSpaceAvailable:// 可以使用输出流的空间，此时可以发送数据给服务器
+		case NSStreamEventHasSpaceAvailable:
 		{
 			//LogDebug(@"NSStreamEventHasSpaceAvailable");
 			_outputCanWriteToStream = true;
@@ -644,14 +574,14 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			break;
 		}
 			
-		case NSStreamEventErrorOccurred:// 发生错误
+		case NSStreamEventErrorOccurred:
 		{
 			LogError(@"output NSStreamEventErrorOccurred (cannot connect to server): %@", [stream streamError]);
 			shouldClose = true;
 			break;
 		}
 			
-		case NSStreamEventEndEncountered:// 流结束事件，在此事件中负责做销毁工作
+		case NSStreamEventEndEncountered:
 		{
 			LogDebug(@"output NSStreamEventEndEncountered (connection closed by server): %@", [stream streamError]);
 			shouldClose = true;
@@ -706,7 +636,6 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			_heartbeatReceived = true;
 
 			//LogDebug(@"input NSStreamEventHasBytesAvailable");
-            //从流中读取数据到 buffer 中，buffer 的长度不应少于 len，该接口返回实际读取的数据长度（该长度最大为 len）。
 			NSInteger len = [stream read:_inputBuffer maxLength:sizeof(_inputBuffer)];
 			
 			if(len > 0)
@@ -716,7 +645,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			else if(len == 0)
 			{
 				LogError(@"Input stream EOF.");
-//				shouldClose = true;
+				shouldClose = true;
 				break;
 			}
 			else if(len < 0)

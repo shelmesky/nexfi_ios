@@ -133,10 +133,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(beaconDetected:) name:UDBeaconDetectedNotification object:nil];
-	//iBeacon发射器。
-    /*
-     这个应用的使用场景是将某个 iBeacon 发射器安装在你的电脑包、钱包甚至是你的猫的项圈上——即任何你不想丢失的重要物件。一旦你的设备离开发射器的范围，你的应用就会检测到并通知你。
-     */
+	
 	sldispatch_async(dispatch_get_main_queue(), ^{
 		if(_peerToPeer)
 		{
@@ -255,7 +252,6 @@
 - (void)applicationDidEnterBackground:(NSNotification*)notification
 {
 	// Main thread.
-    
 	sldispatch_async(self.queue, ^{
 		if(!_running)
 			return;
@@ -266,7 +262,6 @@
 			_suspended = false;
 			[_reach stop];
 			[_reach start];
-
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{
@@ -274,30 +269,11 @@
 			[_beacon startMonitoring];
 		});
 	});
-     
-    
-    /*
-    if(!_running)
-        return;
-    
-    if (_suspended) {
-        _suspended = false;
-    }
-    sldispatch_async(self.queue, ^{
-        if(!_running)
-            return;
-        [_reach stop];
-        [_server stop];
-        [_browser stop];
-    });
-     */
-
 }
 
 - (void)applicationDidBecomeActive:(NSNotification*)notification
 {
 	// Main thread.
-    
 	if(!_running)
 		return;
 	
@@ -314,7 +290,6 @@
 			
 			[_reach stop];
 			[_reach start];
-
 		}
 
 		sldispatch_async(dispatch_get_main_queue(), ^{
@@ -322,24 +297,6 @@
 			[_beacon startAdvertising];
 		});
 	});
-     
-    
-    /*
-    if(!_running)
-        return;
-    
-    [_timeExtender cancel];
-    if (_suspended) {
-        _suspended = false;
-    }
-    sldispatch_async(self.queue, ^{
-        if(!_running)
-            return;
-        [_reach start];
-        [_server start];
-        [_browser start];
-    });
-     */
 }
 
 - (void)beaconDetected:(NSNotification*)notification
@@ -417,25 +374,13 @@
 	});
 }
 
-- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData WithProgress:(float)progress
+- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData
 {
 	// Transport queue.
 	
 	sldispatch_async(self.queue, ^{
-		[self->_delegate adapter:self channel:channel didReceiveFrame:frameData WithProgress:progress];
+		[self->_delegate adapter:self channel:channel didReceiveFrame:frameData];
 	});
 }
-- (void) channel:(nonnull UDBonjourChannel*)channel receivedFrame:(nonnull NSData*)frameData{
-    sldispatch_async(self.queue, ^{
-        [self->_delegate adapter:self channel:channel didReceiveFrame:frameData];
-    });
-}
 
-- (void) channel:(nonnull UDBonjourChannel *)channel fail:(NSString *)fail{
-    
-    sldispatch_async(self.queue, ^{
-        [self->_delegate adapter:self channel:channel fail:fail];
-    });
-    
-}
 @end
