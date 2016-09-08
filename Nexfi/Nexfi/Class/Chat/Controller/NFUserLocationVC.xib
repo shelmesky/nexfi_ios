@@ -46,7 +46,7 @@
                         <constraint firstAttribute="height" constant="40" id="TVc-qC-6Qs"/>
                         <constraint firstAttribute="width" constant="40" id="p48-iu-Bmy"/>
                     </constraints>
-                    <state key="normal" backgroundImage="traffic_close.png"/>
+                    <state key="normal" backgroundImage="fence_close.png"/>
                     <connections>
                         <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="oj3-T2-J3d"/>
                     </connections>
@@ -65,6 +65,7 @@
         </view>
     </objects>
     <resources>
+        <image name="fence_close.png" width="40" height="40"/>
         <image name="map_switch.png" width="40" height="40"/>
         <image name="traffic_close.png" width="40" height="40"/>
     </resources>

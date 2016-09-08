@@ -29,11 +29,18 @@
 @property (nonatomic, retain)NSMutableArray *speedColors;
 @property (nonatomic, retain)NSMutableArray *polyLines;
 @property (nonatomic, retain)NSMutableArray *headOverLines;
+@property (nonatomic, retain)NSMutableArray *simulateHeatNodes;
 @property (nonatomic, strong) MapTypeView *mapTypeView;
 @property (nonatomic, strong) MAHeatMapTileOverlay *heatMapTileOverlay;
 @end
 
 @implementation NFUserLocationVC
+- (NSMutableArray *)simulateHeatNodes{
+    if (!_simulateHeatNodes) {
+        _simulateHeatNodes = [[NSMutableArray alloc]initWithCapacity:0];
+    }
+    return _simulateHeatNodes;
+}
 - (NSMutableArray *)headOverLines{
     if (!_headOverLines) {
         _headOverLines = [[NSMutableArray alloc]initWithCapacity:0];
@@ -81,25 +88,46 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
+    [USER_D setObject:@"NO" forKey:@"showHeatOverlay"];
+    [USER_D setObject:@"NO" forKey:@"showTraffic"];
+    
     self.isNeedUpdate = YES;
         
     [self initMapView];
     
+    [self configureData];
+    
     [self configureTrifficAndMap];
 
     [self setBaseVCAttributesWith:@"附近的人" left:nil right:nil WithInVC:self];
-    UIBarButtonItem *show = [[UIBarButtonItem alloc]initWithTitle:@"我的轨迹" style:UIBarButtonItemStylePlain target:self action:@selector(showLine:)];
+    UIBarButtonItem *show = [[UIBarButtonItem alloc]initWithTitle:@"我的轨迹"
+                                                        style:UIBarButtonItemStylePlain
+                                                        target:self action:@selector(showLine:)];
     self.navigationItem.rightBarButtonItem = show;
     
     _isShow = NO;
+    if (self.friendList.count > 0) {
+        [self showMyFriendLocation];
+    }
     
-    [self showMyFriendLocation];
     //3分钟更新下用户位置
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFriendInfo) name:@"updateFriendInfo" object:nil];
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFriendInfo)
+//name:@"updateFriendInfo" object:nil];
     
 }
 - (void)updateFriendInfo{
     [self showMyFriendLocation];
+}
+- (void)configureData{
+    NSString *locationsPath = [[NSBundle mainBundle]pathForResource:@"locations" ofType:@"json"];
+    NSData *data = [NSData dataWithContentsOfFile:locationsPath];
+    
+    if (data) {
+        _simulateHeatNodes = [NSJSONSerialization JSONObjectWithData:data
+                                                             options:0
+                                                               error:nil];
+        
+    }
 }
 #pragma mark -初始化数据
 - (void)configureTrifficAndMap{
@@ -137,15 +165,21 @@
     
     //移除标注
     [self.mapView removeAnnotations:self.annotations];
-    [self.mapView removeOverlays:self.headOverLines];
     [self.annotations removeAllObjects];
+    //隐藏热力图
+    [self.mapView removeOverlays:self.headOverLines];
     [self.headOverLines removeAllObjects];
     [self.heatMapTileOverlay setOpacity:0];
+    
+    MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:
+                                                              self.heatMapTileOverlay];
+    [render reloadData];
 
     //刷新用户数据
     [self refreshUserData];
     
-    CLLocationCoordinate2D *coordinateArray = (CLLocationCoordinate2D *)malloc(self.runningCoords.count * sizeof(CLLocationCoordinate2D));
+    CLLocationCoordinate2D *coordinateArray = (CLLocationCoordinate2D *)malloc
+    (self.runningCoords.count * sizeof(CLLocationCoordinate2D));
     
     
     for (int i = 0; i < self.runningCoords.count; i ++) {
@@ -153,14 +187,16 @@
     coordinateArray[i] = location.coordinate;
     }
     
-    MAPolyline *line = [MAPolyline polylineWithCoordinates:coordinateArray count:self.runningCoords.count];
+    MAPolyline *line = [MAPolyline polylineWithCoordinates:coordinateArray count:
+                        self.runningCoords.count];
      
     [self.polyLines addObject:line];
      
     [self.mapView addOverlay:line];
      
     const CGFloat screenEdgeInset = 20;
-    UIEdgeInsets inset = UIEdgeInsetsMake(screenEdgeInset, screenEdgeInset, screenEdgeInset, screenEdgeInset);
+    UIEdgeInsets inset = UIEdgeInsetsMake
+    (screenEdgeInset, screenEdgeInset, screenEdgeInset, screenEdgeInset);
     [self.mapView setVisibleMapRect:line.boundingMapRect edgePadding:inset animated:NO];
      
 
@@ -177,13 +213,18 @@
 #pragma mark -展示所有用户位置
 - (void)showMyFriendLocation{
     
-    //移除画线
-    [self.mapView removeOverlays:self.polyLines];
-    [self.mapView removeAnnotations:self.annotations];
+    
+    [self.mapView removeOverlays:self.polyLines];  //移除画线
+    [self.mapView removeAnnotations:self.annotations]; //移除所有的标注
+    [self.annotations removeAllObjects];
+    //移除热力图并刷新
     [self.mapView removeOverlays:self.headOverLines];
     [self.headOverLines removeAllObjects];
-    [self.annotations removeAllObjects];
     [self.heatMapTileOverlay setOpacity:0];
+    
+    MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:
+                                                              self.heatMapTileOverlay];
+    [render reloadData];
     
     //刷新用户数据
     [self refreshUserData];
@@ -200,11 +241,11 @@
     if ([str isEqualToString:@"YES"]) {
         trafficString = @"NO";
         [self showMyFriendLocation];
-        [btn setBackgroundImage:[UIImage imageNamed:@"traffic_close"] forState:0];
+        [btn setBackgroundImage:[UIImage imageNamed:@"fence_close"] forState:0];
     }else{
         [self addHeatOverlay];
         trafficString = @"YES";
-        [btn setBackgroundImage:[UIImage imageNamed:@"traffic_open"] forState:0];
+        [btn setBackgroundImage:[UIImage imageNamed:@"fence_open"] forState:0];
     }
 
     [USER_D setObject:trafficString forKey:@"showHeatOverlay"];
@@ -258,7 +299,8 @@
                 
             }];
 
-            _mapTypeView = [[MapTypeView alloc] initWithFrame:CGRectMake(button.frame.origin.x+width-223, button.y + button.height, 223, 100)];
+            _mapTypeView = [[MapTypeView alloc] initWithFrame:CGRectMake
+                            (button.frame.origin.x+width-223, button.y + button.height, 223, 100)];
             _mapTypeView.delegate = self;
             [self.view addSubview:_mapTypeView];
             [_mapTypeBtn setBackgroundImage:[UIImage imageNamed:@"close_map_Type_tip"] forState:0];
@@ -311,78 +353,101 @@
     [self.heatMapTileOverlay setOpacity:1.0];
     //刷新用户数据
     [self refreshUserData];
-    int i = 0;
+ 
     NSMutableArray *distanceArr = [[NSMutableArray alloc]initWithCapacity:0];
+    NSMutableArray *needIntensityEqual1 = [[NSMutableArray alloc]initWithCapacity:0];
     //计算两点之间的距离 放到distanceArr
     UserModel *mySelf = [[UserManager shareManager]getUser];
-    MAMapPoint point1 = MAMapPointForCoordinate(CLLocationCoordinate2DMake(mySelf.lattitude.floatValue,mySelf.longitude.floatValue));
+    MAMapPoint point1 = MAMapPointForCoordinate
+    (CLLocationCoordinate2DMake(mySelf.lattitude.floatValue,mySelf.longitude.floatValue));
+    
+    
     for (UserModel *user in self.friendList) {
         if (user && user.lattitude && user.longitude) {
-            i++;
-            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+            
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+            (user.lattitude.floatValue, user.longitude.floatValue);
             
             MAMapPoint point2 = MAMapPointForCoordinate(coordinate);
             //计算两点之间的距离
             CLLocationDistance distance = MAMetersBetweenMapPoints(point1,point2);
-            NSDictionary *userDistance = @{@"distance":@(distance),@"userId":user.userId,@"lattitude":user.lattitude,@"longitude":user.longitude};
+            NSDictionary *userDistance = @{@"distance":@(distance),@"userId":user.userId,
+                                           @"lattitude":user.lattitude,@"longitude":user.longitude};
             [distanceArr addObject:userDistance];
 
         }
     }
+    
+    for (int i = 0; i < _simulateHeatNodes.count; i ++) {
+        NSDictionary *dic = _simulateHeatNodes[i];
+        NSString *userId = [NSString stringWithFormat:@"AbcDeFgH-%d",i];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+        ([dic[@"lat"] floatValue], [dic[@"lng"] floatValue]);
+        
+        MAMapPoint point2 = MAMapPointForCoordinate(coordinate);
+        //计算两点之间的距离
+        CLLocationDistance distance = MAMetersBetweenMapPoints(point1,point2);
+        NSDictionary *userDistance = @{@"distance":@(distance),@"userId":userId,
+                                        @"lattitude":dic[@"lat"],@"longitude":dic[@"lng"]};
+        [distanceArr addObject:userDistance];
+
+    }
+
     //判断两个点之间距离是否小于300 如果小于 放到needIntensityEqual1 并将它的热点intensity 设置为1 否则设置0.3
-    NSMutableArray *needIntensityEqual1 = [[NSMutableArray alloc]initWithCapacity:0];
+    
     for (int i = 0; i < distanceArr.count - 1; i ++) {
         for (int j = i + 1; j < distanceArr.count - 1; j ++) {
             NSDictionary *d1 = distanceArr[i];
             NSDictionary *d2 = distanceArr[j];
-
+            
             if (fabsf([d1[@"distance"] floatValue] - [d2[@"distance"] floatValue]) < 300) {
                 if (![needIntensityEqual1 containsObject:d1[@"userId"]]) {
-                    [needIntensityEqual1 addObject:d1[@"userId"]];
+                    [needIntensityEqual1 addObject:d1];
                 }
                 if (![needIntensityEqual1 containsObject:d2[@"userId"]]) {
-                    [needIntensityEqual1 addObject:d2[@"userId"]];
+                    [needIntensityEqual1 addObject:d2];
                 }
             }
         }
     }
     
-    for (UserModel *user in self.friendList) {
-        if (user && user.lattitude && user.longitude) {
-            
-            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+    for (NSDictionary *user in distanceArr) {
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+        ([user[@"lattitude"] floatValue], [user[@"longitude"] floatValue]);
+        
+        //热力图标注
+        MAHeatMapNode *node = [[MAHeatMapNode alloc]init];
+        node.coordinate = coordinate;
+        node.intensity = 0.3;
+        if ([needIntensityEqual1 containsObject:user]) {
 
-            //热力图标注
-            MAHeatMapNode *node = [[MAHeatMapNode alloc]init];
-            node.coordinate = coordinate;
-            //点的强度 如果两点之间小于300 让两点的强度都设置100
-            if ([needIntensityEqual1 containsObject:user.userId]) {
-                node.intensity = 1;
-            }else{
-                node.intensity = 0.3;
-            }
-            NSLog(@"intens====%f",node.intensity);
-            [self.headOverLines addObject:node];
-            
+            node.intensity = 1.0;
+
         }
+        [self.headOverLines addObject:node];
     }
-    
+
     self.heatMapTileOverlay.data = self.headOverLines;
     
 //    self.heatMapTileOverlay.boundingMapRect = MAMapRectMake(31.203223, 121.52322, 200, 100);;
-    NSLog(@"haha=====%@",NSStringFromCGSize(self.heatMapTileOverlay.tileSize));
     [self.mapView addOverlay:self.heatMapTileOverlay];
     //设置热力图半径
     [self.heatMapTileOverlay setRadius:15.0];
     //设置热力图透明度
-    [self.heatMapTileOverlay setOpacity:0.7];
+    [self.heatMapTileOverlay setOpacity:1.0];
     //设置热力图颜色
     [self.heatMapTileOverlay
-     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[RGBACOLOR(238, 177, 183, 1), RGBACOLOR(233, 125, 152, 1),RGBACOLOR(234, 67, 115, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)] andWithStartPoints:@[@(0.2), @(0.3),@(0.4),@(0.7),@(0.9)]]];
-    MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:self.heatMapTileOverlay];
+     setGradient:[[MAHeatMapGradient alloc] initWithColor:
+  @[RGBACOLOR(238, 177, 183, 1), RGBACOLOR(233, 125, 152, 1),
+    RGBACOLOR(234, 67, 115, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)]
+    andWithStartPoints:@[@(0.2), @(0.4),@(0.6),@(0.8),@(0.9)]]];
+    MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:
+                                                              self.heatMapTileOverlay];
     self.heatMapTileOverlay.allowRetinaAdapting = YES;
 
     [render reloadData];
+    
+    
     
 }
 #pragma mark -配置标注
@@ -393,23 +458,24 @@
         if (user && user.lattitude && user.longitude) {
             //标注
             MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
-            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(user.lattitude.floatValue, user.longitude.floatValue);
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+            (user.lattitude.floatValue,user.longitude.floatValue);
 
-            
             annotation.coordinate = coordinate;
             annotation.title    = user.userNick;
             annotation.subtitle = user.userId;
-//            NSLog(@"la====%@===lo====%@====distance====%f",user.lattitude,user.longitude,distance);
             [self.annotations addObject:annotation];
 
         }
     }
     [self.mapView addAnnotations:self.annotations];
-    [self.mapView showAnnotations:self.annotations edgePadding:UIEdgeInsetsMake(10, 10, 10, 10) animated:YES];
+    [self.mapView showAnnotations:self.annotations edgePadding:
+     UIEdgeInsetsMake(10, 10, 10, 10) animated:YES];
 
 }
 - (void)initSearch
 {
+    
     self.search = [[AMapSearchAPI alloc]init];
     self.search.delegate = self;
 
@@ -446,7 +512,8 @@
 
 }
 #pragma mark - AMapSearchDelegate  地理位置编码  回调方法
-- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request response:(AMapGeocodeSearchResponse *)response
+- (void)onGeocodeSearchDone:(AMapGeocodeSearchRequest *)request
+                   response:(AMapGeocodeSearchResponse *)response
 {
 
 }
@@ -456,24 +523,29 @@
 
 }
 #pragma -mark 反地理位置编码  回调方法
-- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request response:(AMapReGeocodeSearchResponse *)response
+- (void)onReGeocodeSearchDone:(AMapReGeocodeSearchRequest *)request
+                     response:(AMapReGeocodeSearchResponse *)response
 {
     //response.regeocode
 }
 #pragma mark - MAMapViewDelegate
-- (void)mapView:(MAMapView *)mapView didChangeUserTrackingMode:(MAUserTrackingMode)mode animated:(BOOL)animated
+- (void)mapView:(MAMapView *)mapView didChangeUserTrackingMode:(MAUserTrackingMode)mode
+       animated:(BOOL)animated
 {
     
 }
-- (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation updatingLocation:(BOOL)updatingLocation{
+- (void)mapView:(MAMapView *)mapView didUpdateUserLocation:(MAUserLocation *)userLocation
+updatingLocation:(BOOL)updatingLocation{
 
     
     NSLog(@"1");
     
-    if (userLocation.location.coordinate.latitude == 0 || userLocation.location.coordinate.longitude == 0) {
+    if (userLocation.location.coordinate.latitude == 0 ||
+        userLocation.location.coordinate.longitude == 0) {
         return;
     }
-    CLLocation *nowLocation = [[CLLocation alloc]initWithLatitude:userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
+    CLLocation *nowLocation = [[CLLocation alloc]initWithLatitude:
+    userLocation.location.coordinate.latitude longitude:userLocation.location.coordinate.longitude];
     [self.runningCoords addObject:nowLocation];
     
  
@@ -501,7 +573,8 @@
     
     return nil;
 }
-- (void)mapView:(MAMapView *)mapView annotationView:(MAAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control
+- (void)mapView:(MAMapView *)mapView annotationView:(MAAnnotationView *)view
+calloutAccessoryControlTapped:(UIControl *)control
 {
 
 }
@@ -512,7 +585,8 @@
         CustomAnnotationView *cusView = (CustomAnnotationView *)view;
         CGRect frame = [cusView convertRect:cusView.calloutView.frame toView:self.mapView];
         
-        frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake(kCalloutViewMargin, kCalloutViewMargin, kCalloutViewMargin, kCalloutViewMargin));
+        frame = UIEdgeInsetsInsetRect(frame, UIEdgeInsetsMake
+        (kCalloutViewMargin, kCalloutViewMargin, kCalloutViewMargin, kCalloutViewMargin));
         
         if (!CGRectContainsRect(self.mapView.frame, frame))
         {
@@ -522,8 +596,8 @@
             CGPoint theCenter = self.mapView.center;
             theCenter = CGPointMake(theCenter.x - offset.width, theCenter.y - offset.height);
             
-            CLLocationCoordinate2D coordinate = [self.mapView convertPoint:theCenter toCoordinateFromView:self.mapView];
-            
+            CLLocationCoordinate2D coordinate = [self.mapView convertPoint:theCenter
+                                                      toCoordinateFromView:self.mapView];
             [self.mapView setCenterCoordinate:coordinate animated:YES];
         }
     }
@@ -535,7 +609,8 @@
     if ([annotation isKindOfClass:[MAPointAnnotation class]]) {
         static NSString *identifier = @"customViewId";
         
-        CustomAnnotationView *annotationView = [[CustomAnnotationView alloc]initWithAnnotation:annotation reuseIdentifier:identifier];
+        CustomAnnotationView *annotationView = [[CustomAnnotationView alloc]initWithAnnotation:
+                                                annotation reuseIdentifier:identifier];
         //必须设置no 不然没法设置自定义弹出view
         annotationView.canShowCallout = NO;
         annotationView.customDelegate = self;

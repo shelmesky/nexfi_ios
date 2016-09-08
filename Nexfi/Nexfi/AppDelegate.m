@@ -390,6 +390,9 @@
                          @{@"lattitude":@"31.205624",@"longitude":@"121.52133"},
                          @{@"lattitude":@"31.206622",@"longitude":@"121.52131"}];
         
+        
+        
+        
 //        NSDictionary *d = arr[arc4random_uniform(0)];
         NSDictionary *d = arr[9];
         

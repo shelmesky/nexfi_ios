@@ -16,6 +16,8 @@
 
 #import "AppDelegate.h"
 
+#import "RegisterVC.h"
+
 @interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate,MAMapViewDelegate>
 
 @property (nonatomic, assign)BOOL reachable;
@@ -273,10 +275,25 @@
     return 3;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
     UserModel *user = [self.handleByUsers objectAtIndex:indexPath.row];
     OtherInfoVC *otherVc= [[OtherInfoVC alloc]init];
     otherVc.user = user;
     [self.navigationController pushViewController:otherVc animated:YES];
+    
+    /*
+    UserModel *mySelf = [[UserManager shareManager]getUser];
+    if (mySelf.phoneNumber) {
+        UserModel *user = [self.handleByUsers objectAtIndex:indexPath.row];
+        OtherInfoVC *otherVc= [[OtherInfoVC alloc]init];
+        otherVc.user = user;
+        [self.navigationController pushViewController:otherVc animated:YES];
+    }else{
+        RegisterVC *registerVc = [[RegisterVC alloc]init];
+        [self.navigationController pushViewController:registerVc animated:YES];
+    }
+    */
+    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
     return self.handleByUsers.count;

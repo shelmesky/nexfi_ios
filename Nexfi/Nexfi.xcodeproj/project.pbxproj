@@ -183,6 +183,7 @@
 		0E391D571D5DB5EE0049797B /* plane_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D531D5DB5EE0049797B /* plane_hover@2x.png */; };
 		0E391D581D5DB5EE0049797B /* plane@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D541D5DB5EE0049797B /* plane@2x.png */; };
 		0E391D5A1D5DC0320049797B /* map_switch@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E391D591D5DC0320049797B /* map_switch@2x.png */; };
+		0E39EA631D813ADA00B0DCE9 /* locations.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E39EA621D813ADA00B0DCE9 /* locations.json */; };
 		0E3FE25F1D4B320A007188B1 /* NFUserLocationVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */; };
 		0E3FE2601D4B320A007188B1 /* NFUserLocationVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */; };
 		0E3FE26A1D4B3AD6007188B1 /* CustomAnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */; };
@@ -199,6 +200,10 @@
 		0E4531F71D6D6CFE00AF044C /* DocumentLoadVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */; };
 		0E4531F81D6D6CFE00AF044C /* DocumentLoadVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */; };
 		0E4531FA1D6D820F00AF044C /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4531F91D6D820F00AF044C /* WebKit.framework */; };
+		0E46B4B11D7ED5B3006F12A1 /* alarm_ico_hover@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4AD1D7ED5B3006F12A1 /* alarm_ico_hover@2x.png */; };
+		0E46B4B21D7ED5B3006F12A1 /* alarm_ico@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4AE1D7ED5B3006F12A1 /* alarm_ico@2x.png */; };
+		0E46B4B31D7ED5B3006F12A1 /* fence_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4AF1D7ED5B3006F12A1 /* fence_close@2x.png */; };
+		0E46B4B41D7ED5B3006F12A1 /* fence_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4B01D7ED5B3006F12A1 /* fence_open@2x.png */; };
 		0E4D394A1D7680C5001A96B8 /* FileKindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D39481D7680C5001A96B8 /* FileKindCell.m */; };
 		0E4D394B1D7680C5001A96B8 /* FileKindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4D39491D7680C5001A96B8 /* FileKindCell.xib */; };
 		0E4D394F1D7680F0001A96B8 /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D394D1D7680F0001A96B8 /* FileCell.m */; };
@@ -670,6 +675,7 @@
 		0E391D531D5DB5EE0049797B /* plane_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane_hover@2x.png"; sourceTree = "<group>"; };
 		0E391D541D5DB5EE0049797B /* plane@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "plane@2x.png"; sourceTree = "<group>"; };
 		0E391D591D5DC0320049797B /* map_switch@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "map_switch@2x.png"; sourceTree = "<group>"; };
+		0E39EA621D813ADA00B0DCE9 /* locations.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = locations.json; sourceTree = "<group>"; };
 		0E3FE25C1D4B320A007188B1 /* NFUserLocationVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFUserLocationVC.h; sourceTree = "<group>"; };
 		0E3FE25D1D4B320A007188B1 /* NFUserLocationVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFUserLocationVC.m; sourceTree = "<group>"; wrapsLines = 0; };
 		0E3FE25E1D4B320A007188B1 /* NFUserLocationVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFUserLocationVC.xib; sourceTree = "<group>"; };
@@ -693,6 +699,10 @@
 		0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DocumentLoadVC.m; sourceTree = "<group>"; };
 		0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DocumentLoadVC.xib; sourceTree = "<group>"; };
 		0E4531F91D6D820F00AF044C /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		0E46B4AD1D7ED5B3006F12A1 /* alarm_ico_hover@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alarm_ico_hover@2x.png"; sourceTree = "<group>"; };
+		0E46B4AE1D7ED5B3006F12A1 /* alarm_ico@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alarm_ico@2x.png"; sourceTree = "<group>"; };
+		0E46B4AF1D7ED5B3006F12A1 /* fence_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fence_close@2x.png"; sourceTree = "<group>"; };
+		0E46B4B01D7ED5B3006F12A1 /* fence_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fence_open@2x.png"; sourceTree = "<group>"; };
 		0E4D39471D7680C5001A96B8 /* FileKindCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileKindCell.h; sourceTree = "<group>"; };
 		0E4D39481D7680C5001A96B8 /* FileKindCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileKindCell.m; sourceTree = "<group>"; };
 		0E4D39491D7680C5001A96B8 /* FileKindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileKindCell.xib; sourceTree = "<group>"; };
@@ -983,6 +993,10 @@
 			children = (
 				0E391D431D5DAD300049797B /* satellite_hover@2x.png */,
 				0E391D441D5DAD300049797B /* satellite@2x.png */,
+				0E46B4AD1D7ED5B3006F12A1 /* alarm_ico_hover@2x.png */,
+				0E46B4AE1D7ED5B3006F12A1 /* alarm_ico@2x.png */,
+				0E46B4AF1D7ED5B3006F12A1 /* fence_close@2x.png */,
+				0E46B4B01D7ED5B3006F12A1 /* fence_open@2x.png */,
 				0E391D591D5DC0320049797B /* map_switch@2x.png */,
 				0E391D451D5DAD300049797B /* traffic_close@2x.png */,
 				0E391D461D5DAD300049797B /* traffic_open@2x.png */,
@@ -1493,6 +1507,7 @@
 		0E36A2AB1D3F22280020E690 /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				0E39EA621D813ADA00B0DCE9 /* locations.json */,
 				0E4D39A51D76DF50001A96B8 /* file.json */,
 				0E35B9A21D489D3900BB07DE /* backgroundSound.mp3 */,
 			);
@@ -2165,6 +2180,7 @@
 				0E0282331D05308900348523 /* message_receiver_background_highlight@3x.png in Resources */,
 				0E1DB3761D54415700BD60C5 /* 067@2x.png in Resources */,
 				0E391D471D5DAD300049797B /* satellite_hover@2x.png in Resources */,
+				0E46B4B31D7ED5B3006F12A1 /* fence_close@2x.png in Resources */,
 				0E0282371D05308900348523 /* message_voice_receiver_normal@3x.png in Resources */,
 				0E1DB3FE1D548D8000BD60C5 /* 1465808627942.png in Resources */,
 				0E4531F81D6D6CFE00AF044C /* DocumentLoadVC.xib in Resources */,
@@ -2187,6 +2203,7 @@
 				0E9E77A61CC62AD100EE2272 /* write_face_28.png in Resources */,
 				0E02823A1D05308900348523 /* message_voice_receiver_playing_3@3x.png in Resources */,
 				0E9E77A91CC62AD100EE2272 /* write_face_30.png in Resources */,
+				0E46B4B11D7ED5B3006F12A1 /* alarm_ico_hover@2x.png in Resources */,
 				0E33E4861D407F0A008D74C2 /* NFReportObjectVC.xib in Resources */,
 				0E0282321D05308900348523 /* wode02.png in Resources */,
 				0E9E77BB1CC62AD100EE2272 /* write_face_47.png in Resources */,
@@ -2232,6 +2249,7 @@
 				0E9E77AB1CC62AD100EE2272 /* write_face_32.png in Resources */,
 				0EFC78DD1D3375EA00789ADD /* RegisterVertifyCodeVC.xib in Resources */,
 				0E02823D1D05308900348523 /* message_voice_sender_playing_2@3x.png in Resources */,
+				0E46B4B21D7ED5B3006F12A1 /* alarm_ico@2x.png in Resources */,
 				0E4531F01D6D4D5400AF044C /* DoucmentListVC.xib in Resources */,
 				0E9E779C1CC62AD100EE2272 /* write_face_19.png in Resources */,
 				0E02821B1D05308900348523 /* img_head_02@2x.png in Resources */,
@@ -2242,6 +2260,7 @@
 				0E0282291D05308900348523 /* myChat.png in Resources */,
 				0E9E77831CC62AD100EE2272 /* OtherInfoVC.xib in Resources */,
 				0E9E77A21CC62AD100EE2272 /* write_face_24.png in Resources */,
+				0E39EA631D813ADA00B0DCE9 /* locations.json in Resources */,
 				0E9E779E1CC62AD100EE2272 /* write_face_20.png in Resources */,
 				0E9E77B01CC62AD100EE2272 /* write_face_37.png in Resources */,
 				0E391D561D5DB5EE0049797B /* close_map_Type_tip@2x.png in Resources */,
@@ -2266,6 +2285,7 @@
 				0EFC78D71D33704700789ADD /* NexFiIcon@3x.png in Resources */,
 				0E9E77DA1CC62AD100EE2272 /* NeighbourVC.xib in Resources */,
 				0E0282211D05308900348523 /* img_head_08@2x.png in Resources */,
+				0E46B4B41D7ED5B3006F12A1 /* fence_open@2x.png in Resources */,
 				0E0282101D05308900348523 /* 102@2x.png in Resources */,
 				0E9E778D1CC62AD100EE2272 /* write_face_05.png in Resources */,
 				0E0282341D05308900348523 /* message_receiver_background_normal@3x.png in Resources */,
