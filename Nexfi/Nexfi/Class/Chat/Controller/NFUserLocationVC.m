@@ -198,7 +198,7 @@
     UIEdgeInsets inset = UIEdgeInsetsMake
     (screenEdgeInset, screenEdgeInset, screenEdgeInset, screenEdgeInset);
     [self.mapView setVisibleMapRect:line.boundingMapRect edgePadding:inset animated:NO];
-     
+
 
 }
 #pragma mark -刷新用户数据
@@ -212,7 +212,6 @@
 }
 #pragma mark -展示所有用户位置
 - (void)showMyFriendLocation{
-    
     
     [self.mapView removeOverlays:self.polyLines];  //移除画线
     [self.mapView removeAnnotations:self.annotations]; //移除所有的标注
@@ -247,7 +246,6 @@
         trafficString = @"YES";
         [btn setBackgroundImage:[UIImage imageNamed:@"fence_open"] forState:0];
     }
-
     [USER_D setObject:trafficString forKey:@"showHeatOverlay"];
     [USER_D synchronize];
 }
@@ -446,8 +444,18 @@
     self.heatMapTileOverlay.allowRetinaAdapting = YES;
 
     [render reloadData];
-    
-    
+    //224888231.793110  109702693.191105 24.474865  39.967790
+//    [self.mapView setVisibleMapRect: MAMapRectMake(224888240.793110, 109702693.191105,
+//                                                   24.474865, 39.967790)
+//                           animated:YES];
+    //更新位置
+    /*
+    MAMapPoint annotationPoint = MAMapPointForCoordinate
+    (CLLocationCoordinate2DMake(mySelf.lattitude.floatValue, mySelf.longitude.floatValue));
+    MAMapRect pointRect = MAMapRectMake(annotationPoint.x, annotationPoint.y, 10, 10);
+    [self.mapView mapRectThatFits:pointRect];
+    [self.mapView setVisibleMapRect:pointRect animated:YES];
+     */
     
 }
 #pragma mark -配置标注
@@ -470,7 +478,7 @@
     }
     [self.mapView addAnnotations:self.annotations];
     [self.mapView showAnnotations:self.annotations edgePadding:
-     UIEdgeInsetsMake(10, 10, 10, 10) animated:YES];
+     UIEdgeInsetsMake(-50, -50, 50, -50) animated:YES];
 
 }
 - (void)initSearch
