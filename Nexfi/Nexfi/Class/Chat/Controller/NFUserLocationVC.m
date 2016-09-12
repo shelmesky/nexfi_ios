@@ -359,6 +359,11 @@
     MAMapPoint point1 = MAMapPointForCoordinate
     (CLLocationCoordinate2DMake(mySelf.lattitude.floatValue,mySelf.longitude.floatValue));
     
+//    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            
+//        });
+//    });;
     
     for (UserModel *user in self.friendList) {
         if (user && user.lattitude && user.longitude) {
@@ -367,6 +372,7 @@
             (user.lattitude.floatValue, user.longitude.floatValue);
             
             MAMapPoint point2 = MAMapPointForCoordinate(coordinate);
+
             //计算两点之间的距离
             CLLocationDistance distance = MAMetersBetweenMapPoints(point1,point2);
             NSDictionary *userDistance = @{@"distance":@(distance),@"userId":user.userId,
@@ -418,9 +424,7 @@
         node.coordinate = coordinate;
         node.intensity = 0.3;
         if ([needIntensityEqual1 containsObject:user]) {
-
-            node.intensity = 1.0;
-
+//            node.intensity = 1.0;
         }
         [self.headOverLines addObject:node];
     }
@@ -430,15 +434,30 @@
 //    self.heatMapTileOverlay.boundingMapRect = MAMapRectMake(31.203223, 121.52322, 200, 100);;
     [self.mapView addOverlay:self.heatMapTileOverlay];
     //设置热力图半径
-    [self.heatMapTileOverlay setRadius:15.0];
+    [self.heatMapTileOverlay setRadius:20.0];
     //设置热力图透明度
-    [self.heatMapTileOverlay setOpacity:1.0];
+    [self.heatMapTileOverlay setOpacity:0.6];
     //设置热力图颜色
+//    [self.heatMapTileOverlay
+//     setGradient:[[MAHeatMapGradient alloc] initWithColor:
+//  @[RGBACOLOR(238, 177, 183, 1), RGBACOLOR(233, 125, 152, 1),
+//    RGBACOLOR(234, 67, 115, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)]
+//    andWithStartPoints:@[@(0.2), @(0.4),@(0.6),@(0.8),@(0.9)]]];
+    
     [self.heatMapTileOverlay
-     setGradient:[[MAHeatMapGradient alloc] initWithColor:
-  @[RGBACOLOR(238, 177, 183, 1), RGBACOLOR(233, 125, 152, 1),
-    RGBACOLOR(234, 67, 115, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)]
-    andWithStartPoints:@[@(0.2), @(0.4),@(0.6),@(0.8),@(0.9)]]];
+     setGradient:[[MAHeatMapGradient alloc] initWithColor:@[
+                                                            [UIColor blueColor],
+                                                            [UIColor greenColor],
+                                                            [UIColor redColor]]
+                                       andWithStartPoints:@[@(0.2)
+                                                            ,@(0.5),@(0.9)]]];
+    
+//    [self.heatMapTileOverlay
+//     setGradient:[[MAHeatMapGradient alloc] initWithColor:
+//                  @[RGBACOLOR(236, 51, 93, 1), RGBACOLOR(236, 51, 93, 1),
+//                    RGBACOLOR(236, 51, 93, 1),RGBACOLOR(236, 51, 93, 1),RGBACOLOR(252, 4, 66, 1)]
+//                                       andWithStartPoints:@[@(0.2), @(0.4),@(0.6),@(0.8),@(0.9)]]];
+    
     MATileOverlayRenderer *render = (MATileOverlayRenderer *)[self.mapView rendererForOverlay:
                                                               self.heatMapTileOverlay];
     self.heatMapTileOverlay.allowRetinaAdapting = YES;
@@ -468,7 +487,6 @@
             MAPointAnnotation *annotation = [[MAPointAnnotation alloc] init];
             CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
             (user.lattitude.floatValue,user.longitude.floatValue);
-
             annotation.coordinate = coordinate;
             annotation.title    = user.userNick;
             annotation.subtitle = user.userId;
@@ -478,7 +496,7 @@
     }
     [self.mapView addAnnotations:self.annotations];
     [self.mapView showAnnotations:self.annotations edgePadding:
-     UIEdgeInsetsMake(-50, -50, 50, -50) animated:YES];
+     UIEdgeInsetsMake(0, 20, 0, 20) animated:YES];
 
 }
 - (void)initSearch
@@ -609,7 +627,6 @@ calloutAccessoryControlTapped:(UIControl *)control
             [self.mapView setCenterCoordinate:coordinate animated:YES];
         }
     }
-    
 }
 - (MAAnnotationView *)mapView:(MAMapView *)mapView viewForAnnotation:(id<MAAnnotation>)annotation
 {

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="109" id="KGk-i7-Jjw" customClass="SenderFileCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="109"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="108.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_sender_background_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Slc-Px-pV8">
+                        <rect key="frame" x="46" y="31.5" width="208" height="67.5"/>
+                        <rect key="contentStretch" x="0.29999999999999999" y="0.59999999999999998" width="0.5" height="0.10000000000000001"/>
+                        <constraints>
+                            <constraint firstAttribute="width" priority="750" constant="153" id="2yk-VE-Aer"/>
+                            <constraint firstAttribute="height" constant="67.5" id="fhI-V9-Wz9"/>
+                            <constraint firstAttribute="height" priority="750" constant="80" id="hMQ-Kj-Zrx"/>
+                            <constraint firstAttribute="width" constant="208" id="vmR-dc-F0H"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2yk-VE-Aer"/>
+                                <exclude reference="hMQ-Kj-Zrx"/>
+                            </mask>
+                        </variation>
+                    </imageView>
+                    <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Pta-Uw-y5a">
+                        <rect key="frame" x="262" y="35" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="G9V-1x-fV0"/>
+                            <constraint firstAttribute="width" constant="50" id="nq7-UQ-dyN"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xaS-HF-X2z">
+                        <rect key="frame" x="98" y="8" width="125" height="21"/>
+                        <constraints>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="125" id="FyJ-H2-a3v"/>
+                            <constraint firstAttribute="height" constant="21" id="JgL-RV-EDU"/>
+                            <constraint firstAttribute="width" constant="125" id="Lxw-O6-Nbs"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="iAm-5f-OJ0"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="FyJ-H2-a3v"/>
+                                <exclude reference="iAm-5f-OJ0"/>
+                            </mask>
+                        </variation>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="Slc-Px-pV8" firstAttribute="top" secondItem="xaS-HF-X2z" secondAttribute="bottom" constant="2.5" id="Dcm-6f-suZ"/>
+                    <constraint firstItem="Pta-Uw-y5a" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="35" id="FYc-GX-aHa"/>
+                    <constraint firstAttribute="trailing" secondItem="Pta-Uw-y5a" secondAttribute="trailing" constant="8" id="FhC-r3-6GB"/>
+                    <constraint firstItem="Slc-Px-pV8" firstAttribute="top" secondItem="xaS-HF-X2z" secondAttribute="bottom" constant="2" id="MDS-h2-mnf"/>
+                    <constraint firstItem="Pta-Uw-y5a" firstAttribute="leading" secondItem="Slc-Px-pV8" secondAttribute="trailing" constant="8" id="Q1r-dt-Pgo"/>
+                    <constraint firstItem="xaS-HF-X2z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="SPZ-NZ-Rsm"/>
+                    <constraint firstItem="Slc-Px-pV8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" priority="750" constant="46" id="peZ-hd-lSJ"/>
+                    <constraint firstItem="xaS-HF-X2z" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="x7S-3x-dQ2"/>
+                    <constraint firstItem="Pta-Uw-y5a" firstAttribute="leading" secondItem="Slc-Px-pV8" secondAttribute="trailing" constant="8" id="xOq-SX-HnH"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="Dcm-6f-suZ"/>
+                        <exclude reference="xOq-SX-HnH"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="212" y="290.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="message_sender_background_normal" width="66" height="49"/>
+    </resources>
+</document>

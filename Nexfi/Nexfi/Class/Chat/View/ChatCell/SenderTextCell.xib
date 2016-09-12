@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -14,20 +14,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="119.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_sender_background_normal" translatesAutoresizingMaskIntoConstraints="NO" id="ZeW-CZ-M0z">
-                        <rect key="frame" x="102" y="31" width="152" height="80.5"/>
-                        <rect key="contentStretch" x="0.29999999999999999" y="0.59999999999999998" width="0.5" height="0.10000000000000001"/>
-                        <constraints>
-                            <constraint firstAttribute="height" priority="750" constant="80" id="b2u-xI-Wum"/>
-                            <constraint firstAttribute="width" priority="750" constant="153" id="hu2-Zd-5sR"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="b2u-xI-Wum"/>
-                                <exclude reference="hu2-Zd-5sR"/>
-                            </mask>
-                        </variation>
-                    </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="nisaddasadsdsadsadsasdadsadsadsdsadsaassdasdasad" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xW0-di-1Vj">
                         <rect key="frame" x="119" y="43" width="117" height="57"/>
                         <constraints>
@@ -55,6 +41,20 @@
                         <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_sender_background_normal" translatesAutoresizingMaskIntoConstraints="NO" id="ZeW-CZ-M0z">
+                        <rect key="frame" x="102" y="31" width="152" height="80.5"/>
+                        <rect key="contentStretch" x="0.29999999999999999" y="0.59999999999999998" width="0.5" height="0.10000000000000001"/>
+                        <constraints>
+                            <constraint firstAttribute="height" priority="750" constant="80" id="b2u-xI-Wum"/>
+                            <constraint firstAttribute="width" priority="750" constant="153" id="hu2-Zd-5sR"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="b2u-xI-Wum"/>
+                                <exclude reference="hu2-Zd-5sR"/>
+                            </mask>
+                        </variation>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="ZeW-CZ-M0z" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="101" id="23S-1X-8tU"/>

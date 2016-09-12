@@ -39,6 +39,7 @@
 #import "Reachability.h"
 #import "KxMenu.h"
 #import "UIView+Tap.h"
+#import "LPActionSheet.h"
 
 #import "Message.h"
 

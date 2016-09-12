@@ -151,7 +151,7 @@
             }
         }
         
-        //Documents/nexfi_BDD3E379-C24D-4D1D-AC37-63E4F3DE2468.db
+        //finallyPartPath  Documents/nexfi_BDD3E379-C24D-4D1D-AC37-63E4F3DE2468.db
         
         //配置参数
         FileModel *model = [[FileModel alloc] init];

@@ -34,7 +34,6 @@
     self.name.highlighted = selected;
     selected ? [UIColor whiteColor] : [UIColor colorWithWhite:0 alpha:0.1];
     self.highlighted = selected;
-    self.name.highlighted = selected;
     self.yellowView.hidden = !selected;
     // Configure the view for the selected state
 }

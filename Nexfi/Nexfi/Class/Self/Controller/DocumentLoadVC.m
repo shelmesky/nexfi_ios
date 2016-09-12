@@ -7,6 +7,7 @@
 //
 
 #import "DocumentLoadVC.h"
+#import "SendFileVC.h"
 #import <WebKit/WebKit.h>
 @interface DocumentLoadVC ()<UIWebViewDelegate,WKNavigationDelegate,WKUIDelegate,UIDocumentInteractionControllerDelegate>
 @property (nonatomic, retain)UIWebView *webView;
@@ -30,7 +31,7 @@
 }
 - (UIWebView *)webView{
     if (!_webView) {
-        _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64 - 45)];
+        _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64)];
         [_webView setScalesPageToFit:YES];
         _webView.delegate = self;
     
@@ -39,7 +40,7 @@
 }
 - (WKWebView *)wkWebView{
     if (!_wkWebView) {
-        _wkWebView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64 - 45)];
+        _wkWebView = [[WKWebView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height - 64)];
         _wkWebView.UIDelegate = self;
         _wkWebView.navigationDelegate = self;
         _wkWebView.allowsBackForwardNavigationGestures = YES;
@@ -49,6 +50,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    [self setBaseVCAttributesWith:self.titleStr left:nil right:@"发送" WithInVC:self];
+    
     [self judgeNetState];
 }
 - (void)judgeNetState{
@@ -87,11 +91,31 @@
     
     self.documentController = [UIDocumentInteractionController interactionControllerWithURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
     self.documentController.delegate = self;
-    [self.view addSubview:self.otherOpenButton];
+//    [self.view addSubview:self.otherOpenButton];
     
 }
 - (void)ldOtherOpenBtnClick:(UIButton *)btn{
     [self.documentController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
+}
+#pragma -mark 发送
+- (void)RightBarBtnClick:(id)sender{
+    [LPActionSheet showActionSheetWithTitle:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"发送给朋友",@"用其他应用打开"] handler:^(LPActionSheet *actionSheet, NSInteger index) {
+        switch (index) {
+            case 1://发送给朋友
+            {
+                SendFileVC *vc = [[SendFileVC alloc]init];
+                [self.navigationController pushViewController:vc animated:YES];
+                break;
+            }
+            case 2://用其他应用打开
+            {
+                [self.documentController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }];
 }
 #pragma -mark UIDocumentInteractionControllerDelegate
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller{

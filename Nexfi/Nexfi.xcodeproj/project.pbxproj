@@ -204,6 +204,13 @@
 		0E46B4B21D7ED5B3006F12A1 /* alarm_ico@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4AE1D7ED5B3006F12A1 /* alarm_ico@2x.png */; };
 		0E46B4B31D7ED5B3006F12A1 /* fence_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4AF1D7ED5B3006F12A1 /* fence_close@2x.png */; };
 		0E46B4B41D7ED5B3006F12A1 /* fence_open@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E46B4B01D7ED5B3006F12A1 /* fence_open@2x.png */; };
+		0E4AE91F1D865B9B0098A6C4 /* LPActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE91E1D865B9B0098A6C4 /* LPActionSheet.m */; };
+		0E4AE9231D8660310098A6C4 /* SendFileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE9211D8660310098A6C4 /* SendFileVC.m */; };
+		0E4AE9241D8660310098A6C4 /* SendFileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE9221D8660310098A6C4 /* SendFileVC.xib */; };
+		0E4AE9281D8683E90098A6C4 /* SenderFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */; };
+		0E4AE9291D8683E90098A6C4 /* SenderFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */; };
+		0E4AE92D1D8684290098A6C4 /* ReceiverFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */; };
+		0E4AE92E1D8684290098A6C4 /* ReceiverFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */; };
 		0E4D394A1D7680C5001A96B8 /* FileKindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D39481D7680C5001A96B8 /* FileKindCell.m */; };
 		0E4D394B1D7680C5001A96B8 /* FileKindCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4D39491D7680C5001A96B8 /* FileKindCell.xib */; };
 		0E4D394F1D7680F0001A96B8 /* FileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D394D1D7680F0001A96B8 /* FileCell.m */; };
@@ -703,6 +710,17 @@
 		0E46B4AE1D7ED5B3006F12A1 /* alarm_ico@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "alarm_ico@2x.png"; sourceTree = "<group>"; };
 		0E46B4AF1D7ED5B3006F12A1 /* fence_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fence_close@2x.png"; sourceTree = "<group>"; };
 		0E46B4B01D7ED5B3006F12A1 /* fence_open@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "fence_open@2x.png"; sourceTree = "<group>"; };
+		0E4AE91D1D865B9B0098A6C4 /* LPActionSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LPActionSheet.h; sourceTree = "<group>"; };
+		0E4AE91E1D865B9B0098A6C4 /* LPActionSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LPActionSheet.m; sourceTree = "<group>"; };
+		0E4AE9201D8660310098A6C4 /* SendFileVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendFileVC.h; sourceTree = "<group>"; };
+		0E4AE9211D8660310098A6C4 /* SendFileVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendFileVC.m; sourceTree = "<group>"; };
+		0E4AE9221D8660310098A6C4 /* SendFileVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendFileVC.xib; sourceTree = "<group>"; };
+		0E4AE9251D8683E90098A6C4 /* SenderFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFileCell.h; sourceTree = "<group>"; };
+		0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFileCell.m; sourceTree = "<group>"; };
+		0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SenderFileCell.xib; sourceTree = "<group>"; };
+		0E4AE92A1D8684290098A6C4 /* ReceiverFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverFileCell.h; sourceTree = "<group>"; };
+		0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverFileCell.m; sourceTree = "<group>"; };
+		0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiverFileCell.xib; sourceTree = "<group>"; };
 		0E4D39471D7680C5001A96B8 /* FileKindCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileKindCell.h; sourceTree = "<group>"; };
 		0E4D39481D7680C5001A96B8 /* FileKindCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FileKindCell.m; sourceTree = "<group>"; };
 		0E4D39491D7680C5001A96B8 /* FileKindCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FileKindCell.xib; sourceTree = "<group>"; };
@@ -1105,6 +1123,12 @@
 				0E02827E1D06ADE900348523 /* TextCell.h */,
 				0E02827F1D06ADE900348523 /* TextCell.m */,
 				0E0282801D06ADE900348523 /* TextCell.xib */,
+				0E4AE9251D8683E90098A6C4 /* SenderFileCell.h */,
+				0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */,
+				0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */,
+				0E4AE92A1D8684290098A6C4 /* ReceiverFileCell.h */,
+				0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */,
+				0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -1525,6 +1549,15 @@
 			path = MaMapKit;
 			sourceTree = "<group>";
 		};
+		0E4AE91C1D865B9B0098A6C4 /* LPActionSheet */ = {
+			isa = PBXGroup;
+			children = (
+				0E4AE91D1D865B9B0098A6C4 /* LPActionSheet.h */,
+				0E4AE91E1D865B9B0098A6C4 /* LPActionSheet.m */,
+			);
+			path = LPActionSheet;
+			sourceTree = "<group>";
+		};
 		0E9E76C61CC62AD100EE2272 /* Class */ = {
 			isa = PBXGroup;
 			children = (
@@ -1749,6 +1782,9 @@
 				0E4531F41D6D6CFE00AF044C /* DocumentLoadVC.h */,
 				0E4531F51D6D6CFE00AF044C /* DocumentLoadVC.m */,
 				0E4531F61D6D6CFE00AF044C /* DocumentLoadVC.xib */,
+				0E4AE9201D8660310098A6C4 /* SendFileVC.h */,
+				0E4AE9211D8660310098A6C4 /* SendFileVC.m */,
+				0E4AE9221D8660310098A6C4 /* SendFileVC.xib */,
 				0E9E774C1CC62AD100EE2272 /* NeighbourVC.h */,
 				0E9E774D1CC62AD100EE2272 /* NeighbourVC.m */,
 				0E9E774E1CC62AD100EE2272 /* NeighbourVC.xib */,
@@ -1862,6 +1898,7 @@
 		0E9E77EF1CC62B9400EE2272 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				0E4AE91C1D865B9B0098A6C4 /* LPActionSheet */,
 				0E009A151D59CDD500A6731B /* BackGroundLocation */,
 				0E3FE2611D4B3357007188B1 /* MaMapKit */,
 				0EFC78DE1D33839C00789ADD /* Catagory */,
@@ -2212,6 +2249,7 @@
 				0E9E77C21CC62AD100EE2272 /* write_face_8.png in Resources */,
 				0E9E77981CC62AD100EE2272 /* write_face_15.png in Resources */,
 				0E9E77891CC62AD100EE2272 /* write_face_01.png in Resources */,
+				0E4AE9291D8683E90098A6C4 /* SenderFileCell.xib in Resources */,
 				0E0282201D05308900348523 /* img_head_07@2x.png in Resources */,
 				0E9E77A41CC62AD100EE2272 /* write_face_26.png in Resources */,
 				0E9E77971CC62AD100EE2272 /* write_face_14.png in Resources */,
@@ -2289,6 +2327,7 @@
 				0E0282101D05308900348523 /* 102@2x.png in Resources */,
 				0E9E778D1CC62AD100EE2272 /* write_face_05.png in Resources */,
 				0E0282341D05308900348523 /* message_receiver_background_normal@3x.png in Resources */,
+				0E4AE92E1D8684290098A6C4 /* ReceiverFileCell.xib in Resources */,
 				0E9E778A1CC62AD100EE2272 /* write_face_02.png in Resources */,
 				0E0282231D05308900348523 /* img_head_10@2x.png in Resources */,
 				0E9E77E21CC62AD100EE2272 /* FCConfigureDateVC.xib in Resources */,
@@ -2310,6 +2349,7 @@
 				0E9E77901CC62AD100EE2272 /* write_face_08.png in Resources */,
 				0E3FE2601D4B320A007188B1 /* NFUserLocationVC.xib in Resources */,
 				0E02822A1D05308900348523 /* otherChat.png in Resources */,
+				0E4AE9241D8660310098A6C4 /* SendFileVC.xib in Resources */,
 				0E0282111D05308900348523 /* 3.png in Resources */,
 				0E0282121D05308900348523 /* bg-xxxx@2x.png in Resources */,
 				0E9E77921CC62AD100EE2272 /* write_face_1.png in Resources */,
@@ -2407,6 +2447,7 @@
 				0EFC78DC1D3375EA00789ADD /* RegisterVertifyCodeVC.m in Sources */,
 				0E03BF5A1D0E560C00F08070 /* XMNChatSystemMessageCell.m in Sources */,
 				0E9E77CC1CC62AD100EE2272 /* SCGIFImageView.m in Sources */,
+				0E4AE9231D8660310098A6C4 /* SendFileVC.m in Sources */,
 				0E03BF571D0E560C00F08070 /* XMNChatImageMessageCell.m in Sources */,
 				0E9E77E91CC62AD100EE2272 /* FCHeadAddCollectionCell.m in Sources */,
 				0EA30B561CF44243008860BF /* VoiceMessage.m in Sources */,
@@ -2445,6 +2486,7 @@
 				0E0282811D06ADE900348523 /* ReceiverAvatarCell.m in Sources */,
 				0E9E77D21CC62AD100EE2272 /* FNSendImageView.m in Sources */,
 				0E03BF581D0E560C00F08070 /* XMNChatLocationMessageCell.m in Sources */,
+				0E4AE9281D8683E90098A6C4 /* SenderFileCell.m in Sources */,
 				0E03BF411D0E560C00F08070 /* View+MASAdditions.m in Sources */,
 				0E32BF811D7D7C6F00BCB4FA /* UDTimeExtender.m in Sources */,
 				0E9E77C61CC62AD100EE2272 /* JXEmoji.m in Sources */,
@@ -2491,6 +2533,7 @@
 				0E9E77E71CC62AD100EE2272 /* UserInfoVC.m in Sources */,
 				0E9E77851CC62AD100EE2272 /* PersonMessage.m in Sources */,
 				0E32BF891D7D7C6F00BCB4FA /* UDRouterImpl.m in Sources */,
+				0E4AE91F1D865B9B0098A6C4 /* LPActionSheet.m in Sources */,
 				0E9E77D91CC62AD100EE2272 /* NeighbourVC.m in Sources */,
 				0E32BF771D7D7C6F00BCB4FA /* UDBtReach.m in Sources */,
 				0E03BF3B1D0E560C00F08070 /* MASConstraintMaker.m in Sources */,
@@ -2508,6 +2551,7 @@
 				0E32BF741D7D7C6F00BCB4FA /* UDBonjourBrowser.m in Sources */,
 				0E9E77ED1CC62AD100EE2272 /* FCTabHeadView.m in Sources */,
 				0E03BF461D0E560C00F08070 /* UITableView+XMNCellRegister.m in Sources */,
+				0E4AE92D1D8684290098A6C4 /* ReceiverFileCell.m in Sources */,
 				0E32BF861D7D7C6F00BCB4FA /* Packets.pb.m in Sources */,
 				0E9E79E01CC62B9500EE2272 /* NSDataEx.m in Sources */,
 				0E9E77871CC62AD100EE2272 /* UserModel.m in Sources */,
