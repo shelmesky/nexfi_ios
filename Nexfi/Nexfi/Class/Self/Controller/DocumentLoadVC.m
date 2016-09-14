@@ -104,6 +104,7 @@
             case 1://发送给朋友
             {
                 SendFileVC *vc = [[SendFileVC alloc]init];
+                vc.currentFileModel = self.currentFileModel;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

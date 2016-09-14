@@ -103,6 +103,7 @@
  *frameData参数由此函数获得 UDLazySource *r = [UDLazySource alloc]initWithQueue:<#(nullable dispatch_queue_t)#> block:<#^NSData * _Nullable(void)block#>
  */
 - (void)singleChatWithFrame:(id<UDSource>)frameData{
+    
     //获取与该用户的link发送数据
     id<UDLink>myLink = [self.singleVC getUserLink];
     if (myLink) {

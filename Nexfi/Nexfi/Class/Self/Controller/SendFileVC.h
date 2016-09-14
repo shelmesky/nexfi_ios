@@ -7,7 +7,10 @@
 //
 
 #import "BaseVC.h"
-
+#import "FileModel.h"
 @interface SendFileVC : BaseVC
+
+/** 用于下载的model */
+@property (nonatomic, strong) FileModel *currentFileModel;
 
 @end

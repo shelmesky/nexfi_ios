@@ -396,7 +396,7 @@
         [distanceArr addObject:userDistance];
 
     }
-
+    
     //判断两个点之间距离是否小于300 如果小于 放到needIntensityEqual1 并将它的热点intensity 设置为1 否则设置0.3
     
     for (int i = 0; i < distanceArr.count - 1; i ++) {
@@ -404,7 +404,7 @@
             NSDictionary *d1 = distanceArr[i];
             NSDictionary *d2 = distanceArr[j];
             
-            if (fabsf([d1[@"distance"] floatValue] - [d2[@"distance"] floatValue]) < 300) {
+            if (fabsf([d1[@"distance"] floatValue] - [d2[@"distance"] floatValue]) < 100) {
                 if (![needIntensityEqual1 containsObject:d1[@"userId"]]) {
                     [needIntensityEqual1 addObject:d1];
                 }
@@ -415,6 +415,7 @@
         }
     }
     
+    
     for (NSDictionary *user in distanceArr) {
         CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
         ([user[@"lattitude"] floatValue], [user[@"longitude"] floatValue]);
@@ -424,19 +425,37 @@
         node.coordinate = coordinate;
         node.intensity = 0.3;
         if ([needIntensityEqual1 containsObject:user]) {
-//            node.intensity = 1.0;
+            node.intensity = 1.0;
         }
+        
         [self.headOverLines addObject:node];
     }
-
+    
+//    int i = 0;
+//    for (NSDictionary *user in distanceArr) {
+//        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+//        ([user[@"lattitude"] floatValue], [user[@"longitude"] floatValue]);
+//        i ++ ;
+//        //热力图标注
+//        MAHeatMapNode *node = [[MAHeatMapNode alloc]init];
+//        node.coordinate = coordinate;
+//        
+////        if (i%20 == 0) {
+//            node.intensity = 0.3;
+////        }else{
+////            node.intensity = 1;
+////        }
+//        [self.headOverLines addObject:node];
+//    }
+    
     self.heatMapTileOverlay.data = self.headOverLines;
     
 //    self.heatMapTileOverlay.boundingMapRect = MAMapRectMake(31.203223, 121.52322, 200, 100);;
     [self.mapView addOverlay:self.heatMapTileOverlay];
     //设置热力图半径
-    [self.heatMapTileOverlay setRadius:20.0];
+    [self.heatMapTileOverlay setRadius:40.0];
     //设置热力图透明度
-    [self.heatMapTileOverlay setOpacity:0.6];
+    [self.heatMapTileOverlay setOpacity:0.3];
     //设置热力图颜色
 //    [self.heatMapTileOverlay
 //     setGradient:[[MAHeatMapGradient alloc] initWithColor:

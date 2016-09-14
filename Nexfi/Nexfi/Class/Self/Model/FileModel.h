@@ -27,6 +27,8 @@
 @property (nonatomic, copy) NSString *fileSize;
 @property (nonatomic, copy) NSString *attachmentFileSize;
 
+@property (nonatomic, copy) NSString *fileData;
+
 /** 如果是本地的，绝对路径 */
 @property (nonatomic, copy) NSString *fileAbsolutePath;
 

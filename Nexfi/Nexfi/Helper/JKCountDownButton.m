@@ -88,6 +88,7 @@
         }
     }
 }
+
 #pragma -mark block
 -(void)didChange:(DidChangeBlock)didChangeBlock{
     _didChangeBlock = [didChangeBlock copy];

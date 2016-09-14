@@ -29,7 +29,7 @@
      @property (nonatomic, copy) NSString *fileAbsolutePath;
     */
     
-    
+    [aCoder encodeObject:self.fileData forKey:@"fileData"];
     [aCoder encodeObject:self.fileId forKey:@"fileId"];
 //    [aCoder encodeObject:self.vFileName forKey:@"vFileName"];
     [aCoder encodeObject:self.vContentType forKey:@"vContentType"];
@@ -48,6 +48,7 @@
 - (id)initWithCoder:(NSCoder *)aDecoder{
     if (self = [super init]) {
         self.fileId = [aDecoder decodeObjectForKey:@"fileId"];
+        self.fileData = [aDecoder decodeObjectForKey:@"fileData"];
 //        self.vFileName = [aDecoder decodeObjectForKey:@"vFileName"];
         self.vContentType = [aDecoder decodeObjectForKey:@"vContentType"];
         self.vUrl = [aDecoder decodeObjectForKey:@"vUrl"];

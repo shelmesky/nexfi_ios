@@ -17,6 +17,8 @@
 
 #import "SenderTextCell.h"
 #import "SenderAvatarCell.h"
+#import "SenderFileCell.h"
+#import "ReceiverFileCell.h"
 #import "ReceiverAvatarCell.h"
 #import "ReceiverVoiceCell.h"
 #import "SenderVoiceCell.h"
@@ -348,6 +350,19 @@
             return (ChatCell *)cell;
         }else{
             ReceiverVoiceCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverVoiceCell" owner:nil options:nil] objectAtIndex:0];
+            cell.to_user = self.to_user;
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:self.to_user.userAvatar];
+            return (ChatCell *)cell;
+        }
+    }else if (msg.messageBodyType == eMessageBodyType_File){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderFileCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderFileCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverFileCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverFileCell" owner:nil options:nil] objectAtIndex:0];
             cell.to_user = self.to_user;
             cell.msg = msg;
             cell.avatar.image = [UIImage imageNamed:self.to_user.userAvatar];

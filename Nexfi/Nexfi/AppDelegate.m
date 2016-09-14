@@ -56,6 +56,8 @@
     self.locationList = [[NSMutableArray alloc]initWithCapacity:0];
     
     
+
+    
     //初始化应用，appKey和appSecret从后台申请得
 //    [SMSSDK registerApp:@"14cf8332203fa"
 //             withSecret:@"3749334724b29bdbad573fa76c514ef8"];

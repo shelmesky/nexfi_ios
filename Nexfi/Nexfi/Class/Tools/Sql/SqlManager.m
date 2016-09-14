@@ -68,13 +68,13 @@ static SqlManager *_share = nil;
         //用户表
         [db executeUpdate:@"create table if not exists nexfi_chat_user (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text,lastmsg text, unreadnum integer default 0)"];
         //双方聊天表
-        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,durational integer,isRead integer)"];
+        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,fileName text,fileSize text,fileSufType text,durational integer,isRead integer)"];
         
         //所有人的群聊
-        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text ,durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text , fileName text,fileSize text,fileSufType text, durational interger, isRead interger)"];
         
         //群聊（群组）
-        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , fileName text,fileSize text,fileSufType text, durational interger, isRead interger)"];
         
     }
 }
@@ -148,17 +148,40 @@ static SqlManager *_share = nil;
         NSString *content;
         NSString *durational;
         NSString *isRead;
+        NSString *fileName;
+        NSString *fileSufType;
+        NSString *fileSize;
         if (message.messageBodyType == eMessageBodyType_Image) {
+            
             content = message.fileMessage.fileData;
             isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Voice){
+            
             content = message.voiceMessage.fileData;
             durational = message.voiceMessage.durational;
             isRead = message.voiceMessage.isRead;
+            fileName = message.voiceMessage.fileName;
+            fileSufType = message.voiceMessage.fileType;
+            fileSize = message.voiceMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Text){
+            
             content = message.textMessage.fileData;
             isRead = message.textMessage.isRead;
-        }
+            
+        }else if (message.messageBodyType == eMessageBodyType_File){
+            
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            
+        }//fileName text,fileSize text,fileSufType text
         [dic setObject:content forKey:@"msg_text"];
         if (durational) {
             [dic setObject:durational forKey:@"durational"];
@@ -166,20 +189,25 @@ static SqlManager *_share = nil;
         if (isRead) {
             [dic setObject:isRead forKey:@"isRead"];
         }
-        
+        if (fileName) {
+            [dic setObject:fileName forKey:@"fileName"];
+        }
+        if (fileSufType) {
+            [dic setObject:fileSufType forKey:@"fileSufType"];
+        }
+        if (fileSize) {
+            [dic setObject:fileSize forKey:@"fileSize"];
+        }
         if (message.messageBodyType == eMessageBodyType_Voice) {
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,durational,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :durational,:isRead)"withParameterDictionary:dic];
-            }else{
-                [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,durational)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :durational)"withParameterDictionary:dic];
-            }
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,durational,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :durational, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
-        }else{
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead)"withParameterDictionary:dic];
-            }else{
-                [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype)"withParameterDictionary:dic];
-            }
+
+        }else if (message.messageBodyType == eMessageBodyType_Text){
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead)"withParameterDictionary:dic];
+        }
+        else{//图片 文件
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
+
         }
         
     }
@@ -205,17 +233,40 @@ static SqlManager *_share = nil;
         NSString *content;
         NSString *durational;
         NSString *isRead;
+        NSString *fileName;
+        NSString *fileSufType;
+        NSString *fileSize;
         if (message.messageBodyType == eMessageBodyType_Image) {
+            
             content = message.fileMessage.fileData;
             isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Voice){
+            
             content = message.voiceMessage.fileData;
             durational = message.voiceMessage.durational;
             isRead = message.voiceMessage.isRead;
+            fileName = message.voiceMessage.fileName;
+            fileSufType = message.voiceMessage.fileType;
+            fileSize = message.voiceMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Text){
+            
             content = message.textMessage.fileData;
             isRead = message.textMessage.isRead;
-        }
+            
+        }else if (message.messageBodyType == eMessageBodyType_File){
+            
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            
+        }//fileName text,fileSize text,fileSufType text
         [dic setObject:content forKey:@"msg_text"];
         if (durational) {
             [dic setObject:durational forKey:@"durational"];
@@ -223,19 +274,28 @@ static SqlManager *_share = nil;
         if (isRead) {
             [dic setObject:isRead forKey:@"isRead"];
         }
+        if (fileName) {
+            [dic setObject:fileName forKey:@"fileName"];
+        }
+        if (fileSufType) {
+            [dic setObject:fileSufType forKey:@"fileSufType"];
+        }
+        if (fileSize) {
+            [dic setObject:fileSize forKey:@"fileSize"];
+        }//nexfi_group_chat
         if (message.messageBodyType == eMessageBodyType_Voice) {
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,durational,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :durational, :isRead)"withParameterDictionary:dic];
-            }else{
-                [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,durational)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :durational)"withParameterDictionary:dic];
-            }
+            
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,durational,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :durational, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
+
+            
+        }else if (message.messageBodyType == eMessageBodyType_Text){
+            
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead)"withParameterDictionary:dic];
             
         }else{
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead)"withParameterDictionary:dic];
-            }else{
-                [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId)"withParameterDictionary:dic];
-            }
+            
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
+
         }
         
     }
@@ -273,62 +333,88 @@ static SqlManager *_share = nil;
     
     if ([db open]) {
         
-        NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+        NSMutableDictionary *dic = [[NSMutableDictionary alloc] init];
         
         NSString * chatToId;
         //我发别人
         
         if([message.userMessage.userId isEqualToString:[[UserManager shareManager]getUser].userId])
         {
-            [dict setObject:[[UserManager shareManager]getUser].userId forKey:@"from_user_id"];
-            [dict setObject:message.receiver forKey:@"to_user_id"];
+            [dic setObject:[[UserManager shareManager]getUser].userId forKey:@"from_user_id"];
+            [dic setObject:message.receiver forKey:@"to_user_id"];
             chatToId = message.receiver;
             
         }else {//别人发我
-            [dict setObject:message.userMessage.userId forKey:@"from_user_id"];
-            [dict setObject:[[UserManager shareManager]getUser].userId forKey:@"to_user_id"];
+            [dic setObject:message.userMessage.userId forKey:@"from_user_id"];
+            [dic setObject:[[UserManager shareManager]getUser].userId forKey:@"to_user_id"];
             chatToId = message.userMessage.userId;
             
         }
         NSString *content;
         NSString *durational;
         NSString *isRead;
-        if (message.messageBodyType == eMessageBodyType_Image) {
+        NSString *fileName;
+        NSString *fileSufType;
+        NSString *fileSize;
+        if (message.messageBodyType == eMessageBodyType_Image || message.messageBodyType == eMessageBodyType_File) {
+            
             content = message.fileMessage.fileData;
             isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Voice){
+            
             content = message.voiceMessage.fileData;
             durational = message.voiceMessage.durational;
             isRead = message.voiceMessage.isRead;
+            fileName = message.voiceMessage.fileName;
+            fileSufType = message.voiceMessage.fileType;
+            fileSize = message.voiceMessage.fileSize;
+            
         }else if (message.messageBodyType == eMessageBodyType_Text){
+            
             content = message.textMessage.fileData;
             isRead = message.textMessage.isRead;
-        }
-        [dict setObject:content forKey:@"msg_text"];
+            
+        }//fileName text,fileSize text,fileSufType text
+        [dic setObject:content forKey:@"msg_text"];
         if (durational) {
-            [dict setObject:durational forKey:@"durational"];
+            [dic setObject:durational forKey:@"durational"];
         }
         if (isRead) {
-            [dict setObject:isRead forKey:@"isRead"];
+            [dic setObject:isRead forKey:@"isRead"];
+        }
+        if (fileName) {
+            [dic setObject:fileName forKey:@"fileName"];
+        }
+        if (fileSufType) {
+            [dic setObject:fileSufType forKey:@"fileSufType"];
+        }
+        if (fileSize) {
+            [dic setObject:fileSize forKey:@"fileSize"];
         }
        
         
-        [dict setObject:message.msgId forKey:@"msg_id"];
-        [dict setObject:message.timeStamp forKey:@"send_time"];
-        [dict setObject:[NSString stringWithFormat:@"%ld",message.messageBodyType] forKey:@"filetype"];
+        [dic setObject:message.msgId forKey:@"msg_id"];
+        [dic setObject:message.timeStamp forKey:@"send_time"];
+        [dic setObject:[NSString stringWithFormat:@"%ld",message.messageBodyType] forKey:@"filetype"];
         
         if (message.messageBodyType == eMessageBodyType_Voice) {
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational,:isRead)" withParameterDictionary:dict];
-            }else{
-                [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:durational)" withParameterDictionary:dict];
-            }
-        }else{
-            if (isRead) {
-                [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype,:isRead)" withParameterDictionary:dict];
-            }else{
-                [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype) values(:from_user_id, :to_user_id,:send_time,:msg_text,:msg_id,:filetype)" withParameterDictionary:dict];
-            }
+            
+            [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,durational,isRead,fileName,fileSize,fileSufType) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :durational, :isRead, :fileName, :fileSize, :fileSufType)" withParameterDictionary:dic];
+            
+
+        }else if (message.messageBodyType == eMessageBodyType_Text){
+            
+            [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :isRead)" withParameterDictionary:dic];
+            
+        }else{//图片 文件
+            BOOL a = [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType)" withParameterDictionary:dic];
+            
+            NSLog(@"a===%d",a);
+
         }
         
         
@@ -354,8 +440,9 @@ static SqlManager *_share = nil;
     
     if ([db open]) {
         NSString *sql = [NSString stringWithFormat:@"select count(*) from nexfi_chat_user where userId=%@",toUser.userId];
-        NSUInteger count = [db intForQuery:sql];
         
+        NSUInteger count = [db intForQuery:sql];
+        NSLog(@"sql===+%d",count);
         NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
         //别人发我最后一条消息
         if([message.userMessage.userId isEqualToString:toUser.userId])
@@ -382,6 +469,8 @@ static SqlManager *_share = nil;
             [dict setObject:@"[语音]" forKey:@"lastmsg"];
         }else if (message.messageBodyType ==eMessageBodyType_Image){
             [dict setObject:@"[图片]" forKey:@"lastmsg"];
+        }else if (message.messageBodyType == eMessageBodyType_File){
+            [dict setObject:@"[文件]" forKey:@"lastmsg"];
         }else{
             [dict setObject:message.textMessage.fileData forKey:@"lastmsg"];
         }
@@ -538,16 +627,22 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 message.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.fileMessage = fileMessage;
             }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
                 VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
                 voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
                 voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                voiceMessage.fileName = [rs stringForColumn:@"fileName"];
+                voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.voiceMessage = voiceMessage;
             }
             UserModel *user = [[UserModel alloc]init];
@@ -595,16 +690,22 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 message.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.fileMessage = fileMessage;
             }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
                 VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
                 voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
                 voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                voiceMessage.fileName = [rs stringForColumn:@"fileName"];
+                voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.voiceMessage = voiceMessage;
             }
             
@@ -654,9 +755,11 @@ static SqlManager *_share = nil;
         //FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where from_user_id=:from_user_id or to_user_id=:to_user_id order by send_time asc" withParameterDictionary:dict];
         FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat where (from_user_id=:from_user_id or to_user_id=:to_user_id) order by send_time desc limit :page,:pageNum" withParameterDictionary:dict];
         
+        FMResultSet *ss = [db executeQuery:@"select * from nexfi_chat where (from_user_id=:from_user_id or to_user_id=:to_user_id) limit :page,:pageNum" withParameterDictionary:dict];        while ([ss next]) {
+            NSLog(@"11111");
+        }
         //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select * from letmedo_chat where from_user_id=%@ or to_user_id=%@ order by public_time desc limit :startNum,:endNum",fromId,toId]];
         
-        //FMResultSet *rs  = [db executeQuery:[NSString stringWithFormat:@"select count(*) from letmedo_chat"]];
         
         PersonMessage * msg;
         while ([rs next]){
@@ -675,16 +778,22 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 msg.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 msg.fileMessage = fileMessage;
             }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Voice){
                 VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
                 voiceMessage.fileData = [rs stringForColumn:@"msg_text"];
                 voiceMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 voiceMessage.durational = [NSString stringWithFormat:@"%d",[rs intForColumn:@"durational"]];
+                voiceMessage.fileName = [rs stringForColumn:@"fileName"];
+                voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 msg.voiceMessage = voiceMessage;
             }
             
