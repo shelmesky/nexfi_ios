@@ -75,6 +75,9 @@ static NexfiUtil *_util;
     //    [[UITabBar appearance]setBackgroundColor:[UIColor whiteColor]];
     [[UITabBar appearance]setBarTintColor:[UIColor whiteColor]];
     [[UITabBar appearance]setBackgroundImage:[ConFunc createImageWithColor:RGBACOLOR(251, 251, 251, 1) size:CGSizeMake(SCREEN_SIZE.width,49)]];//设置背景，修改颜色是没有用的
+    //去除tabbar 上面那条线
+//    [tabbar.tabBar setShadowImage:[UIImage new]];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
     //设定Tabbar的颜色
     //    [[UITabBar appearance] setBarTintColor:[UIColor whiteColor]];
@@ -362,5 +365,28 @@ static NexfiUtil *_util;
         }
     }
     return @"其他";
+}
+#pragma -mark 获取当前时间
++(NSString *)getDateWithFormatter:(NSString *)formatter
+{
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:formatter];
+    NSString *strDate = [dateFormatter stringFromDate:[NSDate date]];
+    NSLog(@"%@", strDate);
+    return strDate;
+}
+#pragma mark -获得已存储的文件路径（file）
++ (NSDictionary *)getSaveFilePathWithFileType:(NSString *)fileType{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString *userDocPath = [[NSFileManager getDocumentDirectoryPath] stringByAppendingPathComponent:[NSString stringWithFormat:@"nexfiFile/%@/",[[UserManager shareManager]getUser].userId]];
+    if (![fileManager fileExistsAtPath:userDocPath]) {
+        [fileManager createDirectoryAtPath:userDocPath withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+    NSString *currentTime = [NexfiUtil getDateWithFormatter:@"yyyyMMddHHmmss"];
+    NSString *finallyPath = [userDocPath stringByAppendingPathComponent:[NSString stringWithFormat:@"file_%@.%@",currentTime,fileType]];
+    
+    NSString *partPath = [NSString stringWithFormat:@"nexfiFile/%@/file_%@.%@",[[UserManager shareManager]getUser].userId,currentTime,fileType];
+    
+    return @{@"partPath":partPath,@"fullPath":finallyPath};
 }
 @end

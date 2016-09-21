@@ -130,6 +130,7 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
+            <gestureRecognizers/>
             <connections>
                 <outlet property="avatar" destination="EHg-yf-qOF" id="Gbk-bq-Qhm"/>
                 <outlet property="bubble" destination="nch-hM-itG" id="Uh3-w0-r27"/>
@@ -137,9 +138,16 @@
                 <outlet property="fileName" destination="lts-L6-T8e" id="WHW-oY-QbA"/>
                 <outlet property="fileSize" destination="hVX-0P-O4E" id="FgH-t3-113"/>
                 <outlet property="fileTypeImage" destination="MW9-P3-eYo" id="qEd-hO-zUS"/>
+                <outletCollection property="gestureRecognizers" destination="mGw-nK-7lk" appends="YES" id="rpC-uZ-daI"/>
             </connections>
             <point key="canvasLocation" x="212" y="285.5"/>
         </tableViewCell>
+        <tapGestureRecognizer id="mGw-nK-7lk">
+            <connections>
+                <action selector="tapText:" destination="KGk-i7-Jjw" id="44a-io-uCP"/>
+                <outlet property="delegate" destination="-1" id="CsJ-TY-VT9"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="message_receiver_background_normal" width="66" height="49"/>

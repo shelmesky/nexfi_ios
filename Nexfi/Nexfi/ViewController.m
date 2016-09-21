@@ -52,7 +52,6 @@
     }
     
     [self isAutoLoginWithNoWifi];
-    
 
 }
 - (void)reachabilityChanged: (NSNotification *)notification{

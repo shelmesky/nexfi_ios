@@ -28,7 +28,7 @@
 /**
  *获取Document文件路径
  */
-- (NSString *)getDocumentDirectoryPath;
++ (NSString *)getDocumentDirectoryPath;
 
 @end
 

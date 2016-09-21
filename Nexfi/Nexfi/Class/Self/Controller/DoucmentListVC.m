@@ -119,7 +119,6 @@
         vc.title = model.fileName;
         model.fileAbsolutePath = [NSHomeDirectory() stringByAppendingPathComponent:model.partPath];
         vc.currentFileModel = model;
-        NSLog(@"nod=====%@",model.fileAbsolutePath);
         [self.navigationController pushViewController:vc animated:YES];
         
     }

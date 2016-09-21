@@ -99,6 +99,7 @@
 }
 #pragma -mark 发送
 - (void)RightBarBtnClick:(id)sender{
+    
     [LPActionSheet showActionSheetWithTitle:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"发送给朋友",@"用其他应用打开"] handler:^(LPActionSheet *actionSheet, NSInteger index) {
         switch (index) {
             case 1://发送给朋友
@@ -117,6 +118,20 @@
                 break;
         }
     }];
+     
+    /*
+    [LPActionSheet showActionSheetWithTitle:nil cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@[@"用其他应用打开"] handler:^(LPActionSheet *actionSheet, NSInteger index) {
+        switch (index) {
+            case 1://用其他应用打开
+            {
+                [self.documentController presentOptionsMenuFromRect:self.view.bounds inView:self.view animated:YES];
+                break;
+            }
+            default:
+                break;
+        }
+    }];
+    */
 }
 #pragma -mark UIDocumentInteractionControllerDelegate
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller{

@@ -14,7 +14,8 @@
 #import "NFSingleChatInfoVC.h"
 #import "FNAVAudioPlayer.h"
 //#import <SMS_SDK/SMSSDK.h>
-#import <AMapFoundationKit/AMapFoundationKit.h>
+
+//#import <BaiduMapAPI_Map/BMKMapComponent.h>
 
 #import <CoreLocation/CoreLocation.h>
 #import "NexfiUtil.h"
@@ -39,7 +40,6 @@
 @property (nonatomic, strong) dispatch_source_t timer;
 @property (nonatomic, assign)BOOL isNeedUpdate;
 
-@property (nonatomic, retain)NSMutableArray *locationList;
 
 @end
 
@@ -53,10 +53,14 @@
     if ([[UserManager shareManager]getUser].userId) {
         [[SqlManager shareInstance]creatTable];
     }
-    self.locationList = [[NSMutableArray alloc]initWithCapacity:0];
     
     
-
+    //百度
+    BMKMapManager *mapManager = [[BMKMapManager alloc]init];
+    BOOL ret = [mapManager start:@"0oY5i88DPGXwYdn5S4q3lu9B6eLfFz7K" generalDelegate:self];
+    if (!ret) {
+        NSLog(@"manager start failed!");
+    }
     
     //初始化应用，appKey和appSecret从后台申请得
 //    [SMSSDK registerApp:@"14cf8332203fa"
@@ -64,10 +68,14 @@
     
     //清除语音缓存
 //    [self clearVoiceCache];
+    
+    /*
     //18502569914
     //高德
     [AMapServices sharedServices].apiKey = @"56e2afd4d54a42ecba325a0b738f1fac";
-
+     */
+    
+    
     
     [IQKeyboardManager sharedManager].enable = NO;
 //    [IQKeyboardManager sharedManager].keyboardDistanceFromTextField = 10.0;
@@ -119,6 +127,9 @@
         //        doc.appFilePath = appfilePath;
         //        [_nav pushViewController:doc animated:YES];
     }
+    
+    
+    
     
     return YES;
     
@@ -374,12 +385,13 @@
         self.isNeedUpdate = NO;
         //更新用户信息
         UserModel *user = [[UserManager shareManager]getUser];
-        /*
+        
         user.lattitude = [NSString stringWithFormat:@"%f",loc.coordinate.latitude];
         user.longitude = [NSString stringWithFormat:@"%f",loc.coordinate.longitude];
         [[UserManager shareManager]loginSuccessWithUser:user];
-         */
+         
         
+        /*
         NSArray *arr = @[
                          @{@"lattitude":@"31.203223",@"longitude":@"121.52322"},
                          @{@"lattitude":@"31.212333",@"longitude":@"121.52562"},
@@ -402,6 +414,8 @@
         
         user.longitude = d[@"longitude"];
         [[UserManager shareManager]loginSuccessWithUser:user];
+        
+        */
         
         if ([UnderdarkUtil share].node.links.count > 0) {
             for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

@@ -14,11 +14,12 @@
 #import "VertifyCodeVC.h"
 #import "NFUserLocationVC.h"
 
+
 #import "AppDelegate.h"
 
 #import "RegisterVC.h"
 
-@interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate,MAMapViewDelegate>
+@interface NeighbourVC ()<UITableViewDataSource,UITableViewDelegate,NFNearbyUserCellDelegate>
 
 @property (nonatomic, assign)BOOL reachable;
 @end
@@ -170,7 +171,7 @@
         if (updateLocation) {//更新位置之后  不用再做刷新动画
             NSLog(@"return");
             //更新地图里面好友位置
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"updateFriendInfo" object:nil];
+            //[[NSNotificationCenter defaultCenter]postNotificationName:@"updateFriendInfo" object:nil];
             return;
         }
     }else{

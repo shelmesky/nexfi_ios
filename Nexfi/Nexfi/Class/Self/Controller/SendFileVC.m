@@ -58,7 +58,10 @@
 
 
     //群聊
-    
+    UserModel *user = [[UserModel alloc]init];
+    user.userNick = @"群聊";
+    user.userAvatar = @"qunliao";
+    [self.sendObjectList insertObject:user atIndex:0];
     [self.sendObjectTable reloadData];
     
 }
@@ -84,16 +87,30 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
  
-    self.currentFileModel.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:self.currentFileModel.fileAbsolutePath]];
-    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
-    self.currentFileModel.fileData = [voiceData base64Encoding];
-    
-    UserModel *user = self.sendObjectList[indexPath.row];
-    
-    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        
+        UserModel *user = self.sendObjectList[indexPath.row];
 
-    
-    [self singleChatWithUserModel:user];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            
+            [[[ForwardAlert alloc]initWithTitle:user.userNick images:@[user.userAvatar] content:[NSString stringWithFormat:@"[文件]%@",self.currentFileModel.fileName] contentType:Content_Text buttonHandler:^(NSInteger buttonClickIndex) {
+                if (buttonClickIndex == 1) {
+                    
+                    self.currentFileModel.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:self.currentFileModel.fileAbsolutePath]];
+                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
+                    self.currentFileModel.fileData = [voiceData base64Encoding];
+                    
+                    UserModel *user = self.sendObjectList[indexPath.row];
+                    
+                    //0群聊 其他单聊
+                    indexPath.row == 0?[self allUserChatWithUserModel:user]:[self singleChatWithUserModel:user];
+                }
+            }] show];
+            
+        });
+    });
+
+    //alert
 
     
 }
@@ -111,9 +128,15 @@
         FileMessage *fileMessage = [[FileMessage alloc]init];
         fileMessage.fileData = self.currentFileModel.fileData;//消息数据
         fileMessage.isRead = @"1";//已读未读
-        fileMessage.fileName = @"a";
-        fileMessage.fileType = @"b";
-        fileMessage.fileSize = @"c";
+        fileMessage.fileName = self.currentFileModel.fileName;
+        NSString *pathExtation = [[self.currentFileModel.fileName componentsSeparatedByString:@"."] lastObject];
+        fileMessage.fileType = pathExtation;
+        
+        NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:pathExtation];
+        [[NSData dataWithBase64EncodedString:self.currentFileModel.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+        fileMessage.filePath = fileDic[@"partPath"];
+        
+        fileMessage.fileSize = self.currentFileModel.fileSize;
         msg.fileMessage = fileMessage;
         
         msg.messageBodyType = eMessageBodyType_File;
@@ -121,7 +144,6 @@
         msg.receiver = user.userId;//发送对像
         msg.msgId = deviceUDID;//msgId
         msg.userMessage = [[UserManager shareManager]getUser];
-        
         
         msg.messageType = eMessageType_SingleChat;
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
@@ -131,12 +153,17 @@
         [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:user WithMsg:msg];
         
         
-        
         return newData;
         
     }];
     
-    [[UnderdarkUtil share].node singleChatWithFrame:result];
+    //发送消息
+    for (int i = 0; i < [UnderdarkUtil share].node.links.count; i ++) {
+        id<UDLink>myLink = [UnderdarkUtil share].node.links[i];
+        if ([[NSString stringWithFormat:@"%lld",myLink.nodeId] isEqualToString:user.nodeId]) {
+            [myLink sendData:result];
+        }
+    }
     
 }
 #pragma mark -群聊
@@ -151,6 +178,15 @@
         FileMessage *fileMessage = [[FileMessage alloc]init];
         fileMessage.fileData = self.currentFileModel.fileData;//消息数据
         fileMessage.isRead = @"1";//已读未读
+        fileMessage.fileName = self.currentFileModel.fileName;
+        NSString *pathExtation = [[self.currentFileModel.fileName componentsSeparatedByString:@"."] lastObject];
+        fileMessage.fileType = pathExtation;
+        
+        NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:pathExtation];
+        [[NSData dataWithBase64EncodedString:self.currentFileModel.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+        fileMessage.filePath = fileDic[@"partPath"];
+        
+        fileMessage.fileSize = self.currentFileModel.fileSize;
         msg.fileMessage = fileMessage;
         
         msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
@@ -173,8 +209,8 @@
         
     }];
     
+    //发送消息
     [[UnderdarkUtil share].node allUserChatWithFrame:result];
-
     
 }
 #pragma -mark 获取当前时间

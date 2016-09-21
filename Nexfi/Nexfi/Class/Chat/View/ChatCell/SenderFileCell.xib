@@ -14,6 +14,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="108.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_sender_background_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Slc-Px-pV8">
+                        <rect key="frame" x="46" y="32.5" width="208" height="67.5"/>
+                        <rect key="contentStretch" x="0.29999999999999999" y="0.59999999999999998" width="0.5" height="0.10000000000000001"/>
+                        <constraints>
+                            <constraint firstAttribute="width" priority="750" constant="153" id="2yk-VE-Aer"/>
+                            <constraint firstAttribute="height" constant="67.5" id="fhI-V9-Wz9"/>
+                            <constraint firstAttribute="height" priority="750" constant="80" id="hMQ-Kj-Zrx"/>
+                            <constraint firstAttribute="width" constant="208" id="vmR-dc-F0H"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2yk-VE-Aer"/>
+                                <exclude reference="hMQ-Kj-Zrx"/>
+                            </mask>
+                        </variation>
+                    </imageView>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xdU-r8-Nmb">
                         <rect key="frame" x="196" y="49" width="38" height="36"/>
                         <constraints>
@@ -66,22 +82,6 @@
                             </mask>
                         </variation>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_sender_background_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Slc-Px-pV8">
-                        <rect key="frame" x="46" y="32" width="208" height="67.5"/>
-                        <rect key="contentStretch" x="0.29999999999999999" y="0.59999999999999998" width="0.5" height="0.10000000000000001"/>
-                        <constraints>
-                            <constraint firstAttribute="width" priority="750" constant="153" id="2yk-VE-Aer"/>
-                            <constraint firstAttribute="height" constant="67.5" id="fhI-V9-Wz9"/>
-                            <constraint firstAttribute="height" priority="750" constant="80" id="hMQ-Kj-Zrx"/>
-                            <constraint firstAttribute="width" constant="208" id="vmR-dc-F0H"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="2yk-VE-Aer"/>
-                                <exclude reference="hMQ-Kj-Zrx"/>
-                            </mask>
-                        </variation>
-                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="xdU-r8-Nmb" firstAttribute="top" secondItem="Slc-Px-pV8" secondAttribute="top" constant="17" id="7gW-Lb-z5h"/>
@@ -108,6 +108,7 @@
                     </mask>
                 </variation>
             </tableViewCellContentView>
+            <gestureRecognizers/>
             <connections>
                 <outlet property="avatar" destination="Pta-Uw-y5a" id="Kgw-GM-w7P"/>
                 <outlet property="bubble" destination="Slc-Px-pV8" id="q0N-IG-efs"/>
@@ -115,9 +116,16 @@
                 <outlet property="fileName" destination="2dY-1Y-K1q" id="SUq-S5-Jm7"/>
                 <outlet property="fileSize" destination="egs-GC-y57" id="5bj-Tw-yrq"/>
                 <outlet property="fileTypeImage" destination="xdU-r8-Nmb" id="iEo-Bx-J0M"/>
+                <outletCollection property="gestureRecognizers" destination="KvC-Oj-OFn" appends="YES" id="WnA-sC-fUv"/>
             </connections>
             <point key="canvasLocation" x="212" y="290.5"/>
         </tableViewCell>
+        <tapGestureRecognizer id="KvC-Oj-OFn">
+            <connections>
+                <action selector="tapText:" destination="KGk-i7-Jjw" id="1Zm-XI-8XK"/>
+                <outlet property="delegate" destination="-1" id="Tv4-J5-F9P"/>
+            </connections>
+        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="message_sender_background_normal" width="66" height="49"/>

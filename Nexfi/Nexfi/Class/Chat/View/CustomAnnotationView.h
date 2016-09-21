@@ -6,7 +6,7 @@
 //  Copyright © 2016年 FuYaChen. All rights reserved.
 //
 
-#import <MAMapKit/MAMapKit.h>
+#import <BaiduMapAPI_Map/BMKMapComponent.h>
 
 @protocol CustomAnnotationDelegate <NSObject>
 
@@ -14,7 +14,7 @@
 
 @end
 
-@interface CustomAnnotationView : MAAnnotationView
+@interface CustomAnnotationView : BMKAnnotationView
 
 @property (nonatomic, copy) NSString *name;//名字
 

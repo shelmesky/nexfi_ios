@@ -10,6 +10,10 @@
 #import "FileModel.h"
 @implementation NSFileManager (Handle)
 //获取Document文件路径
++ (NSString *)getDocumentDirectoryPath{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    return paths[0];
+}
 - (NSString *)getDocumentDirectoryPath{
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     return paths[0];

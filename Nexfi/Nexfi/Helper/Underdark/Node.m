@@ -357,6 +357,15 @@
                 NSDictionary *text = dic;
                 PersonMessage *msg = [PersonMessage mj_objectWithKeyValues:text];
                 
+                //存文件路径
+                if (msg.messageBodyType == eMessageBodyType_File) {
+                    NSString *pathExtation = [[msg.fileMessage.fileName componentsSeparatedByString:@"."] lastObject];
+                    NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:pathExtation];
+                    [[NSData dataWithBase64EncodedString:msg.fileMessage.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+                    
+                    msg.fileMessage.filePath = fileDic[@"partPath"];
+                }
+                
                 //保存聊天记录
                 [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:msg.userMessage WithMsg:msg];
                 //增加未读消息数量
@@ -384,6 +393,15 @@
                 NSDictionary *text = dic;
                 //                NSString *nodeId = [NSString stringWithFormat:@"%lld",link.nodeId];
                 TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
+                
+                //存文件路径
+                if (msg.messageBodyType == eMessageBodyType_File) {
+                    NSString *pathExtation = [[msg.fileMessage.fileName componentsSeparatedByString:@"."] lastObject];
+                    NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:pathExtation];
+                    [[NSData dataWithBase64EncodedString:msg.fileMessage.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+                    
+                    msg.fileMessage.filePath = fileDic[@"partPath"];
+                }
                 
                 
                 //保存聊天记录

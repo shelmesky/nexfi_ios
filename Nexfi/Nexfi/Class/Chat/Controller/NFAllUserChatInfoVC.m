@@ -380,6 +380,14 @@
     NSDictionary *text = dic[@"text"];
     TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
     
+    
+    //存文件路径
+    if (msg.messageBodyType == eMessageBodyType_File) {
+        NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:msg.fileMessage.fileType];
+        [[NSData dataWithBase64EncodedString:msg.fileMessage.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+        msg.fileMessage.filePath = fileDic[@"partPath"];
+    }
+    
     //保存聊天记录
     [[SqlManager shareInstance]insertAllUser_ChatWith:msg.userMessage WithMsg:msg];
     //增加未读消息数量
@@ -423,16 +431,20 @@
             NSString *fileName = [[NFChatCacheFileUtil sharedInstance]chatCachePathWithFriendId:[[UserManager shareManager]getUser].userId andType:2];
             
             NSString *relativePath = [NSString stringWithFormat:@"voice/chatLog/%@/image/",[[UserManager shareManager]getUser].userId];
-            NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
+            NSString *currentTime = [self getDateWithFormatter:@"yyyyMMddHHmmss"];
+            NSString *imgPath = [relativePath stringByAppendingString:[NSString stringWithFormat:@"image_%@.jpg",currentTime]];
             
+            NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",currentTime]];
             
-            NSString *fullPath = [fileName stringByAppendingPathComponent:[NSString stringWithFormat:@"image_%@.jpg",[self getDateWithFormatter:@"yyyyMMddHHmmss"]]];
             [picData writeToFile:fullPath atomically:YES];
             
             FileMessage *fileMessage = [[FileMessage alloc]init];
             fileMessage.fileData = [picData base64Encoding];//消息数据
             fileMessage.filePath = imgPath;//图片路径
             fileMessage.isRead = @"1";//已读未读
+            fileMessage.fileName = [NSString stringWithFormat:@"image_%@.jpg",currentTime];
+            fileMessage.fileType = @"jpg";
+            fileMessage.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:fullPath]];
             msg.fileMessage = fileMessage;
             
             msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
@@ -460,21 +472,25 @@
             
             NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:mp3Path]];
             
-            VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
-            voiceMessage.isRead = @"0";//已读未读
-            voiceMessage.fileData = [voiceData base64Encoding];//消息数据
-            voiceMessage.durational = voicePro[@"voiceSec"];//语音时间
-            
-            
-            
-            msg.voiceMessage = voiceMessage;
-            
             msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
             msg.messageBodyType = eMessageBodyType_Voice;//文本类型
             msg.msgId = deviceUDID;//msgId
             
             msg.userMessage = [[UserManager shareManager]getUser];//json
             
+            
+            VoiceMessage *voiceMessage = [[VoiceMessage alloc]init];
+            voiceMessage.isRead = @"0";//已读未读
+            voiceMessage.fileData = [voiceData base64Encoding];//消息数据
+            voiceMessage.durational = voicePro[@"voiceSec"];//语音时间
+            voiceMessage.fileName = voicePro[@"voiceName"];
+            voiceMessage.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:mp3Path]];
+            voiceMessage.fileType = @"mp3";
+            
+            
+            msg.voiceMessage = voiceMessage;
+            
+
             
             break;
             

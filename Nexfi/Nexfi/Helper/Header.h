@@ -40,6 +40,8 @@
 #import "KxMenu.h"
 #import "UIView+Tap.h"
 #import "LPActionSheet.h"
+#import "NSFileManager+Handle.h"
+#import "ForwardAlert.h"
 
 #import "Message.h"
 
@@ -58,7 +60,7 @@
 //判断设备为4寸屏幕
 #define RETINA_4 ([UIScreen instancesRespondToSelector:@selector(currentMode)] ? CGSizeEqualToSize(CGSizeMake(640, 1136), [[UIScreen mainScreen] currentMode].size) : NO)
 
-#define RGBACOLOR(r,g,b,a)   [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
+
 
 #define USER_D [NSUserDefaults standardUserDefaults]
 

@@ -68,13 +68,13 @@ static SqlManager *_share = nil;
         //用户表
         [db executeUpdate:@"create table if not exists nexfi_chat_user (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text,lastmsg text, unreadnum integer default 0)"];
         //双方聊天表
-        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,fileName text,fileSize text,fileSufType text,durational integer,isRead integer)"];
+        [db executeUpdate:@"create table if not exists nexfi_chat (from_user_id text, to_user_id text,send_time text,msg_text text,msg_id text,filetype text,fileName text,fileSize text,fileSufType text, filePath text, durational integer,isRead integer)"];
         
         //所有人的群聊
-        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text , fileName text,fileSize text,fileSufType text, durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text , fileName text,fileSize text,fileSufType text, filePath text, durational interger, isRead interger)"];
         
         //群聊（群组）
-        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , fileName text,fileSize text,fileSufType text, durational interger, isRead interger)"];
+        [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , fileName text,fileSize text,fileSufType text,filePath text, durational interger, isRead interger)"];
         
     }
 }
@@ -151,6 +151,7 @@ static SqlManager *_share = nil;
         NSString *fileName;
         NSString *fileSufType;
         NSString *fileSize;
+        NSString *filePath;
         if (message.messageBodyType == eMessageBodyType_Image) {
             
             content = message.fileMessage.fileData;
@@ -180,6 +181,7 @@ static SqlManager *_share = nil;
             fileName = message.fileMessage.fileName;
             fileSufType = message.fileMessage.fileType;
             fileSize = message.fileMessage.fileSize;
+            filePath = message.fileMessage.filePath;
             
         }//fileName text,fileSize text,fileSufType text
         [dic setObject:content forKey:@"msg_text"];
@@ -198,6 +200,9 @@ static SqlManager *_share = nil;
         if (fileSize) {
             [dic setObject:fileSize forKey:@"fileSize"];
         }
+        if (filePath) {
+            [dic setObject:filePath forKey:@"filePath"];
+        }
         if (message.messageBodyType == eMessageBodyType_Voice) {
             [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,durational,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :durational, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
@@ -205,9 +210,11 @@ static SqlManager *_share = nil;
         }else if (message.messageBodyType == eMessageBodyType_Text){
             [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead)"withParameterDictionary:dic];
         }
-        else{//图片 文件
+        else if (message.messageBodyType == eMessageBodyType_Image){//图片
             [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
+        }else{
+            [db executeUpdate:@"insert into nexfi_allUser_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType,filePath)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType, :filePath)"withParameterDictionary:dic];
         }
         
     }
@@ -236,6 +243,7 @@ static SqlManager *_share = nil;
         NSString *fileName;
         NSString *fileSufType;
         NSString *fileSize;
+        NSString *filePath;
         if (message.messageBodyType == eMessageBodyType_Image) {
             
             content = message.fileMessage.fileData;
@@ -265,6 +273,7 @@ static SqlManager *_share = nil;
             fileName = message.fileMessage.fileName;
             fileSufType = message.fileMessage.fileType;
             fileSize = message.fileMessage.fileSize;
+            filePath = message.fileMessage.filePath;
             
         }//fileName text,fileSize text,fileSufType text
         [dic setObject:content forKey:@"msg_text"];
@@ -282,6 +291,9 @@ static SqlManager *_share = nil;
         }
         if (fileSize) {
             [dic setObject:fileSize forKey:@"fileSize"];
+        }
+        if (filePath) {
+            [dic setObject:filePath forKey:@"filePath"];
         }//nexfi_group_chat
         if (message.messageBodyType == eMessageBodyType_Voice) {
             
@@ -292,10 +304,12 @@ static SqlManager *_share = nil;
             
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead)"withParameterDictionary:dic];
             
-        }else{
+        }else if(message.messageBodyType == eMessageBodyType_Image){
             
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
+        }else{
+            [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead,fileName,fileSize,fileSufType,filePath)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead, :fileName, :fileSize, :fileSufType, :filePath)"withParameterDictionary:dic];
         }
         
     }
@@ -356,7 +370,8 @@ static SqlManager *_share = nil;
         NSString *fileName;
         NSString *fileSufType;
         NSString *fileSize;
-        if (message.messageBodyType == eMessageBodyType_Image || message.messageBodyType == eMessageBodyType_File) {
+        NSString *filePath;
+        if (message.messageBodyType == eMessageBodyType_Image) {
             
             content = message.fileMessage.fileData;
             isRead = message.fileMessage.isRead;
@@ -378,7 +393,17 @@ static SqlManager *_share = nil;
             content = message.textMessage.fileData;
             isRead = message.textMessage.isRead;
             
-        }//fileName text,fileSize text,fileSufType text
+        }else if (message.messageBodyType == eMessageBodyType_File){
+            
+            content = message.fileMessage.fileData;
+            isRead = message.fileMessage.isRead;
+            fileName = message.fileMessage.fileName;
+            fileSufType = message.fileMessage.fileType;
+            fileSize = message.fileMessage.fileSize;
+            filePath = message.fileMessage.filePath;
+            
+        }
+        //fileName text,fileSize text,fileSufType text
         [dic setObject:content forKey:@"msg_text"];
         if (durational) {
             [dic setObject:durational forKey:@"durational"];
@@ -395,7 +420,9 @@ static SqlManager *_share = nil;
         if (fileSize) {
             [dic setObject:fileSize forKey:@"fileSize"];
         }
-       
+        if (filePath) {
+            [dic setObject:filePath forKey:@"filePath"];
+        }
         
         [dic setObject:message.msgId forKey:@"msg_id"];
         [dic setObject:message.timeStamp forKey:@"send_time"];
@@ -410,11 +437,13 @@ static SqlManager *_share = nil;
             
             [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :isRead)" withParameterDictionary:dic];
             
-        }else{//图片 文件
+        }else if(message.messageBodyType == eMessageBodyType_Image){//图片
             BOOL a = [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType)" withParameterDictionary:dic];
             
             NSLog(@"a===%d",a);
 
+        }else{
+            [db executeUpdate:@"insert into nexfi_chat(from_user_id, to_user_id,send_time,msg_text,msg_id,filetype,isRead,fileName,fileSize,fileSufType,filePath) values(:from_user_id, :to_user_id, :send_time, :msg_text, :msg_id, :filetype, :isRead, :fileName, :fileSize, :fileSufType, :filePath)" withParameterDictionary:dic];
         }
         
         
@@ -627,7 +656,7 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 message.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
@@ -644,6 +673,15 @@ static SqlManager *_share = nil;
                 voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
                 voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.voiceMessage = voiceMessage;
+            }else{
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
+                fileMessage.filePath = [rs stringForColumn:@"filePath"];
+                message.fileMessage = fileMessage;
             }
             UserModel *user = [[UserModel alloc]init];
             user.userId = [rs stringForColumn:@"userId"];
@@ -690,7 +728,7 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 message.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
@@ -707,6 +745,15 @@ static SqlManager *_share = nil;
                 voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
                 voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 message.voiceMessage = voiceMessage;
+            }else{
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
+                fileMessage.filePath = [rs stringForColumn:@"filePath"];
+                message.fileMessage = fileMessage;
             }
             
             
@@ -778,7 +825,7 @@ static SqlManager *_share = nil;
                 textMessage.fileData = [rs stringForColumn:@"msg_text"];
                 textMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
                 msg.textMessage = textMessage;
-            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image || [[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File){
+            }else if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_Image){
                 FileMessage *fileMessage = [[FileMessage alloc]init];
                 fileMessage.fileData = [rs stringForColumn:@"msg_text"];
                 fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
@@ -795,6 +842,15 @@ static SqlManager *_share = nil;
                 voiceMessage.fileSize = [rs stringForColumn:@"fileSize"];
                 voiceMessage.fileType = [rs stringForColumn:@"fileSufType"];
                 msg.voiceMessage = voiceMessage;
+            }else{
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+                fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+                fileMessage.fileName = [rs stringForColumn:@"fileName"];
+                fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+                fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
+                fileMessage.filePath = [rs stringForColumn:@"filePath"];
+                msg.fileMessage = fileMessage;
             }
             
             

@@ -55,4 +55,8 @@
 + (long long) fileSizeAtPath:(NSString*) filePath;
 /**遍历文件夹获得文件夹大小，返回多少M*/
 + (float ) folderSizeAtPath:(NSString*) folderPath;
+/**获取当前时间字符串*/
++(NSString *)getDateWithFormatter:(NSString *)formatter;
+/**获得已存储的文件路径（file）*/
++ (NSDictionary *)getSaveFilePathWithFileType:(NSString *)fileType;
 @end

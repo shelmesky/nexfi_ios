@@ -17,7 +17,7 @@
 #pragma -mark 创建表
 - (void)creatTable;
 + (SqlManager *)shareInstance;
-
+- (void)deleteDatabse;
 #pragma -mark 获取所有人群聊的未读数
 - (NSInteger)getUnreadNumOfAllUser_Chat;
 #pragma -mark 获取群聊未读数
