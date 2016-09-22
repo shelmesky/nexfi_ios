@@ -17,6 +17,7 @@
 #import "NFChatCacheFileUtil.h"
 #import "NFPeersView.h"
 #import "NFTribeInfoVC.h"
+#import "DocumentLoadVC.h"
 
 #import "SenderTextCell.h"
 #import "SenderAvatarCell.h"
@@ -24,6 +25,8 @@
 #import "ReceiverVoiceCell.h"
 #import "SenderVoiceCell.h"
 #import "TextCell.h"
+#import "SenderFileCell.h"
+#import "ReceiverFileCell.h"
 
 
 @interface NFAllUserChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate,chatCellDelegate>
@@ -249,12 +252,39 @@
             cell.avatar.image = [UIImage imageNamed:msg.userMessage.userAvatar];
             return (ChatCell *)cell;
         }
+    }else if (msg.messageBodyType == eMessageBodyType_File){
+        if ([NexfiUtil isMeSend:msg]) {
+            SenderFileCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"SenderFileCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:[[UserManager shareManager]getUser].userAvatar];
+            return (ChatCell *)cell;
+        }else{
+            ReceiverFileCell *cell = [[[NSBundle mainBundle]loadNibNamed:@"ReceiverFileCell" owner:nil options:nil] objectAtIndex:0];
+            cell.msg = msg;
+            cell.avatar.image = [UIImage imageNamed:msg.userMessage.userAvatar];
+            return (ChatCell *)cell;
+        }
     }
     return nil;
 }
 #pragma mark -FNMsgCellDelegate
 - (void)msgCellTappedBlank:(ChatCell *)msgCell{
     [self.chatBar endInputing];
+}
+#pragma mark -点击文件
+- (void)msgCellTappedContentWithFile:(ChatCell *)msgCell{
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:msgCell];
+    
+    TribeMessage *msg = _textArray[indexPath.row];
+    DocumentLoadVC *vc = [[DocumentLoadVC alloc]init];
+    FileModel *file = [[FileModel alloc]init];
+    file.fileName = msg.fileMessage.fileName;
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    file.fileAbsolutePath = [documentPath stringByAppendingPathComponent:msg.fileMessage.filePath];
+    vc.currentFileModel = file;
+    vc.title = file.fileName;
+    [self.navigationController pushViewController:vc animated:YES];
+    
 }
 #pragma -mark 点击bubble
 - (void)msgCellTappedContent:(ChatCell *)msgCell{
@@ -380,11 +410,12 @@
     NSDictionary *text = dic[@"text"];
     TribeMessage *msg = [TribeMessage mj_objectWithKeyValues:text];
     
-    
     //存文件路径
     if (msg.messageBodyType == eMessageBodyType_File) {
-        NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:msg.fileMessage.fileType];
+        NSString *pathExtation = [[msg.fileMessage.fileName componentsSeparatedByString:@"."] lastObject];
+        NSDictionary *fileDic = [NexfiUtil getSaveFilePathWithFileType:pathExtation];
         [[NSData dataWithBase64EncodedString:msg.fileMessage.fileData] writeToFile:fileDic[@"fullPath"] atomically:YES];
+        
         msg.fileMessage.filePath = fileDic[@"partPath"];
     }
     

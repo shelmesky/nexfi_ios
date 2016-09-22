@@ -403,7 +403,6 @@
                     msg.fileMessage.filePath = fileDic[@"partPath"];
                 }
                 
-                
                 //保存聊天记录
                 [[SqlManager shareInstance]insertAllUser_ChatWith:msg.userMessage WithMsg:msg];
                 //增加未读消息数量

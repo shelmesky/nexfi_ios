@@ -30,13 +30,9 @@
 
 @interface NFSingleChatInfoVC ()<UITextFieldDelegate,UITableViewDataSource,UITableViewDelegate,XMChatBarDelegate,FCMsgCellDelegate,MWPhotoBrowserDelegate,NodeDelegate,chatCellDelegate>
 {
-    
-    
-    //用来保存输入框中的信息
+        //用来保存输入框中的信息
     NSMutableArray * _textArray;//消息数List
-    
     BOOL sendOnce;//只发送一次
-    
 }
 @property (nonatomic,assign) NSInteger count;
 @property (strong, nonatomic) XMChatBar *chatBar;//工具栏

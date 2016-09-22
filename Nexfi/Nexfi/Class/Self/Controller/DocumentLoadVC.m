@@ -150,7 +150,7 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView{
     [self stopLoadingView];
 }
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error{
     [self stopLoadingView];
 }
 #pragma mark - WKNavigationDelegate
@@ -223,6 +223,7 @@
     
     // 启动系统状态栏加载动画
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+
 }
 /** 关闭 《正在加载》的View */
 - (void)stopLoadingView {
