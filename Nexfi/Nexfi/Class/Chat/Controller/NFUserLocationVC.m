@@ -31,6 +31,7 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
 @property (nonatomic, retain)NSMutableArray *simulateHeatNodes;
 @property (nonatomic, strong) MapTypeView *mapTypeView;
 @property (nonatomic, strong)BMKLocationService* locService;//定位服务
+@property (nonatomic, strong)BMKHeatMap *heatMap; //热力图数据类
 
 @end
 
@@ -126,6 +127,8 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     if (self.friendList.count > 0) {
         [self showMyFriendLocation];
     }
+     
+    
     
     
     
@@ -170,9 +173,11 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     if ([headOverlay isEqualToString:@"YES"]) {
         UIButton *heatOverlayBtn = (UIButton *)[self.view viewWithTag:1003];
         [heatOverlayBtn setBackgroundImage:[UIImage imageNamed:@"traffic_close"] forState:0];
-        [self.bdMapView setBaiduHeatMapEnabled:YES];
+//        [self.bdMapView setBaiduHeatMapEnabled:YES];
+        [self addHeatOverlay];
     }else{
-        [self.bdMapView setBaiduHeatMapEnabled:NO];
+//        [self.bdMapView setBaiduHeatMapEnabled:NO];
+        [self showMyFriendLocation];
     }
     
     [self.view bringSubviewToFront:self.trafficBtn];
@@ -187,6 +192,7 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     [self.annotations removeAllObjects];
     //隐藏热力图
 //    [self.bdMapView setBaiduHeatMapEnabled:NO];
+    [self.bdMapView removeHeatMap];
 
     //刷新用户数据
     [self refreshUserData];
@@ -224,7 +230,9 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     [self.bdMapView removeOverlays:self.polyLines];
     [self.bdMapView removeAnnotations:self.annotations];
     [self.annotations removeAllObjects];
+    //移除热力图
 //    [self.bdMapView setBaiduHeatMapEnabled:NO];
+    [self.bdMapView removeHeatMap];
     
     //刷新用户数据
     [self refreshUserData];
@@ -243,10 +251,12 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     
     if ([str isEqualToString:@"YES"]) {
         trafficString = @"NO";
-        [self.bdMapView setBaiduHeatMapEnabled:NO];
+//        [self.bdMapView setBaiduHeatMapEnabled:NO];
+        [self showMyFriendLocation];
         [btn setBackgroundImage:[UIImage imageNamed:@"fence_close"] forState:0];
     }else{
-        [self.bdMapView setBaiduHeatMapEnabled:YES];
+//        [self.bdMapView setBaiduHeatMapEnabled:YES];
+        [self addHeatOverlay];
         trafficString = @"YES";
         [btn setBackgroundImage:[UIImage imageNamed:@"fence_open"] forState:0];
     }
@@ -346,11 +356,107 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
 #pragma mark -配置热力图
 - (void)addHeatOverlay{
     
-//    [self.bdMapView removeOverlays:self.polyLines];
-//    [self.bdMapView removeAnnotations:self.annotations];
-//    [self.annotations removeAllObjects];
+    [self.bdMapView removeOverlays:self.polyLines];
+    [self.bdMapView removeAnnotations:self.annotations];
+    [self.annotations removeAllObjects];
     
+    //刷新用户数据
+    [self refreshUserData];
     
+
+    //    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    //        dispatch_async(dispatch_get_main_queue(), ^{
+    //
+    //        });
+    //    });;
+    
+    NSMutableArray *distanceArr = [[NSMutableArray alloc]initWithCapacity:0];
+    NSMutableArray *needIntensityEqual1 = [[NSMutableArray alloc]initWithCapacity:0];
+    
+    UserModel *mySelf = [[UserManager shareManager]getUser];
+    BMKMapPoint point1 = BMKMapPointForCoordinate
+    (CLLocationCoordinate2DMake(mySelf.lattitude.floatValue,mySelf.longitude.floatValue));
+    
+    for (UserModel *user in self.friendList) {
+        if (user && user.lattitude && user.longitude) {
+            
+            CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+            (user.lattitude.floatValue, user.longitude.floatValue);
+            
+            BMKMapPoint point2 = BMKMapPointForCoordinate(coordinate);
+            
+            //计算两点之间的距离
+            CLLocationDistance distance = BMKMetersBetweenMapPoints(point1,point2);
+            NSDictionary *userDistance = @{@"distance":@(distance),@"userId":user.userId,
+                                           @"lattitude":user.lattitude,@"longitude":user.longitude};
+            [distanceArr addObject:userDistance];
+            
+        }
+    }
+    
+    for (int i = 0; i < _simulateHeatNodes.count; i ++) {
+        NSDictionary *dic = _simulateHeatNodes[i];
+        NSString *userId = [NSString stringWithFormat:@"AbcDeFgH-%d",i];
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+        ([dic[@"lat"] floatValue], [dic[@"lng"] floatValue]);
+        
+        BMKMapPoint point2 = BMKMapPointForCoordinate(coordinate);
+        //计算两点之间的距离
+        CLLocationDistance distance = BMKMetersBetweenMapPoints(point1,point2);
+        NSDictionary *userDistance = @{@"distance":@(distance),@"userId":userId,
+                                       @"lattitude":dic[@"lat"],@"longitude":dic[@"lng"]};
+        [distanceArr addObject:userDistance];
+        
+    }
+    
+    //判断两个点之间距离是否小于300 如果小于 放到needIntensityEqual1 并将它的热点intensity 设置为1 否则设置0.3
+    for (int i = 0; i < distanceArr.count - 1; i ++) {
+        for (int j = i + 1; j < distanceArr.count - 1; j ++) {
+            NSDictionary *d1 = distanceArr[i];
+            NSDictionary *d2 = distanceArr[j];
+            
+            if (fabsf([d1[@"distance"] floatValue] - [d2[@"distance"] floatValue]) < 300) {
+                if (![needIntensityEqual1 containsObject:d1[@"userId"]]) {
+                    [needIntensityEqual1 addObject:d1];
+                }
+                if (![needIntensityEqual1 containsObject:d2[@"userId"]]) {
+                    [needIntensityEqual1 addObject:d2];
+                }
+            }
+        }
+    }
+    
+    for (NSDictionary *user in distanceArr) {
+        CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake
+        ([user[@"lattitude"] floatValue], [user[@"longitude"] floatValue]);
+        
+        //热力图标注
+        BMKHeatMapNode *node = [[BMKHeatMapNode alloc]init];
+        node.pt = coordinate;
+        node.intensity = 0.3;
+        if ([needIntensityEqual1 containsObject:user]) {
+            node.intensity = 1.0;
+        }
+        [self.headOverLines addObject:node];
+    }
+    
+    self.heatMap.mData = self.headOverLines;
+    [self.heatMap setMGradient:[[BMKGradient alloc]initWithColors:@[[UIColor blueColor],
+                                                                    [UIColor greenColor],
+                                                                    
+                                                                    
+                                                                    [UIColor yellowColor],
+                                                                    [UIColor redColor]]
+                                                      startPoints:@[@(0.2),
+                                                                    @(0.4),@(0.6)
+                                                                    ,@(0.8)]]];
+    self.heatMap.mRadius = 40;
+    self.heatMap.mOpacity = 0.3;
+    
+    [self.bdMapView addHeatMap:self.heatMap];
+    
+
+
     
 }
 #pragma mark -配置标注
@@ -383,11 +489,13 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     self.bdMapView.showsUserLocation = YES;
     self.bdMapView.userTrackingMode = BMKUserTrackingModeNone;
     self.bdMapView.buildingsEnabled = YES;//是否显示3D楼块效果
-    [self.bdMapView setBaiduHeatMapEnabled:YES];
+//    [self.bdMapView setBaiduHeatMapEnabled:YES];
     [self.view addSubview:self.bdMapView];
     
     _locService = [[BMKLocationService alloc]init];
     [_locService startUserLocationService];
+    
+    self.heatMap = [[BMKHeatMap alloc]init];
 }
 - (UserModel *)getUserFromAnnotationWithUserId:(NSString *)userId{
     UserModel *getUser;

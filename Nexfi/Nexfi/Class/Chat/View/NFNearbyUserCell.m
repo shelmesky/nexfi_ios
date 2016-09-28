@@ -46,7 +46,6 @@
     CGSize labels = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:self.nickNameLabel.font}];
     self.nickNameWidth.constant = labels.width + 1;
     
-    
     //男女icon(1男2女)
     if ([[NSString stringWithFormat:@"%@",user.userGender] isEqualToString:@"1"]) {
         self.genderIconView.image = [UIImage imageNamed:@"054"];

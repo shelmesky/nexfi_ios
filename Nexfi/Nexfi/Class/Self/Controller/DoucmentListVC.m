@@ -270,46 +270,26 @@
 /** 生成数据源 */
 - (void)docLsCreateSourceData {
 
-    /*
-    NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
-    NSArray *historyFiles = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
-    for (NSData *data in historyFiles) {
-        FileModel *file = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-        [files addObject:file];
-    }
-    
-    self.fileList = files;
-    */
-    
-    /*测试数据
-    self.fileDic = [[NSMutableDictionary alloc]initWithCapacity:0];
-    for (int i = 0; i < 20; i ++ ) {
-        NSMutableArray *arr3 = [[NSMutableArray alloc]initWithCapacity:0];
-        for (int i = 0; i < 7; i ++ ) {
-            FileModel *file = [[FileModel alloc]init];
-            file.fileName = [NSString stringWithFormat:@"jilei%d",i];
-            [arr3 addObject:file];
-        }
-        [self.fileDic setObject:arr3 forKey:[NSString stringWithFormat:@"%d",i]];
-    }
-    */
+
     //{@"文档":[文档1的data，文档2的data]}
     self.fileDic = [[NSMutableDictionary alloc]initWithCapacity:0];
-    NSDictionary *fileDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+
     
-    NSMutableDictionary *files = fileDic?[[NSMutableDictionary alloc]initWithDictionary:fileDic]:[[NSMutableDictionary alloc]initWithCapacity:0];
+    NSMutableArray *copyFileList = [[SqlManager shareInstance]getCopyFileData];
     
-    //{@"文档":[文档1，文档2]}
-    [files.allKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray *fileDataArr = files[obj];
-        NSMutableArray *fileArr = [[NSMutableArray alloc]initWithCapacity:0];
-        for (NSData *data in fileDataArr) {
-            FileModel *file = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            [fileArr addObject:file];
-            [self.fileDic setObject:fileArr forKey:obj];
+    for (FileModel *file in copyFileList) {
+        NSArray *arr = self.fileDic[file.fileKind];
+        if (!arr) {
+            NSMutableArray *fileList = [[NSMutableArray alloc]initWithCapacity:0];
+            [fileList addObject:file];
+            [self.fileDic setObject:fileList forKey:file.fileKind];
+        }else{
+            NSMutableArray *fileList = [[NSMutableArray alloc]initWithArray:arr];
+            [fileList addObject:file];
+            [self.fileDic setObject:fileList forKey:file.fileKind];
         }
-        
-    }];
+    }
+    
     
     [self.fileKindTable reloadData];
     [self.fileTable reloadData];

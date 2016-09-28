@@ -411,6 +411,13 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		// Calculating how much data still must be appended to receive message body size.
 		const size_t frameHeaderSize = sizeof(uint32_t);
 		
+        static NSUInteger readableBytes;
+        if (_inputByteBuf.readableBytes > 100) {
+            readableBytes = _inputByteBuf.readableBytes;
+            NSLog(@"output.length=1111===%ld",readableBytes);
+            
+        }
+
 		// If current buffer length is not enough to create frame header - so continue reading.
 		if(_inputByteBuf.readableBytes < frameHeaderSize)
 		{
@@ -420,7 +427,15 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		
 		// Calculating frame body size.
 		uint32_t frameBodySize =  *( ((const uint32_t*)(_inputByteBuf.data.bytes + _inputByteBuf.readerIndex)) + 0) ;
+        //83886080 保持连接
+        NSLog(@"output.length=1111===%ld===frameBodySize====%d",readableBytes,frameBodySize);
+        
+        //获取正值
 		frameBodySize = CFSwapInt32BigToHost(frameBodySize);
+        
+        float progress = (float)readableBytes/(float)frameBodySize;
+        
+        NSLog(@"progress=     ===%f",progress);
 		
 		size_t frameSize = frameHeaderSize + frameBodySize;
 		

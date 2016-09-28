@@ -219,18 +219,18 @@
 #pragma mark 《正在加载》的View
 /** 打开 《正在加载》的View */
 - (void)showLoadingView {
-    [HudTool showLoadingHudInView:self.view];
-    
-    // 启动系统状态栏加载动画
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+//    [HudTool showLoadingHudInView:self.view];
+//    
+//    // 启动系统状态栏加载动画
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
 
 }
 /** 关闭 《正在加载》的View */
 - (void)stopLoadingView {
-    [HudTool showLoadingHudInView:self.view];
-    
-    // 关闭系统状态栏加载动画
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+//    [HudTool showLoadingHudInView:self.view];
+//    
+//    // 关闭系统状态栏加载动画
+//    [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
 }
 #pragma mark 将文件copy到tmp目录 ~~~ WKWebView
 /** 将文件copy到tmp目录 ~~~ WKWebView */

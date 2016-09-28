@@ -70,7 +70,7 @@
 }
 - (void)viewWillAppear:(BOOL)animated{
     //确定leftBar是否存在
-    NSArray *historyFiles = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
+    NSMutableArray *historyFiles = [[SqlManager shareInstance]getCopyFileData];
     NSString *leftStr;
     leftStr = historyFiles.count == 0?nil:@"历史文件";
     [self setBaseVCAttributesWith:@"我的信息" left:leftStr right:nil WithInVC:self];

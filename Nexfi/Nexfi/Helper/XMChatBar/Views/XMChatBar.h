@@ -92,5 +92,11 @@ typedef NS_ENUM(NSUInteger, XMFunctionViewShowType){
  *  @param seconds   语音时长
  */
 - (void)chatBar:(XMChatBar *)chatBar sendVoice:(NSString *)voiceFileName seconds:(NSTimeInterval)seconds;
-
+/**
+ *  发送文件
+ *
+ *  @param chatBar
+ *  @param fileList  文件集合
+ */
+- (void)chatBar:(XMChatBar *)chatBar sendFile:(FileModel *)file;
 @end

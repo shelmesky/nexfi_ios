@@ -206,7 +206,12 @@
     FileModel *file = [[FileModel alloc]init];
     file.fileName = msg.fileMessage.fileName;
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
-    file.fileAbsolutePath = [documentPath stringByAppendingPathComponent:msg.fileMessage.filePath];
+    if ([msg.fileMessage.filePath rangeOfString:@"Documents/"].length > 0) {
+        file.fileAbsolutePath = [NSHomeDirectory() stringByAppendingPathComponent:msg.fileMessage.filePath];
+
+    }else{
+        file.fileAbsolutePath = [documentPath stringByAppendingPathComponent:msg.fileMessage.filePath];
+    }
     vc.currentFileModel = file;
     vc.title = file.fileName;
     [self.navigationController pushViewController:vc animated:YES];
@@ -237,7 +242,6 @@
         msg.voiceMessage.isRead = @"1";
         [_textArray replaceObjectAtIndex:indexPath.row withObject:msg];
     }
-    
 }
 //点击用户头像
 - (void)clickUserHeadPic:(NSUInteger)index{
@@ -528,6 +532,23 @@
             case eMessageBodyType_File:
             {
                 
+                FileModel *file = data;
+                
+                FileMessage *fileMessage = [[FileMessage alloc]init];
+                fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]]]base64Encoding];
+                fileMessage.isRead = @"1";//已读未读
+                fileMessage.fileName = file.fileName;
+                fileMessage.fileType = file.fileType;
+                fileMessage.filePath = file.partPath;
+                fileMessage.fileSize = file.fileSize;
+                
+                msg.fileMessage = fileMessage;
+                
+                msg.messageBodyType = eMessageBodyType_File;
+                msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+                msg.receiver = self.to_user.userId;//发送对像
+                msg.msgId = deviceUDID;//msgId
+                msg.userMessage = [[UserManager shareManager]getUser];
                 
                 break;
             }
@@ -569,15 +590,15 @@
         msg.messageType = eMessageType_SingleChat;
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         //刷新表
-        if (sendOnce == YES) {
-            sendOnce = NO;
+//        if (sendOnce == YES) {
+//            sendOnce = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showTableMsg:msg];
             });
             
             //插入数据库
             [[SqlManager shareInstance]add_chatUser:[[UserManager shareManager]getUser] WithTo_user:self.to_user WithMsg:msg];
-        }
+//        }
         
         
         return newData;
@@ -631,13 +652,16 @@
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
     for (int i = 0; i < pictures.count; i ++) {
-        sendOnce = YES;
+//        sendOnce = YES;
         UIImage *image = pictures[i];
         id<UDSource>source = [self frameData:eMessageBodyType_Image withSendData:image];
         [[UnderdarkUtil share].node singleChatWithFrame:source];
     }
 }
-
+- (void)chatBar:(XMChatBar *)chatBar sendFile:(FileModel *)file{
+    id<UDSource>source = [self frameData:eMessageBodyType_File withSendData:file];
+    [[UnderdarkUtil share].node singleChatWithFrame:source];
+}
 - (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{
 
     

@@ -490,7 +490,22 @@
         }
         case eMessageBodyType_File:
         {
+            FileModel *file = data;
             
+            FileMessage *fileMessage = [[FileMessage alloc]init];
+            fileMessage.fileData = file.fileData;//消息数据
+            fileMessage.isRead = @"1";//已读未读
+            fileMessage.fileName = file.fileName;
+            fileMessage.fileType = file.fileType;
+            fileMessage.filePath = file.partPath;
+            fileMessage.fileSize = file.fileSize;
+            msg.fileMessage = fileMessage;
+            
+            msg.timeStamp = [self getDateWithFormatter:@"yyyy-MM-dd HH:mm:ss"];
+            msg.messageBodyType = eMessageBodyType_File;//文本类型
+            msg.msgId = deviceUDID;//msgId
+            
+            msg.userMessage = [[UserManager shareManager]getUser];//json
             
             break;
         }
@@ -539,8 +554,8 @@
         newData = [NSJSONSerialization dataWithJSONObject:msg.mj_keyValues options:0 error:0];
         
         //刷新表
-        if (sendOnce == YES) {
-            sendOnce = NO;
+//        if (sendOnce == YES) {
+//            sendOnce = NO;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self showTableMsg:msg];
             });
@@ -548,7 +563,7 @@
             //插入数据库
             [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
 
-        }
+//        }
         return newData;
         
     }];
@@ -605,7 +620,7 @@
 - (void)chatBar:(XMChatBar *)chatBar sendPictures:(NSArray *)pictures{
     
     for (int i = 0; i < pictures.count; i ++) {
-        sendOnce = YES;
+//        sendOnce = YES;
         UIImage *image = pictures[i];
         id<UDSource>source = [self frameData:eMessageBodyType_Image withSendData:image];
         [[UnderdarkUtil share].node allUserChatWithFrame:source];
@@ -613,7 +628,10 @@
     }
     
 }
-
+- (void)chatBar:(XMChatBar *)chatBar sendFile:(FileModel *)file{
+    id<UDSource>source = [self frameData:eMessageBodyType_File withSendData:file];
+    [[UnderdarkUtil share].node allUserChatWithFrame:source];
+}
 - (void)chatBar:(XMChatBar *)chatBar sendLocation:(CLLocationCoordinate2D)locationCoordinate locationText:(NSString *)locationText{
     
 }

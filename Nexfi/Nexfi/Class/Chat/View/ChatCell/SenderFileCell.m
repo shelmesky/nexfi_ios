@@ -42,7 +42,7 @@
     }
     NSString *imageName;
     if ([type isEqualToString:@"文档"]) {
-        imageName = @"wenjia";
+        imageName = @"wenjian";
     }else if ([type isEqualToString:@"音频"]){
         imageName = @"yinpin";
     }else{//视频

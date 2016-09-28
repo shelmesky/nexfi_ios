@@ -43,6 +43,7 @@
     [aCoder encodeObject:self.fileSize forKey:@"fileSize"];
     [aCoder encodeObject:self.attachmentFileSize forKey:@"attachmentFileSize"];
     [aCoder encodeObject:self.fileAbsolutePath forKey:@"fileAbsolutePath"];
+    [aCoder encodeObject:self.fileKind forKey:@"fileKind"];
     
 }
 - (id)initWithCoder:(NSCoder *)aDecoder{
@@ -61,6 +62,7 @@
         self.fileSize = [aDecoder decodeObjectForKey:@"fileSize"];
         self.attachmentFileSize = [aDecoder decodeObjectForKey:@"attachmentFileSize"];
         self.fileAbsolutePath = [aDecoder decodeObjectForKey:@"fileAbsolutePath"];
+        self.fileKind = [aDecoder decodeObjectForKey:@"fileKind"];
     }
     return self;
 }

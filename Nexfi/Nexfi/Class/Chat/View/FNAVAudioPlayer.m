@@ -105,8 +105,6 @@
     //如果来自同一个URLString并且index相同,则直接取消
     if (self.index == index || _audioPlayer.isPlaying) {
         [self stopAudioPlayer];
-        //        [self.delegate sendVoiceState:FNVoiceMessageStateCancel];
-        //        return;
     }
     
     self.index = index;

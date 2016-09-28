@@ -119,6 +119,8 @@
 		0E03BF611D0E560C00F08070 /* XMNChatViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E03BF381D0E560C00F08070 /* XMNChatViewModel.m */; };
 		0E05CEC61D34BC9100959B75 /* VertifyCodeVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */; };
 		0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */; };
+		0E08EB821D99214200F004E0 /* NFSendFileListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08EB801D99214200F004E0 /* NFSendFileListVC.m */; };
+		0E08EB831D99214200F004E0 /* NFSendFileListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E08EB811D99214200F004E0 /* NFSendFileListVC.xib */; };
 		0E12C2A61D92788700CE4FFE /* ForwardAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2A21D92788700CE4FFE /* ForwardAlert.m */; };
 		0E12C2A71D92788700CE4FFE /* UIViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2A51D92788700CE4FFE /* UIViewExt.m */; };
 		0E12C2AD1D92789000CE4FFE /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2AA1D92789000CE4FFE /* FLAnimatedImage.m */; };
@@ -220,7 +222,7 @@
 		0E4AE92E1D8684290098A6C4 /* ReceiverFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */; };
 		0E4C80591D892C83001B3DC5 /* qunliao.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80541D892C83001B3DC5 /* qunliao.png */; };
 		0E4C805A1D892C83001B3DC5 /* shipin.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80551D892C83001B3DC5 /* shipin.png */; };
-		0E4C805B1D892C83001B3DC5 /* wenjia.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80561D892C83001B3DC5 /* wenjia.png */; };
+		0E4C805B1D892C83001B3DC5 /* wenjian.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80561D892C83001B3DC5 /* wenjian.png */; };
 		0E4C805C1D892C83001B3DC5 /* wenjianjia.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80571D892C83001B3DC5 /* wenjianjia.png */; };
 		0E4C805D1D892C83001B3DC5 /* yinpin.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80581D892C83001B3DC5 /* yinpin.png */; };
 		0E4D394A1D7680C5001A96B8 /* FileKindCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4D39481D7680C5001A96B8 /* FileKindCell.m */; };
@@ -581,6 +583,9 @@
 		0E05CEC31D34BC9100959B75 /* VertifyCodeVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertifyCodeVC.h; sourceTree = "<group>"; };
 		0E05CEC41D34BC9100959B75 /* VertifyCodeVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VertifyCodeVC.m; sourceTree = "<group>"; };
 		0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VertifyCodeVC.xib; sourceTree = "<group>"; };
+		0E08EB7F1D99214200F004E0 /* NFSendFileListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFSendFileListVC.h; sourceTree = "<group>"; };
+		0E08EB801D99214200F004E0 /* NFSendFileListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFSendFileListVC.m; sourceTree = "<group>"; };
+		0E08EB811D99214200F004E0 /* NFSendFileListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFSendFileListVC.xib; sourceTree = "<group>"; };
 		0E12C2A11D92788700CE4FFE /* ForwardAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardAlert.h; sourceTree = "<group>"; };
 		0E12C2A21D92788700CE4FFE /* ForwardAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardAlert.m; sourceTree = "<group>"; };
 		0E12C2A41D92788700CE4FFE /* UIViewExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewExt.h; sourceTree = "<group>"; };
@@ -753,7 +758,7 @@
 		0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiverFileCell.xib; sourceTree = "<group>"; };
 		0E4C80541D892C83001B3DC5 /* qunliao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qunliao.png; sourceTree = "<group>"; };
 		0E4C80551D892C83001B3DC5 /* shipin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shipin.png; sourceTree = "<group>"; };
-		0E4C80561D892C83001B3DC5 /* wenjia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wenjia.png; sourceTree = "<group>"; };
+		0E4C80561D892C83001B3DC5 /* wenjian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wenjian.png; sourceTree = "<group>"; };
 		0E4C80571D892C83001B3DC5 /* wenjianjia.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wenjianjia.png; sourceTree = "<group>"; };
 		0E4C80581D892C83001B3DC5 /* yinpin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = yinpin.png; sourceTree = "<group>"; };
 		0E4D39471D7680C5001A96B8 /* FileKindCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileKindCell.h; sourceTree = "<group>"; };
@@ -1063,7 +1068,7 @@
 			children = (
 				0E4C80541D892C83001B3DC5 /* qunliao.png */,
 				0E4C80551D892C83001B3DC5 /* shipin.png */,
-				0E4C80561D892C83001B3DC5 /* wenjia.png */,
+				0E4C80561D892C83001B3DC5 /* wenjian.png */,
 				0E4C80571D892C83001B3DC5 /* wenjianjia.png */,
 				0E4C80581D892C83001B3DC5 /* yinpin.png */,
 				0E391D431D5DAD300049797B /* satellite_hover@2x.png */,
@@ -1674,6 +1679,9 @@
 				0E9E76CF1CC62AD100EE2272 /* NFSingleChatInfoVC.h */,
 				0E9E76D01CC62AD100EE2272 /* NFSingleChatInfoVC.m */,
 				0E9E76D11CC62AD100EE2272 /* NFSingleChatInfoVC.xib */,
+				0E08EB7F1D99214200F004E0 /* NFSendFileListVC.h */,
+				0E08EB801D99214200F004E0 /* NFSendFileListVC.m */,
+				0E08EB811D99214200F004E0 /* NFSendFileListVC.xib */,
 				0E9E76D21CC62AD100EE2272 /* NFTribeChatInfoVC.h */,
 				0E9E76D31CC62AD100EE2272 /* NFTribeChatInfoVC.m */,
 				0E9E76D41CC62AD100EE2272 /* NFTribeChatInfoVC.xib */,
@@ -2388,7 +2396,7 @@
 				0E9E77B11CC62AD100EE2272 /* write_face_38.png in Resources */,
 				0E9E77A01CC62AD100EE2272 /* write_face_22.png in Resources */,
 				0E9E77A31CC62AD100EE2272 /* write_face_25.png in Resources */,
-				0E4C805B1D892C83001B3DC5 /* wenjia.png in Resources */,
+				0E4C805B1D892C83001B3DC5 /* wenjian.png in Resources */,
 				0E9E77931CC62AD100EE2272 /* write_face_10.png in Resources */,
 				0E9E778C1CC62AD100EE2272 /* write_face_04.png in Resources */,
 				0E0282241D05308900348523 /* img_head_11@2x.png in Resources */,
@@ -2420,6 +2428,7 @@
 				0E9E77A21CC62AD100EE2272 /* write_face_24.png in Resources */,
 				0E39EA631D813ADA00B0DCE9 /* locations.json in Resources */,
 				0E9E779E1CC62AD100EE2272 /* write_face_20.png in Resources */,
+				0E08EB831D99214200F004E0 /* NFSendFileListVC.xib in Resources */,
 				0E9E77B01CC62AD100EE2272 /* write_face_37.png in Resources */,
 				0E391D561D5DB5EE0049797B /* close_map_Type_tip@2x.png in Resources */,
 				0E0282191D05308900348523 /* fujin02.png in Resources */,
@@ -2635,6 +2644,7 @@
 				0E32BF721D7D7C6F00BCB4FA /* UDNsdUtil.m in Sources */,
 				0E32BF791D7D7C6F00BCB4FA /* UDBuffer.m in Sources */,
 				0E9E77881CC62AD100EE2272 /* emojiViewController.m in Sources */,
+				0E08EB821D99214200F004E0 /* NFSendFileListVC.m in Sources */,
 				0E9E7B4B1CC62B9500EE2272 /* WGradientProgress.m in Sources */,
 				0E32BF7C1D7D7C6F00BCB4FA /* UDDataBuffer.m in Sources */,
 				0E03BF511D0E560C00F08070 /* Mp3Recorder.m in Sources */,

@@ -37,12 +37,7 @@
     self.sendObjectTable.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.view addSubview:self.sendObjectTable];
     
-    UIBarButtonItem *addNew = [[UIBarButtonItem alloc]initWithTitle:@"发送" style:UIBarButtonItemStylePlain target:self action:@selector(sendFileToObject:)];
-    self.navigationItem.rightBarButtonItem = addNew;
-    
-}
-#pragma mark -发送文件
-- (void)sendFileToObject:(id)sender{
+
     
 }
 - (void)viewWillAppear:(BOOL)animated{
@@ -92,7 +87,7 @@
         UserModel *user = self.sendObjectList[indexPath.row];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            
+            //Alert
             [[[ForwardAlert alloc]initWithTitle:user.userNick images:@[user.userAvatar] content:[NSString stringWithFormat:@"[文件]%@",self.currentFileModel.fileName] contentType:Content_Text buttonHandler:^(NSInteger buttonClickIndex) {
                 if (buttonClickIndex == 1) {
                     
@@ -118,7 +113,6 @@
 - (void)singleChatWithUserModel:(UserModel *)user{
     
     UDLazySource *result = [[UDLazySource alloc]initWithQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0) block:^NSData * _Nullable{
-        
         
         
         NSData *newData;
@@ -204,7 +198,6 @@
         //插入数据库
         [[SqlManager shareInstance]insertAllUser_ChatWith:[[UserManager shareManager]getUser] WithMsg:msg];
             
-    
         return newData;
         
     }];

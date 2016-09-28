@@ -23,13 +23,17 @@
 /**
  *获取Document文件目录下所有文件路径和路径名
  */
-- (NSMutableArray *)getAllDucumentDirectoryPathAndFileName;
++ (NSMutableArray *)getAllDucumentDirectoryPathAndFileName;
 
 /**
  *获取Document文件路径
  */
 + (NSString *)getDocumentDirectoryPath;
 
+/**
+ *获取某个文件夹路径
+ */
++ (NSMutableArray *)getAllDirectoryPathAndFileNameWithDirectoryName:(NSString *)directoryName;
 @end
 
 //@interface File : NSObject

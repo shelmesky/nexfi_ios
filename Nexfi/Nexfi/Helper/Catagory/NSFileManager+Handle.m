@@ -19,7 +19,7 @@
     return paths[0];
 }
 //获取Document文件目录下所有文件路径和路径名
-- (NSMutableArray *)getAllDucumentDirectoryPathAndFileName{
++ (NSMutableArray *)getAllDucumentDirectoryPathAndFileName{
     NSString *directoryPath = [self getDocumentDirectoryPath];
     NSFileManager *file = [NSFileManager defaultManager];
     NSDirectoryEnumerator *enumerator = [file enumeratorAtPath:directoryPath];
@@ -29,6 +29,21 @@
             FileModel *file = [[FileModel alloc]init];
             file.fileName = [[fileName componentsSeparatedByString:@"/"] lastObject];
             file.fileAbsolutePath = [directoryPath stringByAppendingPathComponent:fileName];
+            [files addObject:file];
+        }
+    }
+    return files;
+}
+//获取某个文件目录下所有文件路径和路径名
++ (NSMutableArray *)getAllDirectoryPathAndFileNameWithDirectoryName:(NSString *)directoryName{
+    NSFileManager *file = [NSFileManager defaultManager];
+    NSDirectoryEnumerator *enumerator = [file enumeratorAtPath:directoryName];
+    NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
+    for (NSString *fileName in enumerator) {
+        if (fileName.pathExtension && ![fileName.pathExtension isEqualToString:@""]) {
+            FileModel *file = [[FileModel alloc]init];
+            file.fileName = [[fileName componentsSeparatedByString:@"/"] lastObject];
+            file.fileAbsolutePath = [directoryName stringByAppendingPathComponent:fileName];
             [files addObject:file];
         }
     }

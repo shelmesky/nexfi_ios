@@ -13,6 +13,7 @@
 #import <Foundation/Foundation.h>
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
+#import "FileModel.h"
 @interface SqlManager : NSObject
 #pragma -mark 创建表
 - (void)creatTable;
@@ -30,6 +31,8 @@
 - (void)insertAllUser_ChatWith:(UserModel *)user WithMsg:(TribeMessage *)message;
 #pragma -mark 插入群组消息
 - (void)insertAllUser_ChatWith:(UserModel *)user WithMsg:(TribeMessage *)message WithGroupId:(NSString *)groupId;
+#pragma -mark 插入拷贝文件数据
+- (void)insertFile:(FileModel *)file;
 #pragma -mark 插入某人－》某人数据
 - (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(PersonMessage *)message;
 #pragma -mark 更新用户数据
@@ -61,6 +64,12 @@
 - (NSMutableArray *)getGroupChatListWithNum:(NSInteger)num WithGroupId:(NSString *)groupId;
 #pragma -mark 查询聊天历史纪录
 -(NSMutableArray *)getChatHistory:(NSString *) fromId withToId:(NSString *) toId withStartNum:(NSInteger) num;
+#pragma -mark 获取单聊所有文件模型
+- (NSMutableArray *)getAllFileFromSingleChat;
+#pragma -mark 获取群聊所有文件模型
+- (NSMutableArray *)getAllFileFromAllUserChat;
+#pragma -mark 取出拷贝文件数据
+- (NSMutableArray *)getCopyFileData;
 #pragma -mark 获取所有聊天名单
 - (NSMutableArray *)getAllChatUserList;
 #pragma -mark 查询聊天好友信息

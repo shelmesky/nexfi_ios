@@ -14,7 +14,9 @@
 typedef NS_ENUM(NSUInteger, XMChatMoreItemType){
     XMChatMoreItemCamera = 0 /**< 显示拍照 */,
     XMChatMoreItemAlbum /**< 显示相册 */,
+    XMChatMoreItemFile ,
     XMChatMoreItemLocation /**< 显示地理位置 */,
+    
 };
 
 @protocol XMChatMoreViewDataSource;

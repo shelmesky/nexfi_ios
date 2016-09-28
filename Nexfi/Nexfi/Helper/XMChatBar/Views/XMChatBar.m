@@ -19,7 +19,10 @@
 
 #import "Masonry.h"
 
-@interface XMChatBar ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,Mp3RecorderDelegate,XMChatMoreViewDelegate,XMChatMoreViewDataSource,XMChatFaceViewDelegate,XMLocationControllerDelegate>
+#import "FileModel.h"
+#import "NFSendFileListVC.h"
+
+@interface XMChatBar ()<UITextViewDelegate,UINavigationControllerDelegate,UIImagePickerControllerDelegate,Mp3RecorderDelegate,XMChatMoreViewDelegate,XMChatMoreViewDataSource,XMChatFaceViewDelegate,XMLocationControllerDelegate,sendFileDelegate>
 
 @property (strong, nonatomic) Mp3Recorder *MP3;
 @property (strong, nonatomic) UIButton *voiceButton; /**< 切换录音模式按钮 */
@@ -181,7 +184,13 @@
         [self.delegate chatBar:self sendLocation:placemark.location.coordinate locationText:placemark.name];
     }
 }
-
+#pragma mark -SendFileDelegate
+- (void)sendFile:(FileModel *)file{
+    [self cancelLocation];
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatBar:sendFile:)]) {
+        [self.delegate chatBar:self sendFile:file];
+    }
+}
 #pragma mark - MP3RecordedDelegate
 
 - (void)endConvertWithMP3FileName:(NSString *)fileName {
@@ -215,7 +224,7 @@
             [self.rootViewController presentViewController:pickerC animated:YES completion:nil];
              */
             ZYQAssetPickerController *picker = [[ZYQAssetPickerController alloc] init];
-            picker.maximumNumberOfSelection = 1;
+            picker.maximumNumberOfSelection = 4;
             picker.assetsFilter = [ALAssetsFilter allPhotos];
             picker.showEmptyGroups = NO;
             picker.delegate = self;
@@ -245,6 +254,41 @@
             [self.rootViewController presentViewController:locationNav animated:YES completion:nil];
         }
             break;
+        case XMChatMoreItemFile:
+        {
+            
+            NSMutableArray *noRepeatFileList = [[NSMutableArray alloc]initWithCapacity:0];
+            NSMutableArray *allFileList = [[NSMutableArray alloc]initWithCapacity:0];
+            //发送和接收的文件
+            NSArray *singleChatFileList = [[SqlManager shareInstance]getAllFileFromSingleChat];
+            NSArray *allUserChatFileList = [[SqlManager shareInstance]getAllFileFromAllUserChat];
+            [allFileList addObjectsFromArray:singleChatFileList];
+            [allFileList addObjectsFromArray:allUserChatFileList];
+            //从其他程序拷贝的文件
+            NSMutableArray *copyFileList = [[SqlManager shareInstance]getCopyFileData];
+            [allFileList addObjectsFromArray:copyFileList];
+            
+            //去掉重复
+            NSMutableArray *fileNameList = [[NSMutableArray alloc]initWithCapacity:0];
+            for (FileModel *file in allFileList) {
+                if (![fileNameList containsObject:file.fileName]) {
+                    [fileNameList addObject:file.fileName];
+                    [noRepeatFileList addObject:file];
+                }
+            }
+
+//                    if ([filei.fileName isEqualToString:filej.fileName] && [[NSFileManager defaultManager]contentsEqualAtPath:[[NSFileManager getDocumentDirectoryPath] stringByAppendingPathComponent:filei.partPath] andPath:[[NSFileManager getDocumentDirectoryPath]stringByAppendingPathComponent:filej.partPath]]) {
+
+            
+            NFSendFileListVC *vc = [[NFSendFileListVC alloc]init];
+            vc.delegate = self;
+            vc.mode = FileListModeSingleSelection;
+            vc.fileList = noRepeatFileList;
+            UINavigationController *locationNav = [[UINavigationController alloc] initWithRootViewController:vc];
+            [self.rootViewController presentViewController:locationNav animated:YES completion:nil];
+
+        }
+            break;
         default:
             break;
     }
@@ -253,13 +297,13 @@
 
 - (NSArray *)titlesOfMoreView:(XMChatMoreView *)moreView{
 //    return @[@"拍摄",@"照片",@"位置共享"];
-    return @[@"拍摄",@"照片"];
+    return @[@"拍摄",@"照片",@"文件"];
 
 }
 
 - (NSArray *)imageNamesOfMoreView:(XMChatMoreView *)moreView{
 //    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic",@"chat_bar_icons_location"];
-    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic"];
+    return @[@"chat_bar_icons_camera",@"chat_bar_icons_pic",@"wenjianjia"];
 
 }
 

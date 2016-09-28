@@ -70,10 +70,8 @@
     
     [reach startNotifier];
 
-    
     [[UnderdarkUtil share].node start];
     [UnderdarkUtil share].node.neighbourVc = self;
-    
     
     self.usersTable = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_SIZE.width, SCREEN_SIZE.height-64 - 49) style:UITableViewStyleGrouped];
     self.usersTable.delegate = self;

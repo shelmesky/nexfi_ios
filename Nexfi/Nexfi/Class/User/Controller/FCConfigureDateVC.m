@@ -26,7 +26,6 @@
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd"];
     NSDate *birthday = [formatter dateFromString:user.birthday];
-    
     if (birthday == nil) {
         birthday = [NSDate date];
     }

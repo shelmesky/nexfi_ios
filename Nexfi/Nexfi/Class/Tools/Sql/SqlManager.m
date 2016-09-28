@@ -76,6 +76,9 @@ static SqlManager *_share = nil;
         //群聊（群组）
         [db executeUpdate:@"create table if not exists nexfi_group_chat (userId text , userAvatar text, userNick text , userAge text, userGender text, send_time text, msg_text text, msg_id text, filetype text, groupId text , fileName text,fileSize text,fileSufType text,filePath text, durational interger, isRead interger)"];
         
+        //文件
+        [db executeUpdate:@"create table if not exists nexfi_file (fileName text, fileAbosolutePath text, partPath text, fileType text, fileSize text, fileData text, fileKind text)"];
+        
     }
 }
 #pragma -mark 获取所有人群聊的未读数
@@ -126,7 +129,6 @@ static SqlManager *_share = nil;
         NSMutableArray *chatList = [[NSMutableArray alloc]initWithCapacity:0];
         while ([rs next]) {
             
-            
             NSString *msgId = [rs stringForColumn:@"msg_id"];
             
             [chatList addObject:msgId];
@@ -144,6 +146,7 @@ static SqlManager *_share = nil;
         [dic setObject:message.timeStamp forKey:@"send_time"];
         [dic setObject:message.msgId forKey:@"msg_id"];
         [dic setObject:[NSString stringWithFormat:@"%ld",message.messageBodyType] forKey:@"filetype"];
+    
         
         NSString *content;
         NSString *durational;
@@ -299,7 +302,6 @@ static SqlManager *_share = nil;
             
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,durational,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :durational, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
-            
         }else if (message.messageBodyType == eMessageBodyType_Text){
             
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead)"withParameterDictionary:dic];
@@ -309,12 +311,32 @@ static SqlManager *_share = nil;
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead,fileName,fileSize,fileSufType)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead, :fileName, :fileSize, :fileSufType)"withParameterDictionary:dic];
 
         }else{
+            
             [db executeUpdate:@"insert into nexfi_group_chat(userId,userAvatar,userNick,userGender,userAge,send_time,msg_text,msg_id,filetype,groupId,isRead,fileName,fileSize,fileSufType,filePath)values(:userId, :userAvatar, :userNick, :userGender, :userAge, :send_time, :msg_text, :msg_id, :filetype, :groupId, :isRead, :fileName, :fileSize, :fileSufType, :filePath)"withParameterDictionary:dic];
+            
         }
         
     }
     
     
+}
+#pragma -mark 插入拷贝文件数据
+- (void)insertFile:(FileModel *)file{
+    if ([db open]) {
+        //db executeUpdate:@"create table if not exists nexfi_file (fileName text, fileAbosolutePath text, partPath text, fileType text, fileSize text, fileData text, fileKind text)"];
+        NSMutableDictionary *fileDic = [[NSMutableDictionary alloc]initWithCapacity:0];
+        
+        [fileDic setObject:file.fileName forKey:@"fileName"];
+        [fileDic setObject:file.fileAbsolutePath forKey:@"fileAbosolutePath"];
+        [fileDic setObject:file.partPath forKey:@"partPath"];
+        [fileDic setObject:file.fileType forKey:@"fileType"];
+        [fileDic setObject:file.fileSize forKey:@"fileSize"];
+        [fileDic setObject:file.fileKind forKey:@"fileKind"];
+        
+         BOOL ha =[db executeUpdate:@"insert into nexfi_file (fileName, fileAbosolutePath, partPath, fileType, fileSize,  fileKind)values(:fileName, :fileAbosolutePath, :partPath, :fileType, :fileSize, :fileKind)"withParameterDictionary:fileDic];
+        NSLog(@"ha=====%d",ha);
+        
+    }
 }
 #pragma -mark 用户更新数据
 - (void)updateUserHead:(UserModel *)userModel{
@@ -335,8 +357,6 @@ static SqlManager *_share = nil;
     if ([db executeUpdate:@"update nexfi_allUser_chat set userNick=? where userId =?",userModel.userNick,userModel.userId]) {
         NSLog(@"更新nexfi_allUser_chat  姓名成功");
     }
-    
-    
 }
 #pragma -mark 插入某人－》某人数据
 - (void)add_chatUser:(UserModel*)User WithTo_user:(UserModel *)toUser WithMsg:(PersonMessage *)message{
@@ -864,6 +884,78 @@ static SqlManager *_share = nil;
         //[db close];
     }
     return recordArray;
+}
+#pragma -mark 获取单聊所有文件模型
+- (NSMutableArray *)getAllFileFromSingleChat{
+    NSMutableArray *allFileList = [[NSMutableArray alloc]initWithCapacity:0];
+    
+    if ([db open]) {
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_chat"];
+        while ([rs next]) {
+            if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File && [[rs stringForColumn:@"filePath"] rangeOfString:@"nexfiFile/"].length > 0) {
+                FileModel *file = [[FileModel alloc]init];
+                file.fileName = [rs stringForColumn:@"fileName"];
+                file.fileType = [rs stringForColumn:@"fileSufType"];
+                file.partPath = [rs stringForColumn:@"filePath"];
+                file.fileSize = [rs stringForColumn:@"fileSize"];
+                file.fileData = [rs stringForColumn:@"msg_text"];
+                [allFileList addObject:file];
+            }
+        }
+    }
+    
+    return allFileList;
+}
+#pragma -mark 获取群聊所有文件模型
+- (NSMutableArray *)getAllFileFromAllUserChat{
+    NSMutableArray *allFileList = [[NSMutableArray alloc]initWithCapacity:0];
+    //create table if not exists nexfi_allUser_chat (userId text ,userAvatar text , userNick text, userAge text, userGender text, send_time text, msg_text text, msg_id text , filetype text , fileName text,fileSize text,fileSufType text, filePath text, durational interger, isRead interger)
+    /*
+     fileMessage.fileData = [rs stringForColumn:@"msg_text"];
+     fileMessage.isRead = [NSString stringWithFormat:@"%d",[rs intForColumn:@"isRead"]];
+     fileMessage.fileName = [rs stringForColumn:@"fileName"];
+     fileMessage.fileSize = [rs stringForColumn:@"fileSize"];
+     fileMessage.fileType = [rs stringForColumn:@"fileSufType"];
+     fileMessage.filePath = [rs stringForColumn:@"filePath"];
+     */
+    if ([db open]) {
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_allUser_chat"];
+        while ([rs next]) {
+            if ([[rs stringForColumn:@"filetype"] intValue] == eMessageBodyType_File && [[rs stringForColumn:@"filePath"] rangeOfString:@"nexfiFile/"].length > 0) {
+                FileModel *file = [[FileModel alloc]init];
+                file.fileName = [rs stringForColumn:@"fileName"];
+                file.fileType = [rs stringForColumn:@"fileSufType"];
+                file.partPath = [rs stringForColumn:@"filePath"];
+                file.fileSize = [rs stringForColumn:@"fileSize"];
+                file.fileData = [rs stringForColumn:@"msg_text"];
+                [allFileList addObject:file];
+            }
+        }
+    }
+    
+    return allFileList;
+}
+#pragma -mark 取出拷贝文件数据
+- (NSMutableArray *)getCopyFileData{
+    NSMutableArray *allFileList = [[NSMutableArray alloc]initWithCapacity:0];
+    
+    if ([db open]) {
+        FMResultSet *rs = [db executeQuery:@"select * from nexfi_file"];
+        while ([rs next]) {
+            FileModel *file = [[FileModel alloc]init];
+            file.fileName = [rs stringForColumn:@"fileName"];
+            file.fileAbsolutePath = [rs stringForColumn:@"fileAbosolutePath"];
+            file.partPath = [rs stringForColumn:@"partPath"];
+            file.fileType = [rs stringForColumn:@"fileType"];
+            file.fileSize = [rs stringForColumn:@"fileSize"];
+            file.fileData = [rs stringForColumn:@"fileData"];
+            file.fileKind = [rs stringForColumn:@"fileKind"];
+            
+            [allFileList addObject:file];
+        }
+    }
+    
+    return allFileList;
 }
 #pragma -mark 获取所有聊天名单
 - (NSMutableArray *)getAllChatUserList{
