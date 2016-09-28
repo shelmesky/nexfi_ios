@@ -8,6 +8,7 @@
 
 #import "NFSendFileListVC.h"
 #import "NFTribeInfoCell.h"
+#import "SendFileCell.h"
 @interface NFSendFileListVC ()<UITableViewDelegate,UITableViewDataSource>
 @property (nonatomic, retain)UITableView *fileTable;
 @end
@@ -41,13 +42,13 @@
     return 44;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
-    NFTribeInfoCell *cell = [tableView dequeueReusableCellWithIdentifier:@"NFTribeInfoCell"
+    SendFileCell *cell = [tableView dequeueReusableCellWithIdentifier:@"SendFileCell"
                              ];
     if (!cell) {
-        cell = [[[NSBundle mainBundle]loadNibNamed:@"NFTribeInfoCell" owner:self options:nil] objectAtIndex:0];
+        cell = [[[NSBundle mainBundle]loadNibNamed:@"SendFileCell" owner:self options:nil] objectAtIndex:0];
     }
     FileModel *file = self.fileList[indexPath.row];
-    cell.nameLa.text = file.fileName;
+    cell.fileNameLa.text = file.fileName;
     
     return cell;
 }

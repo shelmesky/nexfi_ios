@@ -169,7 +169,9 @@
     }
     [[UserManager shareManager]loginSuccessWithUser:user];
     //更新数据库用户数据
-    [[SqlManager shareInstance]updateUserName:user];
+    if ([NexfiUtil isExistSqlDatabase]) {
+        [[SqlManager shareInstance]updateUserName:user];
+    }
     //通知好友已经修改图片完毕
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

@@ -369,6 +369,8 @@
 		0EBAE9521CB3824000361D18 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EBAE9501CB3824000361D18 /* LaunchScreen.storyboard */; };
 		0EBAE95D1CB3824000361D18 /* NexfiTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE95C1CB3824000361D18 /* NexfiTests.m */; };
 		0EBAE9681CB3824000361D18 /* NexfiUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EBAE9671CB3824000361D18 /* NexfiUITests.m */; };
+		0ED817E51D9B953E0014F5EA /* SendFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ED817E31D9B953E0014F5EA /* SendFileCell.m */; };
+		0ED817E61D9B953E0014F5EA /* SendFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0ED817E41D9B953E0014F5EA /* SendFileCell.xib */; };
 		0EF2EFA01D90DF580058F905 /* BaiduMapAPI_Base.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF2EF981D90DF580058F905 /* BaiduMapAPI_Base.framework */; };
 		0EF2EFA11D90DF580058F905 /* BaiduMapAPI_Cloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF2EF991D90DF580058F905 /* BaiduMapAPI_Cloud.framework */; };
 		0EF2EFA21D90DF580058F905 /* BaiduMapAPI_Location.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EF2EF9A1D90DF580058F905 /* BaiduMapAPI_Location.framework */; };
@@ -972,6 +974,9 @@
 		0EBAE9671CB3824000361D18 /* NexfiUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NexfiUITests.m; sourceTree = "<group>"; };
 		0EBAE9691CB3824000361D18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EBAECBD1CB3849600361D18 /* Nexfi.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Nexfi.pch; sourceTree = "<group>"; };
+		0ED817E21D9B953E0014F5EA /* SendFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendFileCell.h; sourceTree = "<group>"; };
+		0ED817E31D9B953E0014F5EA /* SendFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendFileCell.m; sourceTree = "<group>"; };
+		0ED817E41D9B953E0014F5EA /* SendFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendFileCell.xib; sourceTree = "<group>"; };
 		0EF2EF981D90DF580058F905 /* BaiduMapAPI_Base.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Base.framework; sourceTree = "<group>"; };
 		0EF2EF991D90DF580058F905 /* BaiduMapAPI_Cloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Cloud.framework; sourceTree = "<group>"; };
 		0EF2EF9A1D90DF580058F905 /* BaiduMapAPI_Location.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BaiduMapAPI_Location.framework; sourceTree = "<group>"; };
@@ -1756,6 +1761,9 @@
 				0E3FE2691D4B3AD6007188B1 /* CustomAnnotationView.m */,
 				0E3FE26B1D4B3C59007188B1 /* CustomCalloutView.h */,
 				0E3FE26C1D4B3C59007188B1 /* CustomCalloutView.m */,
+				0ED817E21D9B953E0014F5EA /* SendFileCell.h */,
+				0ED817E31D9B953E0014F5EA /* SendFileCell.m */,
+				0ED817E41D9B953E0014F5EA /* SendFileCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2442,6 +2450,7 @@
 				0E9E779A1CC62AD100EE2272 /* write_face_17.png in Resources */,
 				0E9E77811CC62AD100EE2272 /* NFTribeInfoVC.xib in Resources */,
 				0E9E77991CC62AD100EE2272 /* write_face_16.png in Resources */,
+				0ED817E61D9B953E0014F5EA /* SendFileCell.xib in Resources */,
 				0E0282281D05308900348523 /* img_head_15@2x.png in Resources */,
 				0E02822B1D05308900348523 /* ReceiverTextNodeBkg@2x.png in Resources */,
 				0E0282131D05308900348523 /* btn-shouye1@2x.png in Resources */,
@@ -2715,6 +2724,7 @@
 				0E009A1B1D59CE8F00A6731B /* BackGroundLocation.m in Sources */,
 				0EFC78EA1D338C8100789ADD /* JKCountDownButton.m in Sources */,
 				0EFC78E41D3383A800789ADD /* UITapGestureRecognizer+block.m in Sources */,
+				0ED817E51D9B953E0014F5EA /* SendFileCell.m in Sources */,
 				0EBAE9471CB3824000361D18 /* AppDelegate.m in Sources */,
 				0E9E79DF1CC62B9500EE2272 /* NexfiNavigationController.m in Sources */,
 				0E9E77841CC62AD100EE2272 /* Message.m in Sources */,

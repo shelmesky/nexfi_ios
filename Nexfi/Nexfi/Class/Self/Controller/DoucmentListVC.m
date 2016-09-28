@@ -144,7 +144,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
     
     FileModel *model = [self.fileDic allValues][indexPath.section][indexPath.row];
-    NSData *fileData = [NSKeyedArchiver archivedDataWithRootObject:model];
+    
     //移除数据源
     for (int i = 0; i < self.fileDic.allKeys.count; i ++ ) {
         NSString *key = [[self.fileDic allKeys] objectAtIndex:i];
@@ -159,64 +159,31 @@
         }
     }
     //删除本地
-    NSDictionary *fileDic = [[NSUserDefaults standardUserDefaults]objectForKey:@"historyFiles"];
-    
-    NSMutableDictionary *files = fileDic?[[NSMutableDictionary alloc]initWithDictionary:fileDic]:[[NSMutableDictionary alloc]initWithCapacity:0];
-    
-    //查询本地要删除的文件 并作删除
-    [files.allKeys enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSArray *fileDataArr = files[obj];
-        for (NSData *data in fileDataArr) {
-            if ([fileData isEqualToData:data]) {
-                NSMutableArray *fileArr = [[NSMutableArray alloc]initWithArray:fileDataArr];
-                [fileArr removeObject:data];
-                [files removeObjectForKey:obj];
-                if (fileArr.count != 0) {
-                    [files setObject:fileArr forKey:obj];
+    NSMutableArray *copyFileList = [[SqlManager shareInstance]getCopyFileData];
+    for (FileModel *file in copyFileList) {
+        if ([file.fileName isEqualToString:model.fileName]) {
+            //删除数据库某个文件
+            [[SqlManager shareInstance]deleteCopyFile:model];
+            
+            NSString *path = model.fileData?[[NSFileManager getDocumentDirectoryPath] stringByAppendingPathComponent:model.partPath]:[NSHomeDirectory() stringByAppendingPathComponent:model.partPath];
+            if ([[NSFileManager defaultManager]fileExistsAtPath:path]) {
+                if ([[NSFileManager defaultManager]removeItemAtPath:path error:nil]) {
+                    NSLog(@"移除本地文件成功");
                 }
+                
             }
         }
         
-    }];
-    //存储最终删除的数据
-    NSDictionary *finallyFileDic = [NSDictionary dictionaryWithDictionary:files];
+    }
     
-    [[NSUserDefaults standardUserDefaults]setObject:finallyFileDic forKey:@"historyFiles"];
-    
-    //移除tableView中的数据
-//    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    [tableView reloadData];
-    [self.fileKindTable reloadData];
-    
-    /*
-     
-    FileModel *model = [self.fileDic allValues][indexPath.section][indexPath.row];
- 
-    //移除数据源
-    [self.fileList removeObject:model];
-    
-    //删除本地
-    if (model.fileAbsolutePath) {
-        [[NSFileManager defaultManager]removeItemAtPath:model.fileAbsolutePath error:nil];
-        //删除本地文件记录
-//        NSArray *saveFiles = [NSArray arrayWithArray:self.fileList];
-        
-        NSMutableArray *files = [[NSMutableArray alloc]initWithCapacity:0];
-        for (FileModel *file in self.fileList) {
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:file];
-            [files addObject:data];
-        }
-        NSArray *historyFiles = [NSArray arrayWithArray:files];
-
-        [[NSUserDefaults standardUserDefaults]setObject:historyFiles forKey:@"historyFiles"];
-        
+    if ([copyFileList containsObject:model]) {
+        [copyFileList removeObject:model];
+        //删除数据库某个文件
+        [[SqlManager shareInstance]deleteCopyFile:model];
     }
 
-    //移除tableView中的数据
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    
-    
-    */
+    [tableView reloadData];
+    [self.fileKindTable reloadData];
     
 }
 // TableView分区标题即将展示

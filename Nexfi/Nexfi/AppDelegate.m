@@ -54,6 +54,10 @@
         [[SqlManager shareInstance]creatTable];
     }
     
+    NSMutableArray *fi = [NSFileManager getAllDucumentDirectoryPathAndFileName];
+    for (FileModel *f in fi) {
+        NSLog(@"fi====%@",f.fileName);
+    }
     
     //百度
     BMKMapManager *mapManager = [[BMKMapManager alloc]init];
@@ -172,10 +176,12 @@
         model.fileAbsolutePath = appfilePath;
         model.partPath = finallyPartPath;
         model.fileType = [[model.fileName componentsSeparatedByString:@"."] lastObject];
-        model.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:appfilePath]];
+        model.fileSize = [NSString stringWithFormat:@"%@",[NexfiUtil fileSizeWithUnitAtPath:appfilePath]];
         model.fileKind = [NexfiUtil getFileTypeWithFileSuffix:model.fileType];
 //        NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:appfilePath]];
 //        model.fileData = [voiceData base64Encoding];
+        
+        
         
         BOOL isExecutive = NO;
         //判断是否有重复文件
@@ -192,9 +198,16 @@
             NSString *LibrarySubPath = [libraryPath stringByAppendingPathComponent:fileSuffixL];
             //如果已经存在此文件不需要存储 直接去查看
             if ([[NSFileManager defaultManager]contentsEqualAtPath:documentSubPath andPath:model.fileAbsolutePath] || [[NSFileManager defaultManager]contentsEqualAtPath:LibrarySubPath andPath:model.fileAbsolutePath]) {
-                //移除本地文件
-                [[NSFileManager defaultManager]removeItemAtPath:model.fileAbsolutePath error:nil];
                 
+                //移除本地文件
+                if ([[NSFileManager defaultManager]fileExistsAtPath:model.fileAbsolutePath]) {
+                    if ([[NSFileManager defaultManager]removeItemAtPath:model.fileAbsolutePath error:nil]) {
+                        NSLog(@"移除重复文件成功");
+                    }
+                    
+                }
+                
+                file.fileAbsolutePath = [NSHomeDirectory() stringByAppendingPathComponent:file.partPath];
                 destinVc.currentFileModel = file;
                 destinVc.title = file.fileName;
                 

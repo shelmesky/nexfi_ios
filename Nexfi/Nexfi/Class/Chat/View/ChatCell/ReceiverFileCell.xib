@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
@@ -69,9 +69,9 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lts-L6-T8e">
-                        <rect key="frame" x="154" y="45" width="93" height="20"/>
+                        <rect key="frame" x="131" y="45" width="116" height="20"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="93" id="T4s-de-tPc"/>
+                            <constraint firstAttribute="width" constant="116" id="T4s-de-tPc"/>
                             <constraint firstAttribute="height" constant="20" id="fKp-U2-Fgb"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>

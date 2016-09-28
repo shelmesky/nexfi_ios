@@ -957,6 +957,14 @@ static SqlManager *_share = nil;
     
     return allFileList;
 }
+#pragma -mark 删除拷贝的某个文件
+- (void)deleteCopyFile:(FileModel *)file{
+    if ([db open]) {
+        if ([db executeUpdate:@"delete from nexfi_file where fileName= ?",file.fileName]) {
+            NSLog(@"删除某个文件数据成功");
+        }
+    }
+}
 #pragma -mark 获取所有聊天名单
 - (NSMutableArray *)getAllChatUserList{
     NSMutableArray *allUser = [[NSMutableArray alloc]initWithCapacity:0];

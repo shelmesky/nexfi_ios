@@ -24,7 +24,8 @@
         tMsg = (TribeMessage *)msg;
         
         self.fileName.text = tMsg.fileMessage.fileName;
-        self.fileSize.text = [NSString stringWithFormat:@"%@k",tMsg.fileMessage.fileSize];
+        self.fileName.adjustsFontSizeToFitWidth = YES;
+        self.fileSize.text = [NSString stringWithFormat:@"%@",tMsg.fileMessage.fileSize];
         NSString *pathExtation = [[tMsg.fileMessage.fileName componentsSeparatedByString:@"."] lastObject];
         //归类 比如文档 音频 视频
         type = [NexfiUtil getFileTypeWithFileSuffix:pathExtation];
@@ -34,7 +35,8 @@
         pMsg = (PersonMessage *)msg;
         
         self.fileName.text = pMsg.fileMessage.fileName;
-        self.fileSize.text = [NSString stringWithFormat:@"%@k",pMsg.fileMessage.fileSize];
+        self.fileName.adjustsFontSizeToFitWidth = YES;
+        self.fileSize.text = [NSString stringWithFormat:@"%@",pMsg.fileMessage.fileSize];
         NSString *pathExtation = [[pMsg.fileMessage.fileName componentsSeparatedByString:@"."] lastObject];
         //归类 比如文档 音频 视频
         type = [NexfiUtil getFileTypeWithFileSuffix:pathExtation];
@@ -49,7 +51,7 @@
         imageName = @"shipin";
     }
     self.fileTypeImage.image = [UIImage imageNamed:imageName];
-
+    
 }
 - (IBAction)tapText:(id)sender {
     UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;

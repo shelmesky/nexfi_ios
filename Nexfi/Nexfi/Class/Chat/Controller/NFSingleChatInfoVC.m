@@ -206,10 +206,11 @@
     FileModel *file = [[FileModel alloc]init];
     file.fileName = msg.fileMessage.fileName;
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+    //拷贝文件的前半路径
     if ([msg.fileMessage.filePath rangeOfString:@"Documents/"].length > 0) {
         file.fileAbsolutePath = [NSHomeDirectory() stringByAppendingPathComponent:msg.fileMessage.filePath];
 
-    }else{
+    }else{//聊天发送过的文件的前半路径
         file.fileAbsolutePath = [documentPath stringByAppendingPathComponent:msg.fileMessage.filePath];
     }
     vc.currentFileModel = file;
@@ -518,7 +519,7 @@
                 fileMessage.isRead = @"1";//已读未读
                 fileMessage.fileName = [NSString stringWithFormat:@"image_%@.jpg",currentTime];
                 fileMessage.fileType = @"jpg";
-                fileMessage.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:fullPath]];
+                fileMessage.fileSize = [NSString stringWithFormat:@"%@",[NexfiUtil fileSizeWithUnitAtPath:fullPath]];
                 msg.fileMessage = fileMessage;
                 
                 msg.messageBodyType = eMessageBodyType_Image;
@@ -535,7 +536,8 @@
                 FileModel *file = data;
                 
                 FileMessage *fileMessage = [[FileMessage alloc]init];
-                fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]]]base64Encoding];
+//                fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]]]base64Encoding];
+                fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]] base64Encoding];
                 fileMessage.isRead = @"1";//已读未读
                 fileMessage.fileName = file.fileName;
                 fileMessage.fileType = file.fileType;
@@ -574,7 +576,7 @@
                 voiceMessage.fileData = [voiceData base64Encoding];//消息数据
                 voiceMessage.durational = voicePro[@"voiceSec"];//语音时间
                 voiceMessage.fileName = voicePro[@"voiceName"];
-                voiceMessage.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:mp3Path]];
+                voiceMessage.fileSize = [NSString stringWithFormat:@"%@",[NexfiUtil fileSizeWithUnitAtPath:mp3Path]];
                 voiceMessage.fileType = @"mp3";
                 
                 msg.voiceMessage = voiceMessage;

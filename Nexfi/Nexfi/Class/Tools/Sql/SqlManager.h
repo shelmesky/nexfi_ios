@@ -54,6 +54,8 @@
 -(void)deleteTalk:(NSString *)user_id;
 #pragma -mark 删除所有人的聊天记录
 - (void)deleteAllTalk;
+#pragma -mark 删除拷贝的某个文件
+- (void)deleteCopyFile:(FileModel *)file;
 #pragma -mark 查询总群聊的所有msgId
 - (NSMutableArray *)getAllChatMsgIdList;
 #pragma -mark 查询总群聊所有的时间

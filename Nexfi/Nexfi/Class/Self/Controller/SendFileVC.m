@@ -91,8 +91,9 @@
             [[[ForwardAlert alloc]initWithTitle:user.userNick images:@[user.userAvatar] content:[NSString stringWithFormat:@"[文件]%@",self.currentFileModel.fileName] contentType:Content_Text buttonHandler:^(NSInteger buttonClickIndex) {
                 if (buttonClickIndex == 1) {
                     
-                    self.currentFileModel.fileSize = [NSString stringWithFormat:@"%lld",[NexfiUtil fileSizeAtPath:self.currentFileModel.fileAbsolutePath]];
-                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
+                    self.currentFileModel.fileSize = [NSString stringWithFormat:@"%@",[NexfiUtil fileSizeWithUnitAtPath:self.currentFileModel.fileAbsolutePath]];
+                    NSData *voiceData = [[NSData alloc]initWithContentsOfFile:self.currentFileModel.fileAbsolutePath];
+//                    [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
                     self.currentFileModel.fileData = [voiceData base64Encoding];
                     
                     UserModel *user = self.sendObjectList[indexPath.row];

@@ -47,7 +47,9 @@
     account.userNick = self.nickName.text;
     [[UserManager shareManager] loginSuccessWithUser:account];
     //更新数据库用户数据
-    [[SqlManager shareInstance]updateUserName:account];
+    if ([NexfiUtil isExistSqlDatabase]) {
+        [[SqlManager shareInstance]updateUserName:account];
+    }
     //通知好友已经修改信息完毕
     if ([UnderdarkUtil share].node.links.count > 0) {
         for (int i = 0; i < [UnderdarkUtil share].node.links.count; i++) {

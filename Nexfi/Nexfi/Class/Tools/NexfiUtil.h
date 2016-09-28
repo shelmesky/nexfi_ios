@@ -52,6 +52,7 @@
 + (NSString *)getFileTypeWithFileSuffix:(NSString *)suffix;
 
 /**单个文件的大小*/
++ (NSString *) fileSizeWithUnitAtPath:(NSString*) filePath;
 + (long long) fileSizeAtPath:(NSString*) filePath;
 /**遍历文件夹获得文件夹大小，返回多少M*/
 + (float ) folderSizeAtPath:(NSString*) folderPath;
@@ -59,4 +60,6 @@
 +(NSString *)getDateWithFormatter:(NSString *)formatter;
 /**获得已存储的文件路径（file）*/
 + (NSDictionary *)getSaveFilePathWithFileType:(NSString *)fileType;
+/**是否存在数据库*/
++ (BOOL)isExistSqlDatabase;
 @end

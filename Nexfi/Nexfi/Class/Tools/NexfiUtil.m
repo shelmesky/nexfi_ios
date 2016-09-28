@@ -274,6 +274,19 @@ static NexfiUtil *_util;
     
     return newClass;
 }
+//单个文件的大小 2kb 1M
++ (NSString *) fileSizeWithUnitAtPath:(NSString*) filePath{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:filePath]){
+        long long fileSize = [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+        //ceil(x)返回不小于x的最小整数值 floor(x)返回不大于x的最大整数值 round(x)返回x的四舍五入整数值
+        if (fileSize/(1024.0 * 1024.0) > 1) {//M
+            return [NSString stringWithFormat:@"%lldM",(long long)(ceilf(fileSize/(1024.0 * 1024.0)))];
+        }
+        return [NSString stringWithFormat:@"%lldk",(long long)(ceilf(fileSize/(1024.0)))];
+    }
+    return @"";
+}
 //单个文件的大小 kb
 + (long long) fileSizeAtPath:(NSString*) filePath{
     NSFileManager* manager = [NSFileManager defaultManager];
@@ -344,6 +357,16 @@ static NexfiUtil *_util;
     NSString *string = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *tempFileList = [[NSArray alloc] initWithArray:[fileManager contentsOfDirectoryAtPath:string error:nil]];
+}
+//是否存在数据库
++ (BOOL)isExistSqlDatabase{
+    NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES) ;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSString * fmdbPath  = [[paths objectAtIndex:0]stringByAppendingPathComponent:[NSString stringWithFormat:@"nexfi_%@.db",[[UserManager shareManager]getUser].userId]];
+    if ([fileManager fileExistsAtPath:fmdbPath]) {
+        return YES;
+    }
+    return NO;
 }
 //获取文件类型
 + (NSString *)getFileTypeWithFileSuffix:(NSString *)suffix{
