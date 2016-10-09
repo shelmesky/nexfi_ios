@@ -15,10 +15,19 @@
 @implementation FCPersonCell
 - (void)awakeFromNib{
     self.pDsecirp.adjustsFontSizeToFitWidth = YES;
+    
+    [super awakeFromNib];
 }
 - (void)setUser:(UserModel *)user
 {
     _user = user;
+    
+    if (![_user.userId isEqualToString:[[UserManager shareManager]getUser].userId]) {
+        self.accessoryType = UITableViewCellAccessoryNone;
+    }else{
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    }
+    
     if ([self.pTitle.text isEqualToString:@"昵称"]) {
         self.pDsecirp.text = user.userNick;
     }

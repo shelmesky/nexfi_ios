@@ -99,6 +99,7 @@
         cells =[[[NSBundle mainBundle]loadNibNamed:@"FCPersonCell" owner:self options:nil] objectAtIndex:0];
         cells.selectionStyle = UITableViewCellSelectionStyleNone;
         
+        
     }
     
     cells.pTitle.text = _data[indexPath.row];
