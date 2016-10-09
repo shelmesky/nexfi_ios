@@ -414,7 +414,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
         static NSUInteger readableBytes;
         if (_inputByteBuf.readableBytes > 100) {
             readableBytes = _inputByteBuf.readableBytes;
-            NSLog(@"output.length=1111===%ld",readableBytes);
+//            NSLog(@"output.length=1111===%ld",readableBytes);
             
         }
 

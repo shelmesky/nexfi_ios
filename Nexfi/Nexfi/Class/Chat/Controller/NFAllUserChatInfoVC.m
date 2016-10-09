@@ -499,7 +499,9 @@
             FileModel *file = data;
             
             FileMessage *fileMessage = [[FileMessage alloc]init];
+            //url转成data 发送数据的时候效率更高
 //            fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]]]base64Encoding];
+            //本地加载转成data 发送数据的时候效率低
             fileMessage.fileData = file.fileData?file.fileData:[[[NSData alloc]initWithContentsOfFile:[NSHomeDirectory() stringByAppendingPathComponent:file.partPath]] base64Encoding];
             fileMessage.isRead = @"1";//已读未读
             fileMessage.fileName = file.fileName;

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -12,41 +12,38 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <frame key="frameInset" width="320" height="59.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fnh-da-Lih">
-                        <rect key="frame" x="10" y="10" width="40" height="40"/>
-                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.94117647059999998" blue="0.94509803920000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="fnh-da-Lih" secondAttribute="height" multiplier="1:1" id="FEM-1J-lPo"/>
+                            <constraint firstAttribute="width" constant="40" id="7Fa-07-2rp"/>
+                            <constraint firstAttribute="height" constant="40" id="RFu-T2-VSP"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wQr-UX-Cqp">
-                        <rect key="frame" x="58" y="20" width="50" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="x1V-OF-RNT"/>
                             <constraint firstAttribute="width" constant="50" id="zAS-fO-4qZ"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZyU-Sb-AE9">
-                        <rect key="frame" x="254" y="15" width="50" height="30"/>
-                        <color key="backgroundColor" red="0.26666666666666666" green="0.68627450980392157" blue="0.23921568627450979" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.26666666666666666" green="0.68627450980392157" blue="0.23921568627450979" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="6Zn-g1-G0M"/>
                         </constraints>
                         <state key="normal" title="私聊">
-                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         </state>
                         <connections>
                             <action selector="chatButtonClicked" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iPZ-4I-uha"/>
                         </connections>
                     </button>
                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mpt-b9-i7q">
-                        <rect key="frame" x="116" y="20" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="1uU-OD-uzc"/>
                             <constraint firstAttribute="height" constant="20" id="Gtr-Jd-AoV"/>
@@ -56,13 +53,12 @@
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="ZyU-Sb-AE9" secondAttribute="bottom" constant="14.5" id="7ko-qi-7IN"/>
                     <constraint firstItem="wQr-UX-Cqp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="Hzh-ZZ-JiH"/>
-                    <constraint firstAttribute="bottom" secondItem="fnh-da-Lih" secondAttribute="bottom" constant="9.5" id="IHP-QU-txs"/>
-                    <constraint firstItem="Mpt-b9-i7q" firstAttribute="bottom" secondItem="wQr-UX-Cqp" secondAttribute="bottom" id="NUl-By-2LX"/>
                     <constraint firstItem="ZyU-Sb-AE9" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="Oy5-f4-e80"/>
                     <constraint firstItem="fnh-da-Lih" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="YXX-9z-J7L"/>
                     <constraint firstItem="Mpt-b9-i7q" firstAttribute="leading" secondItem="wQr-UX-Cqp" secondAttribute="trailing" constant="8" id="bhg-pE-Edk"/>
                     <constraint firstItem="fnh-da-Lih" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="cpN-Vx-xDk"/>
                     <constraint firstAttribute="trailing" secondItem="ZyU-Sb-AE9" secondAttribute="trailing" constant="16" id="jHI-0b-FHW"/>
+                    <constraint firstItem="Mpt-b9-i7q" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="20" id="nav-Cs-xBe"/>
                     <constraint firstItem="wQr-UX-Cqp" firstAttribute="leading" secondItem="fnh-da-Lih" secondAttribute="trailing" constant="8" id="xLY-Be-9bC"/>
                 </constraints>
             </tableViewCellContentView>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -11,11 +12,10 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="168"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="167.5"/>
+                <frame key="frameInset" width="320" height="167"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="message_receiver_background_normal.png" translatesAutoresizingMaskIntoConstraints="NO" id="xn5-dN-z23">
-                        <rect key="frame" x="71" y="57" width="100" height="100"/>
                         <rect key="contentStretch" x="0.20000000000000001" y="0.59999999999999998" width="0.40000000000000002" height="0.10000000000000001"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="100" id="dNO-dm-jx4"/>
@@ -23,24 +23,21 @@
                         </constraints>
                     </imageView>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0l2-pa-z3K">
-                        <rect key="frame" x="13" y="37" width="50" height="50"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="Kjm-Sa-x0U"/>
                             <constraint firstAttribute="height" constant="50" id="vAn-Mt-IkJ"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nSb-ly-4Ng">
-                        <rect key="frame" x="98" y="8" width="125" height="21"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="21" id="LkC-TG-MrM"/>
                             <constraint firstAttribute="width" constant="125" id="rav-It-3gI"/>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QDR-gb-PkE">
-                        <rect key="frame" x="71" y="37" width="109" height="18"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="109" id="cEy-af-Lom"/>
                             <constraint firstAttribute="height" constant="18" id="oz8-8e-fIh"/>
@@ -50,7 +47,6 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mLv-7U-Phu">
-                        <rect key="frame" x="82" y="64" width="78" height="86"/>
                         <constraints>
                             <constraint firstAttribute="height" priority="750" constant="86" id="lZO-4A-1Sn"/>
                             <constraint firstAttribute="width" constant="78" id="uiM-1V-weV"/>

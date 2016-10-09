@@ -20,9 +20,11 @@
     TribeMessage *tMsg;
     PersonMessage *pMsg;
     NSString *type;
+    NSString *nickName;
+    
     if ([msg isKindOfClass:[TribeMessage class]]) {
         tMsg = (TribeMessage *)msg;
-        
+        nickName = tMsg.userMessage.userNick;
         self.fileName.text = tMsg.fileMessage.fileName;
         self.fileName.adjustsFontSizeToFitWidth = YES;
         self.fileSize.text = [NSString stringWithFormat:@"%@",tMsg.fileMessage.fileSize];
@@ -34,6 +36,7 @@
     }else{
         pMsg = (PersonMessage *)msg;
         
+        nickName = pMsg.userMessage.userNick;
         self.fileName.text = pMsg.fileMessage.fileName;
         self.fileName.adjustsFontSizeToFitWidth = YES;
         self.fileSize.text = [NSString stringWithFormat:@"%@",pMsg.fileMessage.fileSize];
@@ -42,6 +45,10 @@
         type = [NexfiUtil getFileTypeWithFileSuffix:pathExtation];
         
     }
+    if (self.to_user) {
+        nickName = self.to_user.userNick;
+    }
+    
     NSString *imageName;
     if ([type isEqualToString:@"文档"]) {
         imageName = @"wenjian";
@@ -51,6 +58,10 @@
         imageName = @"shipin";
     }
     self.fileTypeImage.image = [UIImage imageNamed:imageName];
+    
+    self.nickName.text = nickName;
+    CGSize size = [self.nickName.text sizeWithAttributes:@{NSFontAttributeName:self.nickName.font}];
+    self.nickNameConstant.constant = size.width + 10;
     
 }
 - (IBAction)tapText:(id)sender {

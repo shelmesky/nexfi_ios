@@ -93,7 +93,7 @@
                     
                     self.currentFileModel.fileSize = [NSString stringWithFormat:@"%@",[NexfiUtil fileSizeWithUnitAtPath:self.currentFileModel.fileAbsolutePath]];
                     NSData *voiceData = [[NSData alloc]initWithContentsOfFile:self.currentFileModel.fileAbsolutePath];
-//                    [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
+//                    NSData *voiceData = [[NSData alloc]initWithContentsOfURL:[NSURL fileURLWithPath:self.currentFileModel.fileAbsolutePath]];
                     self.currentFileModel.fileData = [voiceData base64Encoding];
                     
                     UserModel *user = self.sendObjectList[indexPath.row];

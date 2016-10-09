@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G1004" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFUserLocationVC">
@@ -19,7 +20,6 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" tag="1001" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="huK-Rg-q2c">
-                    <rect key="frame" x="316" y="65" width="40" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="X9Q-5u-3z9"/>
                         <constraint firstAttribute="width" constant="40" id="xDs-Cg-wki"/>
@@ -30,7 +30,6 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="1002" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nJ-aK-7pm">
-                    <rect key="frame" x="316" y="121" width="40" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="Va9-hc-A9e"/>
                         <constraint firstAttribute="width" constant="40" id="kPc-DX-BJ1"/>
@@ -41,7 +40,6 @@
                     </connections>
                 </button>
                 <button opaque="NO" tag="1003" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vhM-L9-8xg">
-                    <rect key="frame" x="316" y="176" width="40" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="TVc-qC-6Qs"/>
                         <constraint firstAttribute="width" constant="40" id="p48-iu-Bmy"/>
@@ -52,7 +50,7 @@
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vhM-L9-8xg" firstAttribute="top" secondItem="9nJ-aK-7pm" secondAttribute="bottom" constant="15" id="31p-wq-ted"/>
                 <constraint firstAttribute="trailing" secondItem="huK-Rg-q2c" secondAttribute="trailing" constant="19" id="L85-Ff-8yz"/>
@@ -61,7 +59,6 @@
                 <constraint firstItem="9nJ-aK-7pm" firstAttribute="top" secondItem="huK-Rg-q2c" secondAttribute="bottom" constant="16" id="kv3-Vb-i9N"/>
                 <constraint firstItem="huK-Rg-q2c" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="psk-Cu-1DQ"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
         </view>
     </objects>
     <resources>

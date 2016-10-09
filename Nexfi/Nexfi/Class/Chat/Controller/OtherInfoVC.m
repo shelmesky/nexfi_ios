@@ -15,6 +15,7 @@
 #import "FCTabHeadView.h"
 #import "NFHeadView.h"
 #import "NFHeadVC.h"
+#import "UIButton+ClickBlock.h"
 
 @interface OtherInfoVC ()<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate,NFHeadViewDelegate>
 
@@ -153,7 +154,6 @@
             break;
     }
 }
-
 #pragma mark - image
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
     UIImage *image = info[@"UIImagePickerControllerEditedImage"];

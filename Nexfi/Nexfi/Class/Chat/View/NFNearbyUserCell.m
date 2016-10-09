@@ -20,10 +20,12 @@
 
 - (void)awakeFromNib {
     self.headImageView.layer.cornerRadius = self.headImageView.frame.size.width/2.0;
-    self.headImageView.clipsToBounds = YES;
+//    self.headImageView.clipsToBounds = YES;
     
     self.chatButton.layer.cornerRadius = 5;
     self.chatButton.clipsToBounds = YES;
+    
+    [super awakeFromNib];
 }
 
 - (void)setUser:(UserModel *)user{
@@ -34,13 +36,13 @@
     //        self.headImageView.image = [UIImage imageWithData:data];
     //
     //    }
+    
     if (user.userAvatar) {
         self.headImageView.image = [UIImage imageNamed:user.userAvatar];
     }
     else{
         self.headImageView.image = [UIImage imageNamed:@"img_head_01"];
     }
-    
     self.nickNameLabel.text = user.userNick;
     
     CGSize labels = [self.nickNameLabel.text sizeWithAttributes:@{NSFontAttributeName:self.nickNameLabel.font}];
@@ -56,6 +58,7 @@
     }else{
         self.genderIconView.hidden = YES;
     }
+    
 }
 
 - (IBAction)chatButtonClicked {

@@ -121,6 +121,11 @@
 		0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E05CEC51D34BC9100959B75 /* VertifyCodeVC.xib */; };
 		0E08EB821D99214200F004E0 /* NFSendFileListVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E08EB801D99214200F004E0 /* NFSendFileListVC.m */; };
 		0E08EB831D99214200F004E0 /* NFSendFileListVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E08EB811D99214200F004E0 /* NFSendFileListVC.xib */; };
+		0E10342A1D9D14BB00C8E7F2 /* NFNearbyUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1034291D9D14BB00C8E7F2 /* NFNearbyUserCell.xib */; };
+		0E1034331D9D222200C8E7F2 /* ReceiverFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E10342E1D9D222200C8E7F2 /* ReceiverFileCell.m */; };
+		0E1034351D9D222200C8E7F2 /* SenderFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E1034311D9D222200C8E7F2 /* SenderFileCell.m */; };
+		0E1034361D9D222200C8E7F2 /* SenderFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1034321D9D222200C8E7F2 /* SenderFileCell.xib */; };
+		0E1034381D9D234E00C8E7F2 /* ReceiverFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E1034371D9D234E00C8E7F2 /* ReceiverFileCell.xib */; };
 		0E12C2A61D92788700CE4FFE /* ForwardAlert.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2A21D92788700CE4FFE /* ForwardAlert.m */; };
 		0E12C2A71D92788700CE4FFE /* UIViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2A51D92788700CE4FFE /* UIViewExt.m */; };
 		0E12C2AD1D92789000CE4FFE /* FLAnimatedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E12C2AA1D92789000CE4FFE /* FLAnimatedImage.m */; };
@@ -216,10 +221,6 @@
 		0E4AE91F1D865B9B0098A6C4 /* LPActionSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE91E1D865B9B0098A6C4 /* LPActionSheet.m */; };
 		0E4AE9231D8660310098A6C4 /* SendFileVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE9211D8660310098A6C4 /* SendFileVC.m */; };
 		0E4AE9241D8660310098A6C4 /* SendFileVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE9221D8660310098A6C4 /* SendFileVC.xib */; };
-		0E4AE9281D8683E90098A6C4 /* SenderFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */; };
-		0E4AE9291D8683E90098A6C4 /* SenderFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */; };
-		0E4AE92D1D8684290098A6C4 /* ReceiverFileCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */; };
-		0E4AE92E1D8684290098A6C4 /* ReceiverFileCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */; };
 		0E4C80591D892C83001B3DC5 /* qunliao.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80541D892C83001B3DC5 /* qunliao.png */; };
 		0E4C805A1D892C83001B3DC5 /* shipin.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80551D892C83001B3DC5 /* shipin.png */; };
 		0E4C805B1D892C83001B3DC5 /* wenjian.png in Resources */ = {isa = PBXBuildFile; fileRef = 0E4C80561D892C83001B3DC5 /* wenjian.png */; };
@@ -321,7 +322,6 @@
 		0E9E77D11CC62AD100EE2272 /* FCPersonHeadCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E773D1CC62AD100EE2272 /* FCPersonHeadCell.xib */; };
 		0E9E77D21CC62AD100EE2272 /* FNSendImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E773F1CC62AD100EE2272 /* FNSendImageView.m */; };
 		0E9E77D31CC62AD100EE2272 /* NFNearbyUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E77411CC62AD100EE2272 /* NFNearbyUserCell.m */; };
-		0E9E77D41CC62AD100EE2272 /* NFNearbyUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E77421CC62AD100EE2272 /* NFNearbyUserCell.xib */; };
 		0E9E77D51CC62AD100EE2272 /* NFPeersView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E77441CC62AD100EE2272 /* NFPeersView.m */; };
 		0E9E77D61CC62AD100EE2272 /* NFTribeInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E9E77461CC62AD100EE2272 /* NFTribeInfoCell.m */; };
 		0E9E77D71CC62AD100EE2272 /* NFTribeInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0E9E77471CC62AD100EE2272 /* NFTribeInfoCell.xib */; };
@@ -588,6 +588,13 @@
 		0E08EB7F1D99214200F004E0 /* NFSendFileListVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFSendFileListVC.h; sourceTree = "<group>"; };
 		0E08EB801D99214200F004E0 /* NFSendFileListVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFSendFileListVC.m; sourceTree = "<group>"; };
 		0E08EB811D99214200F004E0 /* NFSendFileListVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFSendFileListVC.xib; sourceTree = "<group>"; };
+		0E1034291D9D14BB00C8E7F2 /* NFNearbyUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFNearbyUserCell.xib; sourceTree = "<group>"; };
+		0E10342D1D9D222200C8E7F2 /* ReceiverFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverFileCell.h; sourceTree = "<group>"; };
+		0E10342E1D9D222200C8E7F2 /* ReceiverFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverFileCell.m; sourceTree = "<group>"; };
+		0E1034301D9D222200C8E7F2 /* SenderFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFileCell.h; sourceTree = "<group>"; };
+		0E1034311D9D222200C8E7F2 /* SenderFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFileCell.m; sourceTree = "<group>"; };
+		0E1034321D9D222200C8E7F2 /* SenderFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SenderFileCell.xib; sourceTree = "<group>"; };
+		0E1034371D9D234E00C8E7F2 /* ReceiverFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiverFileCell.xib; sourceTree = "<group>"; };
 		0E12C2A11D92788700CE4FFE /* ForwardAlert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForwardAlert.h; sourceTree = "<group>"; };
 		0E12C2A21D92788700CE4FFE /* ForwardAlert.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForwardAlert.m; sourceTree = "<group>"; };
 		0E12C2A41D92788700CE4FFE /* UIViewExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewExt.h; sourceTree = "<group>"; };
@@ -752,12 +759,6 @@
 		0E4AE9201D8660310098A6C4 /* SendFileVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendFileVC.h; sourceTree = "<group>"; };
 		0E4AE9211D8660310098A6C4 /* SendFileVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendFileVC.m; sourceTree = "<group>"; };
 		0E4AE9221D8660310098A6C4 /* SendFileVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendFileVC.xib; sourceTree = "<group>"; };
-		0E4AE9251D8683E90098A6C4 /* SenderFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SenderFileCell.h; sourceTree = "<group>"; };
-		0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SenderFileCell.m; sourceTree = "<group>"; };
-		0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SenderFileCell.xib; sourceTree = "<group>"; };
-		0E4AE92A1D8684290098A6C4 /* ReceiverFileCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReceiverFileCell.h; sourceTree = "<group>"; };
-		0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReceiverFileCell.m; sourceTree = "<group>"; };
-		0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReceiverFileCell.xib; sourceTree = "<group>"; };
 		0E4C80541D892C83001B3DC5 /* qunliao.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = qunliao.png; sourceTree = "<group>"; };
 		0E4C80551D892C83001B3DC5 /* shipin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shipin.png; sourceTree = "<group>"; };
 		0E4C80561D892C83001B3DC5 /* wenjian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wenjian.png; sourceTree = "<group>"; };
@@ -885,7 +886,6 @@
 		0E9E773F1CC62AD100EE2272 /* FNSendImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FNSendImageView.m; sourceTree = "<group>"; };
 		0E9E77401CC62AD100EE2272 /* NFNearbyUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFNearbyUserCell.h; sourceTree = "<group>"; };
 		0E9E77411CC62AD100EE2272 /* NFNearbyUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFNearbyUserCell.m; sourceTree = "<group>"; };
-		0E9E77421CC62AD100EE2272 /* NFNearbyUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NFNearbyUserCell.xib; sourceTree = "<group>"; };
 		0E9E77431CC62AD100EE2272 /* NFPeersView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFPeersView.h; sourceTree = "<group>"; };
 		0E9E77441CC62AD100EE2272 /* NFPeersView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFPeersView.m; sourceTree = "<group>"; };
 		0E9E77451CC62AD100EE2272 /* NFTribeInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFTribeInfoCell.h; sourceTree = "<group>"; };
@@ -1190,12 +1190,12 @@
 				0E02827E1D06ADE900348523 /* TextCell.h */,
 				0E02827F1D06ADE900348523 /* TextCell.m */,
 				0E0282801D06ADE900348523 /* TextCell.xib */,
-				0E4AE9251D8683E90098A6C4 /* SenderFileCell.h */,
-				0E4AE9261D8683E90098A6C4 /* SenderFileCell.m */,
-				0E4AE9271D8683E90098A6C4 /* SenderFileCell.xib */,
-				0E4AE92A1D8684290098A6C4 /* ReceiverFileCell.h */,
-				0E4AE92B1D8684290098A6C4 /* ReceiverFileCell.m */,
-				0E4AE92C1D8684290098A6C4 /* ReceiverFileCell.xib */,
+				0E10342D1D9D222200C8E7F2 /* ReceiverFileCell.h */,
+				0E10342E1D9D222200C8E7F2 /* ReceiverFileCell.m */,
+				0E1034371D9D234E00C8E7F2 /* ReceiverFileCell.xib */,
+				0E1034301D9D222200C8E7F2 /* SenderFileCell.h */,
+				0E1034311D9D222200C8E7F2 /* SenderFileCell.m */,
+				0E1034321D9D222200C8E7F2 /* SenderFileCell.xib */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -1749,7 +1749,7 @@
 				0E9E773F1CC62AD100EE2272 /* FNSendImageView.m */,
 				0E9E77401CC62AD100EE2272 /* NFNearbyUserCell.h */,
 				0E9E77411CC62AD100EE2272 /* NFNearbyUserCell.m */,
-				0E9E77421CC62AD100EE2272 /* NFNearbyUserCell.xib */,
+				0E1034291D9D14BB00C8E7F2 /* NFNearbyUserCell.xib */,
 				0E9E77431CC62AD100EE2272 /* NFPeersView.h */,
 				0E9E77441CC62AD100EE2272 /* NFPeersView.m */,
 				0E9E77451CC62AD100EE2272 /* NFTribeInfoCell.h */,
@@ -2288,6 +2288,7 @@
 					0EBAE93E1CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = L44VF3A557;
+						ProvisioningStyle = Manual;
 					};
 					0EBAE9571CB3824000361D18 = {
 						CreatedOnToolsVersion = 7.3;
@@ -2358,6 +2359,7 @@
 				0E03BF481D0E560C00F08070 /* chatBar.xcassets in Resources */,
 				0E05CEC71D34BC9100959B75 /* VertifyCodeVC.xib in Resources */,
 				0E0282271D05308900348523 /* img_head_14@2x.png in Resources */,
+				0E1034381D9D234E00C8E7F2 /* ReceiverFileCell.xib in Resources */,
 				0E4C805C1D892C83001B3DC5 /* wenjianjia.png in Resources */,
 				0E9E778F1CC62AD100EE2272 /* write_face_07.png in Resources */,
 				0E4C80591D892C83001B3DC5 /* qunliao.png in Resources */,
@@ -2367,7 +2369,6 @@
 				0E0282881D06ADE900348523 /* SenderTextCell.xib in Resources */,
 				0E02820D1D05308900348523 /* 041@2x.png in Resources */,
 				0E9E77951CC62AD100EE2272 /* write_face_12.png in Resources */,
-				0E9E77D41CC62AD100EE2272 /* NFNearbyUserCell.xib in Resources */,
 				0E0282381D05308900348523 /* message_voice_receiver_playing_1@3x.png in Resources */,
 				0E391D481D5DAD300049797B /* satellite@2x.png in Resources */,
 				0EBAE94F1CB3824000361D18 /* Assets.xcassets in Resources */,
@@ -2385,7 +2386,6 @@
 				0E9E77C21CC62AD100EE2272 /* write_face_8.png in Resources */,
 				0E9E77981CC62AD100EE2272 /* write_face_15.png in Resources */,
 				0E9E77891CC62AD100EE2272 /* write_face_01.png in Resources */,
-				0E4AE9291D8683E90098A6C4 /* SenderFileCell.xib in Resources */,
 				0E0282201D05308900348523 /* img_head_07@2x.png in Resources */,
 				0E9E77A41CC62AD100EE2272 /* write_face_26.png in Resources */,
 				0E9E77971CC62AD100EE2272 /* write_face_14.png in Resources */,
@@ -2465,10 +2465,10 @@
 				0E0282101D05308900348523 /* 102@2x.png in Resources */,
 				0E9E778D1CC62AD100EE2272 /* write_face_05.png in Resources */,
 				0E0282341D05308900348523 /* message_receiver_background_normal@3x.png in Resources */,
-				0E4AE92E1D8684290098A6C4 /* ReceiverFileCell.xib in Resources */,
 				0E9E778A1CC62AD100EE2272 /* write_face_02.png in Resources */,
 				0E0282231D05308900348523 /* img_head_10@2x.png in Resources */,
 				0E9E77E21CC62AD100EE2272 /* FCConfigureDateVC.xib in Resources */,
+				0E1034361D9D222200C8E7F2 /* SenderFileCell.xib in Resources */,
 				0E9E77C11CC62AD100EE2272 /* write_face_7.png in Resources */,
 				0E9E77BD1CC62AD100EE2272 /* write_face_49.png in Resources */,
 				0E9E777B1CC62AD100EE2272 /* NFAllUserChatInfoVC.xib in Resources */,
@@ -2489,6 +2489,7 @@
 				0E02822A1D05308900348523 /* otherChat.png in Resources */,
 				0E4AE9241D8660310098A6C4 /* SendFileVC.xib in Resources */,
 				0E0282111D05308900348523 /* 3.png in Resources */,
+				0E10342A1D9D14BB00C8E7F2 /* NFNearbyUserCell.xib in Resources */,
 				0E0282121D05308900348523 /* bg-xxxx@2x.png in Resources */,
 				0E9E77921CC62AD100EE2272 /* write_face_1.png in Resources */,
 				0E9E77D71CC62AD100EE2272 /* NFTribeInfoCell.xib in Resources */,
@@ -2626,7 +2627,6 @@
 				0E0282811D06ADE900348523 /* ReceiverAvatarCell.m in Sources */,
 				0E9E77D21CC62AD100EE2272 /* FNSendImageView.m in Sources */,
 				0E03BF581D0E560C00F08070 /* XMNChatLocationMessageCell.m in Sources */,
-				0E4AE9281D8683E90098A6C4 /* SenderFileCell.m in Sources */,
 				0E03BF411D0E560C00F08070 /* View+MASAdditions.m in Sources */,
 				0E32BF811D7D7C6F00BCB4FA /* UDTimeExtender.m in Sources */,
 				0E9E77C61CC62AD100EE2272 /* JXEmoji.m in Sources */,
@@ -2660,6 +2660,7 @@
 				0E4531F31D6D50DC00AF044C /* FileModel.m in Sources */,
 				0E32BF871D7D7C6F00BCB4FA /* UDPacketKind.m in Sources */,
 				0E03BF5E1D0E560C00F08070 /* XMNSendImageView.m in Sources */,
+				0E1034351D9D222200C8E7F2 /* SenderFileCell.m in Sources */,
 				0E03BF4C1D0E560C00F08070 /* XMFaceManager.m in Sources */,
 				0E9E77D31CC62AD100EE2272 /* NFNearbyUserCell.m in Sources */,
 				0E32BF8B1D7D7C6F00BCB4FA /* UDFrameData.m in Sources */,
@@ -2692,7 +2693,6 @@
 				0E32BF741D7D7C6F00BCB4FA /* UDBonjourBrowser.m in Sources */,
 				0E9E77ED1CC62AD100EE2272 /* FCTabHeadView.m in Sources */,
 				0E03BF461D0E560C00F08070 /* UITableView+XMNCellRegister.m in Sources */,
-				0E4AE92D1D8684290098A6C4 /* ReceiverFileCell.m in Sources */,
 				0E32BF861D7D7C6F00BCB4FA /* Packets.pb.m in Sources */,
 				0E9E79E01CC62B9500EE2272 /* NSDataEx.m in Sources */,
 				0E9E77871CC62AD100EE2272 /* UserModel.m in Sources */,
@@ -2702,6 +2702,7 @@
 				0E9E77E31CC62AD100EE2272 /* FCCongureInfoVC.m in Sources */,
 				0E03BF3D1D0E560C00F08070 /* MASViewAttribute.m in Sources */,
 				0E2BF1EE1CE1D42D005989B1 /* FNAVAudioPlayer.m in Sources */,
+				0E1034331D9D222200C8E7F2 /* ReceiverFileCell.m in Sources */,
 				0E4D394F1D7680F0001A96B8 /* FileCell.m in Sources */,
 				0E32BF711D7D7C6F00BCB4FA /* UDNsdService.m in Sources */,
 				0E9E77C41CC62AD100EE2272 /* FaceViewController.m in Sources */,
@@ -2902,7 +2903,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L44VF3A557;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2925,6 +2927,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
+				PROVISIONING_PROFILE_SPECIFIER = ziZuTongPeiProvision;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};
@@ -2937,7 +2940,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Minghua Liu (L44VF3A557)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Minghua Liu (L44VF3A557)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = L44VF3A557;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2960,6 +2964,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.zizu.nexfi;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "59cb86c2-b6c0-4e07-9fac-af277ceccb4f";
+				PROVISIONING_PROFILE_SPECIFIER = ziZuTongPeiProvision;
 				TARGETED_DEVICE_FAMILY = 1;
 				USER_HEADER_SEARCH_PATHS = "${SRCROOT}/**";
 			};

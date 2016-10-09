@@ -80,11 +80,12 @@
     self.voiceSec.adjustsFontSizeToFitWidth = YES;
     
     //根据总时间计算bubble的宽度
-    float bubbleTotalW  = SCREEN_SIZE.width - (2*10 + self.avatar.width + 20)*2;//bubble最大宽度
-    float perSecWidth = (float)(bubbleTotalW - self.bubble.width)/60;//没秒bubble增大的宽度
+    //50 头像宽度  82 bubble宽度
+    float bubbleTotalW  = SCREEN_SIZE.width - (2*10 + 50 + 20)*2;//bubble最大宽度
+    float perSecWidth = (float)(bubbleTotalW - 82)/60;//没秒bubble增大的宽度
     
     
-    CGFloat BubbleEndW = ([durational intValue] - 3)*perSecWidth + self.bubble.width; //大于3的bubble的长度
+    CGFloat BubbleEndW = ([durational intValue] - 3)*perSecWidth + 82; //大于3的bubble的长度
 //    CGFloat BubbleOrX = SCREEN_SIZE.width-BubbleEndW-self.avatar.width-10*2;
     
     self.bubbleW.constant = BubbleEndW;

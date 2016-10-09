@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *fileName;
 @property (weak, nonatomic) IBOutlet UILabel *fileSize;
 @property (weak, nonatomic) IBOutlet UIImageView *bubble;
+@property (weak, nonatomic) IBOutlet UILabel *nickName;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nickNameConstant;
 
 @property (nonatomic, strong)Message *msg;
 @end
