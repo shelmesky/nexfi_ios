@@ -444,6 +444,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 		{
 			[_inputByteBuf ensureWritable:frameSize - _inputByteBuf.readableBytes];
 			[_inputByteBuf trimWritable:frameSize - _inputByteBuf.readableBytes];
+            
 			break;
 		}
 		
@@ -567,7 +568,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			
 			payload.peer = [peer build];
 			frame.hello = [payload build];
-			
+        
 			[self sendLinkFrame:[frame build]];
 			
 			_heartbeatTimer = [MSWeakTimer scheduledTimerWithTimeInterval:configBonjourHeartbeatInterval target:self selector:@selector(sendHeartbeat) userInfo:nil repeats:YES dispatchQueue:self.adapter.queue];
@@ -588,7 +589,7 @@ typedef NS_ENUM(NSUInteger, SLBnjState)
 			[self writeNextBytes];
 			break;
 		}
-			
+		
 		case NSStreamEventErrorOccurred:
 		{
 			LogError(@"output NSStreamEventErrorOccurred (cannot connect to server): %@", [stream streamError]);

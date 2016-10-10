@@ -19,16 +19,14 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x3m-fK-O0m" customClass="LooseTextField">
-                    <frame key="frameInset" minX="31" minY="211" width="352" height="40"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="请输入手机号" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x3m-fK-O0m" customClass="LooseTextField">
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="8vR-uC-Z6A"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNT-gr-b3B">
-                    <frame key="frameInset" minX="31" minY="280" width="352" height="40"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pNT-gr-b3B">
                     <color key="backgroundColor" red="0.20784313725490197" green="0.56862745098039214" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <state key="normal" title="获取手机验证码">
@@ -38,8 +36,7 @@
                         <action selector="getCodeClick:" destination="-1" eventType="touchUpInside" id="HTe-1F-6EU"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="NexFiIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-sf-piT">
-                    <frame key="frameInset" minX="161" minY="91" width="90" height="90"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NexFiIcon.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZaG-sf-piT">
                     <constraints>
                         <constraint firstAttribute="height" constant="90" id="1UT-l7-i4R"/>
                         <constraint firstAttribute="width" constant="90" id="N3R-Fb-hD5"/>

@@ -17,7 +17,16 @@
 
 
 @implementation NFNearbyUserCell
+//更新frame
+- (void)updateConstraints
+{
+    [super updateConstraints];
+}
 
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+}
 - (void)awakeFromNib {
     self.headImageView.layer.cornerRadius = self.headImageView.frame.size.width/2.0;
 //    self.headImageView.clipsToBounds = YES;
@@ -27,7 +36,6 @@
     
     [super awakeFromNib];
 }
-
 - (void)setUser:(UserModel *)user{
     _user = user;
     //    if (user.headImgStr || [user.headImgStr isKindOfClass:[NSNull class]]) {

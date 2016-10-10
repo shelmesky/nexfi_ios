@@ -43,6 +43,11 @@
     }
     return _nearbyUsers;
 }
+//获取屏幕尺寸
+- (void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.

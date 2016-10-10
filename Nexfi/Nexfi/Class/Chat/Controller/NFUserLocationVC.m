@@ -131,7 +131,6 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     
     
     
-    
     //3分钟更新下用户位置
 //    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(updateFriendInfo)
 //name:@"updateFriendInfo" object:nil];
@@ -180,9 +179,17 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
         [self showMyFriendLocation];
     }
     
+    NSString *locationStr = [USER_D objectForKey:@"showUserLocation"];
+    if ([locationStr isEqualToString:@"YES"]) {
+        self.bdMapView.showsUserLocation = YES;
+    }else{
+        self.bdMapView.showsUserLocation = NO;
+    }
+    
     [self.view bringSubviewToFront:self.trafficBtn];
     [self.view bringSubviewToFront:self.mapTypeBtn];
     [self.view bringSubviewToFront:self.mapOverLayBtn];
+    [self.view bringSubviewToFront:self.locationBtn];
 }
 #pragma mark -画线轨迹
 - (void)showMyPolyLine{
@@ -205,6 +212,7 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     CLLocation *location = self.runningCoords[i];
     coordinateArray[i] = location.coordinate;
     }
+    
     BMKPolyline *polyline = [BMKPolyline polylineWithCoordinates:coordinateArray
                                                            count:self.runningCoords.count];
     [self.polyLines addObject:polyline];
@@ -283,6 +291,26 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     [USER_D setObject:trafficString forKey:@"showTraffic"];
     [USER_D synchronize];
 }
+#pragma mark - 是否显示用户位置
+- (void)showUserLocation:(UIButton *)btn{
+    NSString *userLocation = [USER_D objectForKey:@"showUserLocation"];
+    if ([userLocation isEqualToString:@"YES"]) {
+        UIAlertView *locationAlert = [[UIAlertView alloc]initWithTitle:@"是否隐藏您当前所在位置?"
+                                                               message:nil delegate:self cancelButtonTitle:@"确定"
+                                                     otherButtonTitles:@"取消", nil];
+        locationAlert.tag = 10002;
+        [locationAlert show];
+        
+    }else{
+        UIAlertView *locationAlert = [[UIAlertView alloc]initWithTitle:@"是否显示您当前所在位置?"
+                                                               message:nil delegate:self cancelButtonTitle:@"确定"
+                                                     otherButtonTitles:@"取消", nil];
+        locationAlert.tag = 10001;
+        [locationAlert show];
+    }
+    
+    
+}
 - (IBAction)changeMapViewStatues:(id)sender {
     UIButton *button = (UIButton *)sender;
     
@@ -321,7 +349,34 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
         case 1003:
             
         {
-            [self showHeadMapOverLay:button];
+            
+            NSString *str =[USER_D objectForKey:@"showHeatOverlay"];
+            NSString *trafficString;
+            
+            
+            if ([str isEqualToString:@"YES"]) {
+                trafficString = @"NO";
+                //        [self.bdMapView setBaiduHeatMapEnabled:NO];
+                [self showMyFriendLocation];
+                [button setBackgroundImage:[UIImage imageNamed:@"fence_close"] forState:0];
+                
+                [USER_D setObject:trafficString forKey:@"showHeatOverlay"];
+                [USER_D synchronize];
+                
+            }else{
+                UIAlertView *locationAlert = [[UIAlertView alloc]initWithTitle:@"是否显示其他用户位置?"
+                                                                       message:nil delegate:self cancelButtonTitle:@"确定"
+                                                             otherButtonTitles:@"取消", nil];
+                locationAlert.tag = 10003;
+                [locationAlert show];
+            }
+            
+        }
+            break;
+        case 1004:
+            
+        {
+            [self showUserLocation:button];
         }
             break;
             
@@ -486,7 +541,7 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
 {
     self.bdMapView = [[BMKMapView alloc]initWithFrame:self.view.bounds];
     self.bdMapView.delegate = self;
-    self.bdMapView.showsUserLocation = YES;
+    self.bdMapView.showsUserLocation = NO;
     self.bdMapView.userTrackingMode = BMKUserTrackingModeNone;
     self.bdMapView.buildingsEnabled = YES;//是否显示3D楼块效果
 //    [self.bdMapView setBaiduHeatMapEnabled:YES];
@@ -607,6 +662,29 @@ BMKMapViewDelegate,BMKLocationServiceDelegate>
     }
     
     return nil;
+}
+#pragma mark -UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex{
+    if (alertView.tag == 10001) {//展示用户位置
+        if (buttonIndex == 0) {
+            self.bdMapView.showsUserLocation = YES;
+            NSString *location = self.bdMapView.showsUserLocation?@"YES":@"NO";
+            [USER_D setObject:location forKey:@"showUserLocation"];
+            [USER_D synchronize];
+        }
+    }else if(alertView.tag == 10002){//隐藏用户位置
+        if (buttonIndex == 0) {
+            self.bdMapView.showsUserLocation = NO;
+            NSString *location = self.bdMapView.showsUserLocation?@"YES":@"NO";
+            [USER_D setObject:location forKey:@"showUserLocation"];
+            [USER_D synchronize];
+        }
+    }else if (alertView.tag == 10003){//展示热力图
+        if (buttonIndex == 0) {
+            UIButton *button = (UIButton *)[self.view viewWithTag:1003];
+            [self showHeadMapOverLay:button];
+        }
+    }
 }
 - (CGSize)offsetToContainRect:(CGRect)innerRect inRect:(CGRect)outerRect
 {

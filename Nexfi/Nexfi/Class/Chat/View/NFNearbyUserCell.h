@@ -25,4 +25,5 @@
 @property (nonatomic,strong) UserModel *user;
 @property (nonatomic,strong) NSIndexPath *indexPath;
 @property (nonatomic,weak) id<NFNearbyUserCellDelegate> delegate;
+
 @end

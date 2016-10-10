@@ -8,6 +8,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NFUserLocationVC">
             <connections>
+                <outlet property="locationBtn" destination="fmN-9D-J7g" id="Zfz-WW-89X"/>
                 <outlet property="mapOverLayBtn" destination="vhM-L9-8xg" id="jC0-77-EAt"/>
                 <outlet property="mapTypeBtn" destination="9nJ-aK-7pm" id="6Q2-Cz-snS"/>
                 <outlet property="trafficBtn" destination="huK-Rg-q2c" id="97z-1X-biR"/>
@@ -49,11 +50,23 @@
                         <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="oj3-T2-J3d"/>
                     </connections>
                 </button>
+                <button opaque="NO" tag="1004" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fmN-9D-J7g">
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="PUF-qO-iSG"/>
+                        <constraint firstAttribute="width" constant="40" id="pOm-xT-VKq"/>
+                    </constraints>
+                    <state key="normal" backgroundImage="nav.png"/>
+                    <connections>
+                        <action selector="changeMapViewStatues:" destination="-1" eventType="touchUpInside" id="vIr-yQ-iwS"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vhM-L9-8xg" firstAttribute="top" secondItem="9nJ-aK-7pm" secondAttribute="bottom" constant="15" id="31p-wq-ted"/>
                 <constraint firstAttribute="trailing" secondItem="huK-Rg-q2c" secondAttribute="trailing" constant="19" id="L85-Ff-8yz"/>
+                <constraint firstAttribute="trailing" secondItem="fmN-9D-J7g" secondAttribute="trailing" constant="19" id="Our-Kt-YNg"/>
+                <constraint firstItem="fmN-9D-J7g" firstAttribute="top" secondItem="vhM-L9-8xg" secondAttribute="bottom" constant="14" id="PYT-zX-i9q"/>
                 <constraint firstAttribute="trailing" secondItem="9nJ-aK-7pm" secondAttribute="trailing" constant="19" id="U1p-qd-bC8"/>
                 <constraint firstAttribute="trailing" secondItem="vhM-L9-8xg" secondAttribute="trailing" constant="19" id="ewE-tJ-DQi"/>
                 <constraint firstItem="9nJ-aK-7pm" firstAttribute="top" secondItem="huK-Rg-q2c" secondAttribute="bottom" constant="16" id="kv3-Vb-i9N"/>
@@ -64,6 +77,7 @@
     <resources>
         <image name="fence_close.png" width="40" height="40"/>
         <image name="map_switch.png" width="40" height="40"/>
+        <image name="nav.png" width="40" height="40"/>
         <image name="traffic_close.png" width="40" height="40"/>
     </resources>
 </document>
